@@ -1,0 +1,34 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:p="http://primefaces.prime.com.tr/ui" xmlns:h="http://java.sun.com/jsf/html">
+<f:view contentType="text/html">
+  <h:head id="headTag">
+    <title>#{msg.pageTitle} - #{pageTitle}</title>
+    <link type="text/css" rel="stylesheet" href="#{request.contextPath}/themes/WANdisco/skin.css" />
+    <link type="text/css" rel="stylesheet" href="#{request.contextPath}/javax.faces.resource/base-default.css.jsf?ln=css" />
+    <link rel="icon" href="#{request.contextPath}/uberMk2.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="#{request.contextPath}/uberMk2.ico" type="image/x-icon" />
+    <h:outputScript library="primefaces" name="jquery/jquery.js" />
+  </h:head>
+  <h:body style="margin: 50px; background: #949494 repeat-x url(#{resource['img/platform:uberbg2.jpg']});">
+    <div id="page" style="height: 785px; margin-left: auto; margin-right: auto; width: 1178px;">
+      <h:panelGroup>
+        <div class="configurationPage">
+          <h:form id="headerForm" acceptcharset="UTF-8">
+            <h:panelGroup styleClass="header">
+              <ui:include src="/sections/platform/shared/configuration-header.xhtml" />
+            </h:panelGroup>
+          </h:form>
+          <h:form acceptcharset="UTF-8" id="mainPortalForm" prependId="false">
+            <ui:include src="/sections/platform/shared/resetPassword.xhtml" />
+          </h:form>
+        </div>
+        <h:panelGroup>
+          <ui:include src="/sections/platform/shared/footer.xhtml" />
+        </h:panelGroup>
+      </h:panelGroup>
+    </div>
+  </h:body>
+</f:view>
+</html>
+

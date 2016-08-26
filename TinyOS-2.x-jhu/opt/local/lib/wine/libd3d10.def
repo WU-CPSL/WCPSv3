@@ -1,0 +1,11 @@
+; File generated automatically from ./d3d10.spec; do not edit!
+
+LIBRARY d3d10.dll
+
+EXPORTS
+  D3D10CreateDevice@24 @4
+  D3D10CreateDeviceAndSwapChain@32 @5
+  D3D10CreateEffectFromMemory@24 @6
+  D3D10GetGeometryShaderProfile@4 @11
+  D3D10GetPixelShaderProfile@4 @15
+  D3D10GetVertexShaderProfile@4 @18

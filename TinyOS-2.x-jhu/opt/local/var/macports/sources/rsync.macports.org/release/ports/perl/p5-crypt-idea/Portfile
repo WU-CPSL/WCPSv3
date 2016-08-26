@@ -1,0 +1,13 @@
+# $Id: Portfile 86349 2011-10-24 15:04:04Z jmr@macports.org $
+
+PortSystem	1.0
+PortGroup	perl5 1.0
+
+perl5.setup	Crypt-IDEA 1.08
+revision    2
+license		BSD-old
+maintainers	nomaintainer
+description	perl implementation of IDEA
+long_description	${description}
+platforms	darwin
+checksums	md5 6718c630fa8ac28cb989b7db763ed97c

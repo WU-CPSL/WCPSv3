@@ -1,0 +1,49 @@
+# $Id: Portfile 89111 2012-01-19 18:49:47Z ram@macports.org $
+
+PortSystem    1.0
+
+name          lalinference
+version       0.1.1
+categories    science
+platforms     darwin
+maintainers   ram
+license       GPL
+
+description   LSC Algorithm Library - Inference
+long_description \
+  LIGO Scientific Collaboration Algorithm Library - Inference containing \
+  routines for Bayesian inference data analysis.
+
+homepage      https://www.lsc-group.phys.uwm.edu/daswg/projects/lalsuite.html
+master_sites  http://www.lsc-group.phys.uwm.edu/daswg/download/software/source/lalsuite
+
+checksums     md5 bf30790ab322db621178775aafbe07bd \
+              sha1 3bc5c3299d5d79f2ba7e0183422d60ac902173c9 \
+              rmd160 2821193bd5c53cb6d8058e80bc58b61ad88f6d5c
+
+depends_build port:pkgconfig \
+              port:python27
+
+depends_lib   port:gsl \
+              port:metaio \
+              port:libxml2 \
+              port:lal \
+              port:lalframe \
+              port:lalmetaio \
+              port:lalxml \
+              port:lalsimulation \
+              port:lalinspiral \
+              port:lalpulsar
+
+configure.python ${prefix}/bin/python2.7
+configure.args --mandir=${prefix}/share/man \
+               --enable-lalxml \
+               --disable-gcc-flags
+
+build.args    V=1
+
+use_parallel_build yes
+
+livecheck.type   regex
+livecheck.url    ${master_sites}
+livecheck.regex  {lalinference-(\d+(?:\.\d+)*).tar.gz}

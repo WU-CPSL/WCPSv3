@@ -1,0 +1,138 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89787 2012-02-10 18:45:55Z pixilla@macports.org $
+
+PortSystem              1.0
+PortGroup               archcheck 1.0
+PortGroup               cmake 1.0
+
+name                    percona
+conflicts               mysql4 mysql5 mysql5-devel mariadb
+set version_mysql       5.5.20
+set major               [join [lrange [split ${version_mysql} .] 0 0] .]
+set branch              [join [lrange [split ${version_mysql} .] 0 1] .]
+set release             24.1
+version                 ${version_mysql}-${release}
+homepage                http://www.percona.com/
+categories              databases
+platforms               darwin
+maintainers             mac.com:quest openmaintainer
+license                 GPL-2
+distname                Percona-Server-${version_mysql}-rel${release}
+dist_subdir             mysql5
+use_parallel_build      yes
+
+description \
+    Multithreaded SQL database server
+
+long_description \
+    Percona is an open-source, multi-threaded SQL database \
+    with a command syntax very similar to mSQL.
+
+master_sites \
+    http://www.percona.com/redir/downloads/Percona-Server-${branch}/Percona-Server-${version}/source/
+
+checksums md5     0f61fde172ed1168a3ca9b7b003a6698 \
+          sha1    19dde017b1c257c9f0aecd2247906f224d6fe147 \
+          rmd160  5fd374a019b38a44b89514aa5c3c6931a863e972
+
+depends_lib-append      port:zlib \
+                        port:openssl \
+                        port:readline \
+                        port:cmake
+
+archcheck.files         lib/libz.dylib \
+                        lib/libssl.dylib \
+                        lib/libreadline.dylib
+
+set major_version       [strsed ${version} {s/\..*$//}]
+set mysql               mysql${major_version}
+set libdir              ${prefix}/lib/${mysql}
+set bindir              ${libdir}/bin
+set dbdir               ${prefix}/var/db/${mysql}
+set sysconfdir          ${prefix}/etc/${mysql}
+set sockfile            ${prefix}/var/run/mysql5/mysqld.sock
+
+if {"darwin" == ${os.platform} && ${os.major} > 8} {
+    set mysqluser       _mysql
+} else {
+    set mysqluser       mysql
+}
+
+configure.args-append       -DINSTALL_MANDIR:STRING=share/man \
+                            -DINSTALL_INFODIR:STRING=share/info \
+                            -DMYSQL_DATADIR:PATH=${dbdir} \
+                            -DFEATURE_SET:STRING=community \
+                            -DINSTALL_BINDIR:STRING=lib/${mysql}/bin \
+                            -DINSTALL_SCRIPTDIR:STRING=lib/${mysql}/bin \
+                            -DINSTALL_SBINDIR:STRING=lib/${mysql}/libexec \
+                            -DINSTALL_INCLUDEDIR:STRING=include/${mysql}/mysql \
+                            -DINSTALL_LIBDIR:STRING=lib/${mysql}/mysql \
+                            -DINSTALL_PLUGINDIR:STRING=lib/${mysql}/mysql/plugin \
+                            -DINSTALL_DOCDIR:STRING=share/doc/${mysql} \
+                            -DINSTALL_DOCREADMEDIR:STRING=share/doc/${mysql} \
+                            -DINSTALL_MYSQLDATADIR:STRING=share/${mysql} \
+                            -DINSTALL_MYSQLSHAREDIR:STRING=share/${mysql}/mysql \
+                            -DINSTALL_SHAREDIR:STRING=share/${mysql} \
+                            -DINSTALL_SUPPORTFILESDIR:STRING=share/${mysql}/mysql \
+                            -DDEFAULT_CHARSET:STRING=utf8 \
+                            -DDEFAULT_COLLATION:STRING=utf8_general_ci \
+                            -DMYSQL_UNIX_ADDR:PATH=${sockfile} \
+                            -DSYSCONFDIR:PATH=${sysconfdir} \
+                            -DWITH_EMBEDDED_SERVER:BOOL=OFF \
+                            -DWITH_READLINE:BOOL=ON \
+                            -DWITH_SSL:STRING=yes \
+                            -DWITH_ZLIB:STRING=system \
+                            -DWITH_UNIT_TESTS:BOOL=OFF \
+                            -DENABLE_GCOV:BOOL=OFF \
+                            -DENABLE_DTRACE:BOOL=OFF
+
+# Set compiler
+configure.compiler llvm-gcc-4.2
+
+post-build {
+    set dirs ${worksrcpath}
+    foreach dir ${dirs} {
+        reinplace -E {s|-arch [a-z0-9_]+||g} \
+            ${dir}/scripts/mysql_config \
+            ${dir}/scripts/mysqlbug
+    }
+}
+
+pre-destroot {
+    xinstall -m 755 -d ${destroot}${sysconfdir}
+    destroot.keepdirs-append ${destroot}${sysconfdir}
+}
+
+post-destroot {
+    # Delete directories we don't want
+    delete ${destroot}${prefix}/data ${destroot}${prefix}/mysql-test ${destroot}${prefix}/sql-bench
+    # Fix link lib paths
+    foreach libname [glob -type f -tails -directory ${destroot}${libdir}/mysql *.dylib] {
+        if {[file type ${destroot}${libdir}/mysql/${libname}] == "file"} {
+            system "install_name_tool -id ${libdir}/mysql/${libname} ${destroot}${libdir}/mysql/${libname}"
+        }
+    }
+    # Fix paths in manpages and sample configuration files
+    foreach manpage [glob -type f ${destroot}${prefix}/share/man/man\[1-9\]/*] {
+        reinplace "s|/etc/my.cnf|${sysconfdir}/my.cnf|g" ${manpage}
+    }
+    foreach samp_conffile [glob -type f ${destroot}${prefix}/share/${mysql}/mysql/my-*.cnf] {
+        reinplace "s|/etc/my.cnf|${sysconfdir}/my.cnf|g" ${samp_conffile}
+    }
+    # Symlink mysql binaries into bin directory, with ${major_version} appended to the name
+    foreach f [glob -tails -directory ${destroot}${bindir} my*] {
+        ln -sf ${bindir}/${f} ${destroot}${prefix}/bin/${f}${major_version}
+    }
+}
+
+post-install {
+    if {![file exists ${prefix}/etc/LaunchDaemons/org.macports.${mysql}/org.macports.${mysql}.plist]} {
+        ui_msg "The Percona client has been installed."
+        ui_msg "If you also want a Percona server, install the percona-server port."
+    }
+}
+
+livecheck.type          regex
+livecheck.url           http://www.percona.com/downloads/Percona-Server-${branch}/
+livecheck.version       ${version_mysql}-${release}
+livecheck.regex         "/downloads/Percona-Server-${branch}/Percona-Server-(\[^/\]+)/"

@@ -1,0 +1,10 @@
+# $Id: Portfile 88576 2012-01-04 16:45:51Z mww@macports.org $
+
+PortSystem          1.0
+replaced_by ocaml-uuidm
+PortGroup obsolete 1.0
+
+name                caml-uuidm
+version             0.9.3
+revision            1
+categories          devel ml

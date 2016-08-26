@@ -1,0 +1,16 @@
+# $Id: Portfile 86333 2011-10-24 14:35:43Z jmr@macports.org $
+
+PortSystem                      1.0
+PortGroup                       perl5 1.0
+
+perl5.setup                     IO-Stty 0.02
+revision                        2
+license                         {Artistic-1 GPL}
+maintainers                     nomaintainer
+description                     Provide an interface to TTYs and PTYs
+long_description                ${description}
+platforms                       darwin
+checksums                       md5 db2919cf267fce93682f0f854359f04e
+distname                        IO-Stty-.02
+
+supported_archs noarch

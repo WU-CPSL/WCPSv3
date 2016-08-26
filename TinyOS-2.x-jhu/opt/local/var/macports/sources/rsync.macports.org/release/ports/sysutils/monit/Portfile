@@ -1,0 +1,53 @@
+# $Id: Portfile 83385 2011-08-31 01:52:26Z dports@macports.org $
+
+PortSystem 1.0
+
+name                monit
+version             5.0.3
+revision        1
+categories          sysutils
+platforms           darwin freebsd linux netbsd openbsd solaris
+license             GPL-3
+maintainers         nomaintainer
+
+description         monit is a utility for managing and monitoring, processes, \
+                    files, directories and devices on a UNIX system.
+long_description    Monit can start a process if it does not run, restart a process \
+                    if it does not respond and stop a process if it uses too many resources. \
+                    You can use monit to monitor files, directories and devices for changes, \
+                    such as timestamp changes, checksum changes or size changes. You can also \
+                    monitor remote hosts\; monit can ping a remote host and can check TCP/IP \
+                    port connections and server protocols. Monit is controlled via an easy \
+                    to use control file based on a free-format, token-oriented syntax. Monit \
+                    logs to syslog or to its own log file and notifies you about error \
+                    conditions and recovery status via customizable alert.
+
+homepage            http://mmonit.com/monit/
+master_sites        ${homepage}dist/
+
+checksums           md5 dae7859ec10551fc941daeae60dee9d3 \
+                    sha1 60cb18678f7d1423e728b44cd09f57a87340b2ba \
+                    rmd160 c75586b174484bab046ed6d4e7e3440596b65917
+
+depends_build       bin:flex:flex bin:bison:bison 
+depends_lib         port:openssl
+
+platform freebsd {
+    build.type      gnu
+}
+
+platform netbsd {
+    build.type      gnu
+}
+
+platform openbsd {
+    build.type      gnu
+}
+
+post-destroot {
+    xinstall -m 444 ${worksrcpath}/monitrc ${destroot}${prefix}/etc/monitrc.sample
+    xinstall -d ${destroot}${prefix}/share/doc/${name}
+    xinstall -m 444 -W ${worksrcpath} CHANGES.txt CONTRIBUTORS COPYING \
+        FAQ.txt LICENSE PLATFORMS README README.SSL \
+        ${destroot}${prefix}/share/doc/${name}
+}

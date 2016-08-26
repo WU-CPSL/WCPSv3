@@ -1,0 +1,33 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 88821 2012-01-12 23:02:19Z dports@macports.org $
+
+PortSystem          1.0
+PortGroup           texlive 1.0
+
+name                texlive-lang-latin
+version             23092
+revision            0
+
+categories          tex
+maintainers         dports
+license             Copyleft Permissive
+description         TeX Live: Latin
+long_description    Support for typesetting Latin.
+
+checksums           texlive-lang-latin-23092-run.tar.xz \
+                    rmd160  9da385dd869fed57ebeb4a3089787c844b14c0c3 \
+                    sha256  8e71c6fc2868b3409643cffe31924f79d23786cf7c675fe6aaa8663a0b1d8260 \
+                    texlive-lang-latin-23092-doc.tar.xz \
+                    rmd160  29d3310239e14baaf576b652606081d091bb3c46 \
+                    sha256  f7735f625ac375cb048aee8caee26baa2e34412598a30ce44e3963855c234726 \
+                    texlive-lang-latin-23092-src.tar.xz \
+                    rmd160  461da008d6897baeb6fbed746f527cc58095f7b9 \
+                    sha256  95f59df2c5ceecd62f98256171fd261675691cfb94c65b0cb731c112c80f080a
+
+depends_lib         port:texlive-basic
+
+texlive.languages      \
+    {latin loadhyph-la.tex 2 2 {} {hyph-la.pat.txt} {} {} }
+
+
+texlive.texmfport

@@ -1,0 +1,9 @@
+; File generated automatically from ./wined3d.spec; do not edit!
+
+LIBRARY wined3d.dll
+
+EXPORTS
+  WineDirect3DCreate@8 @1
+  WineDirect3DCreateClipper@4 @2
+  wined3d_mutex_lock@0 @3
+  wined3d_mutex_unlock@0 @4

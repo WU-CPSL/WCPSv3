@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:p="http://primefaces.prime.com.tr/ui" xmlns:h="http://java.sun.com/jsf/html">
+<ui:composition>
+  <p:focus for="addRepoButton" />
+  <h:panelGrid styleClass="left-right-table" columns="2" columnClasses="left-aligned-stuff, right-aligned-stuff">
+    <p:button id="addRepoButton" styleClass="roundedButtonExtraSmall" value="#{msg.addButtonText}" outcome="addRepositoryStep1.jsf"
+      image="greenCross" rendered="#{repositoryManagedBean.repoAdmin}" />
+    <p:spacer width="10" rendered="#{!repositoryManagedBean.repoAdmin}" />
+    <p:inputText id="globalFilter" value="#{repositoryManagedBean.filterValue}" immediate="true"
+      onkeyup="updateTableData(), reposTable.filter()" style="background: #D9E5F1; width:150px">
+      <p:watermark for="globalFilter" value="FILTER" style="font-weight: bold;" />
+    </p:inputText>
+  </h:panelGrid>
+  <ol id="innerTab">
+    <li id="recentReposInnerTab" class="current"><h:outputLink
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/repository/viewRepositories.jsf"
+        title="#{msg.recentRepositoriesTabAltText}">
+        <span>#{msg.recentRepositoriesTabText}</span>
+      </h:outputLink></li>
+    <li id="favouriteReposInnerTab"><h:outputLink
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/repository/viewFavouriteRepositories.jsf"
+        title="#{msg.favouriteRepositoriesTabAltText}">
+        <span>#{msg.favouriteRepositoriesTabText}</span>
+      </h:outputLink></li>
+  </ol>
+  <p:panel styleClass="base-tab-panel">
+    <p:panel styleClass="base-tab-inner-panel">
+      <p:dataTable id="repoTableId" widgetVar="reposTable" var="repo" value="#{repositoryManagedBean.lazyReposModel}" lazy="true"
+        paginator="#{repositoryManagedBean.showPaginator}" paginatorPosition="bottom" rows="#{repositoryManagedBean.tablePageSize}"
+        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+        selection="#{repositoryManagedBean.selectedRepoToDelete}" emptyMessage="#{msg.emptyRepositoriesTableMessage}" rowIndexVar="rowNum">
+        <p:column selectionMode="single" rendered="#{repositoryManagedBean.repoAdmin}" styleClass="multiselecttablestyle" />
+        <p:column width="255" sortBy="#{repo.name}">
+          <f:facet name="header">
+            <h:outputText value="Name" />
+          </f:facet>
+          <h:commandLink action="#{repositoryManagedBean.viewRepository}" title="#{msg.repoProfileView}">
+            <f:setPropertyActionListener target="#{repositoryManagedBean.selectedRepo}" value="#{repo}" />
+            <h:outputText value="#{repo.name}" />
+          </h:commandLink>
+        </p:column>
+        <p:column width="255" sortBy="#{repo.davLocation}">
+          <f:facet name="header">
+            <h:outputText value="Location" />
+          </f:facet>
+          <h:outputText value="#{repo.repoURL}" />
+        </p:column>
+        <!-- <p:column width="255" sortBy="#{repo.size}"> -->
+        <p:column width="255">
+          <f:facet name="header">
+            <h:outputText value="Size" />
+          </f:facet>
+          <h:outputText value="#{repo.size}" />
+        </p:column>
+        <p:column width="100" style="min-width:100px; text-align: right;">
+          <f:facet name="header">
+            <h:outputText value="" />
+          </f:facet>
+          <h:graphicImage id="copyUrlButton" style="width:36px; height:11px;" library="img/platform/icons" name="copy_small.png" />
+          <script>
+                      jQuery(document).ready(
+                          function() {
+                            if (gotFlash()) {
+                              // Create the flash clipboard widget
+                              var clip = createClipboardObject("repoTableId:#{rowNum}:copyUrlButton", "#{repo.repoURL}",
+                                  "#{msg.reposCopyURLTitleText}");
+                            } else {
+                              // Hide the copy button if no flash
+                              jQuery('#repoTableId\\:#{rowNum}\\:copyUrlButton').hide();
+                            }
+                          });
+                    </script>
+          <h:commandLink action="#{repositoryManagedBean.browseRepository}" title="#{msg.repoBrowse}">
+            <f:setPropertyActionListener target="#{repositoryManagedBean.selectedRepo}" value="#{repo}" />
+            <h:graphicImage library="img/platform" name="icons/mag_glass.png" />
+          </h:commandLink>
+          <p:spacer width="5" />
+          <h:commandLink action="#{repositoryManagedBean.viewRepository}" title="#{msg.repoProfileView}">
+            <f:setPropertyActionListener target="#{repositoryManagedBean.selectedRepo}" value="#{repo}" />
+            <h:graphicImage library="img/platform" name="icons/infocon.png" />
+          </h:commandLink>
+          <p:spacer width="5" rendered="#{!repo.favouriteRepo}" />
+          <h:commandLink action="#{repositoryManagedBean.favouriteRepository}" title="#{msg.repoFavourite}"
+            rendered="#{!repo.favouriteRepo}">
+            <f:setPropertyActionListener target="#{repositoryManagedBean.selectedRepo}" value="#{repo}" />
+            <h:graphicImage library="img/platform" name="icons/favourite_not.png" />
+          </h:commandLink>
+          <p:spacer width="5" rendered="#{repo.favouriteRepo}" />
+          <h:commandLink action="#{repositoryManagedBean.unfavouriteRepository}" title="#{msg.repoUnfavourite}"
+            rendered="#{repo.favouriteRepo}">
+            <f:setPropertyActionListener target="#{repositoryManagedBean.selectedRepo}" value="#{repo}" />
+            <h:graphicImage library="img/platform" name="icons/favourite.png" />
+          </h:commandLink>
+        </p:column>
+      </p:dataTable>
+      <p:remoteCommand name="updateTableData" actionListener="#{repositoryManagedBean.updateFilter}" />
+      <p:commandButton styleClass="roundedButtonLarge" rendered="#{repositoryManagedBean.repoAdmin}" value="#{msg.confirmRepoDeleteButton}"
+        onclick="confirmation.show()">
+        <f:setPropertyActionListener target="#{deleteRepoManagedBean.repoToDelete}" value="#{repositoryManagedBean.selectedRepoToDelete}" />
+      </p:commandButton>
+      <p:panel styleClass="base-tab-inner-panel-key">
+        <h:graphicImage library="img/platform/icons" name="mag_glass.png" />
+        <h:outputText value=" = #{msg.browseKeyText} " />
+        <h:graphicImage library="img/platform/icons" name="infocon.png" />
+        <h:outputText value=" = #{msg.detailsKeyText} " />
+        <h:graphicImage library="img/platform/icons" name="favourite.png" />
+        <h:outputText value=" = #{msg.favouriteKeyText} " />
+      </p:panel>
+    </p:panel>
+    <ui:include id="deletionDialog" src="/sections/platform/repository/deletionDialog.xhtml" />
+  </p:panel>
+</ui:composition>
+</html>

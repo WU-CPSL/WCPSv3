@@ -1,0 +1,69 @@
+# $Id: Portfile 84905 2011-10-04 14:37:44Z and.damore@macports.org $
+
+PortSystem          1.0
+
+name                clojure
+conflicts           clojure-devel
+version             1.3.0
+epoch               20110929
+license             EPL-1
+categories          lang java
+maintainers         gmail.com:mdippery
+description         The Clojure programming language
+long_description    Clojure is a dynamic programming language for the JVM. \
+                    It is interactive, yet compiled, with a robust \
+                    infrastructure for concurrency. It is a functional \
+                    dialect of Lisp, with a rich set of immutable, \
+                    persistent data structures and a macro system.
+homepage            http://clojure.org/
+platforms           darwin
+master_sites        http://repo1.maven.org/maven2/org/${name}/${name}/${version}
+checksums           md5     de91ee9914017a38c7cc391ab8fcbc1a \
+                    sha1    7f5822ed847bb8a4c8ef93beed2d79248c20e1d1 \
+                    rmd160  73d8956547bc7b96d4ab64dbbcf7e25946044ae0
+
+use_zip             yes
+
+use_configure       no
+build               {}
+
+variant rlwrap description {Use rlwrap support for tab completion, parenthesis matching} {
+    depends_run-append port:rlwrap
+}
+
+destroot {
+    set javadir ${prefix}/share/java
+    set clojuredir ${javadir}/clojure
+    set clojurelibdir ${clojuredir}/lib
+    set clojurebindir ${clojuredir}/bin
+    set clojurebin ${clojurebindir}/clj
+    set clojuresh clj.sh
+
+    if {[variant_isset rlwrap]} {
+        set clojuresh clj-rlwrap.sh
+    }
+
+    xinstall -m 0755 -d ${destroot}${javadir}
+    xinstall -m 0755 -d ${destroot}${clojuredir}
+    xinstall -m 0755 -d ${destroot}${clojurelibdir}
+    xinstall -m 0755 -d ${destroot}${clojurebindir}
+    xinstall -m 0644 -W ${workpath} clojure-${version}/clojure-${version}.jar ${destroot}${clojurelibdir}/clojure.jar
+    xinstall -m 0755 -W ${filespath} ${clojuresh} ${destroot}${clojurebin}
+
+    if {[variant_isset rlwrap]} {
+        xinstall -m 0644 -W ${filespath} .clj_completions  ${destroot}${clojuredir}/.clj_completions
+    }
+
+    ln -s ${clojurebin} ${destroot}${prefix}/bin/clj
+
+    xinstall -m 0755 -d ${destroot}${prefix}/share/doc/${name}
+    xinstall -m 0755 -d ${destroot}${prefix}/share/examples/${name}
+    xinstall -m 0644 -W ${worksrcpath} \
+            changes.txt epl-v10.html \
+            doc/clojure/pprint/CommonLispFormat.markdown \
+            doc/clojure/pprint/PrettyPrinting.markdown \
+            ${destroot}${prefix}/share/doc/${name}
+    file copy ${worksrcpath}/test/clojure/test_clojure \
+              ${worksrcpath}/test/clojure/test_helper.clj \
+              ${destroot}${prefix}/share/examples/${name}
+}

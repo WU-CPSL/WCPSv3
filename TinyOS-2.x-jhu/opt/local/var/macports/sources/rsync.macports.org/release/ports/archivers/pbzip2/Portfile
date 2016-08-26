@@ -1,0 +1,48 @@
+# $Id: Portfile 88715 2012-01-09 16:52:30Z eborisch@macports.org $
+
+PortSystem        1.0
+
+name              pbzip2
+version           1.1.6
+categories        archivers
+platforms         darwin
+maintainers       ram openmaintainer
+license           Permissive
+
+description       parallel bzip2
+long_description  PBZIP2 is a parallel implementation of the bzip2 \
+  block-sorting file compressor that uses pthreads and achieves \
+  near-linear speedup on SMP machines.
+
+homepage          http://compression.ca/pbzip2/
+master_sites      ${homepage}
+
+depends_lib       port:bzip2
+
+checksums         md5 26cc5a0d882198f106e75101ff0544a3 \
+                  sha1 3b4d0ffa3ac362c3702793cc5d9e61664d468aeb \
+                  rmd160 179b548c72f63555a6d51d9d3bd86e3ab002e6a6
+
+set CFLAGS        "${configure.ldflags} ${configure.cppflags}"
+
+configure {
+  reinplace "s|-pthread -lpthread|${CFLAGS}|" ${worksrcpath}/Makefile
+  reinplace "s|man|share/man|" ${worksrcpath}/Makefile
+}
+
+destroot.destdir  PREFIX=${destroot}${prefix}
+
+post-destroot {
+  set docdir ${prefix}/share/doc/${name}-${version}
+  xinstall -d ${destroot}${docdir}
+  xinstall -m 0644 -W ${worksrcpath} AUTHORS COPYING ChangeLog README \
+    ${destroot}${docdir}
+}
+
+variant universal {
+  set CFLAGS "${CFLAGS} ${configure.universal_cflags}"
+}
+
+livecheck.type    regex
+livecheck.url     ${homepage}
+livecheck.regex   {pbzip2-(\d+(?:\.\d+)*).tar.gz}

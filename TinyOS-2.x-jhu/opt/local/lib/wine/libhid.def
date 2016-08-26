@@ -1,0 +1,8 @@
+; File generated automatically from ./hid.spec; do not edit!
+
+LIBRARY hid.dll
+
+EXPORTS
+  HidD_GetFeature@12 @5
+  HidD_GetHidGuid@4 @6
+  HidD_SetFeature@12 @18

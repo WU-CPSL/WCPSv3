@@ -1,0 +1,32 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89388 2012-01-27 21:19:08Z snc@macports.org $
+
+PortSystem      1.0
+PortGroup       kde4 1.1
+
+name            kde-l10n-si
+version         4.8.0
+categories      kde kde4
+maintainers     snc openmaintainer
+license         {LGPL-2.1 LGPL-3+ GPL-2+ MIT BSD}
+description     KDE sinhala language files.
+long_description \
+                ${description}
+platforms       darwin
+homepage        http://www.kde.org/
+
+master_sites    kde:stable/${version}/src/kde-l10n/
+use_bzip2       yes
+
+supported_archs noarch
+depends_lib     port:kdelibs4
+
+checksums           rmd160  7117c109bc7e99eb475cdcd0edcf996499b320c2 \
+                    sha256  a6d3b53c86856430b8ec0d8fc3f3a392644fe8333a804e8d1f7011be161be618
+
+post-destroot {
+    xinstall -d -m 755 ${destroot}${prefix}/share/doc/kde-installed-packages
+    system "touch ${destroot}${prefix}/share/doc/kde-installed-packages/kde-l10n-sinhala"
+}
+
+livecheck.type  none

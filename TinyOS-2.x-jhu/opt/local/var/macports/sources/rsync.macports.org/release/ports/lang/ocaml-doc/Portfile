@@ -1,0 +1,35 @@
+# $Id: Portfile 84411 2011-09-26 07:11:01Z mww@macports.org $
+
+PortSystem 1.0
+
+name                ocaml-doc
+version             3.12
+revision            1
+platforms           darwin
+maintainers         mww openmaintainer
+categories          lang ml
+supported_archs     noarch
+description         The Objective Caml reference manual
+long_description    ${description}
+homepage            http://www.ocaml.org/
+master_sites        http://caml.inria.fr/pub/distrib/ocaml-${version} \
+                    ftp://ftp.inria.fr/INRIA/Projects/cristal/ocaml/ocaml-${version}
+distname            ocaml-${version}-refman.html
+checksums           md5     93cd91f525441eb7e94cc49b9b64bab0 \
+                    sha1    3a332ab965f6a917953f30e8ee069d9ecfb342a1 \
+                    rmd160  39a0964d0d3f9ba70d312525fe919d6bb4bff18e
+
+set docdir          ${prefix}/share/doc/${name}-${version}
+
+use_configure       no
+
+build               {}
+
+destroot {
+    xinstall -d ${destroot}${prefix}/share/doc
+    file copy ${workpath}/htmlman ${destroot}${prefix}/share/doc/${name}
+}
+
+livecheck.type  regex
+livecheck.url   http://caml.inria.fr/download.en.html
+livecheck.regex "ocaml-.*/ocaml-(.*)-refman.html.tar.gz"

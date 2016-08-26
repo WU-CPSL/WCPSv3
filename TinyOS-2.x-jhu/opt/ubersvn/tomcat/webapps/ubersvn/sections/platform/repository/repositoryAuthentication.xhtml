@@ -1,0 +1,243 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:p="http://primefaces.prime.com.tr/ui" xmlns:h="http://java.sun.com/jsf/html">
+<ui:composition>
+  <style>
+.ui-autocomplete {
+  position: absolute;
+  cursor: default;
+  background: #aaaaaa url(images/ui-bg_flat_0_aaaaaa_40x100.png) 50% 50% repeat-x;
+}
+</style>
+  <ol id="sub-toc">
+    <li><h:outputLink
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/repository/repositoryProfile.jsf?repoId=#{repositoryProfileManagedBean.repo.id}"
+        title="#{msg.repoProfileTabAltText}">
+        <span>#{msg.repoProfileTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/repository/repositoryGraph.jsf"
+        title="#{msg.repoGraphTabAltText}">
+        <span>#{msg.repoGraphTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/repository/repositoryBrowser.jsf"
+        title="#{msg.repoBrowserTabAltText}">
+        <span>#{msg.repoBrowserTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/repository/repositoryAdministrationVerify.jsf"
+        title="#{msg.repoAdministrationTabAltText}"
+        rendered="#{basePage.systemAdmin or basePage.globalRepoAdmin or repositoryProfileManagedBean.repo.delegatedRepoAdmin}">
+        <span>#{msg.repoAdministrationTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/repository/repositoryPermissions.jsf"
+        title="#{msg.repoPermissionsTabAltText}"
+        rendered="#{basePage.systemAdmin or basePage.globalRepoAdmin or repositoryProfileManagedBean.repo.delegatedRepoAdmin}">
+        <span>#{msg.repoPermissionsTabText}</span>
+      </h:outputLink>
+    </li>
+    <li class="current"><h:outputLink
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/repository/repositoryAuthentication.jsf"
+        title="#{msg.repoAuthenticationTabAltText}"
+        rendered="#{basePage.systemAdmin or basePage.globalRepoAdmin or repositoryProfileManagedBean.repo.delegatedRepoAdmin}">
+        <span>#{msg.repoAuthenticationTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink rendered="#{basePage.jenkinsInstalled and basePage.jenkinsVisible}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/repository/repositoryJenkins.jsf"
+        title="#{msg.repoJenkinsTabTitle}">
+        <span>#{msg.repoJenkinsTabText}</span>
+      </h:outputLink>
+    </li>
+  </ol>
+  <p:panel id="repoProfilePanel" styleClass="tabbed-panel">
+    <h:panelGrid columns="1">
+      <h:panelGroup>
+        <h:panelGrid columns="1" columnClasses="repoNameColumnFull">
+          <h:panelGroup>
+            <h:outputText id="repoName" styleClass="formOutputText" style="font-size: 24px;"
+              value="#{repositoryProfileManagedBean.repo.name}" />
+            <br />
+            <hr />
+          </h:panelGroup>
+          <h:panelGrid columns="2">
+            <h:panelGroup>
+              <input id="Internal" name="repoAuthenticationType" value="Internal" type="radio"
+                checked="#{repositoryAdministrationManagedBean.repo.authenticationType == 'Internal' ? 'checked' : ''}" />
+              <p:commandLink id="InternalLink" style="display:none; visibility: hidden;" ajax="false">
+                <f:setPropertyActionListener target="#{repositoryAdministrationManagedBean.repo.authenticationType}" value="Internal" />
+              </p:commandLink>
+            </h:panelGroup>
+            <h:panelGroup>
+              <label style="font-size: 16px;" for="Internal">uberSVN Internally Managed</label>
+            </h:panelGroup>
+            <h:panelGroup>
+              <input id="External" name="repoAuthenticationType" value="External" type="radio"
+                checked="#{repositoryAdministrationManagedBean.repo.authenticationType == 'External' ? 'checked' : ''}" />
+              <p:commandLink id="ExternalLink" style="display:none; visibility: hidden;" ajax="false">
+                <f:setPropertyActionListener target="#{repositoryAdministrationManagedBean.repo.authenticationType}" value="External" />
+              </p:commandLink>
+            </h:panelGroup>
+            <h:panelGroup>
+              <label style="font-size: 16px;" for="External">Use Alternative htpasswd file</label>
+            </h:panelGroup>
+            <h:panelGroup rendered="#{repositoryAdministrationManagedBean.repo.authenticationType == 'External'}">
+              <p:spacer />
+            </h:panelGroup>
+            <h:panelGroup rendered="#{repositoryAdministrationManagedBean.repo.authenticationType == 'External'}">
+              <h:outputLabel value="#{msg.repoAuthenticationExternalFileLabel} :" />
+              <h:outputText id="repoAdminRepositoryHTPASSWDFileLocation"
+                value="#{repositoryAdministrationManagedBean.alternativeHtpasswdFile}" />
+            </h:panelGroup>
+            <h:panelGroup>
+              <input id="LDAP" name="repoAuthenticationType" value="LDAP" type="radio"
+                checked="#{repositoryAdministrationManagedBean.repo.authenticationType == 'LDAP' ? 'checked' : ''}" />
+              <p:commandLink id="LDAPLink" style="display:none; visibility: hidden;" ajax="false">
+                <f:setPropertyActionListener target="#{repositoryAdministrationManagedBean.repo.authenticationType}" value="LDAP" />
+              </p:commandLink>
+            </h:panelGroup>
+            <h:panelGroup>
+              <label style="font-size: 16px;" for="LDAP">LDAP / Active Directory Authentication</label>
+            </h:panelGroup>
+            <h:panelGroup rendered="#{repositoryAdministrationManagedBean.repo.authenticationType == 'LDAP'}">
+              <p:spacer />
+            </h:panelGroup>
+            <h:panelGroup id="LDAPSettingsTable" rendered="#{repositoryAdministrationManagedBean.repo.authenticationType == 'LDAP'}">
+              <p:commandButton id="repoAdministrationLoadDefaultLDAPDetails" value="#{msg.repoAuthenticationLoadDefaultButtonText}"
+                styleClass="roundedButtonMedium" action="#{repositoryAdministrationManagedBean.loadDefaultLDAPSettings}"
+                update="LDAPSettingsTable, repoAuthNameField" />
+              <p:spacer width="10" />
+              <p:commandButton id="repoAdministrationTestLDAPDetails" value="#{msg.repoAuthenticationLDAPConnectionTestButtonText}"
+                styleClass="roundedButtonSmall" action="#{repositoryAdministrationManagedBean.testLDAPConnection}" ajax="false"
+                immediate="true" />
+              <h:panelGrid columns="2" columnClasses="col25, col75">
+                <h:outputLabel value="#{msg.repoAuthenticationLDAPConnectionAuthNameLabel} :  " />
+                <h:panelGroup id="repoAuthNameField">
+                  <h:inputText id="repoAdminRepositoryLDAPConnectionAuthName" styleClass="wizardFormField" size="50"
+                    value="#{repositoryAdministrationManagedBean.repo.ldapConnection.authName}" required="#{param['saveButton'] == 'true'}"
+                    requiredMessage="#{msg.ldapAuthNameRequired}" />
+                  <p:spacer width="10" />
+                  <h:message style="color: red; font-size: 10px; height: 11px;" for="repoAdminRepositoryLDAPConnectionAuthName" />
+                </h:panelGroup>
+                <h:outputLabel value="#{msg.repoAuthenticationLDAPConnectionURLLabel} :  " />
+                <h:panelGroup>
+                  <h:inputText id="repoAdminRepositoryLDAPConnectionURL" styleClass="wizardFormField" size="50"
+                    value="#{repositoryAdministrationManagedBean.repo.ldapConnection.LDAPUrl}" required="#{param['saveButton'] == 'true'}"
+                    requiredMessage="#{msg.ldapUrlRequired}" />
+                  <p:spacer width="10" />
+                  <h:message style="color: red; font-size: 10px; height: 11px;" for="repoAdminRepositoryLDAPConnectionURL" />
+                </h:panelGroup>
+                <h:panelGroup>
+                  <h:outputLabel for="LDAPAuthBasicProvider" value="#{msg.repoAuthenticationLDAPConnectionAuthBasicProvider}" />
+                  <p:spacer width="10" />
+                </h:panelGroup>
+                <h:panelGroup>
+                  <h:inputText id="LDAPAuthBasicProvider" value="#{repositoryAdministrationManagedBean.repo.ldapConnection.authBasicProvider}"
+                    styleClass="wizardFormField" size="50" required="#{param['saveButton'] == 'true'}" requiredMessage="#{msg.ldapAuthBasicProviderFieldRequired}" />
+                  <p:spacer width="10" />
+                  <h:message style="color: red; font-size: 10px; height: 11px;" for="LDAPAuthBasicProvider" />
+                </h:panelGroup>
+
+                <h:outputLabel for="repoAuthzLDAPAuthoritative" value="#{msg.repoAuthenticationLDAPConnectionAuthzLDAPAuthoritativeLabel}" />
+                <h:selectOneRadio id="repoAuthzLDAPAuthoritative" layout="lineDirection"
+                  value="#{repositoryAdministrationManagedBean.repo.ldapConnection.authzLDAPAuthoritative}">
+                  <f:selectItem itemLabel="#{msg.yes}" itemValue="#{true}" />
+                  <f:selectItem itemLabel="#{msg.no}" itemValue="#{false}" />
+                  <p:ajax event="focus" update="repoAuthLDAPBindAuthoritativeLabel repoAuthLDAPBindAuthoritativeField"
+                    actionListener="#{repositoryAdministrationManagedBean.toggleAuthzLDAPAuthoritative}" />
+                </h:selectOneRadio>
+                <h:panelGroup id="repoAuthLDAPBindAuthoritativeLabel">
+                  <h:outputLabel for="repoAuthLDAPBindAuthoritative"
+                    value="#{msg.repoAuthenticationLDAPConnectionAuthLDAPBindAuthoritativeLabel}"
+                    rendered="#{!repositoryAdministrationManagedBean.repo.ldapConnection.authzLDAPAuthoritative}" />
+                </h:panelGroup>
+                <h:panelGroup id="repoAuthLDAPBindAuthoritativeField">
+                  <h:selectOneRadio id="repoAuthLDAPBindAuthoritative" layout="lineDirection"
+                    value="#{repositoryAdministrationManagedBean.repo.ldapConnection.authLDAPBindAuthoritative}"
+                    rendered="#{!repositoryAdministrationManagedBean.repo.ldapConnection.authzLDAPAuthoritative}">
+                    <f:selectItem itemLabel="#{msg.yes}" itemValue="#{true}" />
+                    <f:selectItem itemLabel="#{msg.no}" itemValue="#{false}" />
+                  </h:selectOneRadio>
+                </h:panelGroup>
+                <h:outputLabel for="repoAuthLDAPGroupAttribute" value="#{msg.repoAuthenticationLDAPConnectionAuthLDAPGroupAttributeLabel}" />
+                <h:inputText id="repoAuthLDAPGroupAttribute"
+                  value="#{repositoryAdministrationManagedBean.repo.ldapConnection.authLDAPGroupAttribute}" styleClass="wizardFormField"
+                  size="50" />
+                <h:outputLabel for="authLDAPGroupAttributeIsDN"
+                  value="#{msg.repoAuthenticationLDAPConnectionAuthLDAPGroupAttributeIsDNLabel}" />
+                <h:selectOneRadio id="authLDAPGroupAttributeIsDN" layout="lineDirection"
+                  value="#{repositoryAdministrationManagedBean.repo.ldapConnection.authLDAPGroupAttributeIsDN}">
+                  <f:selectItem itemLabel="#{msg.yes}" itemValue="#{true}" />
+                  <f:selectItem itemLabel="#{msg.no}" itemValue="#{false}" />
+                </h:selectOneRadio>
+                <h:outputLabel for="LDAPRequire" value="#{msg.repoAuthenticationLDAPConnectionRequireLabel}" />
+                <h:panelGroup>
+                  <h:inputText id="LDAPRequire" value="#{repositoryAdministrationManagedBean.repo.ldapConnection.require}"
+                    styleClass="wizardFormField" size="50" required="#{param['saveButton'] == 'true'}"
+                    requiredMessage="#{msg.ldapRequireFieldRequired}" />
+                  <p:spacer width="10" />
+                  <h:message style="color: red; font-size: 10px; height: 11px;" for="LDAPRequire" />
+                </h:panelGroup>
+                <h:outputLabel for="enableDefaultAnonBind" value="#{msg.repoAuthenticationLDAPConnectionAnonymousBindLabel}" />
+                <h:selectOneRadio id="enableDefaultAnonBind" layout="lineDirection"
+                  value="#{repositoryAdministrationManagedBean.defaultAnonBind}">
+                  <f:selectItem itemLabel="#{msg.yes}" itemValue="#{true}" />
+                  <f:selectItem itemLabel="#{msg.no}" itemValue="#{false}" />
+                  <p:ajax event="focus"
+                    update="repoAdminRepositoryLDAPConnectionBindDNLabel repoAdminRepositoryLDAPConnectionBindDN repoAdminRepositoryLDAPConnectionBindPasswordLabel repoAdminRepositoryLDAPConnectionBindPassword"
+                    actionListener="#{repositoryAdministrationManagedBean.toggleDefaultAnonBind}" />
+                </h:selectOneRadio>
+                <h:panelGroup id="repoAdminRepositoryLDAPConnectionBindDNLabel">
+                  <h:outputLabel value="#{msg.repoAuthenticationLDAPConnectionBindDNLabel} :  "
+                    rendered="#{!repositoryAdministrationManagedBean.defaultAnonBind}" />
+                </h:panelGroup>
+                <h:panelGroup id="repoAdminRepositoryLDAPConnectionBindDN">
+                  <h:inputText id="repoAdminLDAPBindDN" styleClass="wizardFormField" size="50"
+                    value="#{repositoryAdministrationManagedBean.repo.ldapConnection.bindDN}"
+                    rendered="#{!repositoryAdministrationManagedBean.defaultAnonBind}" required="#{param['saveButton'] == 'true'}"
+                    requiredMessage="#{msg.ldapBindDNRequired}" />
+                  <p:spacer width="10" rendered="#{!repositoryAdministrationManagedBean.defaultAnonBind}" />
+                  <h:message style="color: red; font-size: 10px; height: 11px;" for="repoAdminLDAPBindDN"
+                    rendered="#{!repositoryAdministrationManagedBean.defaultAnonBind}" />
+                </h:panelGroup>
+                <h:panelGroup id="repoAdminRepositoryLDAPConnectionBindPasswordLabel">
+                  <h:outputLabel value="#{msg.repoAuthenticationLDAPConnectionBindPasswordLabel} :  "
+                    rendered="#{!repositoryAdministrationManagedBean.defaultAnonBind}" />
+                </h:panelGroup>
+                <h:panelGroup id="repoAdminRepositoryLDAPConnectionBindPassword">
+                  <h:inputSecret id="repoAdminLDAPBindPassword" styleClass="wizardFormField" size="50"
+                    value="#{repositoryAdministrationManagedBean.repo.ldapConnection.bindPassword}"
+                    rendered="#{!repositoryAdministrationManagedBean.defaultAnonBind}" redisplay="true"
+                    required="#{param['saveButton'] == 'true'}" requiredMessage="#{msg.ldapBindPasswordRequired}" />
+                  <p:spacer width="10" rendered="#{!repositoryAdministrationManagedBean.defaultAnonBind}" />
+                  <h:message style="color: red; font-size: 10px; height: 11px;" for="repoAdminLDAPBindPassword"
+                    rendered="#{!repositoryAdministrationManagedBean.defaultAnonBind}" />
+                </h:panelGroup>
+              </h:panelGrid>
+            </h:panelGroup>
+            <p:commandButton id="repoAdministrationSaveRepository" value="#{msg.saveButtonText}" styleClass="roundedButtonExtraSmall"
+              action="#{repositoryAdministrationManagedBean.saveRepository}" ajax="false">
+              <f:param name="saveButton" value="true" />
+            </p:commandButton>
+          </h:panelGrid>
+        </h:panelGrid>
+      </h:panelGroup>
+    </h:panelGrid>
+  </p:panel>
+  <script>
+      jQuery(document).ready(function() {
+        jQuery('input:radio').click(function() {
+          // Submit the new radio button selection
+          var id = jQuery(this).attr('id');
+          jQuery('#' + id + 'Link').click();
+        });
+      });
+    </script>
+</ui:composition>
+</html>

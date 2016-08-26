@@ -1,0 +1,55 @@
+# $Id: Portfile 80483 2011-07-13 17:05:00Z jmr@macports.org $
+
+PortSystem 1.0
+
+name		xorg-xtrans
+version		1.2.6
+categories	x11 devel
+license		X11
+maintainers	jeremyhu openmaintainer
+description	X.org xtrans
+homepage	http://www.x.org
+platforms	darwin macosx
+supported_archs	noarch
+long_description X Network Transport layer shared code
+master_sites	xorg:individual/lib/
+
+distname	xtrans-${version}
+checksums           md5     c66f9ffd2da4fb012220c6c40ebc7609 \
+                    sha1    99f019a6e6d4d2b8274c4a27f9c8482c7fc64e85 \
+                    rmd160  88a26d0fb38d3440081fa9541b01dc2622321e43
+use_bzip2	yes
+
+configure.args \
+	--without-xmlto \
+	--without-fop \
+	--disable-docs
+
+build.args V=1
+
+# Depending on ghostscript for the PDF documentation creates a dependency
+# loop, so you may want to install first without the docs variant
+variant docs description "Install extra documentation" {
+	depends_build-append \
+		port:fop \
+		port:xmlto \
+		port:xorg-sgml-doctools
+
+	configure.args-delete \
+		--without-xmlto \
+		--without-fop \
+		--disable-docs
+
+	configure.args-append \
+		--with-xmlto \
+		--with-fop \
+		--enable-docs
+
+	configure.env-append \
+		XMLTO="${prefix}/bin/xmlto" \
+		FOP="${prefix}/bin/fop"
+}
+
+livecheck.type  regex
+livecheck.url   http://xorg.freedesktop.org/archive/individual/lib/?C=M&O=D
+livecheck.regex xtrans-(\\d+(?:\\.\\d+)*)

@@ -1,0 +1,14 @@
+# $Id: Portfile 87485 2011-11-23 15:29:35Z jmr@macports.org $
+
+PortSystem      1.0
+PortGroup       perl5 1.0
+
+perl5.setup     Crypt-OpenSSL-Bignum 0.04
+revision        2
+license         {Artistic-1 GPL}
+maintainers     nomaintainer
+description     OpenSSL's multiprecision integer arithmetic
+long_description ${description}
+
+platforms       darwin
+checksums       md5 9369ef722b0705c0604998559988eb18

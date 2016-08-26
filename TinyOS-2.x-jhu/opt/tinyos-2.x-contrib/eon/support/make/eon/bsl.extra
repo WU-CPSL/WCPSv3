@@ -1,0 +1,5 @@
+#-*-Makefile-*- vim:syntax=make
+#$Id: bsl.extra,v 1.1 2008/09/26 17:26:02 jacobsorber Exp $
+
+MSP_BSL_FLAGS += --invert-reset
+

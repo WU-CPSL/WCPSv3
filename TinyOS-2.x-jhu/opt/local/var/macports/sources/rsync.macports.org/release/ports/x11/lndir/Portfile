@@ -1,0 +1,28 @@
+# $Id: Portfile 70573 2010-08-14 04:48:23Z jeremyhu@macports.org $
+
+PortSystem          1.0
+name                lndir
+version             1.0.2
+categories          x11 sysutils
+maintainers         jeremyhu openmaintainer
+description         Create shadow dir of symbolic links to another tree
+long_description    ${description}
+
+platforms           darwin
+
+homepage            http://www.x.org/
+master_sites        http://xorg.freedesktop.org/archive/individual/util
+use_bzip2           yes
+
+checksums           md5     619acbb2ed766d7762f02328513b1f72 \
+                    sha1    bad5a03b82cd817e4a2a7d2e83b820326fb2a7b7 \
+                    rmd160  c4b97a3984712a2dddda5943069533d1346d47da
+
+depends_build \
+        port:pkgconfig \
+        port:xorg-xproto
+
+livecheck.type      regex
+livecheck.regex     ${name}-(\[\\d.\]+)${extract.suffix}
+livecheck.url       ${master_sites}
+

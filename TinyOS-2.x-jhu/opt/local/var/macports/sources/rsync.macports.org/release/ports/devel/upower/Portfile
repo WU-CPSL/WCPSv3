@@ -1,0 +1,43 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:filetype=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 87847 2011-12-09 01:03:55Z devans@macports.org $
+
+PortSystem 1.0
+
+name            upower
+version         0.9.15
+license         GPL-2+
+description     UPower is an abstraction for enumerating power devices, \
+                listening to device events and querying history and statistics.
+
+long_description \
+                ${description} \
+                Any application or service on the system can access the \
+                org.freedesktop.UPower service via the system message bus.
+
+maintainers     devans openmaintainer
+categories      devel
+platforms       darwin
+homepage        http://upower.freedesktop.org/
+master_sites    http://upower.freedesktop.org/releases/
+
+checksums       rmd160  04223791db0730bd5480c22c7bf4ba2bc37d8a30 \
+                sha256  d5941480f32dcee47401b3f650485c71f70e7eb0d92537bf4b62410248a6238c
+
+use_xz          yes
+
+depends_build   port:pkgconfig \
+                port:intltool \
+                port:gtk-doc
+
+depends_lib     port:dbus-glib \
+                port:policykit
+
+patchfiles      patch-configure.diff \
+                patch-doc-man-Makefile.in.diff
+
+configure.args  --disable-introspection \
+                --disable-silent-rules
+
+livecheck.type  regex
+livecheck.url   ${master_sites}
+livecheck.regex "${name}-(\\d+(?:\\.\\d+)*)${extract.suffix}"

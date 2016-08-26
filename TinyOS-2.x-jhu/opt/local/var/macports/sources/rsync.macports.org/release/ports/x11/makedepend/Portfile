@@ -1,0 +1,34 @@
+# $Id: Portfile 81396 2011-07-30 02:29:07Z jmr@macports.org $
+
+PortSystem          1.0
+
+name                makedepend
+version             1.0.3
+categories          x11 devel
+license             X11
+installs_libs       no
+maintainers         nomaintainer
+description         Create dependencies in makefiles
+long_description \
+   The makedepend program reads each sourcefile in sequence and parses it \
+   like a C-preprocessor, processing all #include, #define, #undef, #ifdef, \
+   #ifndef, #endif, #if, #elif and #else directives so that it can correctly \
+   tell which #include, directives would be used in a compilation.  Any \
+   #include, directives can reference files having other #include \
+   directives, and parsing will occur in these files as well.
+
+platforms           darwin
+
+homepage            http://www.x.org/
+master_sites        http://xorg.freedesktop.org/archive/individual/util/
+use_bzip2           yes
+
+checksums           md5     4e6cb97bbecfbb34f3f644a75e513093 \
+                    sha1    9a2ea514c0e52b59712678be1f9a33a74a4e0b8e \
+                    rmd160  19e3e3405bd2f7e2b95f416ddd104300ecac29f6
+
+depends_build       port:pkgconfig port:xorg-xproto
+
+livecheck.type      regex
+livecheck.regex     ${name}-(\[\\d.\]+)${extract.suffix}
+livecheck.url       ${master_sites}

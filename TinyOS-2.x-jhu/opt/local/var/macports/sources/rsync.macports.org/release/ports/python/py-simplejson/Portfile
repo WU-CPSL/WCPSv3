@@ -1,0 +1,65 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89300 2012-01-24 01:41:48Z ryandesign@macports.org $
+
+PortSystem          1.0
+PortGroup           python 1.0
+
+name                py-simplejson
+set real_name       simplejson
+version             2.3.2
+python.versions     24 25 26 27
+categories-append   www
+license             MIT
+maintainers         akitada singingwolfboy openmaintainer
+description         Simple, fast, extensible JSON encoder/decoder for Python
+long_description    \
+    simplejson is a simple, fast, complete, correct and extensible JSON encoder \
+    and decoder for Python 2.4+. It is pure Python code with no dependencies, but \
+    includes an optional C extension for a serious speed boost. \
+    \
+    simplejson is the externally maintained development version of the json \
+    library included with Python 2.6+, but maintains backwards compatibility with \
+    Python 2.5 and 2.4. \
+    \
+    The encoder may be subclassed to provide serialization in any kind of \
+    situation, without any special support by the objects to be serialized \
+    (somewhat like pickle). The decoder can handle incoming JSON strings of any \
+    specified encoding (UTF-8 by default).
+
+platforms           darwin
+
+homepage            http://${real_name}.readthedocs.org/
+master_sites        http://pypi.python.org/packages/source/s/${real_name}/
+distname            ${real_name}-${version}
+checksums           rmd160  bfa3d790e5485b2edf33ebebd6952be90b4db868 \
+                    sha256  276c1837be470a21178f9e70b0688189e1a4e2d09ea85cef35078b929b605428
+
+if {$name != $subport} {
+    depends_lib-append         port:py${python.version}-distribute
+    
+    post-destroot {
+        set docdir ${destroot}${prefix}/share/doc/${subport}
+        xinstall -d ${docdir}
+        if {${python.version} == 24} {
+            foreach f [glob -directory ${worksrcpath}/docs *] {
+                copy $f ${docdir}
+            }
+        } else {
+            xinstall -m 644 -W ${worksrcpath} \
+                CHANGES.txt README.rst index.rst \
+                ${docdir}
+        }
+    }
+}
+
+subport py24-simplejson {
+    # simplejson dropped support for Python 2.4 at version 2.1.0
+    version         2.1.0
+    distname        ${real_name}-2.1.0
+    checksums       rmd160  41997ae2e309dc538deda50e056119b01afbf23d \
+                    sha256  11bb12aacb646dcccc0d5a3d0e44e5662caf0e71d2f58c7ace8d2ec03cda903b
+}
+
+livecheck.type      regex
+livecheck.url       ${master_sites}
+livecheck.regex     ${real_name}-(\[0-9.\]+)\\.tar\\.gz

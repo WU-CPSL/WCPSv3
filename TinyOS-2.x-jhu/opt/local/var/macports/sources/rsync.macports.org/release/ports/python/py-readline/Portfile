@@ -1,0 +1,30 @@
+# $Id: Portfile 87263 2011-11-15 09:53:14Z mww@macports.org $
+
+PortSystem 1.0
+PortGroup python 1.0
+
+name			py-readline
+version			6.2.1
+platforms		darwin
+license			GPL-3+ PSF
+maintainers		nomaintainer
+description		GNU readline extension for Python
+long_description	${description}
+
+homepage		http://www.python.org/
+master_sites	http://pypi.python.org/packages/source/r/readline/
+distname		readline-${version}
+checksums		md5 9604527863378512247fcaf938100797 \
+			sha256 2e789683f826e45e1580dddf814af6db0e00038e15ac641a36c365bf3f48ff5d
+
+python.versions	24 25 26 27 31 32
+
+if {$subport != $name} {
+    patchfiles	build.sh.patch setup.py.patch
+    depends_build	port:py${python.version}-distribute
+    post-destroot {
+        copy -force ${filespath}/readline.pth ${filespath}/readline_path.py \
+            ${destroot}${python.pkgd}
+        reinplace "s|__LIBDIR__|${python.libdir}|" ${destroot}${python.pkgd}/readline_path.py
+    }
+}

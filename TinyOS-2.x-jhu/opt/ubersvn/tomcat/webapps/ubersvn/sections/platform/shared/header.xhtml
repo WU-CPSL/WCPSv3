@@ -1,0 +1,147 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.prime.com.tr/ui"
+  xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core">
+<ui:composition>
+  <div class="base-header">
+    <h:panelGrid styleClass="left-right-table" columns="2" columnClasses="left-aligned-stuff, right-aligned-stuff">
+      <h:panelGroup>
+        <p:commandLink action="#{basePage.navigateToDashboard}" ajax="false" title="#{msg.headerDashboardTabAltText}">
+          <h:graphicImage styleClass="ubersvn-logo" library="img/platform/logos" name="mk2_main_logo.png" />
+        </p:commandLink>
+      </h:panelGroup>
+      <h:panelGroup>
+        <h:outputText value="#{msg.headerWelcomeText} " />
+        <h:graphicImage library="img/platform/logos" name="mk2_logo_login.png" />
+        <h:outputText value=" - #{msg.headerLoginText} " rendered="#{!login.loggedIn}" />
+        <h:outputText value=" - #{login.realName}. " rendered="#{login.loggedIn}" />
+        <p:commandLink styleClass="headerLinkText" value="#{msg.headerMyProfileText}" action="#{userProfileManagedBean.selectMyProfile}"
+          update="tabbedPortalForm" rendered="#{login.loggedIn}">
+        </p:commandLink>
+        <h:outputText value=" - " rendered="#{login.loggedIn}" />
+        <h:outputLink styleClass="headerLinkText" id="helpLink" value="http://docs.ubersvn.com/v1.0/#{basePage.helpPage}" target="blank">
+          <h:outputText value="#{msg.headerHelpLinkText}" title="#{msg.headerHelpLinkTitle}" />
+        </h:outputLink>
+        <h:outputText value=" - " />
+        <p:commandLink styleClass="headerLinkText" value="#{msg.headerLogoutText}" update="page" ajax="false" action="#{login.logout}"
+          rendered="#{login.loggedIn}" />
+        <a href="http://www.wandisco.com/" target="new"><h:graphicImage styleClass="wandisco-logo" library="img/platform/logos"
+            name="usvn_wandisco_logo.png" />
+        </a>
+      </h:panelGroup>
+    </h:panelGrid>
+    <h:panelGrid style="margin-top: -15px;" styleClass="left-right-table" columns="2"
+      columnClasses="left-aligned-stuff, right-aligned-stuff">
+      <hr class="header-rule" />
+      <p:commandLink style="height: 33px; padding: 18px 0 0 !important; vertical-align: middle;" styleClass="roundedButtonLarge support-button" value="#{msg.supportCenterButtonText}" onclick="openSupport()" />
+    </h:panelGrid>
+    <h:panelGrid style="margin-top: -13px" styleClass="left-right-table" columns="2" columnClasses="left-aligned-stuff, right-aligned-stuff">
+      <h:panelGroup rendered="#{login.loggedIn}">
+        <ol id="toc">
+          <li id="dashboardTab"><p:commandLink action="#{basePage.navigateToDashboard}" ajax="false"
+              title="#{msg.headerDashboardTabAltText}">
+              <span>#{msg.dashboardTabText}</span>
+            </p:commandLink>
+          </li>
+          <li id="repositoryTab"><p:commandLink action="#{basePage.navigateToRepositories}" ajax="false"
+              title="#{msg.headerReposTabAltText}">
+              <span>#{msg.repositoriesTabText}</span>
+            </p:commandLink>
+          </li>
+          <li id="usersTab"><p:commandLink action="#{basePage.navigateToUsers}" ajax="false" title="#{msg.headerUsersTabAltText}">
+              <span>#{msg.usersTabText}</span>
+            </p:commandLink>
+          </li>
+          <li id="teamsTab"><p:commandLink action="#{basePage.navigateToTeams}" ajax="false" title="#{msg.headerTeamsTabAltText}">
+              <span>#{msg.teamsTabText}</span>
+            </p:commandLink>
+          </li>
+          <li id="uberAppsTab" ><p:commandLink action="#{basePage.navigateToUberApps}" ajax="false" title="#{msg.headerUberAppsTabAltText}">
+              <span><h:graphicImage library="img/platform/uberApps" name="uberapps_tabtext.png" style="border-style: none; margin: 0 0 -3px;" /></span>
+            </p:commandLink>
+          </li>
+          <li id="adminTab"><p:commandLink rendered="#{login.sysAdmin}" action="#{basePage.navigateToAdministration}" ajax="false"
+              title="#{msg.headerAdminTabAltText}">
+              <span>#{msg.administrationTabText}</span>
+            </p:commandLink>
+          </li>
+          <li id="extensionTab1">
+            <p:commandLink rendered="#{basePage.renderTab1 and !basePage.tab1ExternalLink}"  action="#{basePage.navigateToExtensionTab1}" ajax="false" title="#{msg.extensionTab1AltText}">
+              <span>#{basePage.tab1ExtensionName}</span>
+            </p:commandLink>
+            <h:outputLink rendered="#{basePage.renderTab1 and basePage.tab1ExternalLink}" value="#{basePage.tab1ExtensionURL}" target="_blank">
+              <span>#{basePage.tab1ExtensionName}</span>
+            </h:outputLink>
+          </li>
+          <li id="extensionTab2">
+            <p:commandLink rendered="#{basePage.renderTab2 and !basePage.tab2ExternalLink}" action="#{basePage.navigateToExtensionTab2}" ajax="false" title="#{msg.extensionTab2AltText}">
+              <span>#{basePage.tab2ExtensionName}</span>
+            </p:commandLink>
+            <h:outputLink rendered="#{basePage.renderTab2 and basePage.tab2ExternalLink}" value="#{basePage.tab2ExtensionURL}" target="_blank">
+              <span>#{basePage.tab2ExtensionName}</span>
+            </h:outputLink>
+          </li>
+          <li id="extensionTab3">
+            <p:commandLink rendered="#{basePage.renderTab3 and !basePage.tab3ExternalLink}" action="#{basePage.navigateToExtensionTab3}" ajax="false" title="#{msg.extensionTab3AltText}">
+              <span>#{basePage.tab3ExtensionName}</span>
+            </p:commandLink>
+            <h:outputLink rendered="#{basePage.renderTab3 and basePage.tab3ExternalLink}" value="#{basePage.tab3ExtensionURL}" target="_blank">
+              <span>#{basePage.tab3ExtensionName}</span>
+            </h:outputLink>
+          </li>
+          <li id="extensionsTab">
+            <p:commandLink id="extensionMenu" rendered="#{basePage.renderExtensionsTab}" title="#{msg.extensionsTabAltText}">
+              <span>#{msg.extensionsTabText}</span>
+            </p:commandLink>
+            <p:menu rendered="#{basePage.renderExtensionsTab}" position="dynamic" trigger="extensionMenu" my="left top" at="left bottom" model="#{basePage.extensionsMenuModel}"/>
+          </li>
+        </ol>
+      </h:panelGroup>
+      <h:panelGroup>
+        <span class="restart-required"> <p:commandLink id="apacheRestartMessage" rendered="#{basePage.apacheRestartRequired}"
+            value="#{msg.apacheRestartRequired}" actionListener="#{basePage.restartApacheServer}" ajax="false" /> <h:outputText
+            id="apacheRestartMessageSeperator" rendered="#{basePage.apacheRestartRequired and basePage.uberSVNRestartRequired}" value=" - " />
+          <p:commandLink id="uberSVNRestartMessage" update="growl" rendered="#{basePage.uberSVNRestartRequired}"
+            value="#{msg.uberSVNRestartRequired}" actionListener="#{basePage.restartUberSVNServer}" ajax="true"
+            onclick="headerStatusDialog.show()" /> <p:dialog modal="true" onShow="reloadPage();" widgetVar="headerStatusDialog"
+            header="Processing" draggable="false" closable="false" resizable="false" width="200" height="150">
+            <h:graphicImage id="updateImage" style="border:0; margin-left: auto; margin-right: auto; display: block;" library="img/platform"
+              name="progress.gif" />
+          </p:dialog> </span>
+      </h:panelGroup>
+
+    </h:panelGrid>
+  </div>
+  <ui:insert name="headerTabName">Place Page Content here</ui:insert>
+
+  <script type="text/javascript">
+  jQuery(document).ready(function() {
+    var tabElement = '#' + document.getElementById('headerForm:tabName').value;
+    jQuery('ol#toc li').removeClass();
+    jQuery(tabElement).addClass('current');
+  });
+
+  function openSupport() {
+    window.open('http://www.ubersvn.com/support');
+  }
+
+  function reloadPage() {
+    var uberSVNPort = '#{basePage.uberSVNPort}';
+    var hostname = '#{basePage.hostname}';
+    var sslEnabled = '#{basePage.isSSLEnabled}'
+    var isWindows = '#{basePage.isWindows}'
+    if (sslEnabled) {
+      var url = 'http://' + hostname + ':' + uberSVNPort + '/ubersvn';
+    } else {
+      var url = 'https://' + hostname + ':' + uberSVNPort + '/ubersvn';
+    }
+    if (isWindows) {
+      setTimeout("self.location = \'" + url + "\'", 70000);
+    } else {
+      setTimeout("self.location = \'" + url + "\'", 40000);
+    }
+  }
+</script>
+</ui:composition>
+</html>

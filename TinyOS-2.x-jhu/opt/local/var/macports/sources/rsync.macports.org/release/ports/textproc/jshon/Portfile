@@ -1,0 +1,30 @@
+# $Id: Portfile 89341 2012-01-26 01:49:39Z ryandesign@macports.org $
+
+PortSystem 1.0
+PortGroup  github 1.0
+
+github.setup    keenerd jshon 20111222
+revision        1
+categories      textproc
+platforms       darwin
+license         MIT
+maintainers     singingwolfboy openmaintainer
+
+description     A JSON parser for the shell
+long_description  ${description}
+homepage        http://kmkeen.com/jshon/
+fetch.type      git
+git.branch      471a3bd08e
+
+depends_lib     port:jansson
+
+use_configure   no
+
+variant universal {}
+
+build.args      CC="${configure.cc} [get_canonical_archflags cc]"
+
+destroot {
+    xinstall -m 755 ${worksrcpath}/jshon ${destroot}${prefix}/bin/
+    xinstall -m 644 ${worksrcpath}/jshon.1 ${destroot}${prefix}/share/man/man1/
+}

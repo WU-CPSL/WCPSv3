@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:p="http://primefaces.prime.com.tr/ui" xmlns:h="http://java.sun.com/jsf/html">
+<ui:composition>
+  <ol id="sub-toc">
+    <li class="current"><h:outputLink title="#{msg.teamProfileTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/teams/teamProfile.jsf?teamId=#{teamProfileManagedBean.team.id}">
+        <span>#{msg.teamProfileTabText}</span>
+      </h:outputLink></li>
+  </ol>
+  <p:panel id="teamProfilePanel" styleClass="tabbed-panel">
+    <p:focus for="editTeamProfileButton" />
+    <h:panelGrid columns="2">
+      <h:panelGroup>
+        <h:panelGrid columns="2" columnClasses="teamNameColumn">
+          <h:panelGroup>
+            <h:outputText styleClass="formOutputText" id="teamName" style="font-size: 24px;" value="#{teamProfileManagedBean.team.name}" />
+            <br />
+            <hr />
+            <h:outputText styleClass="formOutputText" id="teamDescription" value="#{teamProfileManagedBean.team.description}" />
+            <br />
+            <br />
+          </h:panelGroup>
+          <p:commandLink disabled="#{!basePage.teamAdmin and !teamProfileManagedBean.team.delegatedTeamAdmin}" onclick="teamAvatarDlg.show()">
+            <h:graphicImage styleClass="teamProfileAvatar" value="/avatarimage?teamid=#{teamProfileManagedBean.team.name}" />
+            <h:graphicImage styleClass="teamProfileAvatarSpanner" library="img/platform/icons" name="cog1.png"
+              rendered="#{basePage.teamAdmin or teamProfileManagedBean.team.delegatedTeamAdmin}" />
+          </p:commandLink>
+        </h:panelGrid>
+        <p:button id="editTeamProfileButton" styleClass="roundedButtonExtraSmall"
+          rendered="#{basePage.teamAdmin or teamProfileManagedBean.team.delegatedTeamAdmin}" value="#{msg.editButtonText}"
+          outcome="editTeamProfile.jsf" />
+        <ui:include src="/sections/platform/teams/activityTab.xhtml" />
+      </h:panelGroup>
+      <ui:include src="/sections/platform/teams/teamMembersRepositoriesTabs.xhtml" />
+    </h:panelGrid>
+  </p:panel>
+
+</ui:composition>
+</html>

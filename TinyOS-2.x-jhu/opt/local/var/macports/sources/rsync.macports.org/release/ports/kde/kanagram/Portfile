@@ -1,0 +1,30 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89388 2012-01-27 21:19:08Z snc@macports.org $
+
+PortSystem          1.0
+PortGroup           kde4   1.1
+
+name                kanagram
+version             4.8.0
+categories          kde kde4
+license             GPL-2
+maintainers         snc sharky michaelld
+description         Letter Order Game
+long_description    KDE ${description}
+homepage            http://www.kde.org
+
+platforms           darwin
+depends_lib-append  port:libkdeedu
+
+master_sites        kde:stable/${version}/src/
+use_bzip2           yes
+
+checksums           rmd160  6550ab657a0a6259c993770233890c17217b52f1 \
+                    sha256  084851a0b07fe76232cee250cb41a48a27b0bec374bc5fa8ae015c548be9677c
+
+if {![variant_isset doc]} {
+    patchfiles      patch-CMakeLists.txt.diff
+}
+
+livecheck.url       http://kde.mirrors.hoobly.com/stable/latest/src/
+livecheck.regex     ${name}-(\\d+(\\.\\d+)+)

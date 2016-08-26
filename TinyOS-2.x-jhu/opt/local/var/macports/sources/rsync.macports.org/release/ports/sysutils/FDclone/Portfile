@@ -1,0 +1,66 @@
+# $Id: Portfile 85949 2011-10-17 22:28:26Z takanori@macports.org $
+
+PortSystem      1.0
+
+name            FDclone
+version         3.00j
+categories      sysutils shells
+maintainers     takanori openmaintainer
+description     File & Directory Maintenance Tool
+long_description \
+                ${description}
+platforms       darwin
+license         Restrictive/Distributable
+homepage        http://hp.vector.co.jp/authors/VA012337/soft/fd/index.html
+master_sites    http://hp.vector.co.jp/authors/VA012337/soft/fd/ \
+                ftp://ftp.unixusers.net/src/fdclone/
+distname        FD-${version}
+patchfiles      patch-Makefile.in.diff
+checksums       rmd160 b976c68e6facc01bf331959be4b831206c05fef7
+
+depends_lib     port:ncurses
+
+set editor      ""
+set pager       ""
+
+configure {
+    if {[variant_isset nojpnmes]} {
+        system "echo \"#define _NOJPNMES\" >> ${worksrcpath}/config.hin"
+    }
+
+    if {${editor} != ""} { reinplace "s|\"vi\"|\"${editor}\"|g" ${worksrcpath}/fd.h }
+    if {${pager} != ""} { reinplace "s|\"more%K\"|\"${pager}\"|g" ${worksrcpath}/fd.h }
+
+    if {[variant_isset autosort]} {
+        reinplace "s|SORTTYPE\t\t0|SORTTYPE\t\t1|" ${worksrcpath}/fd.h
+        reinplace "s|DISPLAYMODE\t\t0|DISPLAYMODE\t\t3|" ${worksrcpath}/fd.h
+        reinplace "s|SORTTREE\t\t0|SORTTREE\t\t1|" ${worksrcpath}/fd.h
+    }
+}
+
+use_parallel_build  yes
+build.args      CONFDIR=${prefix}/etc PREFIX=${prefix} CFLAGS="${configure.cflags}" CPPFLAGS="${configure.cppflags} -I${prefix}/include/ncurses" LDFLAGS="${configure.ldflags} -lncurses"
+
+destroot.args   BUILD=${destroot} PREFIX=${prefix}
+post-destroot {
+    xinstall -m 755 -d ${destroot}${prefix}/share/doc/${name}
+    foreach f {FAQ* HISTORY* Install* LICENSES* README* TECHKNOW* ToAdmin* *.cat} {
+        eval xinstall -m 644 [glob ${worksrcpath}/${f}] ${destroot}${prefix}/share/doc/${name}
+    }
+    xinstall -m 644 ${worksrcpath}/_fdrc ${destroot}${prefix}/etc/fd2rc.dist
+}
+
+variant universal {
+    build.args  CONFDIR=${prefix}/etc PREFIX=${prefix} CFLAGS="${configure.cflags} ${configure.universal_cflags}" CPPFLAGS="${configure.cppflags} -I${prefix}/include/ncurses" LDFLAGS="${configure.ldflags} ${configure.universal_ldflags} -lncurses"
+}
+variant nojpnmes description {Do not show Japanese message} {}
+variant emacs conflicts vim description {Use emacs as default editor} {set editor emacs}
+variant vim conflicts emacs description {Use vim as default editor} {set editor vim}
+variant lv conflicts less jless description {Use lv as default pager} {set pager lv}
+variant less conflicts lv jless description {Use less as default pager} {set pager less}
+variant jless conflicts lv less description {Use jless as default pager} {set pager jless}
+variant autosort description {Sort files alphabetically automatically} {}
+
+livecheck.type  regex
+livecheck.url   ${homepage}
+livecheck.regex FD-(\[0-9.a-z\]+)\\.tar

@@ -1,0 +1,33 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 80356 2011-07-10 09:59:42Z ryandesign@macports.org $
+
+PortSystem 1.0
+
+name                znc
+version             0.098
+categories          irc
+platforms           darwin
+maintainers         mfeiri openmaintainer
+license             GPL-2
+description         An advanced IRC bouncer
+long_description    ZNC is an IRC bounce/proxy with many advanced features \
+                    like detaching, multiple users, multiple clients per \
+                    user, channel/query playback buffers, SSL, IPv6, \
+                    transparent DCC bouncing, C++/Perl/Tcl module support, \
+                    party line, and Web administration.
+
+homepage            http://znc.in/
+master_sites        ${homepage}releases/old/
+
+checksums           sha1    5f1a32b6d03ed015534f831b6dd7910a07a7d832 \
+                    rmd160  1731558cf0effb889e1bc55c01bb06fdaa1e064f
+
+universal_variant   no
+patchfiles          patch-modules-modperl.cpp.diff
+depends_lib         port:c-ares port:openssl port:tcl port:perl5 port:swig-perl
+configure.args      --enable-extra --enable-tcl --with-tcl=${prefix}/lib \
+                    --enable-perl
+
+livecheck.type      regex
+livecheck.url       ${homepage}releases/
+livecheck.regex     ${name}-(\[0-9.\]+)${extract.suffix}

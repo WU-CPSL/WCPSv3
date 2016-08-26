@@ -1,0 +1,67 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 84816 2011-10-02 13:18:58Z ryandesign@macports.org $
+
+PortSystem          1.0
+
+name                driftnet
+version             0.1.6
+revision            3
+categories          net
+platforms           darwin
+maintainers         nomaintainer
+license             GPL-2+
+
+# patch-Makefile hardcodes -DDRIFTNET_BIG_ENDIAN and just changing that to
+# -DDRIFTNET_LITTLE_ENDIAN does not make it work for me on Intel
+supported_archs     ppc ppc64
+
+description         Watch the pictures go by on your net
+
+long_description    Inspired by EtherPEG, Driftnet is a program which \
+                    listens to network traffic and picks out images from \
+                    TCP streams it observes. Fun to run on a host which \
+                    sees lots of web traffic.
+
+homepage            http://www.ex-parrot.com/~chris/driftnet
+master_sites        http://www.ex-parrot.com/~chris/driftnet/ \
+                    http://www.vanheusden.com/mirrors/
+
+#                   Driftnet doesn't use a configure file, so the Makefile \
+#                   has to be rudely coerced to work properly.
+
+#user_notes         This program is lots of fun to use at a conference \
+#                   where wireless networking is available. I did the port \
+#                   at IETF 57 :-)
+
+checksums           md5     8e11d77770452f97bb3c23f510489815
+
+depends_build       port:makedepend
+
+# really needs libungif, giflib won't do
+depends_lib         port:jpeg \
+                    port:libpcap \
+                    port:libungif \
+                    port:gtk1
+
+patchfiles          patch-driftnet.h \
+                    patch-driftnet.c \
+                    patch-media.c \
+                    patch-Makefile
+
+use_configure       no
+
+variant universal {}
+
+build.target
+
+build.args          CC="${configure.cc} [get_canonical_archflags]" \
+                    CFLAGS="-I${prefix}/include \
+                    -I${prefix}/lib/glib/include \
+                    -I${prefix}/include/glib-1.2 \
+                    -I${prefix}/include/gtk-1.2 \
+                    -DDRIFTNET_VERSION='\\"${version}\\"'"
+
+destroot {
+    xinstall ${worksrcpath}/${name} ${destroot}${prefix}/bin
+    xinstall -m 644 ${worksrcpath}/${name}.1 ${destroot}${prefix}/share/man/man1
+}

@@ -1,0 +1,65 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89810 2012-02-11 08:55:39Z and.damore@macports.org $
+
+PortSystem          1.0
+PortGroup           texlive 1.0
+
+name                texlive-fonts-recommended
+version             23165
+revision            0
+
+categories          tex
+maintainers         dports
+license             Copyleft Permissive
+description         TeX Live: Recommended fonts
+long_description    Recommended fonts, including the base 35 PostScript fonts, Latin Modern, TeX Gyre, and T1 and other encoding support for Computer Modern, in outline form.
+
+checksums           texlive-fonts-recommended-23165-run.tar.xz \
+                    rmd160  e09d321624b9b42fa02b3c7cb388102c2c1bb1b1 \
+                    sha256  33cbca074a43803f404fd568477b8f18517bbe9d87eaef35d068b79788d155d3 \
+                    texlive-fonts-recommended-23165-doc.tar.xz \
+                    rmd160  e28429f9e91cd55451a7717b9daf985440260bf5 \
+                    sha256  a8d8d7ea7bf8e5c2372b02b5213380a9402f7463db1739bea8504a860f50f89b \
+                    texlive-fonts-recommended-23165-src.tar.xz \
+                    rmd160  e8b8b57e2b4af2abbdc8ef2a796fbb41e66f39b0 \
+                    sha256  4b7806cb802c885634cc6e35e2c9c106c51f783312205c0bbb3e88cd0ad7b832
+
+depends_lib         port:texlive-basic
+
+texlive.maps      \
+    {MixedMap cm-super-t1.map} \
+    {MixedMap cm-super-t2a.map} \
+    {MixedMap cm-super-t2b.map} \
+    {MixedMap cm-super-t2c.map} \
+    {MixedMap cm-super-ts1.map} \
+    {MixedMap cm-super-x2.map} \
+    {MixedMap eurosym.map} \
+    {Map lm.map} \
+    {Map marvosym.map} \
+    {Map pxfonts.map} \
+    {MixedMap rsfs.map} \
+    {Map qag.map} \
+    {Map qbk.map} \
+    {Map qcr.map} \
+    {Map qcs.map} \
+    {Map qhv.map} \
+    {Map qpl.map} \
+    {Map qtm.map} \
+    {Map qzc.map} \
+    {MixedMap tipa.map} \
+    {Map txfonts.map} \
+    {MixedMap wasy.map}
+
+pre-activate {
+    # cmsuper moved from fonts-extra to fonts-recommended in TL2010
+    if {![catch {set vers [lindex [registry_active texlive-fonts-extra] 0]}]
+        && [vercmp [lindex $vers 1] 19491] < 0} {
+        set deactivate_proc registry_deactivate_composite
+        if {[info commands registry_deactivate_composite] == {}} {
+            set deactivate_proc registry_deactivate
+        }
+        $deactivate_proc texlive-fonts-extra "" [list ports_nodepcheck 1]
+    }
+}
+
+texlive.texmfport

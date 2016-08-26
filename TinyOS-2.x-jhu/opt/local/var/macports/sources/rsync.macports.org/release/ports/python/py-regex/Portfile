@@ -1,0 +1,31 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; truncate-lines: t; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89723 2012-02-08 09:47:24Z stromnov@macports.org $
+
+PortSystem          1.0
+PortGroup           python 1.0
+
+name                py-regex
+version             0.1.20120208
+revision            0
+categories-append   devel
+license             Python
+platforms           darwin
+
+maintainers         stromnov openmaintainer
+
+description         Alternate regular expression module, to replace re.
+long_description    ${description}
+
+homepage            http://code.google.com/p/mrab-regex-hg/
+master_sites        http://pypi.python.org/packages/source/r/regex/
+distname            regex-${version}
+
+checksums           rmd160  715e9bf007013df1a79ae41edeae1aa09cdc7dd1 \
+                    sha256  00fa349854971cc19d97ea309d0c70161e13475a3198f1204b6710318f0e1917
+
+python.versions     25 26 27 31 32
+python.default_version  27
+
+livecheck.type      regex
+livecheck.url       ${master_sites}
+livecheck.regex     "regex-(\\d+(?:\\.\\d+)*)${extract.suffix}"

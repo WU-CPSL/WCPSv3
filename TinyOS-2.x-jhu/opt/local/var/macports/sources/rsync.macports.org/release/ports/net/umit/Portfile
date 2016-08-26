@@ -1,0 +1,32 @@
+# $Id: Portfile 51955 2009-06-07 10:04:10Z arthurk@macports.org $
+
+PortSystem 1.0
+PortGroup python25 1.0
+
+name		umit
+version		0.9.5
+revision	1
+epoch		1
+categories	net
+maintainers	gmail.com:luis.kop
+description	A graphical tool to scanner networks
+homepage	http://www.umitproject.org/
+platforms	darwin freebsd
+long_description Umit is a graphical scanner.
+
+patchfiles	patch-base.diff patch-setup.diff patch-locale.diff
+master_sites sourceforge:umit
+
+checksums	md5	f4c63b19d22e9f7d78458b3409d440ad \
+		sha1	0d49f306e7482a83924966559d0f711cd82b57bd \
+		rmd160	ad03c62e7e2fe8884945b74f24601c913dd0ab18
+
+depends_lib	port:coreutils\
+		port:nmap \
+		port:py25-gtk
+
+use_bzip2	yes
+
+post-patch {
+	reinplace "s|__PREFIX__|${prefix}|g" ${worksrcpath}/umitCore/BasePaths.py
+}

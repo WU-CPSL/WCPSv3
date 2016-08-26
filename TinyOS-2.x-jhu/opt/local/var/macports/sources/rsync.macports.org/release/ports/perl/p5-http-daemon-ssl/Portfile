@@ -1,0 +1,22 @@
+# $Id: Portfile 82547 2011-08-15 16:46:16Z jmr@macports.org $
+
+PortSystem           1.0
+PortGroup            perl5 1.0
+
+perl5.setup          HTTP-Daemon-SSL 1.02
+revision             2
+maintainers          email.arc.nasa.gov:sal
+description          A simple http server class with SSL support 
+long_description     HTTP::Daemon::SSL is a descendant of HTTP::Daemon that \
+                     uses SSL sockets (via IO::Socket::SSL) instead of \
+                     cleartext sockets.  It also handles SSL-specific \
+                     problems, such as dealing with HTTP clients that attempt \
+                     to connect to it without using SSL.
+platforms            darwin
+checksums            md5 925cd89dd69ecb15f80cd00e0fd5fe85
+if {${perl5.major} != ""} {
+depends_lib-append   port:p${perl5.major}-libwww-perl \
+                     port:p${perl5.major}-io-socket-ssl
+
+supported_archs noarch
+}

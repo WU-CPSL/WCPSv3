@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.prime.com.tr/ui"
+  xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core">
+<ui:composition>
+  <p:poll interval="300" update="dashboard-news-panel" />
+  <p:panel id="dashboard-news-panel" styleClass="ui-corner-all dashboard-news-panel">
+    <f:facet name="header">
+      <h:outputText style="font-weight: bold;" value="#{msg.dashboardNewsHeading}" />
+    </f:facet>
+    <div align="center">
+      <h:graphicImage id="scrollNewsUp" library="img/platform/icons" name="twitter_nav_top.png" style="visibility:hidden;" />
+    </div>
+    <div id="newsPostsScrollableContainer" style="overflow: hidden; height: 200px;">
+      <p:dataTable id="newsPostsId" widgetVar="newsPostsTable" var="post" value="#{dashboardManagedBean.news}" lazy="false"
+        paginator="false" rows="15" emptyMessage="">
+        <p:column>
+          <h:panelGroup>
+            <h:graphicImage style="border: none;" library="img/platform" name="twitter_newbird_blue.png" />
+          </h:panelGroup>
+        </p:column>
+        <p:column>
+          <h:outputText escape="false" value="#{post.userUrl} " styleClass="twitterName" />
+          <h:outputText escape="false" value="#{post.text}" styleClass="twitterText" />
+        </p:column>
+      </p:dataTable>
+    </div>
+    <div align="center">
+      <h:graphicImage id="scrollNewsDown" library="img/platform/icons" name="twitter_nav_bottom.png" />
+    </div>
+  </p:panel>
+
+  <script type="text/javascript">
+      jQuery(document)
+          .ready(
+              function() {
+                var newsPosts = document
+                    .getElementById("newsPostsScrollableContainer");
+                //reset the scroll bar to the top
+                newsPosts.scrollTop = 0;
+                //bind to the mouse up and mouse down events of the buttons to scroll the news feed 
+                jQuery('#scrollNewsUp')
+                    .bind(
+                        'mousedown',
+                        function() {
+                          //clear any existing intervals
+                          clearInterval(newsPosts.iid);
+                          //display the scroll down button now we are going up
+                          document.getElementById("scrollNewsDown").style.visibility = "visible";
+						  //at an interval move the scroll top up
+                          newsPosts.iid = setInterval(
+                              function() {
+                                newsPosts.scrollTop -= 5;
+                                //at the top of the scrollable area hide the up button 
+                                if (newsPosts.scrollTop == 0) {
+                                  document.getElementById("scrollNewsUp").style.visibility = "hidden";
+                                }
+                              }, 50);
+                        });
+                jQuery('#scrollNewsUp').bind('mouseup', function() {
+                  //clear interval on mouseup 
+                  clearInterval(newsPosts.iid);
+                });
+                jQuery('#scrollNewsDown')
+                    .bind(
+                        'mousedown',
+                        function() {
+                          //clear any existing intervals
+                          clearInterval(newsPosts.iid);
+                          //as we're now going down make the up button visible again
+                          document.getElementById("scrollNewsUp").style.visibility = "visible";
+                          //at an interval scroll down
+                          newsPosts.iid = setInterval(
+                              function() {
+                                var lastPlace = newsPosts.scrollTop;
+                                newsPosts.scrollTop += 5;
+                                if (lastPlace == newsPosts.scrollTop) {
+                                  document.getElementById("scrollNewsDown").style.visibility = "hidden";
+                                }
+                              }, 50);
+                        });
+                jQuery('#scrollNewsDown').bind('mouseup', function() {
+                  //clear interval on mouseup 
+                  clearInterval(newsPosts.iid);
+                });
+              });
+    </script>
+</ui:composition>
+</html>

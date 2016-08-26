@@ -1,0 +1,13 @@
+/mc13192Control.nc/1.1/Wed May 21 01:33:51 2008//
+/mc13192ControlInterrupt.nc/1.1/Wed May 21 01:33:51 2008//
+/mc13192DataInterrupt.nc/1.1/Wed May 21 01:33:51 2008//
+/mc13192EventTimer.nc/1.1/Wed May 21 01:33:51 2008//
+/mc13192Interrupt.nc/1.1/Wed May 21 01:33:51 2008//
+/mc13192Pins.nc/1.1/Wed May 21 01:33:51 2008//
+/mc13192PowerManagement.nc/1.1/Wed May 21 01:33:51 2008//
+/mc13192Regs.nc/1.1/Wed May 21 01:33:51 2008//
+/mc13192State.nc/1.1/Wed May 21 01:33:51 2008//
+/mc13192Timer.nc/1.1/Wed May 21 01:33:51 2008//
+/mc13192TimerCounter.nc/1.1/Wed May 21 01:33:51 2008//
+/mc13192TimerInterrupt.nc/1.1/Wed May 21 01:33:51 2008//
+D

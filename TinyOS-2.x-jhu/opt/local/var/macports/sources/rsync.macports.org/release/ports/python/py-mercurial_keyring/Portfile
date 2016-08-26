@@ -1,0 +1,45 @@
+# $Id: Portfile 89219 2012-01-21 16:28:09Z and.damore@macports.org $
+
+PortSystem          1.0
+PortGroup           python 1.0
+name                py-mercurial_keyring
+version             0.5.0
+categories-append   devel
+license             GPL
+maintainers         and.damore openmaintainer
+description         Mercurial extension used to securely save passwords
+long_description \
+    mercurial_keyring is a Mercurial extension used to securely save HTTP and \
+    SMTP authentication passwords in password databases (Gnome Keyring, KDE \
+    KWallet, OSXKeyChain, specific solutions for Win32 and command line). This \
+    extension uses and wraps services of the keyring library.
+
+platforms           darwin
+
+homepage            http://pypi.python.org/pypi/mercurial_keyring
+master_sites        http://pypi.python.org/packages/source/m/mercurial_keyring
+distname            mercurial_keyring-${version}
+
+checksums           md5     de875a5993731ad2479709dbe3ae1b95 \
+                    sha1    db7d8866cc7cb9c13e14d4485e77ec6af444c5a4 \
+                    rmd160  3648c667c2a30b23b9b28152787c25e401663267
+
+#not supporting 3x because py-keyring is broken on python 3.x
+python.versions     24 25 26 27
+#defaulting to 27 to keep in par with mercurial port, check r86604 
+python.default_version  27
+
+if {${subport} != ${name}} {
+    depends_run         port:py${python.version}-keyring
+    depends_build       port:py${python.version}-distribute
+
+    post-destroot {
+       xinstall -m 755 -d ${destroot}${prefix}/share/doc/${subport}
+       xinstall -m 644 -W ${worksrcpath} README.txt \
+          ${destroot}${prefix}/share/doc/${subport}
+    }
+}
+
+livecheck.url       [lindex ${master_sites} 0]
+livecheck.regex     "mercurial_keyring-(\\d+(?:\\.\\d+)*)${extract.suffix}"
+

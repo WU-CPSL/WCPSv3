@@ -1,0 +1,56 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 86570 2011-10-28 23:16:06Z devans@macports.org $
+
+PortSystem              1.0
+
+name                    xournal
+version                 0.4.5
+revision                9
+categories              x11
+platforms               darwin
+maintainers             ryandesign
+license                 GPL-2
+homepage                http://xournal.sourceforge.net/
+master_sites            sourceforge:project/${name}/${name}/${version}
+
+description             notetaking, sketching and journal app for use with a \
+                        stylus
+
+long_description        ${name} is an application for notetaking, sketching, \
+                        and keeping a journal using a stylus. It's similar to \
+                        other applications such as Jarnal, Gournal, and NoteLab.
+
+checksums               md5     795e4396ded2b67766eb2926be1fb4a9 \
+                        sha1    390cb275774469ed1b04b7268dd625bd456c895e \
+                        rmd160  a4228e6874482bd381c59cd8e3db1100361c1d40
+
+depends_build           port:pkgconfig
+
+depends_lib             port:libgnomecanvas \
+                        port:poppler \
+                        port:zlib
+
+patch.pre_args          -p1
+patchfiles              xournal-0.4.5-xoprint-len.patch \
+                        patch-poppler-0.18.diff
+
+configure.ldflags-append -lz
+
+pre-configure {
+    if {![file exists ${prefix}/include/gtk-2.0/gdk/gdkx.h]} {
+        ui_error "${name} requires gtk2 installed with X11 support; please reinstall gtk2 and all its dependencies with the +x11 variant."
+        return -code error "incompatible gtk2 installation"
+    }
+}
+
+post-destroot {
+    xinstall -d ${destroot}${prefix}/share/doc/${name}
+    xinstall -m 644 -W ${worksrcpath} AUTHORS COPYING ChangeLog README ${destroot}${prefix}/share/doc/${name}
+}
+
+notes {
+If you are unable to draw in Xournal, try disabling "Use XInput" in the Options menu.
+}
+
+livecheck.type          sourceforge
+livecheck.regex         /${name}-(\[0-9.\]+)${extract.suffix}

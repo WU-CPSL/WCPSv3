@@ -1,0 +1,32 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89527 2012-02-01 17:39:56Z macsforever2000@macports.org $
+
+PortSystem	        1.0
+PortGroup	        python 1.0
+
+name                py-traitsbackendwx
+version             3.6.0
+categories-append   devel
+maintainers         vcn.com:jjstickel openmaintainer
+description         The Enthought traitsgui WX backend
+long_description    WX backend for traits GUI
+platforms           darwin
+homepage            http://code.enthought.com/projects/traits_gui/
+master_sites        http://www.enthought.com/repo/ets/
+distname            TraitsBackendWX-${version}
+
+checksums           md5     e495ab88151759fe29c7a51b69482b38 \
+                    sha1    3b667a7b01abe19e42466d175f03d395a16f08b2 \
+                    rmd160  9fa2525c511659428dec6bd3d9620003ba4914fa
+
+python.versions        25 26 27
+python.default_version 25
+
+if {$subport != $name} {
+    conflicts               py${python.version}-traitsbackendqt
+
+    depends_build-append    port:py${python.version}-distribute
+    depends_lib-append      port:py${python.version}-enthoughtbase\
+                            port:py${python.version}-traits\
+                            port:py${python.version}-wxpython
+}

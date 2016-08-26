@@ -1,0 +1,32 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89388 2012-01-27 21:19:08Z snc@macports.org $
+
+PortSystem          1.0
+PortGroup           kde4   1.1
+
+name                kalzium
+version             4.8.0
+categories          kde kde4
+license             GPL-2
+maintainers         snc sharky michaelld
+description         Periodic Table of Elements
+long_description    KDE ${description}
+homepage            http://www.kde.org
+
+platforms           darwin
+depends_lib-append  port:eigen port:libkdeedu port:openbabel port:ocaml
+
+master_sites        kde:stable/${version}/src/
+use_bzip2           yes
+
+checksums           rmd160  c450a8897790ac88528ae6ad53ee1fc420495788 \
+                    sha256  576436abf1de97f25d466cd85611088cd414644d3c096783c0c9e7492e550803
+
+if {![variant_isset doc]} {
+    patchfiles      patch-CMakeLists.txt.diff
+}
+
+configure.args-append   WITH_Avogadro=OFF
+
+livecheck.url       http://kde.mirrors.hoobly.com/stable/latest/src/
+livecheck.regex     ${name}-(\\d+(\\.\\d+)+)

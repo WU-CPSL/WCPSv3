@@ -1,0 +1,33 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89388 2012-01-27 21:19:08Z snc@macports.org $
+
+PortSystem      1.0
+PortGroup       kde4 1.1
+
+name            kde-l10n-ca-valencia
+version         4.8.0
+categories      kde kde4
+maintainers     snc openmaintainer
+license         {LGPL-2.1 LGPL-3+ GPL-2+ MIT BSD}
+description     KDE Valencian language files.
+long_description \
+                ${description}
+platforms       darwin
+homepage        http://www.kde.org/
+
+distname        kde-l10n-ca@valencia-${version}
+master_sites    kde:stable/${version}/src/kde-l10n/
+use_bzip2       yes
+
+supported_archs noarch
+depends_lib     port:kdelibs4
+
+checksums           rmd160  fa2892196da1d7e8a9440b6b8ad5499e1c52eb8f \
+                    sha256  d03c3506e26279f148e05a57c49be1eec013d56f033fa4db87a2aea01fc94562
+
+post-destroot {
+    xinstall -d -m 755 ${destroot}${prefix}/share/doc/kde-installed-packages
+    system "touch ${destroot}${prefix}/share/doc/kde-installed-packages/kde-l10n-valencian"
+}
+
+livecheck.type  none

@@ -1,0 +1,14 @@
+# $Id: Portfile 83000 2011-08-23 08:02:39Z dports@macports.org $
+
+PortSystem                      1.0
+PortGroup                       perl5 1.0
+
+perl5.setup                     IO-Tty 1.07
+revision                        2
+maintainers                     email.arc.nasa.gov:sal
+license                         {Artistic GPL}
+description                     Provide an interface to TTYs and PTYs
+long_description                ${description}
+platforms                       darwin
+checksums                       md5 2a54e49b60a4092e93af5b8073ec5325
+

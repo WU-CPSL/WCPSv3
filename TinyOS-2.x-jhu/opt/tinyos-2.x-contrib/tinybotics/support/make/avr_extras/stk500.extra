@@ -1,0 +1,22 @@
+#-*-Makefile-*- vim:syntax=make
+
+ifeq ($(STK500),)
+$(error STK500 must be defined, try "make $(TARGETS) help")
+endif
+
+PROGRAM = stk500
+
+ifeq ($(PROGRAMMER),uisp)
+  PROGRAMMER_FLAGS = -dprog=stk500 -dserial=$(STK500) $(PROGRAMMER_PART) $(PROGRAMMER_EXTRA_FLAGS)
+endif
+
+program: FORCE
+	@echo "    installing $(PLATFORM) binary using stk500"
+	@echo "    reset now if you are using a bootloader"
+	sleep 3
+	$(PROGRAMMER) $(PROGRAMMER_FLAGS) --erase --upload if=$(INSTALL_SREC)
+
+program_bl: FORCE
+	@echo "    installing $(PLATFORM) bootloader using stk500"
+	$(PROGRAMMER) $(PROGRAMMER_FLAGS) --upload if=$(BOOTLOADER)
+

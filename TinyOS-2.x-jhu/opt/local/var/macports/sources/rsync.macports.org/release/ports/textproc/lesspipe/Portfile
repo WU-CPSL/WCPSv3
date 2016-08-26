@@ -1,0 +1,31 @@
+# $Id: Portfile 83385 2011-08-31 01:52:26Z dports@macports.org $
+
+PortSystem 1.0
+
+name			lesspipe
+version			1.71
+categories  	textproc
+license			GPL-2
+maintainers 	gmail.com:ingmarstein
+supported_archs	noarch
+description		lesspipe is an input filter for the pager less.
+long_description lesspipe.sh is an input filter for the pager less as \
+			described in its man page. The script runs under a ksh compliant \
+			shell (ksh, bash, zsh) and allows to view files with binary content, \
+			compressed files, archives and files contained in archives. A large \
+			and growing number of formats are supported both as plain and \
+			compressed files using compress, gzip, bzip2 or zip.
+homepage	http://www-zeuthen.desy.de/~friebel/unix/lesspipe.html
+platforms	darwin
+master_sites	ftp://ftp.ifh.de/pub/unix/utility/ \
+				http://www-zeuthen.desy.de/~friebel/unix/less/
+checksums	md5 6d921dc4ce9809d405cb8d694ac7cbbd \
+			sha1 5bfb059f3df9bf9d786bca8032a074e581796c84\
+			rmd160 dd93b3ec4dcd3d5b3df84eda1fd3abea1bce5743
+configure.args		--yes --shell=/bin/bash
+build				{}
+destroot.destdir	PREFIX=${destroot}${prefix}
+notes "
+    To use $name, set this in your .bash_profile:
+    export LESSOPEN='| ${prefix}/bin/lesspipe.sh %s'
+"

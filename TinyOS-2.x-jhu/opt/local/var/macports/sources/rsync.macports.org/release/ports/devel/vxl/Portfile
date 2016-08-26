@@ -1,0 +1,58 @@
+# $Id: Portfile 84619 2011-09-29 03:40:21Z ryandesign@macports.org $
+
+PortSystem 1.0
+
+name             vxl
+version          1.14.0
+revision         1
+categories       devel
+maintainers      maeth.com:wiking
+description      C++ libraries for computer vision
+long_description \
+	VXL (the Vision-something-Libraries) is a collection of C++ libraries \
+	designed for computer vision research and implementation. It was \
+	created from TargetJr and the IUE with the aim of making a light, \
+	fast and consistent system. VXL is written in ANSI/ISO C++ and is \
+	designed to be portable over many platforms.
+homepage         http://vxl.sourceforge.net/
+platforms        darwin
+
+master_sites     sourceforge
+use_zip          yes
+checksums        md5    0329521f2fda61d2835e7b3c7c1189df \
+                 sha1   db42cfce42448c40d37fcdd3127e6d586660c8c3 \
+                 rmd160 2b7c72ead698d928cfd5d56205b2e1b3f7f2fef9
+
+# error: integer constant is too large for 'long' type
+universal_variant no
+
+patchfiles       patch-v3p__mpeg2__libmpeg2__idct_altivec.c \
+                 patch-v3p__mpeg2__libmpeg2__motion_comp_altivec.c
+post-patch {
+	file delete ${worksrcpath}/contrib/mul/vil3d/Templates/vil3d_tricub_interp+uint-.cxx
+}
+
+depends_build    port:cmake
+
+depends_lib      path:lib/libavcodec.dylib:ffmpeg \
+                 port:libgeotiff \
+                 port:libpng
+
+configure.cmd      ${prefix}/bin/cmake
+configure.pre_args -DCMAKE_INSTALL_PREFIX=${prefix}
+configure.args     -DBUILD_SHARED_LIBS=YES \
+                   -DCMAKE_INSTALL_NAME_DIR=${prefix}/lib/${name} \
+                   -DBUILD_BRL=NO \
+                   ${worksrcpath}
+
+use_parallel_build no
+
+# shuffle directories around to turn ${prefix}/lib into ${prefix}/lib/${name}
+post-destroot {
+	file rename ${destroot}${prefix}/lib ${destroot}${prefix}/tmp
+	file mkdir ${destroot}${prefix}/lib
+	file rename ${destroot}${prefix}/tmp ${destroot}${prefix}/lib/${name}
+}
+
+livecheck.type   regex
+livecheck.regex  latest official release vxl-(.*)

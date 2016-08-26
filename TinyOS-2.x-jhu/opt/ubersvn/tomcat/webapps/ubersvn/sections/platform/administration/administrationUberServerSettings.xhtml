@@ -1,0 +1,176 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:p="http://primefaces.prime.com.tr/ui" xmlns:wd="http://www.wansdisco.com/jsf" xmlns:h="http://java.sun.com/jsf/html">
+<ui:composition>
+  <ol id="sub-toc">
+    <li><h:outputLink title="#{msg.adminStatusTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationStatus.jsf">
+        <span>#{msg.adminStatusTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminApacheServerSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationApacheServerSettings.jsf">
+        <span>#{msg.adminSubversionServerSettingsTabText}</span>
+      </h:outputLink></li>
+    <li class="current"><h:outputLink title="#{msg.adminUberServerSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUberServerSettings.jsf">
+        <span>#{msg.adminUberServerSettingsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminUberPreferenceSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUberPreferenceSettings.jsf">
+        <span>#{msg.adminUberPreferenceSettingsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminEmailServerSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationEmailServerSettings.jsf">
+        <span>#{msg.adminEmailServerSettingsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminLogsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationLogs.jsf">
+        <span>#{msg.adminLogsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminUpdatesTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUpdates.jsf">
+        <span>#{msg.adminUpdatesTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminLDAPTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUberLDAPSettings.jsf">
+        <span>#{msg.adminLDAPTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.backup}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationBackup.jsf">
+        <span>#{msg.backup}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminExtensionsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationViewExtensions.jsf">
+        <span>#{msg.adminExtensionsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminSubversionReleaseLinkText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationSubversionRelease.jsf">
+        <span>#{msg.adminSubversionReleaseLinkText}</span>
+      </h:outputLink></li>
+  </ol>
+  <p:panel id="adminUberServerPanel" styleClass="tabbed-panel">
+    <div style="text-align: right;">
+      <h:panelGrid columns="2" width="100%" columnClasses="adminServerLabelColumnSettingsPage adminServerStatusControlsSettingsPage">
+        <h:outputText id="adminStatusUberSVNServerLabel" value="#{msg.uberSVNServerLabel}" />
+
+        <p:commandLink onclick="statusDialog.show()" ajax="true" id="restartLink" update="growl"
+          actionListener="#{administrationManagedBean.restartUberSVNServer}">
+          <h:graphicImage style="border: none;" library="img/platform/icons" name="apache_restart_big.png"
+            title="#{msg.restartUberSVNAltText}" />
+        </p:commandLink>
+      </h:panelGrid>
+    </div>
+   <p:panel style="border: none; background: transparent; width: 70%; height: 300px; margin:50px auto;">
+       <div style="text-align: center;">
+        <h:outputText styleClass="configurationTitle" value="#{msg.adminUberServerSettingsTabText}" />
+      </div>
+      <p:focus for="adminUberServerName" />
+      <h:panelGrid cellspacing="10px" style="width:100%" columns="2" columnClasses="wizardLabelColumn, wizardFieldColumn">
+        <h:panelGroup>
+          <h:outputLabel for="adminUberInstallPath" value="#{msg.adminUberInstallPathLabel}" />
+          <p:spacer width="10" />
+        </h:panelGroup>
+        <h:outputText id="adminUberInstallPath" style="font-size: 1em; height: 1.5em; padding-left: 5px; padding-top: 11px;"
+          value="#{administrationManagedBean.configurations.installPath}" />
+        <h:panelGroup>
+          <h:outputLabel for="adminUberServerName" value="#{msg.hostName}" />
+          <p:spacer width="10" />
+        </h:panelGroup>
+        <h:panelGroup>
+          <h:inputText id="adminUberServerName" styleClass="wizardFormField" size="50"
+            value="#{administrationManagedBean.configurations.uberServerName}" required="true"
+            requiredMessage="#{msg.adminUberServerNameRequired}" />
+          <p:spacer width="10" />
+          <h:message style="color: red; font-size: 10px; height: 11px;" for="adminUberServerName" />
+        </h:panelGroup>
+        <h:panelGroup>
+          <h:outputLabel for="adminUberServerPort" value="#{msg.adminUberServerPortLabel}" />
+          <p:spacer width="10" />
+        </h:panelGroup>
+        <h:panelGroup>
+          <h:inputText id="adminUberServerPort" styleClass="wizardFormField" size="50"
+            value="#{administrationManagedBean.configurations.serverPort}" required="true"
+            requiredMessage="#{msg.adminUberServerPortRequired}">
+            <wd:uberPortValidator previousPort="#{administrationManagedBean.configurations.serverPort}" />
+          </h:inputText>
+          <p:spacer width="10" />
+          <h:message style="color: red; font-size: 10px; height: 11px;" for="adminUberServerPort" />
+        </h:panelGroup>
+        <h:panelGroup>
+          <h:outputLabel for="adminDefaultRepoPath" value="#{msg.adminUberDefaultRepositoryPathLabel}" />
+          <p:spacer width="10" />
+        </h:panelGroup>
+        <h:panelGroup>
+          <h:inputText id="adminDefaultRepoPath" styleClass="wizardFormField" size="50"
+            value="#{administrationManagedBean.configurations.defaultRepositoryPath}" required="true"
+            requiredMessage="#{msg.adminUberServerDefaultRepoPathRequired}" />
+          <p:spacer width="10" />
+          <h:message style="color: red; font-size: 10px; height: 11px;" for="adminDefaultRepoPath" />
+        </h:panelGroup>
+        <h:panelGroup>
+          <h:outputLabel for="adminUpdateFrequency" value="#{msg.adminUberUpdateFrequencyLabel}" />
+          <p:spacer width="10" />
+        </h:panelGroup>
+        <h:panelGroup>
+          <h:selectOneMenu id="adminUpdateFrequency" styleClass="wizardFormField" style="width:30%;"
+            value="#{administrationManagedBean.configurations.updateFrequency}">
+            <f:selectItems value="#{administrationManagedBean.updateFrequencyOptions}" />
+          </h:selectOneMenu>
+          <p:spacer width="10" />
+          <h:message style="color: red; font-size: 10px; height: 11px;" for="adminUpdateFrequency" />
+        </h:panelGroup>
+        <h:panelGroup>
+          <h:outputLabel for="enableSSL" value="#{msg.adminUberServerSSLEnabledLabel}" />
+          <p:spacer width="10" />
+        </h:panelGroup>
+        <h:selectOneRadio id="enableSSL" layout="lineDirection" value="#{administrationManagedBean.uberSSLEnabled}">
+          <f:selectItem itemLabel="#{msg.yes}" itemValue="#{true}" />
+          <f:selectItem itemLabel="#{msg.no}" itemValue="#{false}" />
+          <p:ajax event="focus" update="enableSSL uberSSLServerPortLabel uberSSLServerPortValue"
+            actionListener="#{administrationManagedBean.toggleUberSSLEnabled}" />
+        </h:selectOneRadio>
+        <h:panelGroup id="uberSSLServerPortLabel">
+          <h:outputLabel for="adminUberSSLServerPort" value="#{msg.adminUberSSLServerPortLabel}"
+            rendered="#{administrationManagedBean.uberSSLEnabled}" />
+          <p:spacer width="10" rendered="#{administrationManagedBean.uberSSLEnabled}" />
+        </h:panelGroup>
+        <h:panelGroup id="uberSSLServerPortValue">
+          <h:inputText id="adminUberSSLServerPort" styleClass="wizardFormField" size="50"
+            rendered="#{administrationManagedBean.uberSSLEnabled}" value="#{administrationManagedBean.configurations.SSLServerPort}">
+            <wd:uberPortValidator previousPort="#{administrationManagedBean.configurations.SSLServerPort}" />
+          </h:inputText>
+          <p:spacer width="10" rendered="#{administrationManagedBean.uberSSLEnabled}" />
+          <h:message style="color: red; font-size: 10px; height: 11px;" for="adminUberSSLServerPort"
+            rendered="#{administrationManagedBean.uberSSLEnabled}" />
+        </h:panelGroup>
+      </h:panelGrid>
+
+
+
+      <h:panelGroup id="emailBottomRight" style="margin-bottom: 10px; margin-right: 10px;" styleClass="bottomRight">
+        <p:commandButton id="administrationUberSaveChanges" value="#{msg.saveButtonText}" styleClass="roundedButtonSmall"
+          action="#{administrationManagedBean.saveUberServerSettings}" ajax="true" />
+
+
+      </h:panelGroup>
+      <p:dialog modal="true" onShow="reloadPage();" widgetVar="statusDialog" header="Processing" draggable="false" closable="false"
+        resizable="false" width="200" height="150">
+        <h:graphicImage id="updateImage" style="border:0; margin-left: auto; margin-right: auto; display: block;" library="img/platform"
+          name="progress.gif" />
+      </p:dialog>
+    </p:panel>
+
+  </p:panel>
+  <p:dialog modal="true" onShow="reloadPage()" widgetVar="uberSVNStatusDialog" header="Restoring database" draggable="false"
+    closable="false" resizable="false" width="200" height="150">
+    <h:graphicImage id="uberSVNStatusImage" style="border:0; margin-left: auto; margin-right: auto; display: block;" library="img/platform"
+      name="progress.gif" />
+  </p:dialog>
+  <script type="text/javascript">
+			function reloadPage() {
+				setTimeout("location.reload(true);", 40000);
+			}
+		</script>
+</ui:composition>
+</html>

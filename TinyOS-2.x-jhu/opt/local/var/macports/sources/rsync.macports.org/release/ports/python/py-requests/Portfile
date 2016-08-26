@@ -1,0 +1,37 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 88422 2012-01-02 01:18:04Z ryandesign@macports.org $
+
+PortSystem          1.0
+PortGroup           python 1.0
+
+name                py-requests
+version             0.8.4
+python.versions     26 27
+python.default_version  27
+categories          python devel
+platforms           darwin
+maintainers         saispo gmail.com:larry.velazquez openmaintainer
+license             ISC
+homepage            http://pypi.python.org/pypi/requests
+description         Python HTTP for Humans.
+long_description    Most existing Python modules for dealing HTTP \
+                    requests are insane. I have to look up everything \
+                    that I want to do. Most of my worst Python \
+                    experiences are a result of the various built-in \
+                    HTTP libraries (yes, even worse than Logging). \nBut\
+                    this one's different. This one's going to be \
+                    awesome. And simple. \nReally simple.
+
+master_sites        http://pypi.python.org/packages/source/r/requests
+distname            requests-${version}
+
+checksums           rmd160  17efc48d5999c8151079a56b9e73e92f54a2d74e \
+                    sha256  3ef7efbe083bcb6f7b1144c7665b5b1f6bd4fc7043dc50ccd564edf62b814c2b
+
+if {$subport != $name} {
+    livecheck.type      none
+} else {
+    livecheck.type      regex
+    livecheck.url       ${homepage}
+    livecheck.regex     requests (\\d+(\\.\\d+)+)
+}

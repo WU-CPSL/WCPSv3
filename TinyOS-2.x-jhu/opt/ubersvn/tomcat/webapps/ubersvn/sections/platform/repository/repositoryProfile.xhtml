@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:p="http://primefaces.prime.com.tr/ui" xmlns:h="http://java.sun.com/jsf/html">
+<ui:composition>
+  <ol id="sub-toc">
+    <li class="current"><h:outputLink
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/repository/repositoryProfile.jsf?repoId=#{repositoryProfileManagedBean.repo.id}"
+        title="#{msg.repoProfileTabAltText}">
+        <span>#{msg.repoProfileTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/repository/repositoryGraph.jsf"
+        title="#{msg.repoGraphTabAltText}">
+        <span>#{msg.repoGraphTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/repository/repositoryBrowser.jsf"
+        title="#{msg.repoBrowserTabAltText}">
+        <span>#{msg.repoBrowserTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/repository/repositoryAdministrationVerify.jsf"
+        title="#{msg.repoAdministrationTabAltText}"
+        rendered="#{basePage.systemAdmin or basePage.globalRepoAdmin or repositoryProfileManagedBean.repo.delegatedRepoAdmin}">
+        <span>#{msg.repoAdministrationTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/repository/repositoryPermissions.jsf"
+        title="#{msg.repoPermissionsTabAltText}"
+        rendered="#{basePage.systemAdmin or basePage.globalRepoAdmin or repositoryProfileManagedBean.repo.delegatedRepoAdmin}">
+        <span>#{msg.repoPermissionsTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/repository/repositoryAuthentication.jsf"
+        title="#{msg.repoAuthenticationTabAltText}"
+        rendered="#{basePage.systemAdmin or basePage.globalRepoAdmin or repositoryProfileManagedBean.repo.delegatedRepoAdmin}">
+        <span>#{msg.repoAuthenticationTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink rendered="#{basePage.jenkinsInstalled and basePage.jenkinsVisible}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/repository/repositoryJenkins.jsf"
+        title="#{msg.repoJenkinsTabTitle}">
+        <span>#{msg.repoJenkinsTabText}</span>
+      </h:outputLink>
+    </li>
+
+  </ol>
+  <p:panel id="repoProfilePanel" styleClass="tabbed-panel">
+    <h:panelGrid columns="2">
+      <h:panelGroup>
+        <h:panelGrid columns="1" columnClasses="repoNameColumn">
+          <h:panelGroup>
+            <h:outputText id="repoName" styleClass="formOutputText" style="font-size: 24px;"
+              value="#{repositoryProfileManagedBean.repo.name}" />
+            <br />
+            <h:outputText styleClass="formOutputText" style="vertical-align:middle;" value="#{msg.repositoryURLLabel}" />
+            <h:outputText id="repoURL" styleClass="formOutputText" style="vertical-align:middle;"
+              value="#{repositoryProfileManagedBean.repo.repoURL}" />
+            <h:graphicImage id="copyUrlButton" style="border:0; width:53px; height:18px; vertical-align:middle;"
+              library="img/platform/icons" name="copy_big.png" />
+            <br />
+            <hr />
+
+            <script>
+			jQuery(document)
+					.ready(
+							function() {
+								if (gotFlash()) {
+									// Create the flash clipboard widget
+									var clip = createClipboardObject(
+											"copyUrlButton",
+											"#{repositoryProfileManagedBean.repo.repoURL}",
+											"#{msg.reposCopyURLTitleText}");
+								} else {
+									// Hide the copy button if no flash
+									jQuery(
+											'#copyUrlButton')
+											.hide();
+								}
+							});
+			</script>
+          </h:panelGroup>
+        </h:panelGrid>
+        <ui:include src="/sections/platform/repository/activityTab.xhtml" />
+      </h:panelGroup>
+      <ui:include src="/sections/platform/repository/repositoryUsersTeamsTabs.xhtml" />
+    </h:panelGrid>
+  </p:panel>
+</ui:composition>
+</html>

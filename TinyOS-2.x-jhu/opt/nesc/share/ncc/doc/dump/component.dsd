@@ -1,0 +1,64 @@
+<dsd xmlns="http://www.brics.dk/DSD/2.0"
+     xmlns:m="http://www.brics.dk/DSD/2.0/meta"
+     xmlns:nesc="http://www.tinyos.net/nesC">
+
+  <if>
+    <element name="nesc:components"/>
+    <declare>
+      <contents>
+        <repeat><element name="nesc:component"/></repeat>
+      </contents>
+    </declare>
+  </if>
+
+  <if>
+    <element name="nesc:component"/>
+    <declare>
+      <required>
+        <m:doc>Uniquely identifies the component.</m:doc>
+        <attribute name="qname"/>
+
+        <attribute name="loc"/>
+      </required>
+      <m:doc>Present if the component is not, or not fully, instantiated</m:doc>
+      <attribute name="abstract"><stringtype ref="nesc:empty"/></attribute>
+
+      <m:doc>Safe components (Deputy enabled) have the following attribute.</m:doc>
+      <attribute name="safe"><stringtype ref="nesc:empty"/></attribute>
+
+      <m:doc>Order of these elements is unimportant</m:doc>
+      <contents>
+        <m:doc>What generic component this is an instance of.</m:doc>
+        <optional><element name="nesc:instance"/></optional>
+      </contents>
+      <contents>
+        <m:doc>Present for generic components</m:doc>
+        <optional><element name="nesc:parameters"/></optional>
+      </contents>
+      <contents><contenttype ref="nesc:attributes"/></contents>
+      <contents>
+        <or>
+	  <element name="nesc:configuration"/>
+	  <element name="nesc:module"/>
+	</or>
+      </contents>
+      <contents>
+	<optional><element name="nesc:documentation"/></optional>
+      </contents>
+    </declare>
+  </if>
+
+  <m:doc>Configurations may contain a wiring graph</m:doc>
+  <if>
+    <and>
+      <element name="nesc:component"/>
+      <child><element name="nesc:configuration"/></child>
+    </and>
+    <declare>
+      <contents>
+        <optional><element name="nesc:wiring"/></optional>
+      </contents>
+    </declare>
+  </if>
+    
+</dsd>

@@ -1,0 +1,25 @@
+# $Id: Portfile 86330 2011-10-24 14:26:58Z jmr@macports.org $
+
+PortSystem		1.0
+PortGroup		perl5 1.0
+
+perl5.setup		GDTextUtil 0.86 GD
+revision        2
+license			{Artistic-1 GPL}
+maintainers		nomaintainer
+description		Text utilities for use with GD
+long_description	This package provides three modules that make it \
+					possible to work with internal GD fonts as well as \
+					TrueType fonts, without having to worry about \
+					different interface functions to call.  Apart from \
+					an abstract interface to all font types and strings \
+					for GD, this library also provides some utility in \
+					aligning and wrapping your string.
+checksums		md5 941ad06eadc86b47f3a32da405665c41
+platforms		darwin
+
+if {${perl5.major} != ""} {
+depends_lib-append	port:p${perl5.major}-gd
+
+supported_archs noarch
+}

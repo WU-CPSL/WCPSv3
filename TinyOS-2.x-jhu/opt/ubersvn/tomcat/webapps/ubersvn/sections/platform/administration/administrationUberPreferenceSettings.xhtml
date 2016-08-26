@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:p="http://primefaces.prime.com.tr/ui" xmlns:h="http://java.sun.com/jsf/html">
+<ui:composition>
+  <ol id="sub-toc">
+    <li><h:outputLink title="#{msg.adminStatusTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationStatus.jsf">
+        <span>#{msg.adminStatusTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminApacheServerSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationApacheServerSettings.jsf">
+        <span>#{msg.adminSubversionServerSettingsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminUberServerSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUberServerSettings.jsf">
+        <span>#{msg.adminUberServerSettingsTabText}</span>
+      </h:outputLink></li>
+    <li class="current"><h:outputLink title="#{msg.adminUberPreferenceSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUberPreferenceSettings.jsf">
+        <span>#{msg.adminUberPreferenceSettingsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminEmailServerSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationEmailServerSettings.jsf">
+        <span>#{msg.adminEmailServerSettingsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminLogsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationLogs.jsf">
+        <span>#{msg.adminLogsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminUpdatesTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUpdates.jsf">
+        <span>#{msg.adminUpdatesTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminLDAPTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUberLDAPSettings.jsf">
+        <span>#{msg.adminLDAPTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink title="#{msg.backup}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationBackup.jsf">
+        <span>#{msg.backup}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminExtensionsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationViewExtensions.jsf">
+        <span>#{msg.adminExtensionsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminSubversionReleaseLinkText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationSubversionRelease.jsf">
+        <span>#{msg.adminSubversionReleaseLinkText}</span>
+      </h:outputLink></li>
+  </ol>
+  <p:panel id="adminPrefsPanel" styleClass="tabbed-panel">
+    <p:focus />
+    <h:outputText styleClass="adminPrefsLabelColumn" style="color: black;" value="#{msg.adminPrefsDisplayHeader}" />
+    <h:panelGrid columns="2" columnClasses="adminPrefsLabelColumn, adminPrefsFieldColumn">
+      <h:panelGroup>
+        <h:outputLabel for="adminPrefsSocialInterface" value="#{msg.adminPrefsSocialInterfaceLabel}" />
+        <p:spacer width="10" />
+      </h:panelGroup>
+      <h:panelGroup id="socialInterfaceOption">
+        <h:selectOneMenu id="adminPrefsSocialInterface" styleClass="wizardFormField"
+          value="#{administrationManagedBean.configurations.socialInterface}">
+          <f:selectItems value="#{administrationManagedBean.socialInterfaceOptions}" />
+        </h:selectOneMenu>
+      </h:panelGroup>
+      <h:panelGroup>
+        <h:outputLabel for="adminPrefsTheme" value="#{msg.adminPrefsThemeLabel}" />
+        <p:spacer width="10" />
+      </h:panelGroup>
+      <h:panelGroup id="themeOption">
+        <h:selectOneMenu id="adminPrefsTheme" styleClass="wizardFormField" value="#{administrationManagedBean.configurations.theme}">
+          <f:selectItems value="#{administrationManagedBean.themeOptions}" />
+        </h:selectOneMenu>
+      </h:panelGroup>
+    </h:panelGrid>
+    <h:outputText styleClass="adminPrefsLabelColumn" style="color: black;" value="#{msg.adminPrefsQuicklinksHeader}" />
+    <p:panel style="width: 860px; height: 340px; border: 1px solid #006DFD !important;">
+      <h:panelGrid id="newQuicklink" columns="3" columnClasses="quicklinkFieldColumn, quicklinkFieldColumn, quicklinkButtonColumn">
+        <h:panelGrid id="quicklinkFields">
+          <h:panelGroup>
+            <h:outputLabel styleClass="formOutputLabel" value="#{msg.adminQuicklinksNameLabel} : " for="quicklink_name"></h:outputLabel>
+            <h:outputText styleClass="formOutputLabel" value="*" style="color: red;" />
+          </h:panelGroup>
+          <h:inputText id="quicklink_name" styleClass="wizardFormField" value="#{administrationManagedBean.quicklink.name}" maxlength="20"
+            size="22" required="true" requiredMessage="#{msg.adminQuicklinkNameRequired}" />
+          <h:message style="color: red; font-size: 8pt;" id="txt_quicklink_nameError" for="quicklink_name" />
+        </h:panelGrid>
+        <h:panelGrid>
+          <h:panelGroup>
+            <h:outputLabel styleClass="formOutputLabel" value="#{msg.adminQuicklinksLinkLabel} : " for="quicklink_link"></h:outputLabel>
+            <h:outputText styleClass="formOutputLabel" value="*" style="color: red;" />
+          </h:panelGroup>
+          <h:inputText id="quicklink_link" styleClass="wizardFormField" value="#{administrationManagedBean.quicklink.link}" maxlength="62"
+            size="62" required="true" requiredMessage="#{msg.adminQuicklinkLinkRequired}" />
+          <h:message style="color: red; font-size: 8pt;" id="txt_quicklink_linkError" for="quicklink_link" />
+        </h:panelGrid>
+        <h:panelGrid>
+          <p:commandButton value="#{msg.addButtonText}" styleClass="roundedButtonExtraSmall" update="currentQuicklinks newQuicklink"
+            action="#{administrationManagedBean.quicklinkReInit}" disabled="#{administrationManagedBean.quicklinksMaxReached}"
+            style="margin-top: 17px;">
+            <p:collector value="#{administrationManagedBean.quicklink}" addTo="#{administrationManagedBean.quicklinks}" />
+          </p:commandButton>
+        </h:panelGrid>
+      </h:panelGrid>
+      <p:dataTable id="currentQuicklinks" var="quicklink" value="#{administrationManagedBean.quicklinks}" style="width: 685px;"
+        paginator="false" rows="8" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+        paginatorPosition="bottom" paginatorAlwaysVisible="false" emptyMessage="">
+        <p:column style="width:300px; background: transparent; padding: none; border: none;">
+          <h:outputText styleClass="quicklinkstableField" value="#{quicklink.name}" />
+        </p:column>
+        <p:column style="width:430px; background: transparent; padding: none; border: none;">
+          <h:outputText styleClass="quicklinkstableField" value="#{quicklink.link}" />
+        </p:column>
+        <p:column style="background: transparent; padding: none; border: none;">
+          <p:commandLink styleClass="quicklinkstableField" immediate="true" value="X" update="adminPrefsPanel">
+            <p:collector value="#{quicklink}" removeFrom="#{administrationManagedBean.quicklinks}" />
+          </p:commandLink>
+        </p:column>
+      </p:dataTable>
+    </p:panel>
+    <br />
+    <h:outputText styleClass="adminPrefsLabelColumn" style="color: black;" value="#{msg.adminPrefsDashboardNewsFeedHeader}" />
+    <h:panelGrid id="datafeeds" columns="2" columnClasses="adminPrefsLabelColumn, adminPrefsFieldColumn">
+      <h:panelGroup>
+        <h:outputLabel for="adminPrefsDashboardFeed1" value="#{msg.adminPrefsFeed1Label}" />
+        <p:spacer width="10" />
+      </h:panelGroup>
+      <h:inputText id="adminPrefsDashboardFeed1" styleClass="wizardFormField" size="30"
+        value="#{administrationManagedBean.configurations.dashboardFeed1}" />
+      <p:commandButton id="administrationUberSaveChanges" value="#{msg.saveButtonText}" styleClass="roundedButtonSmall"
+        action="#{administrationManagedBean.saveUberPrefSettings}" ajax="true"
+        process="socialInterfaceOption, themeOption, currentQuicklinks, datafeeds" />
+    </h:panelGrid>
+  </p:panel>
+</ui:composition>
+</html>

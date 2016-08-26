@@ -1,0 +1,196 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.prime.com.tr/ui"
+  xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core">
+<ui:composition template="/templates/platform/ubersvn-configuration-template.xhtml">
+
+  <ui:define name="pageContentView">
+    <p:panel styleClass="configurationPanel">
+      <p:focus />
+      <div style="text-align: center; margin-bottom: 40px;">
+        <h:outputText style="font-size: 24px; color: #6D6D6D; text-align: center;" value="#{msg.welcomeMessage1}" />
+        <h:graphicImage library="img/platform/logos" name="mk2_logo_login.png" />
+        <h:outputText style="font-size: 24px; color: #6D6D6D; text-align: center;" value="#{msg.welcomeMessage2}" />
+      </div>
+      <h:panelGrid id="welcomePageTable" columns="1" styleClass="configurationPageTable">
+        <h:panelGrid id="portalSetupPageInnerTable" cellspacing="3px;" columns="3"
+          columnClasses="configurationLabelColumnEmailSettings, configurationFieldColumnEmailSettings,configurationValidationColumn">
+          <p:spacer />
+          <h:outputText styleClass="configurationTitle" value="#{msg.emailSetupTitle}" />
+          <p:spacer />
+          <h:outputLabel value="#{msg.enableEmailNotifications}" id="enableEmailLabel" />
+          <h:selectOneRadio id="enableEmail" layout="lineDirection" value="#{webConfiguratorManagedBean.emailEnabled}">
+            <p:ajax event="click"
+              update="enableEmail useSSLLabelContainer useSSLContainer hostIPLabelContainer 
+						hostIpContainer hostIPErrorContainer emailPortLabelContainer emailPortContainer 
+						emailPortErrorContainer fromEmailLabelContainer fromEmailContainer fromEmailErrorContainer
+						emailPrefixLabelContainer emailPrefixContainer smtpLabelContainer smtpContainer configurationEmailUsernameLabelContainer sendTestEmailButtonContainer
+						configurationEmailUsernameContainer configurationEmailUsernameErrorContainer emailPasswordLabelContainer emailPasswordContainer emailPasswordErrorContainer" />
+            <f:selectItem itemLabel="#{msg.yes}" itemValue="true" />
+            <f:selectItem itemLabel="#{msg.no}" itemValue="false" />
+          </h:selectOneRadio>
+          <p:spacer />
+          <h:panelGroup id="useSSLLabelContainer">
+            <h:outputLabel value="#{msg.useSSL}" id="useSSLLabel" rendered="#{webConfiguratorManagedBean.emailEnabled}" />
+          </h:panelGroup>
+          <h:panelGroup id="useSSLContainer">
+            <h:selectOneRadio id="useSSL" layout="lineDirection" rendered="#{webConfiguratorManagedBean.emailEnabled}"
+              value="#{webConfiguratorManagedBean.SSLEnabled}">
+              <f:selectItem itemLabel="#{msg.yes}" itemValue="true" />
+              <f:selectItem itemLabel="#{msg.no}" itemValue="false" />
+              <p:ajax event="click" update="useSSLContainer emailPortContainer" />
+            </h:selectOneRadio>
+          </h:panelGroup>
+          <p:spacer />
+          <h:panelGroup id="hostIPLabelContainer">
+            <h:outputLabel for="hostIP" value="#{msg.host}" id="hostIPLabel" rendered="#{webConfiguratorManagedBean.emailEnabled}" />
+            <p:spacer rendered="#{!webConfiguratorManagedBean.emailEnabled}" />
+          </h:panelGroup>
+          <h:panelGroup id="hostIpContainer">
+            <p:inputText size="50" styleClass="configurationWizardFormField" id="hostIP" value="#{webConfiguratorManagedBean.SMTPHost}"
+              required="true" rendered="#{webConfiguratorManagedBean.emailEnabled}" requiredMessage="#{msg.emailHostIPRequired}">
+              <f:validator validatorId="com.wandisco.ubersvn.hostnameValidator" />
+            </p:inputText>
+            <p:watermark value="#{msg.hostIPHelp}" for="hostIP" rendered="#{webConfiguratorManagedBean.emailEnabled}" />
+          </h:panelGroup>
+          <h:panelGroup id="hostIPErrorContainer">
+            <h:message for="hostIP" rendered="#{webConfiguratorManagedBean.emailEnabled}" />
+          </h:panelGroup>
+          <h:panelGroup id="emailPortLabelContainer">
+            <h:outputLabel for="emailPort" value="#{msg.emailPort}" rendered="#{webConfiguratorManagedBean.emailEnabled}" />
+          </h:panelGroup>
+          <h:panelGroup id="emailPortContainer">
+            <p:inputText size="50" styleClass="configurationWizardFormField" rendered="#{webConfiguratorManagedBean.emailEnabled}"
+              required="true" requiredMessage="#{msg.emailPortRequired}" validatorMessage="#{msg.inValidPort}"
+              value="#{webConfiguratorManagedBean.SMTPPort}" id="emailPort">
+              <f:validateLongRange maximum="65535" minimum="0" />
+            </p:inputText>
+            <p:watermark value="#{msg.emailPortHelp}" for="emailPort" rendered="#{webConfiguratorManagedBean.emailEnabled}" />
+          </h:panelGroup>
+          <h:panelGroup id="emailPortErrorContainer">
+            <h:message for="emailPort" rendered="#{webConfiguratorManagedBean.emailEnabled}" />
+          </h:panelGroup>
+          <h:panelGroup id="fromEmailLabelContainer">
+            <h:outputLabel for="fromEmail" value="#{msg.fromAddress}" rendered="#{webConfiguratorManagedBean.emailEnabled}" />
+          </h:panelGroup>
+          <h:panelGroup id="fromEmailContainer">
+            <p:inputText size="50" styleClass="configurationWizardFormField" id="fromEmail"
+              rendered="#{webConfiguratorManagedBean.emailEnabled}" value="#{webConfiguratorManagedBean.SMTPFromAddress}">
+              <f:validator validatorId="com.wandisco.ubersvn.isValidEmail" />
+            </p:inputText>
+            <p:watermark value="#{msg.fromAddressHelp}" for="fromEmail" rendered="#{webConfiguratorManagedBean.emailEnabled}" />
+          </h:panelGroup>
+          <h:panelGroup id="fromEmailErrorContainer">
+            <h:message for="fromEmail" rendered="#{webConfiguratorManagedBean.emailEnabled}" />
+          </h:panelGroup>
+          <h:panelGroup id="emailPrefixLabelContainer">
+            <h:outputLabel for="emailPrefix" value="#{msg.emailPrefix}" rendered="#{webConfiguratorManagedBean.emailEnabled}" />
+          </h:panelGroup>
+          <h:panelGroup id="emailPrefixContainer">
+            <p:inputText size="50" styleClass="configurationWizardFormField" rendered="#{webConfiguratorManagedBean.emailEnabled}"
+              id="emailPrefix" value="#{webConfiguratorManagedBean.SMTPEmailPrefix}" />
+            <p:watermark value="#{msg.emailPrefixHelp}" for="emailPrefix" rendered="#{webConfiguratorManagedBean.emailEnabled}" />
+          </h:panelGroup>
+          <p:spacer />
+          <h:panelGroup id="smtpLabelContainer">
+            <h:outputLabel rendered="#{webConfiguratorManagedBean.emailEnabled}" for="smtpEnabled" value="#{msg.smtp}" />
+          </h:panelGroup>
+          <h:panelGroup id="smtpContainer">
+            <h:selectOneRadio id="smtpEnabled" layout="pageDirection" rendered="#{webConfiguratorManagedBean.emailEnabled}"
+              value="#{webConfiguratorManagedBean.SMTPAuthenticationEnabled}">
+              <f:selectItem itemLabel="#{msg.enableSMTP}" itemValue="#{true}" />
+              <f:selectItem itemLabel="#{msg.disableSMTP}" itemValue="#{false}" />
+              <p:ajax event="click"
+                update="smtpEnabled configurationEmailUsernameLabelContainer configurationEmailUsernameContainer configurationEmailUsernameErrorContainer emailPasswordLabelContainer emailPasswordContainer emailPasswordErrorContainer" />
+            </h:selectOneRadio>
+            <p:spacer height="44" width="391" rendered="#{!webConfiguratorManagedBean.emailEnabled}" />
+          </h:panelGroup>
+          <p:spacer />
+          <h:panelGroup id="configurationEmailUsernameLabelContainer">
+            <h:outputLabel for="configurationEmailUsername" id="configurationEmailUsernameLabel" value="#{msg.emailUsername}"
+              rendered="#{webConfiguratorManagedBean.showSMTP}" />
+          </h:panelGroup>
+          <h:panelGroup id="configurationEmailUsernameContainer">
+            <p:inputText size="50" value="#{webConfiguratorManagedBean.SMTPUsername}" required="true"
+              requiredMessage="#{msg.emailUsernameRequired}" styleClass="configurationWizardFormField"
+              rendered="#{webConfiguratorManagedBean.showSMTP}" id="configurationEmailUsername" />
+            <p:watermark for="configurationEmailUsername" value="#{msg.emailUsernameHelp}" rendered="#{webConfiguratorManagedBean.showSMTP}" />
+          </h:panelGroup>
+          <h:panelGroup id="configurationEmailUsernameErrorContainer">
+            <h:message for="configurationEmailUsername" rendered="#{webConfiguratorManagedBean.showSMTP}" />
+          </h:panelGroup>
+          <h:panelGroup id="emailPasswordLabelContainer">
+            <h:outputLabel for="emailPassword" value="#{msg.emailPassword}" rendered="#{webConfiguratorManagedBean.showSMTP}"
+              id="emailPasswordLabel" />
+          </h:panelGroup>
+          <h:panelGroup id="emailPasswordContainer">
+            <p:password styleClass="configurationWizardFormField" autocomplete="off" id="emailPassword" required="true"
+              requiredMessage="#{msg.passwordRequired}" weakLabel="#{msg.PasswordIsWeak}" goodLabel="#{msg.PasswordIsGood}"
+              value="#{webConfiguratorManagedBean.SMTPPassword}" strongLabel="#{msg.PasswordIsStrong}"
+              rendered="#{webConfiguratorManagedBean.showSMTP}" size="50" style="padding: 4px;" />
+          </h:panelGroup>
+          <h:panelGroup id="emailPasswordErrorContainer">
+            <h:message for="emailPassword" rendered="#{webConfiguratorManagedBean.showSMTP}" />
+          </h:panelGroup>
+          <p:spacer />
+          <h:panelGroup id="sendTestEmailButtonContainer">
+            <p:spacer height="5" width="100" />
+            <p:commandButton action="#{webConfiguratorManagedBean.sendEmail}" ajax="false" styleClass="roundedButtonLarge"
+              rendered="#{webConfiguratorManagedBean.emailEnabled}" value="#{msg.sendTestMail}" />
+            <p:spacer height="47" rendered="#{!webConfiguratorManagedBean.emailEnabled}" />
+          </h:panelGroup>
+          <p:spacer />
+        </h:panelGrid>
+      </h:panelGrid>
+    </p:panel>
+    <h:panelGroup>
+      <div>
+        <p:panel style="border: none; background: transparent; position: relative; bottom: 0; left: 0;">
+          <h:panelGrid columns="3" width="100%" columnClasses="footerLeft,footerMiddle,footerRight">
+            <p:commandButton action="#{webConfiguratorManagedBean.goToPortalApachePage}" immediate="true" styleClass="roundedButtonMedium"
+              id="backToPortalSetupButton" value="#{msg.previousButton}" />
+            <h:panelGroup>
+              <h:graphicImage library="img/platform" name="step4.png" />
+            </h:panelGroup>
+            <p:commandButton action="#{webConfiguratorManagedBean.goToSummaryPage}" immediate="#!{webConfiguratorManagedBean.emailEnabled}"
+              id="moveToSummaryButton" ajax="false" styleClass="roundedButtonMedium" value="#{msg.finish}" />
+          </h:panelGrid>
+        </p:panel>
+      </div>
+    </h:panelGroup>
+    <script type="text/javascript">
+					jQuery(document)
+							.ready(
+									function() {
+										jQuery("form")
+												.bind(
+														"keydown",
+														function(event) {
+															// track enter key
+															event.target;
+															var keycode = (event.keyCode ? event.keyCode
+																	: (event.which ? event.which
+																			: event.charCode));
+															if (keycode == 13) { // keycode for enter key
+																// force the 'Enter Key' to implicitly click the Update button
+																if (event.target.id == "backToPortalSetupButton") {
+																	document
+																			.getElementById(
+																					'backToPortalSetupButton')
+																			.click();
+																} else {
+																	document
+																			.getElementById(
+																					'moveToEmailButton')
+																			.click();
+																}
+																return false;
+															} else {
+																return true;
+															}
+														}); // end of function
+									}); // end of document ready
+				</script>
+  </ui:define>
+</ui:composition>
+</html>

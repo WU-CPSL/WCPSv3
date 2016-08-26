@@ -1,0 +1,33 @@
+# $Id: Portfile 70150 2010-07-30 18:07:40Z landonf@macports.org $
+
+PortSystem 1.0
+
+name		protobuf-c
+version     0.13
+categories	devel
+maintainers	landonf openmaintainer
+description	Pure C code generator and runtime libraries for Protocol Buffers
+
+long_description \
+        This package provides a code generator and runtime libraries \
+        to use Protocol Buffers from pure C (not C++). \
+        \
+        Library ABI and API compatibility changes are expected until \
+        version 1.0 is released.
+
+
+homepage	http://code.google.com/p/protobuf-c/
+master_sites	googlecode
+
+checksums           md5     2c1cca0aa96203b641d2110a167e58b0 \
+                    sha1    3144f260b736855cea2984731c2ba1647d40dfe0 \
+                    rmd160  245eb464a7ed37e578d42fb3662d6755c3deb0b2
+
+platforms	darwin
+
+depends_lib	port:protobuf-cpp
+
+use_autoconf    yes
+
+test.run	yes
+test.target	check

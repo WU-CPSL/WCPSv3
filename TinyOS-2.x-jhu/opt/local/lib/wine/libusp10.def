@@ -1,0 +1,36 @@
+; File generated automatically from ./usp10.spec; do not edit!
+
+LIBRARY usp10.dll
+
+EXPORTS
+  ScriptApplyDigitSubstitution@12 @2
+  ScriptApplyLogicalWidth@36 @3
+  ScriptBreak@16 @4
+  ScriptCPtoX@36 @5
+  ScriptCacheGetHeight@12 @6
+  ScriptFreeCache@4 @7
+  ScriptGetCMap@24 @8
+  ScriptGetFontProperties@12 @9
+  ScriptGetGlyphABCWidth@16 @10
+  ScriptGetLogicalWidths@28 @11
+  ScriptGetProperties@8 @12
+  ScriptIsComplex@12 @13
+  ScriptItemize@28 @14
+  ScriptJustify@24 @15
+  ScriptLayout@16 @16
+  ScriptPlace@36 @17
+  ScriptRecordDigitSubstitution@8 @18
+  ScriptShape@40 @19
+  ScriptStringAnalyse@52 @20
+  ScriptStringCPtoX@16 @21
+  ScriptStringFree@4 @22
+  ScriptStringGetLogicalWidths@8 @23
+  ScriptStringGetOrder@8 @24
+  ScriptStringOut@32 @25
+  ScriptStringValidate@4 @26
+  ScriptStringXtoCP@16 @27
+  ScriptString_pLogAttr@4 @28
+  ScriptString_pSize@4 @29
+  ScriptString_pcOutChars@4 @30
+  ScriptTextOut@56 @31
+  ScriptXtoCP@36 @32

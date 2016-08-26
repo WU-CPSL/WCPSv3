@@ -1,0 +1,26 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89615 2012-02-04 05:28:00Z ryandesign@macports.org $
+
+PortSystem              1.0
+PortGroup               php5extension 1.0
+
+php5extension.setup     gettext 5.3.10 bundled
+categories-append       devel
+platforms               darwin
+maintainers             ryandesign
+license				PHP-3.01
+license                 PHP-3.01
+
+description             a PHP interface to the gettext natural language \
+                        support functions
+
+long_description        ${description}
+
+checksums               rmd160  acab30a19b340f21a64e06b524906f2b064dd1c9 \
+                        sha256  339157af2b386534597d287da292f2545e81d9b452e8b3fe525fb2c534ff344a
+
+depends_lib-append      port:gettext
+
+configure.args-append   --with-gettext=${prefix}
+
+use_parallel_build      yes

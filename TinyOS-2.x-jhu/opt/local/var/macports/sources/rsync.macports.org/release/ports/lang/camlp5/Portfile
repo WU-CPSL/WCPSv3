@@ -1,0 +1,43 @@
+# $Id: Portfile 86518 2011-10-27 01:58:40Z jmr@macports.org $
+
+PortSystem 1.0
+
+name                camlp5
+version             6.02.3
+categories          lang
+license             BSD
+platforms           darwin
+maintainers         nomaintainer
+
+description         Camlp5 is a preprocessor-pretty-printer of OCaml.
+long_description    Camlp5 is a preprocessor and pretty-printer for \
+        OCaml programs. It also provides parsing and printing tools. \
+        As a preprocessor, it allows to: extend the syntax of OCaml, \
+        redefine the whole syntax of the language. As a pretty printer, \
+        it allows to: display OCaml programs in an elegant way, convert \
+        from one syntax to another, check the results of syntax \
+        extensions. Camlp5 also provides some parsing and pretty \
+        printing tools: extensible grammars, extensible printers, \
+        stream parsers and lexers pretty print module.  It works as a \
+        shell command and can also be used in the OCaml toplevel.
+
+homepage            http://pauillac.inria.fr/~ddr/camlp5/
+master_sites        ${homepage}distrib/src/
+
+checksums           md5     a4f5e0dc13c43d50eb655c8e929f556e \
+                    sha1    eb0f4f9ade52c2c1e972d61b334bcf01fea76dfc \
+                    rmd160  519d8d79c6de63c374ff43f8348b7791de9e9fa5
+
+depends_build       port:ocaml
+extract.suffix      .tgz
+configure.pre_args  --prefix "${prefix}" \
+                    --mandir "${prefix}/share/man"
+build.target        world.opt
+use_parallel_build  no
+
+# ocaml is not universal
+universal_variant   no
+
+livecheck.type  regex
+livecheck.url   [lindex ${master_sites} 0]
+livecheck.regex ${name}-(\[0-9.\]+)\\.tgz

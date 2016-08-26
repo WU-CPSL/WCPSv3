@@ -1,0 +1,35 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 88821 2012-01-12 23:02:19Z dports@macports.org $
+
+PortSystem          1.0
+PortGroup           texlive 1.0
+
+name                texlive-science
+version             22994
+revision            0
+
+categories          tex
+maintainers         dports
+license             Copyleft Permissive
+description         TeX Live: Typesetting for natural and computer sciences
+long_description    Typesetting for natural and computer sciences
+
+checksums           texlive-science-22994-run.tar.xz \
+                    rmd160  941a86bfd45c92a561514c22e8ceed1ff1deb1c5 \
+                    sha256  b38b2a4597063d9025381e17cd86c5e0a2c9f9e791582d74eefd21a366b8bdf0 \
+                    texlive-science-22994-doc.tar.xz \
+                    rmd160  75a070cdf49a9d80f0019d77e3c35f72c4a549f2 \
+                    sha256  347ebaae249d6d3ed836b7450fd0e04e2f59f25cd688df0b0b007186fe72518c \
+                    texlive-science-22994-src.tar.xz \
+                    rmd160  f5f1690a20efb300cec430eda513e1ee9b730f51 \
+                    sha256  0d35f86ff0d184e1e3a86df51c851797dfc85daa6542e49b09c3c07c5e3b44c3
+
+depends_lib         port:texlive-latex
+
+texlive.maps      \
+    {Map chemarrow.map}
+
+texlive.binaries    ulqda
+
+
+texlive.texmfport

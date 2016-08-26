@@ -1,0 +1,363 @@
+<dsd xmlns="http://www.brics.dk/DSD/2.0"
+     xmlns:m="http://www.brics.dk/DSD/2.0/meta"
+     xmlns:nesc="http://www.tinyos.net/nesC">
+
+  <m:doc>XML specifications for basic elements: 
+    - references to declarable entities (variables, constants, functions, 
+      typedefs, interfaces, interface definitions, components, enums, 
+      structs, unions)
+    - types
+    - values (regular constants and structured values from C {} initialisers)
+    - attributes
+    - documentation strings
+  </m:doc>
+
+  <m:doc>A reference to a component or to an interface definition</m:doc>
+  <boolexp id="nesc:ndecl-ref">
+    <or>
+      <element name="nesc:interfacedef-ref"/>
+      <element name="nesc:component-ref"/>
+    </or>
+  </boolexp>
+
+  <m:doc>The qname uniquely identifies the interface definition or component.
+  </m:doc>
+  <if>
+    <boolexp ref="nesc:ndecl-ref"/>
+    <declare>
+      <required><attribute name="qname"/></required>
+    </declare>
+  </if>
+
+  <m:doc>An instance of a component or interface. The number attribute
+    is present for real instances of generic components.</m:doc>
+  <if>
+    <element name="nesc:instance"/>
+    <declare>
+      <attribute name="number"><stringtype ref="nesc:number"/></attribute>
+      <contents>
+        <optional><element name="nesc:arguments"/></optional>
+      </contents>
+      <contents><boolexp ref="nesc:ndecl-ref"/></contents>
+    </declare>
+  </if>
+
+  <m:doc>A simple value. Contains constant value (might be V:) and its type
+  </m:doc>
+  <if>
+    <element name="nesc:value"/>
+    <declare>
+      <required>
+        <attribute name="cst"/>
+      </required>
+      <contents>
+	<boolexp ref="nesc:type"/>
+      </contents>
+    </declare>
+  </if>
+
+  <m:doc>A structured value (from a C { ... } initialiser).
+    All of these have a type as their first element.</m:doc>
+  <boolexp id="nesc:ivalue">
+    <or>
+      <element name="nesc:value-structured"/>  
+      <element name="nesc:value-array"/>  
+      <element name="nesc:value"/>
+    </or>
+  </boolexp>
+
+  <m:doc>Enforce the "type as first element" rule</m:doc>
+  <if>
+    <boolexp ref="nesc:ivalue"/>
+    <require>
+      <contents>
+        <sequence>
+          <boolexp ref="nesc:type"/>
+          <repeat>
+	    <element/>
+	  </repeat>
+	</sequence>
+      </contents>
+    </require>
+  </if>
+
+
+  <m:doc>A struct or union value (from a C { ... } initialiser), the
+    structured-elements are the initialised fields (unitialised fields
+    are just absent). </m:doc>
+  <if>
+    <element name="nesc:value-structured"/>
+    <declare>
+      <contents>
+        <sequence>
+	  <boolexp ref="nesc:type"/>
+          <repeat>
+	    <element name="nesc:structured-element"/>
+	  </repeat>
+	</sequence>
+      </contents>
+    </declare>
+  </if>
+
+  <if>
+    <element name="nesc:structured-element"/>
+    <declare>
+      <required>
+        <attribute name="field"><stringtype ref="nesc:identifier"/></attribute>
+        <attribute name="ref"/>
+      </required>
+      <contents>
+	<boolexp ref="nesc:ivalue"/>
+      </contents>
+    </declare>
+  </if>
+
+  <m:doc>An array value (from a C { ... } initialiser), the
+    array-elements are the initialised array elements (unitialised elements
+    are just absent).</m:doc>
+  <if>
+    <element name="nesc:value-array"/>
+    <declare>
+      <contents>
+        <sequence>
+          <boolexp ref="nesc:type"/>
+          <repeat>
+	    <element name="nesc:array-element"/>
+	  </repeat>
+	</sequence>
+      </contents>
+    </declare>
+  </if>
+
+  <if>
+    <element name="nesc:array-element"/>
+    <declare>
+      <required>
+        <attribute name="from"><stringtype ref="nesc:number"/></attribute>
+        <attribute name="to"><stringtype ref="nesc:number"/></attribute>
+      </required>
+      <contents>
+	<boolexp ref="nesc:ivalue"/>
+      </contents>
+    </declare>
+  </if>
+
+  <m:doc>A nesC type. Purposefully does not contain type-error (bug
+    indicator). All have size and alignment attributes (though these
+    may be V:).</m:doc>
+  <boolexp id="nesc:type">
+    <or>
+      <element name="nesc:type-int"/>
+      <element name="nesc:type-float"/>
+      <element name="nesc:type-complex-int"/>
+      <element name="nesc:type-complex-float"/>
+      <element name="nesc:type-void"/>
+      <element name="nesc:type-qualified"/>
+      <element name="nesc:type-pointer"/>
+      <element name="nesc:type-array"/>
+      <element name="nesc:type-function"/>
+      <element name="nesc:type-tag"/>
+      <element name="nesc:type-interface"/>
+      <element name="nesc:type-component"/>
+      <element name="nesc:type-var"/>
+    </or>
+  </boolexp>
+
+  <m:doc>Every type has a size and alignment attribute, and, optionally, 
+    the name of the typedef this type corresponds to (we can't just have
+    a typedef-ref, as that would cause confusion with type-var).</m:doc>
+  <if>
+    <boolexp ref="nesc:type"/>
+    <declare>
+      <required>
+        <attribute name="size"/>
+        <attribute name="alignment"/>
+      </required>
+      <m:doc>The network attribute is present for network base types. Its
+	value is the network base type name.</m:doc>
+      <attribute name="network">
+	<stringtype ref="nesc:identifier"/>
+      </attribute>
+      <contents>
+	<optional><element name="nesc:typename"/></optional>
+      </contents>
+    </declare>
+  </if>
+
+  <m:doc>The typename element is just a reference to a typedef</m:doc>
+  <if>    
+    <element name="nesc:typename"/>
+    <declare>
+      <contents>
+        <element name="nesc:typedef-ref"/>
+      </contents>
+    </declare>
+  </if>
+
+  <m:doc>Base types just include the C base type name</m:doc>
+  <if>
+    <or>
+      <element name="nesc:type-int"/>
+      <element name="nesc:type-float"/>
+      <element name="nesc:type-complex-int"/>
+      <element name="nesc:type-complex-float"/>
+    </or>
+    <declare>
+      <required>
+        <attribute name="cname"><stringtype ref="nesc:c-base-type"/></attribute>
+      </required>
+    </declare>
+  </if>
+
+  <m:doc>Integer and complex integer types may have an unsigned attribute</m:doc>
+  <if>
+    <or>
+      <element name="nesc:type-int"/>
+      <element name="nesc:type-complex-int"/>
+    </or>
+    <declare>
+      <attribute name="unsigned"><stringtype ref="nesc:empty"/></attribute>
+    </declare>
+  </if>
+
+  <m:doc>Types that contain a single embedded type</m:doc>
+  <if>
+    <or>
+      <element name="nesc:type-qualified"/>
+      <element name="nesc:type-pointer"/>
+      <element name="nesc:type-array"/>
+    </or>
+    <declare>
+      <contents>
+        <boolexp ref="nesc:type"/>
+      </contents>
+    </declare>
+  </if>
+
+  <m:doc>Qualified types contain an empty attribute for each qualifier present
+  </m:doc>
+  <if>
+    <element name="nesc:type-qualified"/>
+    <declare>
+      <attribute name="const"><stringtype ref="nesc:empty"/></attribute>
+      <attribute name="volatile"><stringtype ref="nesc:empty"/></attribute>
+      <attribute name="__restrict"><stringtype ref="nesc:empty"/></attribute>
+    </declare>
+  </if>
+
+  <m:doc>Array types include a number of elements. An unspecified number
+	of elements is represented as a non-constant value for the elements
+	 attribute.</m:doc>
+  <if>
+    <element name="nesc:type-array"/>
+    <declare>
+      <required>
+        <attribute name="elements"><stringtype ref="nesc:constant"/></attribute>
+      </required>
+    </declare>
+  </if>
+
+  <m:doc>Function types may be varargs or oldstyle. They contain a type
+    list (arguments) and a return type.</m:doc>
+  <if>
+    <element name="nesc:type-function"/>
+    <declare>
+      <attribute name="varargs"><stringtype ref="nesc:empty"/></attribute>
+      <attribute name="oldstyle"><stringtype ref="nesc:empty"/></attribute>
+      <contents>
+        <sequence>
+	  <boolexp ref="nesc:type"/>
+	  <optional><element name="nesc:function-parameters"/></optional>
+	</sequence>
+      </contents>
+    </declare>
+  </if>
+
+  <if>
+    <element name="nesc:function-parameters"/>
+    <declare>
+      <contents>
+        <repeat><boolexp ref="nesc:type"/></repeat>
+      </contents>
+    </declare>
+  </if>
+
+  <m:doc>Tag types contain a tag reference</m:doc>
+  <if>
+    <element name="nesc:type-tag"/>
+    <declare>
+      <contents>
+        <boolexp ref="nesc:tag-ref"/>
+      </contents>
+    </declare>
+  </if>
+
+  <m:doc>Interface types contain an interface reference</m:doc>
+  <if>
+    <element name="nesc:type-interface"/>
+    <declare>
+      <contents>
+        <element name="nesc:interface-ref"/>
+      </contents>
+    </declare>
+  </if>
+  
+  <m:doc>Component types contain an internal component reference.
+    These are the type of a component name inside a configuration, i.e.,
+    the type of X in `components Y as X'. Note that `components Y' is
+    just a shortcut for `components Y as Y', the two Y's are in different
+    namespaces.</m:doc>
+  <if>
+    <element name="nesc:type-component"/>
+    <declare>
+      <contents>
+        <element name="nesc:internal-component-ref"/>
+      </contents>
+    </declare>
+  </if>
+  
+  <m:doc>Type variables contain a reference to a typedef (whose type is
+    itself this type)</m:doc>
+  <if>
+    <element name="nesc:type-var"/>
+    <declare>
+      <contents>
+        <element name="nesc:typedef-ref"/>
+      </contents>
+    </declare>
+  </if>
+
+  <m:doc>An attribute with its initialiser</m:doc>
+  <if>
+    <element name="nesc:attribute-value"/>
+    <declare>
+      <contents><element name="nesc:value-structured"/></contents>
+      <contents><element name="nesc:attribute-ref"/></contents>
+    </declare>
+  </if>
+
+  <m:doc>A documentation string</m:doc>
+  <if>
+    <element name="nesc:documentation"/>
+    <declare>
+      <required><attribute name="loc"/></required>
+      <m:doc>A short string is always present, a long one is optional.</m:doc>
+      <contents><element name="nesc:short"/></contents>
+      <contents>
+	<optional><element name="nesc:long"/></optional>
+      </contents>
+    </declare>
+  </if>
+
+  <m:doc>nesdoc strings have arbitrary contents</m:doc>
+  <if>
+    <or>
+      <element name="nesc:short"/>
+      <element name="nesc:long"/>
+    </or>
+    <declare>
+      <contents><string/></contents>
+    </declare>
+  </if>
+
+</dsd>

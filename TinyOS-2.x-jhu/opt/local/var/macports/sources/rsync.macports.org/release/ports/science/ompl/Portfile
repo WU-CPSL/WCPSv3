@@ -1,0 +1,96 @@
+# $Id: Portfile 89953 2012-02-16 21:14:16Z mmoll@macports.org $
+
+PortSystem 1.0
+PortGroup cmake 1.0
+
+name                ompl
+version             0.10.0
+revision            1
+categories          science
+maintainers         mmoll
+description         The Open Motion Planning Library (OMPL)
+long_description    The Open Motion Planning Library (OMPL) consists of a set \
+                    of sampling-based motion planning algorithms.
+homepage            http://ompl.kavrakilab.org
+platforms           darwin
+license             BSD
+master_sites        sourceforge
+checksums           md5     d8b1cef3d44e21f2fca964b01fce504c \
+                    sha1    8f26a3f4616ea6751f5faf0dbcfc37dccdc921d6 \
+                    rmd160  2f0a321547af30c7c36c16a01adaabce7194fae5
+distname            ${name}-${version}-Source
+depends_lib-append  port:boost port:ode
+
+configure.args-append   -DOMPL_BUILD_TESTS=OFF -DOMPL_BUILD_DEMOS=OFF
+pre-build {
+    system "cd ${worksrcpath}; ${build.cmd} update_bindings"
+}
+
+# The +app variant includes all the content of the regular OMPL version, but
+# adds a simple GUI and an extra library with bindings to the assimp and pqp
+# libraries. The cascade of dependencies due to pyqt4 is rather large, so by
+# default the +app variant is not enabled. Also, the additions to OMPL in
+# this variant are distributed under a slightly different license than the
+# regular OMPL version.
+variant app description {Include GUI and extra demo code} {
+    distname            omplapp-${version}-Source
+    # Due to an internal compiler error. Seems to be fixed in clang 3.1svn.
+    if {${configure.compiler} == "clang"} {
+        configure.compiler "llvm-gcc-4.2"
+    }
+    license             noncommercial
+    pre-extract {
+        ui_warn "The +app variant causes some extra code to be compiled that is
+distributed under the Rice University Software Distribution License. For
+details, please read:
+http://ompl.kavrakilab.org/license.html#ricelicense"
+    }
+    depends_lib-append  port:assimp port:pqp port:libann port:libccd
+    checksums           md5     7b1852bec9ef09cf72716d8a6d6ba8b9 \
+                        sha1    8764418e9f1d02f75065c419437585eb6d272ff6 \
+                        rmd160  edfb7b041ece5edbea7571820bfdc6e798448950
+}
+
+variant python26 description {Use python2.6 for python bindings} conflicts python27 {
+    depends_build-append    port:py26-pyplusplus-devel
+    depends_lib-append      port:python26
+    configure.args-append   -DPYTHON_EXEC=${prefix}/bin/python2.6
+    if { [variant_isset app] } {
+        depends_lib-append      port:py26-pyqt4 port:py26-opengl
+        post-destroot {
+            reinplace "s|#!/usr/bin/env python|#!${prefix}/bin/python2.6|g" \
+                ${destroot}${prefix}/bin/ompl_app
+        }
+    }
+    configure.env-append    PYTHON_EXEC=${prefix}/bin/python2.6
+}
+
+variant python27 description {Use python2.7 for python bindings} conflicts python26 {
+    depends_build-append    port:py27-pyplusplus-devel
+    depends_lib-append      port:python27
+    configure.args-append   -DPYTHON_EXEC=${prefix}/bin/python2.7
+    if { [variant_isset app] } {
+        depends_lib-append  port:py27-pyqt4 port:py27-opengl
+        post-destroot {
+            reinplace "s|#!/usr/bin/env python|#!${prefix}/bin/python2.7|g" \
+                ${destroot}${prefix}/bin/ompl_app
+        }
+    }
+    configure.env-append    PYTHON_EXEC=${prefix}/bin/python2.7
+}
+
+# enable one python variant so that the python bindings can be compiled
+if { ![variant_isset python26] && ![variant_isset python27] } {
+    default_variants        +python27
+}
+
+# the python bindings rely on Boost.Python, so make sure it is installed.
+pre-fetch {
+    if {![file exists ${prefix}/lib/libboost_python-mt.dylib]} {
+        return -code error "Please reinstall boost with the +python26 or +python27 variant enabled."
+    }
+}
+
+livecheck.type  regex
+livecheck.url   http://ompl.kavrakilab.org/download.html
+livecheck.regex (\[0-9.\]+), released

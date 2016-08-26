@@ -1,0 +1,33 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89033 2012-01-18 12:18:50Z ryandesign@macports.org $
+
+PortSystem          1.0
+PortGroup           github 1.0
+
+github.setup        swh LRDF 0.4.0
+name                liblrdf
+revision            3
+categories          textproc
+maintainers         pixilla openmaintainer
+platforms           darwin
+license             GPL-2
+
+description         A lightweight RDF library with special support for LADSPA plugins.
+long_description    librdf is a library to make it easy to manipulate RDF files describing LADSPA \
+                    plugins. It can also be used for general RDF manipulation. It can read RDF/XLM \
+                    and N3 files and export N3 files. It also has a light taxonomic inference capability.
+
+fetch.type          git
+git.branch          4e416a5209c7a5854fac
+
+depends_build       port:pkgconfig
+depends_lib         port:raptor2
+
+patchfiles          patch-lrdf.h.diff \
+                    patch-src-lrdf.c.diff
+
+configure.cmd       ./autogen.sh
+
+if {${configure.compiler} == "llvm-gcc-4.2"} {
+    configure.compiler clang
+}

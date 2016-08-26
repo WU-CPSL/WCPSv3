@@ -1,0 +1,41 @@
+# $Id: Portfile 88485 2012-01-03 11:01:15Z mww@macports.org $
+
+PortSystem          1.0
+name                ocaml-csv
+revision            1
+version             1.1.6
+maintainers         landonf openmaintainer
+description         CSV file parser for OCaml.
+long_description    This library can read and write CSV files, including all \
+                    extensions used by Excel - eg. quotes, newlines, 8 bit \
+                    characters in fields, \"0 etc.
+
+categories          devel ml
+
+distname            ocaml-csv-${version}
+
+homepage            http://merjis.com/developers/csv
+master_sites        http://merjis.com/_file/
+
+platforms           darwin
+
+checksums           md5 a91851438f9540b1a445087a4d409507 \
+                    sha1 3cd88f87c19639b9c75c67d9ffb729ad37f9d9d2 \
+                    rmd160 4d4d8234a58e302c0adf6e17f7e85e4880f932f4
+patchfiles          patch-Makefile
+
+use_configure       no
+
+post-patch {
+    set ocaml_site_path [exec ocamlfind printconf destdir]
+    reinplace s|@OCAML_SITE_PATH@|${ocaml_site_path}|g ${worksrcpath}/Makefile
+}
+
+pre-destroot {
+    set ocaml_site_path [exec ocamlfind printconf destdir]
+    file mkdir ${destroot}/${ocaml_site_path}
+}
+
+depends_lib         port:ocaml \
+                    port:ocaml-findlib \
+                    port:ocaml-extlib

@@ -1,0 +1,25 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 84550 2011-09-27 21:05:11Z snc@macports.org $
+
+PortSystem          1.0
+PortGroup           kde4   1.0
+
+name                kdelibs4-experimental
+version             4.4.0
+replaced_by         kdelibs4
+categories          kde kde4
+maintainers         snc sharky
+description         KDE4 experimental libraries
+long_description    KDE4 libraries not yet ready for API freeze
+platforms           darwin
+homepage            http://www.kde.org
+depends_build       
+depends_lib         
+distfiles           
+
+pre-configure {
+    ui_error "${name} has been discontinued in the 4.4.0 branch."
+    return -code error "obsolete port"
+}
+
+livecheck.type      none

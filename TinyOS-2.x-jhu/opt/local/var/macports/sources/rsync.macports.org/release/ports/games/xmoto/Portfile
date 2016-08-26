@@ -1,0 +1,56 @@
+# $Id: Portfile 87749 2011-12-04 01:18:27Z raimue@macports.org $
+
+PortSystem 1.0
+PortGroup app 1.0
+
+name            xmoto
+version         0.5.9
+categories      games
+platforms       macosx
+maintainers     raimue
+
+description     X-Moto is a challenging 2D motocross platform game
+long_description \
+                X-Moto is a challenging 2D motocross platform game, where \
+                physics plays an all important role in the gameplay. You need \
+                to control your bike to its limits, if you want to have a \
+                chance to finish the most difficult challenges.
+
+homepage        http://xmoto.tuxfamily.org/
+master_sites    http://download.tuxfamily.org/xmoto/xmoto/${version}/xmoto-${version}-src.tar.gz
+
+checksums       rmd160  34fdbd3e7b26c678eb4c0e5a477b45de02167786 \
+                sha256  74d7574476ad321c43db6c0df6d378954068e2514e3f4acae1cc322df8a033e4
+
+depends_build   bin:grep:grep
+
+depends_lib     port:libpng \
+                port:jpeg \
+                path:lib/pkgconfig/sdl.pc:libsdl \
+                port:libsdl_mixer \
+                port:libsdl_ttf \
+                port:libsdl_net \
+                port:lua \
+                port:ode \
+                port:sqlite3 \
+                port:bzip2 \
+                port:curl \
+                port:libxdg-basedir
+
+post-patch {
+    # libpng 1.4 compatibility
+    reinplace "s/png_set_gray_1_2_4_to_8/png_set_expand_gray_1_2_4_to_8/" \
+        ${worksrcpath}/src/image/tim_png.cpp
+}
+
+configure.args-append --with-apple-opengl-framework --disable-sdltest
+
+# xmoto does not pick up flags for ode correctly, so we do this manually
+# http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=521013
+configure.cflags-append  -DdDOUBLE
+configure.cxxflags-append -DdDOUBLE
+
+app.icon ${filespath}/xmoto.png
+
+livecheck.type  regex
+livecheck.regex {XMoto ([\d.]+) released}

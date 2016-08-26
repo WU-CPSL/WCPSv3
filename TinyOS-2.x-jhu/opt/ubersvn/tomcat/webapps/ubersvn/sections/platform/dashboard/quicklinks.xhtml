@@ -1,0 +1,18 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.prime.com.tr/ui"
+  xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core">
+<ui:composition>
+  <p:panel id="dashboard-quicklinks-panel" styleClass="ui-corner-all dashboard-quicklinks-panel">
+    <f:facet name="header">
+      <h:outputText style="font-weight: bold;" value="#{msg.dashboardQuickLinksHeading}" />
+    </f:facet>
+    <p:dataTable id="quickLinksId" widgetVar="quickLinksTable" var="link" value="#{dashboardManagedBean.links}" lazy="false"
+      paginator="false" rows="8" emptyMessage="#{msg.addSomeQuickLinks}">
+      <p:column>
+        <h:outputText escape="false" value="#{link.parsedLink} " styleClass="quickLink" />
+      </p:column>
+    </p:dataTable>
+  </p:panel>
+</ui:composition>
+</html>

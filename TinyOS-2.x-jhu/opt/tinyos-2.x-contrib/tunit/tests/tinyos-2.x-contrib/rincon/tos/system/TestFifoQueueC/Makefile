@@ -1,0 +1,3 @@
+COMPONENT=TestFifoQueueC
+include $(MAKERULES)
+

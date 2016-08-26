@@ -1,0 +1,54 @@
+# $Id: Portfile 86710 2011-11-01 17:09:28Z dluke@macports.org $
+
+PortSystem	1.0
+
+name		apr
+version		1.4.5
+revision	3
+categories	devel
+maintainers	geeklair.net:dluke
+platforms	darwin
+description	The apache group's portability library
+license		Apache-2
+
+long_description	The Apache Portable Runtime is a library of C data \
+			structures and routines, forming a system portability \
+			layer that covers as many operating systems as \
+			possible, including Unices, Win32, BeOS, and OS/2.
+
+homepage	http://apr.apache.org/
+master_sites	apache:apr
+
+use_bzip2	yes
+checksums	md5	8b53f5a5669d0597f2da889a2f576eb6 \
+		sha1	517de5e3cc1e3be810d9bc95508ab66bb8ebe7cb \
+		rmd160	d2a966c1b143416cd3655cf849cb5d3cb1ca2c5f
+
+use_parallel_build	yes
+configure.ccache	no
+#configure's tests don't work right for sed/gsed if we just set SED here
+configure.env   ac_cv_prog_AWK=awk ac_cv_path_SED=sed lt_ECHO=/bin/echo lt_cv_path_SED=sed
+configure.args	--with-installbuilddir=${prefix}/share/apr-1/build \
+		--enable-nonportable-atomics \
+		ac_cv_func_setpgrp_void=no
+
+patchfiles	apr_h_patch.diff
+
+test.run	yes
+test.target	check
+test.env	DYLD_LIBRARY_PATH=${worksrcpath}/.libs
+pre-test	{
+	use_parallel_build	no
+}
+
+if {[variant_isset universal]} {
+	post-destroot {
+		reinplace -E {s|-arch [a-z0-9_]+||g} \
+			${destroot}${prefix}/share/apr-1/build/apr_rules.mk \
+			${destroot}${prefix}/share/apr-1/build/libtool
+	}
+}
+
+livecheck.type  regex
+livecheck.url   http://apache.org/dist/apr/
+livecheck.regex {APR (\d+(?:\.\d+)*) is the latest available version}

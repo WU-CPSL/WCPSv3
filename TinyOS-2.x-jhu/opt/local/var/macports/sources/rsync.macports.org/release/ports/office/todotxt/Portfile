@@ -1,0 +1,33 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 88968 2012-01-15 15:58:14Z snc@macports.org $
+
+PortSystem          1.0
+PortGroup           github 1.0
+
+github.setup        ginatrapani todo.txt-cli 2.8 v
+name                todotxt
+categories          office
+license             GPL
+maintainers         snc openmaintainer
+
+description         Simple, extensible shell script to manage your todo file.
+long_description    A simple and extensible shell script for managing your \
+                    todo.txt file.
+
+platforms           darwin
+
+checksums           rmd160  ce30f41d4e0e7e8874a97bbe00a648e11cf211e1 \
+                    sha256  9c3a84babb5d1e58fa6090933b8d1d2b70ec3b22366277bea88fc32b0f09ea09
+
+use_configure       no
+
+build {}
+
+destroot {
+    xinstall -m 755 ${worksrcpath}/todo.sh ${destroot}${prefix}/bin/$name
+    xinstall -m 644 ${worksrcpath}/todo.cfg ${destroot}${prefix}/etc/todo.cfg-dist
+}
+
+notes \
+"You will need to copy and then edit the default configuration
+(${prefix}/etc/todo.cfg-dist) in your home directory."

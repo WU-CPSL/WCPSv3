@@ -1,0 +1,17 @@
+# $Id: Portfile 30260 2007-10-23 02:33:09Z jmpp@macports.org $
+PortSystem 1.0
+PortGroup zope 1.0
+
+zope.setup		UserTrack 1.1
+maintainers		nomaintainer
+description		User tracking product for standard Zope sites
+long_description	Lists the currently active authenticated users that \
+					are logged into Zope and accessed an object below \
+					the folder where the UserTrack instance resides.
+homepage		http://sourceforge.net/projects/collective
+master_sites	sourceforge:collective
+distname		CMFMessage-[strsed ${version} {g/[.]/_/}]
+extract.suffix	.tgz
+checksums		md5 fc38580a86005cf2781504ea9a400ec3
+platforms		darwin freebsd
+

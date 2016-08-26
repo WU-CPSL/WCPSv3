@@ -1,0 +1,62 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89059 2012-01-19 03:04:52Z ryandesign@macports.org $
+
+PortSystem          1.0
+
+name                mldonkey
+version             3.1.0
+categories          net
+platforms           darwin
+maintainers         nomaintainer
+
+description         OCaml/GTK client for the eDonkey p2p network
+
+long_description    MLdonkey is a multi-platform multi-network peer-to-peer \
+                    client. It supports several large networks, such as \
+                    eDonkey, Overnet, Bittorrent, Gnutella (Bearshare, \
+                    Limewire, etc), Gnutella2 (Shareaza), Fasttrack (Kazaa, \
+                    Imesh, Grobster), Soulseek, Direct-Connect, and Opennap. \
+                    Networks can be enabled/disabled, searches are performed \
+                    in parallel on all enabled networks, but each file is \
+                    only downloaded from one network, but from multiple \
+                    clients concurrently.
+
+homepage            http://mldonkey.sourceforge.net/
+master_sites        sourceforge:project/mldonkey/mldonkey/${version}
+use_bzip2           yes
+
+checksums           rmd160  69c2bf1937bb2a782166a3b08d87e4537ec03eea \
+                    sha256  fd0f132a1bea96c9dfa2f7837278c8ccbbb703efc2c7ac48386b5103a1450308
+
+depends_build       port:pkgconfig
+
+depends_lib         port:ocaml \
+                    port:lablgtk2 \
+                    port:expat \
+                    port:bzip2 \
+                    port:file \
+                    port:fontconfig \
+                    port:freetype \
+                    port:gd2 \
+                    port:jpeg \
+                    port:libiconv \
+                    port:libpng
+
+patchfiles          patch-Makefile.diff \
+                    patch-config-configure.diff
+
+# ocaml is not universal
+universal_variant   no
+
+pre-configure {
+    if {![file exists ${prefix}/lib/ocaml/lablgtk2/lablrsvg.a]} {
+        ui_error "${name} needs lablgtk2 to be installed with librsvg support."
+        ui_error "Please rebuild lablgtk2 using the command:"
+        ui_error ""
+        ui_error "    sudo port upgrade --enforce-variants lablgtk2 +rsvg"
+        ui_error ""
+        return -code error "incompatible lablgtk2 installation"
+    }
+}
+
+configure.args      --enable-gui=newgui2

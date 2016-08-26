@@ -1,0 +1,33 @@
+expr.o: expr.c config.h system.h ../include/filenames.h \
+  ../include/libiberty.h ../include/ansidecl.h ../include/safe-ctype.h \
+  include/cpplib.h include/symtab.h ../include/obstack.h \
+  include/line-map.h internal.h include/symtab.h include/cpp-id-data.h \
+  include/cpplib.h
+
+config.h:
+
+system.h:
+
+../include/filenames.h:
+
+../include/libiberty.h:
+
+../include/ansidecl.h:
+
+../include/safe-ctype.h:
+
+include/cpplib.h:
+
+include/symtab.h:
+
+../include/obstack.h:
+
+include/line-map.h:
+
+internal.h:
+
+include/symtab.h:
+
+include/cpp-id-data.h:
+
+include/cpplib.h:

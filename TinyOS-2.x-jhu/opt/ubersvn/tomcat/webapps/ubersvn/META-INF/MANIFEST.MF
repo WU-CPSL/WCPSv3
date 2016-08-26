@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Ant-Version: Apache Ant 1.8.2
+Created-By: WANdisco
+Implementation-Version: 4.0
+Build-Revision: 8540
+Full-Build-Revision: 18540
+Build-URL: http://repo.zeus.wandisco.com/repo/trunk/uberSvnPlatform
+Class-Path: .
+

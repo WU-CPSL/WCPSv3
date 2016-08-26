@@ -1,0 +1,31 @@
+# $Id: Portfile 81412 2011-07-30 04:29:19Z jmr@macports.org $
+
+PortSystem 1.0
+
+name            xorg-libXv
+version         1.0.6
+categories      x11 devel
+license         X11
+maintainers     jeremyhu openmaintainer
+description     X.org libXv
+homepage        http://www.x.org
+platforms       darwin macosx
+long_description Xvideo extension library
+master_sites     xorg:individual/lib/
+
+distname    libXv-${version}
+checksums           md5     e292445a64b63e918bbc8b6aae6391dd \
+                    sha1    9ebb6d7936a7b247b9b0f6dc81def39a18e4214c \
+                    rmd160  eb7a241a9981c15572209cb1406532db02f81456
+
+use_bzip2   yes
+use_parallel_build      yes
+
+depends_build   port:pkgconfig
+
+depends_lib     port:xorg-libXext \
+                port:xorg-videoproto
+
+livecheck.type  regex
+livecheck.url   http://xorg.freedesktop.org/archive/individual/lib/?C=M&O=D
+livecheck.regex libXv-(\\d+(?:\\.\\d+)*)

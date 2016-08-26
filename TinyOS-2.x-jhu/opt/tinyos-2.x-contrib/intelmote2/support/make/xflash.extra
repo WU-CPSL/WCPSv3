@@ -1,0 +1,13 @@
+#-*-Makefile-*- vim:syntax=make
+#$Id: xflash.extra,v 1.1 2009/02/23 04:18:57 radler Exp $
+
+PROGRAM = xflash
+
+INTEL_SDT_HOME ?= c:/nordheim
+empty :=
+XFLASH_PATH := $(subst $(empty) $(empty),\ ,$(subst \,/,$(INTEL_SDT_HOME)))
+PROGRAMMER = $(XFLASH_PATH)/xflash/xflash.exe
+PROGRAMMER_FLAGS = -p imote2
+
+PXA27X_JTAG_DEV ?= "JTAG CPU"
+

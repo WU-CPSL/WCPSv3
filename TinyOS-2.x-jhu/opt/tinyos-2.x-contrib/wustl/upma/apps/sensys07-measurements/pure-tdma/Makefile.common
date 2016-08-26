@@ -1,0 +1,5 @@
+CFLAGS += -DFOOTER_SIZE=0 -DTDMA
+UPMA_MAC = pure-tdma
+UPMA = 1
+
+include ../../Makefile.common

@@ -1,0 +1,86 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:filetype=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 87843 2011-12-08 20:25:15Z devans@macports.org $
+
+PortSystem 1.0
+PortGroup  muniversal 1.0
+
+name        poppler
+conflicts   mupdf xpdf-tools
+version     0.18.2
+license     GPL-2+
+maintainers devans openmaintainer
+categories  graphics
+platforms   darwin
+homepage    http://${name}.freedesktop.org/
+
+description Poppler is a PDF rendering library based on the xpdf-3.0 code base.
+long_description ${description}
+
+master_sites ${homepage}
+
+checksums   rmd160  5fb322f79fd9934108818b4488cc6f9803ba862c \
+            sha256  b15f6b461fd2ba59cf98e64751ba26edc4a9976f896fb2019d8b3b1aa8c95b52
+
+depends_build \
+    port:pkgconfig
+
+depends_lib \
+    port:curl \
+    port:gtk2 \
+    port:lcms \
+    port:openjpeg \
+    port:poppler-data
+
+post-patch {
+    reinplace "s|\$includedir|${prefix}/include|g" \
+        ${worksrcpath}/configure
+    reinplace "s|tests||" \
+        ${worksrcpath}/qt4/Makefile.in
+}
+
+configure.args \
+    --disable-introspection \
+    --disable-poppler-qt \
+    --disable-poppler-qt4 \
+    --disable-silent-rules \
+    --enable-xpdf-headers \
+    --enable-zlib \
+    --enable-libcurl \
+    --mandir=${prefix}/share/man
+
+variant quartz {
+    configure.args-append --disable-gtk-test --without-x
+}
+
+if {![variant_isset quartz]} {
+    if {[file exists ${prefix}/lib/pkgconfig/x11.pc]} {
+            configure.args-append --x-includes=${prefix}/include \
+                                  --x-libraries=${prefix}/lib
+    }
+}
+
+variant qt4 description { Support for the QT4 toolkit } {
+    configure.args-delete --disable-poppler-qt4
+    if ([variant_isset quartz]) {
+        PortGroup qt4 1.0
+    } else {
+        depends_lib-append  port:qt4-x11
+        set qt_dir ${prefix}/libexec/qt4-x11
+        configure.env-append  QTDIR=${qt_dir}
+        set env(PATH) "${qt_dir}/bin:$env(PATH)"
+        configure.pkg_config_path ${qt_dir}/lib/pkgconfig
+    }
+}
+
+variant docs conflicts universal description {Build gtk-doc documentation} {
+    depends_build-append   port:gtk-doc
+    configure.args-append  --enable-gtk-doc
+}
+
+test.run    yes
+test.dir    ${worksrcpath}/test
+test.target all
+
+livecheck.type  regex
+livecheck.url   ${master_sites}
+livecheck.regex ${name}-(\[0-9\]+\\.\[0-9\]*\[02468\](\\.\[0-9\]+)*)${extract.suffix}

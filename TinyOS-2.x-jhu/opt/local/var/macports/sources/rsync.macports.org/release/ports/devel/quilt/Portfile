@@ -1,0 +1,31 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:filetype=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89456 2012-01-30 12:47:56Z jmr@macports.org $
+
+PortSystem 1.0
+
+name              quilt
+version           0.51
+categories        devel
+platforms         darwin
+license			  GPL-2
+maintainers       jmr openmaintainer
+description       patch management scripts
+long_description \
+        Patchwork Quilt is a set of scripts designed to allow you to\
+	manage a series of patches by keeping track of the changes each\
+	patch makes. Patches can be applied, un-applied, refreshed, etc.
+
+homepage          http://savannah.nongnu.org/projects/quilt/
+
+master_sites	savannah
+checksums       rmd160 98a5069d6f4465063ad754492905e96f1d5aabba \
+                sha256 05441399d36399b3f26cb12e29c98a8ce4d1287d036957fa22408807860af614
+
+depends_lib port:gsed port:getopt port:coreutils
+
+configure.args --with-sed=${prefix}/bin/gsed
+destroot.destdir BUILD_ROOT=${destroot}
+
+livecheck.type	regex
+livecheck.url	http://download.savannah.gnu.org/releases-noredirect/quilt/
+livecheck.regex	"${name}-(\[0-9\\.\]+)\\${extract.suffix}"

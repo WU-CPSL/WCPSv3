@@ -1,0 +1,5 @@
+# $Id: debug.extra,v 1.1 2007/12/05 18:08:18 yuecelm Exp $ #
+
+# author: Mustafa Yuecel <mustafa.yuecel@alumni.ethz.ch> #
+
+OPTFLAGS += -O1 -g -fnesc-no-inline

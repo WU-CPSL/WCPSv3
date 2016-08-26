@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:p="http://primefaces.prime.com.tr/ui" xmlns:h="http://java.sun.com/jsf/html">
+<ui:composition>
+
+  <p:panel style="width:100%; text-align:center;">
+    <br />
+    <br />
+    <br />
+    <h:graphicImage style="border:none;" library="img/platform" name="appstore_unavailable.png" />
+    <br />
+    <br />
+    <br />
+    <h:outputText style="font-size:19px; font-weight:bold;" value="#{msg.uberAppsUnavailableThisMightBecausedBy}" />
+    <br />
+    <br />
+    <h:outputText value="#{msg.uberAppsUnavailableSuggestion1}" />
+    <p:spacer style="width:3px;" />
+    <h:outputLink style="font-size:14px;" value="http://docs.ubersvn.com/v1.0/uberapps_access_problem.html" target="blank">
+      <h:outputText value="#{msg.uberAppsUnavailableSuggestion1LinkText}" />
+    </h:outputLink>
+    <br />
+    <br />
+    <h:outputText value="#{msg.uberAppsUnavailableSuggestion2}" />
+    <p:spacer style="width:3px;" />
+    <h:outputLink style="font-size:14px;" value="mailto:info@wandisco.com" target="blank">
+      <h:outputText value="#{msg.uberAppsUnavailableSuggestion2LinkText}" />
+    </h:outputLink>
+  </p:panel>
+</ui:composition>
+</html>

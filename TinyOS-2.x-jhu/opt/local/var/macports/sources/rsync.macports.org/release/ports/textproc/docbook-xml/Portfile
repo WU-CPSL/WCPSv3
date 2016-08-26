@@ -1,0 +1,43 @@
+# $Id: Portfile 79795 2011-06-26 05:31:59Z l2g@macports.org $
+
+PortSystem      1.0
+
+name            docbook-xml
+# the version should always be the version of the highest
+# versioned docbook-xml-* port.
+version         5.0
+categories      textproc
+platforms       darwin
+license         BSD
+maintainers     nomaintainer
+supported_archs noarch
+description     Install all of the versioned docbook-xml-* ports
+
+long_description \
+    This port is an uninstallable metaport that simply ensures \
+    that a number of other ports are installed.
+
+homepage        http://www.docbook.org/
+distfiles
+
+# add every docbook-xml-* port as it is created
+depends_run \
+    port:docbook-xml-4.1.2 \
+    port:docbook-xml-4.2 \
+    port:docbook-xml-4.3 \
+    port:docbook-xml-4.4 \
+    port:docbook-xml-4.5 \
+    port:docbook-xml-5.0
+
+use_configure   no
+build {}
+
+destroot { 
+    set docdir ${prefix}/share/doc/${name}
+    xinstall -d ${destroot}${docdir}
+    xinstall -m 0644 ${filespath}/README ${destroot}${docdir}
+}
+
+livecheck.type  regex
+livecheck.url   ${homepage}schemas/
+livecheck.regex {DocBook V(\d+(?:\.\w+)*)<}

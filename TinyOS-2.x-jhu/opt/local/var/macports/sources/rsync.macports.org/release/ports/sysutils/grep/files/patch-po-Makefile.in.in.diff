@@ -1,0 +1,11 @@
+--- po/Makefile.in.in.orig	2010-05-11 19:34:55.000000000 +0200
++++ po/Makefile.in.in	2010-05-11 19:35:10.000000000 +0200
+@@ -44,7 +44,7 @@
+ mkinstalldirs = $(SHELL) @install_sh@ -d
+ install_sh = $(SHELL) @install_sh@
+ MKDIR_P = @MKDIR_P@
+-mkdir_p = @mkdir_p@
++mkdir_p = @MKDIR_P@
+ 
+ GMSGFMT_ = @GMSGFMT@
+ GMSGFMT_no = @GMSGFMT@

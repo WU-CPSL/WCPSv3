@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<faces-config xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd" version="2.0">
+  <application>
+    <message-bundle>com.wandisco.ubersvn.jsf.messageresources.MessageResources</message-bundle>
+    <locale-config>
+      <default-locale>en</default-locale>
+      <supported-locale>de</supported-locale>
+      <supported-locale>en</supported-locale>
+    </locale-config>
+    <resource-bundle>
+      <base-name>com.wandisco.ubersvn.jsf.messageresources.MessageResources</base-name>
+      <var>msg</var>
+    </resource-bundle>
+  </application>
+  <render-kit>
+    <renderer>
+      <component-family>org.primefaces.component</component-family>
+      <renderer-type>org.primefaces.component.FileUploadRenderer</renderer-type>
+      <renderer-class>com.wandisco.ubersvn.h.b.c</renderer-class>
+    </renderer>
+    <renderer>
+      <component-family>org.primefaces.component</component-family>
+      <renderer-type>org.primefaces.component.PasswordRenderer</renderer-type>
+      <renderer-class>com.wandisco.ubersvn.h.b.b</renderer-class>
+    </renderer>
+  </render-kit>
+  <lifecycle>
+    <phase-listener>com.wandisco.ubersvn.k.d</phase-listener>
+  </lifecycle>
+  <lifecycle>
+    <phase-listener id="nocache">com.wandisco.ubersvn.k.b</phase-listener>
+  </lifecycle>
+  <lifecycle>
+    <phase-listener id="productConfiguration">com.wandisco.ubersvn.k.c</phase-listener>
+  </lifecycle>
+  <converter>
+    <converter-for-class>com.wandisco.ubersvn.dao.PaymentMethodDAO</converter-for-class>
+    <converter-class>com.wandisco.ubersvn.converter.PaymentMethodConverter</converter-class>
+  </converter>
+</faces-config>

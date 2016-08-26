@@ -1,0 +1,49 @@
+# $Id: Portfile 87915 2011-12-12 10:02:09Z mww@macports.org $
+
+PortSystem 1.0
+
+name                4th
+version             3.61.3
+categories          lang
+platforms           darwin
+maintainers         mww
+license             LGPL-3
+description         very small Forth compiler
+long_description    4tH is a very small Forth compiler that can create \
+                    bytecode, C-embeddable bytecode, standalone executables, \
+                    but also works fine as a scripting language. It supports \
+                    over 85% of the ANS Forth CORE wordset and features \
+                    conditional compilation, pipes, files, assertions, forward \
+                    declarations, recursion, include files, etc.
+
+homepage            http://thebeez.home.xs4all.nl/4tH/
+master_sites        http://4th.googlecode.com/files/
+distname            ${distname}-unix
+checksums           md5     ed9a8d44766af8d86f322d0d593990ce \
+                    sha1    4325521a1df5b0d2a77ec732130a748bf7c653a2 \
+                    rmd160  22998037096b0084e9363c16bf2703dba3476a71
+patchfiles          patch-Makefile.OSX.diff
+
+worksrcdir          ${worksrcdir}/sources
+
+variant universal   {}
+
+post-extract { xinstall -m 755 ${filespath}/configure ${worksrcpath} }
+
+configure.cppflags-delete -I${prefix}/include
+configure.ldflags-delete -L${prefix}/lib
+configure.env-append PREFIX=${prefix}
+build.args          -f Makefile.OSX
+destroot.args       -f Makefile.OSX
+
+post-destroot {
+    xinstall -m 755 -d ${destroot}${prefix}/share/doc
+    file copy ${worksrcpath}/../documentation ${destroot}${prefix}/share/doc/${name}
+    file copy ${worksrcpath}/../4th ${destroot}${prefix}/share/doc/${name}/
+    file rename ${destroot}${prefix}/share/doc/4th/4th.1 \
+        ${destroot}${prefix}/share/man/man1/4th.1
+}
+
+livecheck.type      regex
+livecheck.url       http://www.xs4all.nl/~thebeez/4tH/download.html
+livecheck.regex     4th-(\[a-z0-9\\.\]+)-unix.tar.gz

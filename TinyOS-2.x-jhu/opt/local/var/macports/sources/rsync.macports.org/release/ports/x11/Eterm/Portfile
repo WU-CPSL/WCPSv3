@@ -1,0 +1,64 @@
+# $Id: Portfile 66276 2010-04-08 07:11:33Z ryandesign@macports.org $
+
+PortSystem 1.0
+
+name		Eterm
+version		0.9.5
+revision        1
+maintainers	nomaintainer
+categories	x11
+platforms	darwin
+homepage	http://www.eterm.org/
+description	Eterm is a color terminal emulator.
+long_description \
+    Eterm is a color vt102 terminal emulator intended as a \
+    replacement for xterm. It is designed  with a Freedom of \
+    Choice philosophy, leaving as much power, flexibility, and \
+    freedom as possible in the  hands of the user. It is designed \
+    to look good and work well, but takes a feature-rich approach \
+    rather than  one of minimalism while still maintaining speed \
+    and efficiency.
+
+master_sites    sourceforge:eterm ${homepage}download/
+
+distfiles-append    ${name}-bg-${version}${extract.suffix}
+checksums \
+    ${distname}${extract.suffix} \
+        md5 87220a61f763d111a4f5fc88ef9e50f1 \
+    ${name}-bg-${version}${extract.suffix} \
+        md5 e8c6567b13d7fb760bded56c1d1a181d
+
+post-extract {
+    foreach dir {bg/tile bg/scale} {
+        foreach file [glob -directory ${workpath} ${dir}/*] {
+            move -force ${file} ${worksrcpath}/${dir}
+        }
+    }
+}
+
+depends_build \
+	port:pkgconfig
+
+depends_lib \
+	port:xorg-libXres \
+	port:xorg-libXmu \
+	port:libast
+
+use_autoreconf yes
+autoreconf.args -fv
+
+configure.cflags-append -DDARWIN
+configure.args \
+    --mandir=${prefix}/share/man \
+    --enable-auto-encoding \
+    --enable-escreen \
+    --enable-escreen-fx \
+    --enable-multi-charset \
+    --enable-name-reporting-escapes \
+    --enable-profile \
+    --enable-trans \
+    --disable-utmp
+
+livecheck.type  regex
+livecheck.url   http://www.eterm.org/download/
+livecheck.regex ${name}-(\[0-9.\]+)\\.tar

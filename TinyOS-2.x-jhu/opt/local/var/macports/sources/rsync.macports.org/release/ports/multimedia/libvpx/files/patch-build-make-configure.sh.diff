@@ -1,0 +1,41 @@
+--- build/make/configure.sh.orig	2012-01-27 10:36:39.000000000 -0800
++++ build/make/configure.sh	2012-02-17 09:40:29.000000000 -0800
+@@ -394,10 +394,10 @@ AS_SFX    = ${AS_SFX:-.asm}
+ EOF
+ 
+     if enabled rvct; then cat >> $1 << EOF
+-fmt_deps = sed -e 's;^__image.axf;\$(dir \$@)\$(notdir \$<).o \$@;' #hide
++fmt_deps = sed -e 's;^__image.axf\$\$;\$(dir \$@)\$(notdir \$<).o \$@;' #hide
+ EOF
+     else cat >> $1 << EOF
+-fmt_deps = sed -e 's;^\([a-zA-Z0-9_]*\)\.o;\$(dir \$@)\1\$(suffix \$<).o \$@;'
++fmt_deps = sed -e 's;^\([a-zA-Z0-9_]*\)\.o\$\$;\$(dir \$@)\1\$(suffix \$<).o \$@;'
+ EOF
+     fi
+ 
+@@ -616,17 +616,17 @@ process_common_toolchain() {
+ 
+     # Handle darwin variants. Newer SDKs allow targeting older
+     # platforms, so find the newest SDK available.
+-    if [ -d "/Developer/SDKs/MacOSX10.4u.sdk" ]; then
+-        osx_sdk_dir="/Developer/SDKs/MacOSX10.4u.sdk"
++    if [ -d "@DEVELOPER_DIR@/SDKs/MacOSX10.4u.sdk" ]; then
++        osx_sdk_dir="@DEVELOPER_DIR@/SDKs/MacOSX10.4u.sdk"
+     fi
+-    if [ -d "/Developer/SDKs/MacOSX10.5.sdk" ]; then
+-        osx_sdk_dir="/Developer/SDKs/MacOSX10.5.sdk"
++    if [ -d "@DEVELOPER_DIR@/SDKs/MacOSX10.5.sdk" ]; then
++        osx_sdk_dir="@DEVELOPER_DIR@/SDKs/MacOSX10.5.sdk"
+     fi
+-    if [ -d "/Developer/SDKs/MacOSX10.6.sdk" ]; then
+-        osx_sdk_dir="/Developer/SDKs/MacOSX10.6.sdk"
++    if [ -d "@DEVELOPER_DIR@/SDKs/MacOSX10.6.sdk" ]; then
++        osx_sdk_dir="@DEVELOPER_DIR@/SDKs/MacOSX10.6.sdk"
+     fi
+-    if [ -d "/Developer/SDKs/MacOSX10.7.sdk" ]; then
+-        osx_sdk_dir="/Developer/SDKs/MacOSX10.7.sdk"
++    if [ -d "@DEVELOPER_DIR@/SDKs/MacOSX10.7.sdk" ]; then
++        osx_sdk_dir="@DEVELOPER_DIR@/SDKs/MacOSX10.7.sdk"
+     fi
+ 
+     case ${toolchain} in

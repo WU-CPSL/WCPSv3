@@ -1,0 +1,247 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:p="http://primefaces.prime.com.tr/ui" xmlns:h="http://java.sun.com/jsf/html">
+<ui:composition>
+  <ol id="sub-toc">
+    <li class="current"><h:outputLink title="#{msg.adminStatusTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationStatus.jsf">
+        <span>#{msg.adminStatusTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink title="#{msg.adminApacheServerSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationApacheServerSettings.jsf">
+        <span>#{msg.adminSubversionServerSettingsTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink title="#{msg.adminUberServerSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUberServerSettings.jsf">
+        <span>#{msg.adminUberServerSettingsTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink title="#{msg.adminUberPreferenceSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUberPreferenceSettings.jsf">
+        <span>#{msg.adminUberPreferenceSettingsTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink title="#{msg.adminEmailServerSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationEmailServerSettings.jsf">
+        <span>#{msg.adminEmailServerSettingsTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink title="#{msg.adminLogsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationLogs.jsf">
+        <span>#{msg.adminLogsTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink title="#{msg.adminUpdatesTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUpdates.jsf">
+        <span>#{msg.adminUpdatesTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink title="#{msg.adminLDAPTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUberLDAPSettings.jsf">
+        <span>#{msg.adminLDAPTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.backup}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationBackup.jsf">
+        <span>#{msg.backup}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink title="#{msg.adminExtensionsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationViewExtensions.jsf">
+        <span>#{msg.adminExtensionsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminSubversionReleaseLinkText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationSubversionRelease.jsf">
+        <span>#{msg.adminSubversionReleaseLinkText}</span>
+      </h:outputLink></li>
+  </ol>
+  <p:panel id="adminStatusPanel" styleClass="tabbed-panel">
+    <br />
+    <h:panelGrid columns="2">
+      <h:panelGroup>
+        <h:panelGroup>
+          <p:inputText id="messageOfTheDayInputText" styleClass="wizardFormField"
+            value="#{administrationStatusManagedBean.messageOfTheDayText}" size="88">
+            <p:watermark for="messageOfTheDayInputText" value="#{msg.messageOfTheDayWatermark}" style="font-weight: bold;" />
+          </p:inputText>
+          <p:spacer width="10" />
+          <p:commandButton styleClass="roundedButtonExtraSmall" value="#{msg.feedInputButton}" ajax="false"
+            action="#{administrationStatusManagedBean.postMessageOfTheDay}" />
+        </h:panelGroup>
+        <br />
+        <h:panelGroup>
+          <h:selectBooleanCheckbox value="#{administrationStatusManagedBean.sendEmail}" styleClass="wizardFormCheckbox"
+            id="motdEmailUserCheckbox" />
+          <h:outputLabel style="font-size: 14px; color: #7F7F7F;" for="motdEmailUserCheckbox"
+            value="#{msg.messageOfTheDayEmailAllUsersCheckboxLabel}" />
+        </h:panelGroup>
+        <h:panelGroup styleClass="bottomLeft" style="padding-left: 15px; padding-bottom: 15px;">
+          <ol id="innerTab">
+            <li id="noticesInnerTab"><h:outputLink
+                value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationStatus.jsf">
+                <span>#{msg.noticesTabText}</span>
+              </h:outputLink></li>
+          </ol>
+          <p:panel styleClass="base-tab-panel" style="width: 812px;">
+            <p:panel id="noticesPanel" styleClass="base-tab-inner-panel" style="width: 802px; min-height: 450px;">
+              <ui:include src="/sections/platform/administration/administrationFeed.xhtml" />
+            </p:panel>
+          </p:panel>
+        </h:panelGroup>
+      </h:panelGroup>
+      <h:panelGroup id="adminStatusStatsPanel" styleClass="bottomRight" style="width: 27%; padding-right: 20px; padding-bottom: 15px;">
+        <ol id="innerTab">
+          <li id="uberSVNStatsInnerTab"><h:commandLink actionListener="#{administrationStatusManagedBean.selectUberSVNStatsTab}"
+              update="adminStatusStatsPanel">
+              <span>#{msg.uberSVNStatsTabText}</span>
+            </h:commandLink></li>
+          <li id="systemStatsInnerTab"><h:commandLink actionListener="#{administrationStatusManagedBean.selectSystemStatsTab}"
+              update="adminStatusStatsPanel">
+              <span>#{msg.systemStatsTabText}</span>
+            </h:commandLink></li>
+        </ol>
+        <p:panel styleClass="base-tab-panel" style="width: 315px;">
+          <p:panel id="uberSVNStatsPanel" styleClass="base-tab-inner-panel" style="width: 305px; min-height: 251px; text-align:left;"
+            rendered="#{administrationStatusManagedBean.displayUberSVNStats}">
+            <h:panelGrid columns="2">
+              <h:outputLabel id="uberSVNNoOfReposLabel" for="uberSVNNoOfRepos" styleClass="adminStatusLabel"
+                value="#{msg.adminStatusUberSVNStatsNoOfRepositoriesLabel} : " />
+              <h:outputText id="uberSVNNoOfRepos" value="#{administrationStatusManagedBean.numberOfRepositories}"
+                styleClass="adminStatusText" />
+              <h:outputLabel id="uberSVNTotalSizeOfRepositoriesLabel" for="uberSVNTotalSizeOfRepos" styleClass="adminStatusLabel"
+                value="#{msg.adminStatusUberSVNStatsTotalSizeOfRepositoriesLabel} : " />
+              <h:outputText id="uberSVNTotalSizeOfRepos" value="#{administrationStatusManagedBean.totalSizeOfRepositories}"
+                styleClass="adminStatusText" />
+              <h:outputLabel id="uberSVNNoOfUsersLabel" for="uberSVNNoOfUsers" styleClass="adminStatusLabel"
+                value="#{msg.adminStatusUberSVNStatsNoOfUsersLabel} : " />
+              <h:outputText id="uberSVNNoOfUsers" value="#{administrationStatusManagedBean.numberOfUsers}" styleClass="adminStatusText" />
+              <h:outputLabel id="uberSVNNoOfTeamsLabel" for="uberSVNNoOfTeams" styleClass="adminStatusLabel"
+                value="#{msg.adminStatusUberSVNStatsNoOfTeamsLabel} : " />
+              <h:outputText id="uberSVNNoOfTeams" value="#{administrationStatusManagedBean.numberOfTeams}" styleClass="adminStatusText" />
+            </h:panelGrid>
+          </p:panel>
+          <p:panel id="systemStatsPanel" styleClass="base-tab-inner-panel" style="width: 305px; min-height: 251px; text-align:left;"
+            rendered="#{!administrationStatusManagedBean.displayUberSVNStats}">
+            <h:panelGrid columns="2">
+              <h:outputLabel id="systemOSNameLabel" for="systemOSName" value="#{msg.adminStatusSystemStatsOSNameLabel} : "
+                styleClass="adminStatusLabel" />
+              <h:outputText id="systemOSName" value="#{administrationStatusManagedBean.systemOSName}" styleClass="adminStatusText" />
+              <h:outputLabel id="systemNumOfCPUsLabel" for="systemNumOfCPUs" styleClass="adminStatusLabel"
+                value="#{msg.adminStatusSystemStatsNumOfCPUsLabel} : " />
+              <h:outputText id="systemNumOfCPUs" value="#{administrationStatusManagedBean.numOfCPUs}" styleClass="adminStatusText" />
+              <h:outputLabel id="systemTotalMemoryLabel" for="systemTotalMemory" styleClass="adminStatusLabel"
+                value="#{msg.adminStatusSystemStatsTotalMemoryLabel} : " />
+              <h:outputText id="systemTotalMemory" value="#{administrationStatusManagedBean.totalSystemMemory}" styleClass="adminStatusText" />
+              <h:outputLabel id="systemFreeMemoryLabel" for="systemFreeMemory" styleClass="adminStatusLabel"
+                value="#{msg.adminStatusSystemStatsFreeMemoryLabel} : " />
+              <h:outputText id="systemFreeMemory" value="#{administrationStatusManagedBean.freeSystemMemory}" styleClass="adminStatusText" />
+            </h:panelGrid>
+          </p:panel>
+        </p:panel>
+        <ol id="innerTab">
+          <li id="serverStatusInnerTab"><h:commandLink actionListener="#{administrationStatusManagedBean.selectServerStatusTab}"
+              update="adminStatusStatsPanel">
+              <span>#{msg.serverStatusTabText}</span>
+            </h:commandLink></li>
+          <li id="uptimeStatusInnerTab"><h:commandLink actionListener="#{administrationStatusManagedBean.selectUptimeStatusTab}"
+              update="adminStatusStatsPanel">
+              <span>#{msg.uptimeStatusTabText}</span>
+            </h:commandLink></li>
+        </ol>
+        <p:panel styleClass="base-tab-panel" style="width: 315px;">
+          <p:panel id="serverStatusPanel" styleClass="base-tab-inner-panel" style="width: 305px; min-height: 251px;"
+            rendered="#{administrationStatusManagedBean.displayServerStatus}">
+            <h:panelGrid columns="3" width="100%" columnClasses="adminServerStatusLight, adminServerStatusLabel,  adminServerStatusControls">
+              <h:graphicImage id="subversionServerStatus" style="border: none;" library="img/platform" name="#{basePage.apacheStatusImage}" />
+              <h:outputText id="adminStatusSubversionServerLabel" for="subversionServerStatus" value="#{msg.apacheStatusLabel}" />
+              <h:panelGrid columns="3"
+                columnClasses="adminServerStatusControlsInner, adminServerStatusControlsInner, adminServerStatusControlsInner">
+                <p:commandLink update="growl, adminStatusPanel" onclick="apacheStatusDialog.show()" oncomplete="apacheStatusDialog.hide()"
+                  actionListener="#{administrationStatusManagedBean.stopApacheServer}"
+                  rendered="#{administrationStatusManagedBean.apacheServerAvailable}">
+                  <h:graphicImage style="border: none;" library="img/platform/icons" name="apache_stop_small.png"
+                    title="#{msg.stopApacheAltText}" />
+                </p:commandLink>
+                <p:spacer rendered="#{!administrationStatusManagedBean.apacheServerAvailableCache}" />
+                <p:spacer rendered="#{!administrationStatusManagedBean.apacheServerAvailableCache}" />
+                <p:commandLink update="growl, adminStatusPanel" onclick="apacheStatusDialog.show()" oncomplete="apacheStatusDialog.hide()"
+                  actionListener="#{administrationStatusManagedBean.startApacheServer}"
+                  rendered="#{!administrationStatusManagedBean.apacheServerAvailableCache}">
+                  <h:graphicImage style="border: none;" library="img/platform/icons" name="apache_start_small.png"
+                    title="#{msg.startApacheAltText}" />
+                </p:commandLink>
+                <p:spacer rendered="#{administrationStatusManagedBean.apacheServerAvailableCache}" />
+                <p:commandLink update="growl, adminStatusPanel" onclick="apacheStatusDialog.show()" oncomplete="apacheStatusDialog.hide()"
+                  actionListener="#{administrationStatusManagedBean.restartApacheServer}"
+                  rendered="#{administrationStatusManagedBean.apacheServerAvailableCache}">
+                  <h:graphicImage style="border: none;" library="img/platform/icons" name="apache_restart_small.png"
+                    title="#{msg.restartApacheAltText}" />
+                </p:commandLink>
+              </h:panelGrid>
+              <h:graphicImage id="uberSVNServerStatus" style="border: none;" library="img/platform" name="greenlight.png" />
+              <h:outputText id="adminStatusUberSVNServerLabel" for="uberSVNServerStatus" value="#{msg.adminStatusUberSVNLabel}:" />
+              <h:panelGrid columns="3"
+                columnClasses="adminServerStatusControlsInner, adminServerStatusControlsInner, adminServerStatusControlsInner">
+                <p:spacer />
+                <p:spacer />
+                <p:commandLink onclick="uberSVNStatusDialog.show()" ajax="true" id="restartLink" update="growl"
+                  actionListener="#{administrationStatusManagedBean.restartUberSVNServer}">
+                  <h:graphicImage style="border: none;" library="img/platform/icons" name="apache_restart_small.png"
+                    title="#{msg.restartUberSVNAltText}" />
+                </p:commandLink>
+              </h:panelGrid>
+            </h:panelGrid>
+          </p:panel>
+          <p:panel id="uptimeStatusPanel" styleClass="base-tab-inner-panel" style="width: 305px; min-height: 251px;"
+            rendered="#{!administrationStatusManagedBean.displayServerStatus}">
+            <h:panelGrid columns="1" width="100%" columnClasses="adminStatusUptime">
+              <h:outputLabel id="adminStatusSystemUptimeLabel" for="systemUptime" styleClass="adminStatusLabel"
+                value="#{msg.adminStatusSystemUptimeLabel} : " />
+              <h:outputText id="systemUptime" value="#{administrationStatusManagedBean.systemUptime}" styleClass="adminStatusText" />
+              <h:outputLabel id="adminStatusUberSVNUptimeLabel" for="uberSVNUptime" styleClass="adminStatusLabel"
+                value="#{msg.adminStatusUberSVNUptimeLabel} : " />
+              <h:outputText id="uberSVNUptime" value="#{administrationStatusManagedBean.uberSVNUptime}" styleClass="adminStatusText" />
+              <h:outputLabel id="adminStatusSubversionUptimeLabel" for="subversionUptime" styleClass="adminStatusLabel"
+                value="#{msg.adminStatusSubversionUptimeLabel} : " />
+              <h:outputText id="subversionUptime" value="#{administrationStatusManagedBean.subversionUptime}" styleClass="adminStatusText" />
+              <h:outputLabel id="adminStatusSVNConfigReloadedLabel" for="subversionConfigReloaded" styleClass="adminStatusLabel"
+                value="#{msg.adminStatusLastConfigurationReloadLabel} : " />
+              <h:outputText id="subversionConfigReloaded" value="#{administrationStatusManagedBean.SVNConfigReloadedDate}"
+                styleClass="adminStatusText" />
+            </h:panelGrid>
+          </p:panel>
+        </p:panel>
+      </h:panelGroup>
+    </h:panelGrid>
+  </p:panel>
+  <p:dialog modal="true" widgetVar="apacheStatusDialog" header="Processing" draggable="false" closable="false" resizable="false" width="200"
+    height="150">
+    <h:graphicImage id="apacheStatusImage" style="border:0; margin-left: auto; margin-right: auto; display: block;" library="img/platform"
+      name="progress.gif" />
+  </p:dialog>
+  <p:dialog modal="true" onShow="reloadPage()" widgetVar="uberSVNStatusDialog" header="Processing" draggable="false" closable="false"
+    resizable="false" width="200" height="150">
+    <h:graphicImage id="uberSVNStatusImage" style="border:0; margin-left: auto; margin-right: auto; display: block;" library="img/platform"
+      name="progress.gif" />
+  </p:dialog>
+  <script type="text/javascript">
+			function reloadPage() {
+				setTimeout("location.reload(true);", 40000);
+			}
+			jQuery(document)
+					.ready(
+							function() {
+								var tabElement = '#noticesInnerTab';
+								jQuery(tabElement).addClass('current');
+								var tabElement = '#'
+										+ '#{administrationStatusManagedBean.statsTabToDisplay}';
+								jQuery(tabElement).addClass('current');
+								var tabElement = '#'
+										+ '#{administrationStatusManagedBean.statusTabToDisplay}';
+								jQuery(tabElement).addClass('current');
+							});
+		</script>
+</ui:composition>
+</html>

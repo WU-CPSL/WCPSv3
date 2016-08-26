@@ -1,0 +1,42 @@
+# $Id: Portfile 83385 2011-08-31 01:52:26Z dports@macports.org $
+
+PortSystem          1.0
+
+name                tinc
+version             1.0.13
+categories          net
+maintainers         goodlook.com.au:mike
+license             GPL-2
+platforms           darwin
+
+description         Virtual Private Network Tool
+
+long_description    tinc is a Virtual Private Network (VPN) daemon that uses \
+                    tunneling and encryption to create a secure private \
+                    network between hosts on the Internet.
+
+homepage            http://www.tinc-vpn.org/
+master_sites        ${homepage}packages/
+
+checksums           md5     86263994d38c750431efd17e9a91a248 \
+                    sha1    d84070502d693cf46c93d324cdf1686d67617db4 \
+                    rmd160  72e3063887546fb82e5c740a71b52840bd04237d
+
+depends_lib         port:tuntaposx \
+                    port:zlib \
+                    port:openssl \
+                    port:lzo2
+
+post-destroot {
+    set docdir ${destroot}${prefix}/share/doc/${name}
+    xinstall -d ${docdir}
+    xinstall -m 644 -W ${worksrcpath} \
+        AUTHORS \
+        COPYING \
+        COPYING.README \
+        ChangeLog \
+        NEWS \
+        README \
+        THANKS \
+        ${docdir}
+}

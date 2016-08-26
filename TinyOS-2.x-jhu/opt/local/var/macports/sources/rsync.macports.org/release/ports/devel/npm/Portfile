@@ -1,0 +1,57 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89749 2012-02-09 08:37:01Z ciserlohn@macports.org $
+
+PortSystem          1.0
+
+name                npm
+version             1.1.1
+categories          devel
+platforms           darwin
+license             MIT
+maintainers         ciserlohn
+
+supported_archs     noarch
+
+description         node package manager
+long_description    npm is a package manager for node. \
+                    You can use it to install and publish your node programs. \
+		            It manages dependencies and does other cool stuff.
+
+homepage            http://www.npmjs.org/
+
+master_sites        http://registry.npmjs.org/npm/-/
+
+extract.suffix      .tgz
+
+checksums           rmd160  e384d500596ded028510ae5368c8e4980340f9d3 \
+                    sha256  9cfb2b3005d7558f236710ec91bbfb833ab9465530fe03b6f0a765346e9b6b02
+
+worksrcdir          "package"
+
+depends_lib         path:bin/node:nodejs
+
+use_configure       no
+
+patchfiles          patch-lib-update.js
+
+post-patch {
+    regsub -all {/} "^${prefix}/(bin/npm\\|lib/node_modules/npm)+" {\\\/} npm_path_jsregex
+    reinplace "s|@@NPM_PATH_JSREGEX@@|${npm_path_jsregex}|g" ${worksrcpath}/lib/update.js
+}
+
+build {}
+
+destroot.cmd        ${prefix}/bin/node ./cli.js
+destroot.args       --global .
+destroot.destdir    --prefix=${destroot}${prefix}
+
+notes "
+It is not recommended to install packages globally. But if you do so\
+please be aware that they won't get cleaned up when you deactivate\
+or uninstall ${name}. Globally installed packages will remain in\
+${prefix}/lib/node_modules/ until you manually delete them.
+" 
+
+livecheck.type      regex
+livecheck.url       http://registry.npmjs.org/npm
+livecheck.regex     {"latest":"(.*?)"}

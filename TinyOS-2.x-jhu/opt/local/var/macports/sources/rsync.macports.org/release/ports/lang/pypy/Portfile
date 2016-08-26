@@ -1,0 +1,85 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89843 2012-02-13 03:01:22Z jmr@macports.org $
+
+PortSystem          1.0
+
+name                pypy
+version             1.8
+set changeset       2346207d9946
+categories          lang python devel
+license             MIT PSF
+maintainers         jmr openmaintainer
+description         implementation of Python in Python
+long_description \
+   PyPy is both a reimplementation of Python in Python, and a framework for \
+   implementing interpreters and virtual machines for programming languages, \
+   especially dynamic languages.
+
+platforms           darwin
+
+homepage            http://pypy.org/
+# bitbucket tarballs are apparently regenerated sometimes without the contents changing
+#master_sites
+master_sites        https://bitbucket.org/pypy/pypy/get/
+use_bzip2           yes
+distname            release-${version}
+worksrcdir          ${name}-${name}-${changeset}
+
+checksums           rmd160 70fe569b466357ee64685c8ce15278d24862c711 \
+                    sha256 ac98ad6d884207f8325ff4c783104ebea57a3fcddfef32abcdf97fd4307b6287
+
+depends_build       port:pkgconfig
+depends_lib         port:libffi \
+                    port:python27
+
+patchfiles          darwin.py.diff
+
+use_configure       no
+
+# use pypy to build if it's already installed
+# XXX 1.7 crashes building 1.8
+#if {[file executable ${prefix}/lib/pypy/pypy-c]} {
+#    build.cmd       ${prefix}/lib/pypy/pypy-c
+#} else {
+    build.cmd       ${prefix}/bin/python2.7
+#}
+
+platform darwin {
+    # use arch -foo if available
+    if {${os.major} >= 9} {
+        build.cmd arch -${build_arch} ${build.cmd}
+    }
+}
+build.dir           ${worksrcpath}/pypy/translator/goal
+build.args          --batch --cc=${configure.cc} --opt=jit \
+                    --make-jobs=${build.jobs} \
+                    --cflags='${configure.cc_archflags} ${configure.cppflags} ${configure.ldflags}'
+build.target        translate.py
+build.post_args     targetpypystandalone.py
+
+# JIT is not available on powerpc at present
+if {${os.arch} != "i386"} {
+    build.args-delete --opt=jit
+    build.args-append --opt=3
+}
+
+destroot {
+    xinstall -d ${destroot}${prefix}/lib/${name}/lib-python
+    copy ${worksrcpath}/lib-python/2.7 ${worksrcpath}/lib-python/modified-2.7 \
+         ${destroot}${prefix}/lib/${name}/lib-python
+    copy ${worksrcpath}/lib_pypy ${destroot}${prefix}/lib/${name}
+    # library search paths changed quite inconveniently such that the binary
+    # won't run if it's in ${prefix}/bin
+    xinstall -m 755 ${build.dir}/pypy-c ${destroot}${prefix}/lib/${name}
+    ln -s ${prefix}/lib/${name}/pypy-c ${destroot}${prefix}/bin
+}
+
+variant opt1 description {use optimization level 1 for faster build (but slower execution)} {
+    depends_lib-append port:boehmgc
+    build.args-delete  --opt=3 --opt=jit
+    build.args-append  --opt=1
+}
+
+livecheck.type      regex
+livecheck.url       http://pypy.org/download.html
+livecheck.regex     pypy-(\[0-9.\]+)-src${extract.suffix}

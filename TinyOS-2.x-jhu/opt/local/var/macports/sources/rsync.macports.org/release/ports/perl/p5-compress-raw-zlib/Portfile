@@ -1,0 +1,17 @@
+# $Id: Portfile 84447 2011-09-26 12:28:46Z jmr@macports.org $
+
+PortSystem          1.0
+PortGroup           perl5 1.0
+
+perl5.setup         Compress-Raw-Zlib 2.035
+revision            1
+license             {Artistic-1 GPL}
+maintainers         nomaintainer
+description         The Compress::Raw::Zlib module provides a Perl \
+                    interface to the zlib compression library
+long_description    ${description}
+
+platforms           darwin
+
+checksums           sha1    4fe8fdcf801408d6faa29e2bf6c9c27ff9a4ab29 \
+                    rmd160  29e8d52dc224984be8bbff4dac25d6813858febe

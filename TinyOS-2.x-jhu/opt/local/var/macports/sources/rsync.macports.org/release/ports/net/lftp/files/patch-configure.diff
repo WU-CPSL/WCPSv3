@@ -1,0 +1,11 @@
+--- configure.orig	2011-06-28 04:31:08.000000000 -0500
++++ configure	2011-08-11 03:52:26.000000000 -0500
+@@ -42599,7 +42599,7 @@
+   return 0;
+ }
+ _ACEOF
+-for ac_lib in '' tinfo curses ncurses; do
++for ac_lib in '' tinfo ncurses curses; do
+   if test -z "$ac_lib"; then
+     ac_res="none required"
+   else

@@ -1,0 +1,33 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 87798 2011-12-07 00:15:30Z ryandesign@macports.org $
+
+PortSystem              1.0
+
+name                    eina
+epoch                   2
+version                 1.1.0
+categories              devel
+platforms               darwin
+maintainers             ryandesign openmaintainer
+license                 LGPL-2.1
+
+description             multi-platform data type library
+
+long_description        ${name} is a multi-platform library that provides optimized data types and tools
+
+homepage                http://trac.enlightenment.org/e/wiki/Eina
+master_sites            http://download.enlightenment.org/releases/
+use_bzip2               yes
+
+checksums               rmd160  14a565f6084a9cd1dcd1cff7327016a77d4aeeae \
+                        sha256  0c509c8dcef08945d0932ee5ba76e99eb6b5c3035a1b63ff0ce73e21630193c0
+
+depends_lib             port:libiconv
+
+configure.args          --disable-doc
+
+use_parallel_build      yes
+
+livecheck.type          regex
+livecheck.url           [lindex ${master_sites} 0]
+livecheck.regex         ${name}-(\[0-9a-z.\]+)${extract.suffix}

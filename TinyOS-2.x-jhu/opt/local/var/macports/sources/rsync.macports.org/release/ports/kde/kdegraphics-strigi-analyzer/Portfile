@@ -1,0 +1,26 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89401 2012-01-28 09:32:27Z nicos@macports.org $
+
+PortSystem          1.0
+PortGroup           kde4   1.1
+
+name                kdegraphics-strigi-analyzer
+version             4.8.0
+categories          kde kde4
+license             GPL-2+ LGPL-2+
+maintainers         nicos openmaintainer
+description         Component of kdegraphics
+long_description    ${description}
+platforms           darwin
+homepage            http://www.kde.org/
+master_sites        kde:stable/${version}/src/
+use_bzip2           yes
+distname            kdegraphics-strigi-analyzer-${version}
+checksums           rmd160  45910d2ccef9364b144a991110b481c779020e7a \
+                    sha256  e97fad567ad994f6ca50ad8b88446168b43c0e26e3f2b9e727146b6d0e72d0b4
+
+depends_lib-append  port:kdelibs4 \
+                    port:tiff port:strigi
+
+livecheck.url       http://kde.mirrors.hoobly.com/stable/latest/src/
+livecheck.regex     kdegraphics-strigi-analyzer-(\\d+\\.\\d+\\.\\d+)${extract.suffix}

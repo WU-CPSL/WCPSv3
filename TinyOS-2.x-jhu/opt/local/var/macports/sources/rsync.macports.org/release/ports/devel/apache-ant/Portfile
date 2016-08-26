@@ -1,0 +1,83 @@
+# $Id: Portfile 89269 2012-01-22 21:50:24Z blair@macports.org $
+
+PortSystem 1.0
+
+name                    apache-ant
+version                 1.8.2
+categories              devel java
+license                 Apache-2 W3C
+maintainers             openmaintainer blair
+supported_archs         noarch
+
+description             Java opensource build system
+long_description        Ant is a Java based build tool.  In theory it is \
+                        kind of like make without make's wrinkles.  Ant \
+                        uses XML build files that define a set of targets.  \
+                        Each target has dependencies (other targets) and \
+                        contains a set of tasks to perform.
+homepage                http://ant.apache.org/
+
+platforms               darwin freebsd
+
+distname                ${name}-${version}-bin
+master_sites            apache:ant/
+master_sites.mirror_subdir        binaries
+checksums               md5     9e9ae9fc7352960191489a1286fb0928 \
+                        sha1    03f6cb7d052561d536bb8c0802874854c7e357d5 \
+                        rmd160  b83e9b5c9a04388449498f98834c5047956126c8 
+
+worksrcdir              ${name}-${version}
+set workTarget          ""
+
+use_bzip2               yes
+use_configure           no
+
+build.cmd               true
+
+platform darwin {
+    extract.post_args   | gnutar -x
+    build.env           JAVA_HOME=/Library/Java/Home
+}
+
+# Ant is installed from the binary (jar) distribution by default. Due to
+# bootstrapping issues, the source variant generally doesn't build a very
+# usable ant: the ant tasks (such as junit) are non-functional as their
+# dependent support isn't available when ant is built, due to circular
+# dependencies back to ant.
+variant source description "build from source; not recommended" {
+        distname                        ${name}-${version}-src
+        master_sites.mirror_subdir      source
+        checksums                       md5    0d9e108afcd15b820150b8085c96d2b1 \
+                                        sha1   7e4953cbd97c8ee3bc69b22f0d8a797d6669d8c5 \
+                                        rmd160 8115770a940415637fc41aceb91dd29550cbedbf
+        set workTarget                  /${name}
+
+        build.cmd                       ./build.sh
+        build.args                      -Dchmod.fail=false -Ddist.name=${name}
+        build.target                    dist
+}
+
+pre-destroot {
+        delete \
+                ${worksrcpath}${workTarget}/bin/ant.bat \
+                ${worksrcpath}${workTarget}/bin/ant.cmd \
+                ${worksrcpath}${workTarget}/bin/antRun.bat \
+                ${worksrcpath}${workTarget}/bin/antenv.cmd \
+                ${worksrcpath}${workTarget}/bin/envset.cmd \
+                ${worksrcpath}${workTarget}/bin/lcp.bat \
+                ${worksrcpath}${workTarget}/bin/runrc.cmd
+}
+
+destroot        {
+        xinstall -m 755 -d ${destroot}${prefix}/share/java
+        file copy ${worksrcpath}${workTarget} \
+                ${destroot}${prefix}/share/java/${name}
+        system "ln -fs ${prefix}/share/java/${name}/bin/ant \
+                ${destroot}${prefix}/bin/ant"
+}
+
+universal_variant       no
+
+livecheck.type          regex
+livecheck.url           http://www.apache.org/dist/ant/binaries/
+livecheck.regex         {apache-ant-(\d+(?:\.\d+)*)-bin.tar.bz2}

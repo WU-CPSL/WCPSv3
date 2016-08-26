@@ -1,0 +1,23 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 84550 2011-09-27 21:05:11Z snc@macports.org $
+
+PortSystem 1.0
+
+name		xskat
+version		4.0
+revision        1
+categories	games x11
+platforms	darwin
+maintainers	mww
+description	X graphical skat card game
+long_description	${description}
+homepage	http://www.xskat.de/
+master_sites	http://www.xskat.de/
+checksums	sha1 b90859742b62369273d2683bd69006713e1e214d
+depends_lib	port:xorg-libX11
+depends_build   path:bin/xmkmf:imake \
+                port:gccmakedep
+
+destroot.target-append	install.man
+destroot.destdir-append	BINDIR=${prefix}/bin MANPATH=${prefix}/share/man
+

@@ -1,0 +1,27 @@
+# $Id: Portfile 30249 2007-10-23 02:12:47Z jmpp@macports.org $
+
+PortSystem 1.0
+PortGroup python24 1.0
+
+name			py-simpy
+version			1.5
+revision		1
+categories		python
+maintainers		nomaintainer
+platforms		darwin freebsd
+description		python based simulation language
+long_description	SimPy is an object-oriented, process-based \
+				discrete-event simulation language based on standard Python.
+
+homepage		http://simpy.sourceforge.net/
+master_sites	sourceforge:simpy
+distname		SimPy-${version}
+checksums		md5 84729bbcc120d10f6681a561691700c7
+
+post-destroot	{
+	file delete -force ${destroot}${prefix}/share/doc/${name}
+	file copy ${worksrcpath}/SimPyDocs \
+		${destroot}${prefix}/share/doc/${name}
+	file copy ${worksrcpath}/SimPyModels \
+		${destroot}${prefix}/share/doc/${name}/examples
+}

@@ -1,0 +1,48 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89535 2012-02-01 19:25:12Z jeremyhu@macports.org $
+
+PortSystem 1.0
+
+name         imake
+version      1.0.3
+revision     2
+categories   x11 devel
+license      X11
+installs_libs no
+platforms    darwin
+maintainers  mcalhoun openmaintainer
+
+description       Discontinued imake build system.
+long_description  ${description}
+
+homepage http://xorg.freedesktop.org/
+master_sites xorg:individual/util/
+
+use_bzip2 yes
+
+checksums           md5     ff553c4646edcc9e76b7308991ad421a \
+                    sha1    625a974dd0fe4c4e9d7ec036fc7b079ec05185f1 \
+                    rmd160  5cbd5f23fc8360a10cb36c367405f5950443349d
+
+patchfiles-append patch-imakemdep.h.diff
+
+post-patch {
+    reinplace "s|__MACPORTS_CPP__|${configure.cpp}|g" ${worksrcpath}/imakemdep.h
+    reinplace "s|__MACPORTS_CC__|${configure.cc}|g"   ${worksrcpath}/imakemdep.h
+}
+
+depends_run    port:xorg-cf-files path:bin/perl:perl5
+depends_build  port:pkgconfig port:xorg-xproto
+
+configure.env-append  HAS_PERL=yes RAWCPP=${configure.cpp}
+
+post-configure {
+    # Ensure that the MacPorts perl is used
+    reinplace \
+        "s|#!/usr/bin/perl|#!${prefix}/bin/perl|" \
+        ${worksrcpath}/mkhtmlindex.pl
+}
+
+livecheck.type   regex
+livecheck.url    "http://xorg.freedesktop.org/releases/individual/util/?C=M;O=D"
+livecheck.regex  ${name}-(\\d+(?:\\.\\d+)*)

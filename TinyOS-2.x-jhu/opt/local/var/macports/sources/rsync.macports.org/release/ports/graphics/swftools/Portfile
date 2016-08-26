@@ -1,0 +1,46 @@
+# $Id: Portfile 88455 2012-01-03 02:25:03Z ryandesign@macports.org $
+
+PortSystem          1.0
+name                swftools
+version             0.9.1
+revision            2
+categories          graphics
+maintainers         nomaintainer
+description         SWF manipulation and generation tools
+long_description    ${description}
+
+platforms           darwin
+
+homepage            http://www.swftools.org
+master_sites        ${homepage}
+
+checksums           md5     72dc4a7bf5cdf98c28f9cf9b1d8f5d7a \
+                    sha1    6aac250f7cbe034c1c638ee1a1fa2f3a554d1311 \
+                    rmd160  cf57bfdf92e352385f57db55c8f3987bef8808f2
+
+depends_lib         port:jpeg port:openjpeg port:freetype port:lame \
+                    path:include/gif_lib.h:giflib port:python26
+
+patchfiles          patch-Makefile.common.in.diff \
+                    patch-configure.diff \
+                    patch-setup.py.diff
+
+configure.python    ${prefix}/bin/python2.6
+
+# Make sure to not link against OpenGL libs from the mesa port, in case it
+# is installed
+configure.env       ac_cv_lib_GL_glBegin=no
+
+# Make sure LAME gets found during configure step
+configure.cppflags-append   -I${prefix}/include/lame
+
+configure.universal_args-delete --disable-dependency-tracking
+
+post-destroot {
+   set swfs_dir ${prefix}/share/swftools/swfs
+   delete ${destroot}${swfs_dir}/default_loader.swf \
+      ${destroot}${swfs_dir}/default_viewer.swf
+   ln -s ${swfs_dir}/tessel_loader.swf ${destroot}${swfs_dir}/default_loader.swf
+   ln -s ${swfs_dir}/simple_viewer.swf ${destroot}${swfs_dir}/default_viewer.swf
+}
+

@@ -1,0 +1,19 @@
+# $Id: Portfile 85670 2011-10-15 15:50:33Z ecronin@macports.org $
+
+PortSystem		1.0
+PortGroup		perl5 1.0
+
+perl5.setup		Term-Prompt 1.04 Term
+revision        2
+license         {Artistic GPL}
+maintainers		ecronin openmaintainer
+description		Perl extension for prompting a user for information
+long_description	${description}
+#distname		TermPrompt-${perl5.moduleversion}
+checksums		md5 505213e26be3e46ed03d47f0c955f5f9
+platforms		darwin
+if {${perl5.major} != ""} {
+depends_lib-append	port:p${perl5.major}-term-readkey
+
+supported_archs noarch
+}

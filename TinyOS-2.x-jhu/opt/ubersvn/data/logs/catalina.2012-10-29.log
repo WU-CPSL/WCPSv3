@@ -1,0 +1,92 @@
+Oct 29, 2012 5:49:15 AM org.apache.coyote.http11.Http11AprProtocol pause
+INFO: Pausing Coyote HTTP/1.1 on http-9890
+Oct 29, 2012 5:49:15 AM org.apache.coyote.http11.Http11AprProtocol pause
+INFO: Pausing Coyote HTTP/1.1 on http-9900
+Oct 29, 2012 5:49:16 AM org.apache.catalina.core.StandardService stop
+INFO: Stopping service Catalina
+Oct 29, 2012 5:49:17 AM org.apache.catalina.loader.WebappClassLoader clearReferencesThreads
+SEVERE: The web application [/ubersvn] appears to have started a thread named [HSQLDB Timer @54eeabe8] but has failed to stop it. This is very likely to create a memory leak.
+Oct 29, 2012 5:49:17 AM org.apache.catalina.loader.WebappClassLoader clearThreadLocalMap
+SEVERE: The web application [/ubersvn] created a ThreadLocal with key of type [com.sun.faces.util.Util$1] (value [com.sun.faces.util.Util$1@111de95a]) and a value of type [java.util.HashMap] (value [{com.sun.faces.patternCache={ = }}]) but failed to remove it when the web application was stopped. This is very likely to create a memory leak.
+Oct 29, 2012 5:49:20 AM org.apache.coyote.http11.Http11AprProtocol destroy
+INFO: Stopping Coyote HTTP/1.1 on http-9890
+Oct 29, 2012 5:49:20 AM org.apache.coyote.http11.Http11AprProtocol destroy
+INFO: Stopping Coyote HTTP/1.1 on http-9900
+Oct 29, 2012 9:37:32 AM org.apache.catalina.core.AprLifecycleListener init
+INFO: Loaded APR based Apache Tomcat Native library 1.1.20.
+Oct 29, 2012 9:37:32 AM org.apache.catalina.core.AprLifecycleListener init
+INFO: APR capabilities: IPv6 [true], sendfile [true], accept filters [false], random [true].
+Oct 29, 2012 9:37:32 AM org.apache.catalina.startup.SetAllPropertiesRule begin
+WARNING: [SetAllPropertiesRule]{Server/Service/Connector} Setting property 'clientAuth' to 'false' did not find a matching property.
+Oct 29, 2012 9:37:32 AM org.apache.coyote.http11.Http11AprProtocol init
+INFO: Initializing Coyote HTTP/1.1 on http-9890
+Oct 29, 2012 9:37:32 AM org.apache.coyote.http11.Http11AprProtocol init
+INFO: Initializing Coyote HTTP/1.1 on http-9900
+Oct 29, 2012 9:37:32 AM org.apache.catalina.startup.Catalina load
+INFO: Initialization processed in 812 ms
+Oct 29, 2012 9:37:32 AM org.apache.catalina.core.StandardService start
+INFO: Starting service Catalina
+Oct 29, 2012 9:37:32 AM org.apache.catalina.core.StandardEngine start
+INFO: Starting Servlet Engine: Apache Tomcat/6.0.33
+Oct 29, 2012 9:37:32 AM org.apache.catalina.startup.HostConfig deployWAR
+INFO: Deploying web application archive RepositoryBrowser.war
+Oct 29, 2012 9:37:39 AM org.apache.catalina.startup.HostConfig deployWAR
+INFO: Deploying web application archive ubersvn.war
+Oct 29, 2012 9:37:40 AM org.apache.catalina.core.StandardContext addApplicationListener
+INFO: The listener "com.sun.faces.config.ConfigureListener" is already configured for this context. The duplicate definition has been ignored.
+Oct 29, 2012 9:37:43 AM com.sun.faces.config.ConfigureListener contextInitialized
+INFO: Initializing Mojarra 2.0.3 (FCS b03) for context '/ubersvn'
+Oct 29, 2012 9:37:47 AM org.apache.catalina.startup.HostConfig deployDirectory
+INFO: Deploying web application directory ROOT
+Oct 29, 2012 9:37:47 AM org.apache.coyote.http11.Http11AprProtocol start
+INFO: Starting Coyote HTTP/1.1 on http-9890
+Oct 29, 2012 9:37:47 AM org.apache.coyote.http11.Http11AprProtocol start
+INFO: Starting Coyote HTTP/1.1 on http-9900
+Oct 29, 2012 9:37:47 AM org.apache.catalina.startup.Catalina start
+INFO: Server startup in 14756 ms
+Oct 29, 2012 6:21:35 PM org.apache.coyote.http11.Http11AprProtocol pause
+INFO: Pausing Coyote HTTP/1.1 on http-9890
+Oct 29, 2012 6:21:35 PM org.apache.coyote.http11.Http11AprProtocol pause
+INFO: Pausing Coyote HTTP/1.1 on http-9900
+Oct 29, 2012 6:21:36 PM org.apache.catalina.core.StandardService stop
+INFO: Stopping service Catalina
+Oct 29, 2012 6:21:36 PM org.apache.catalina.loader.WebappClassLoader clearReferencesThreads
+SEVERE: The web application [/ubersvn] appears to have started a thread named [HSQLDB Timer @614a616] but has failed to stop it. This is very likely to create a memory leak.
+Oct 29, 2012 6:21:36 PM org.apache.catalina.loader.WebappClassLoader clearThreadLocalMap
+SEVERE: The web application [/ubersvn] created a ThreadLocal with key of type [com.sun.faces.util.Util$1] (value [com.sun.faces.util.Util$1@249198a2]) and a value of type [java.util.HashMap] (value [{com.sun.faces.patternCache={ = }}]) but failed to remove it when the web application was stopped. This is very likely to create a memory leak.
+Oct 29, 2012 6:21:37 PM org.apache.coyote.http11.Http11AprProtocol destroy
+INFO: Stopping Coyote HTTP/1.1 on http-9890
+Oct 29, 2012 6:21:37 PM org.apache.coyote.http11.Http11AprProtocol destroy
+INFO: Stopping Coyote HTTP/1.1 on http-9900
+Oct 29, 2012 8:11:33 PM org.apache.catalina.core.AprLifecycleListener init
+INFO: Loaded APR based Apache Tomcat Native library 1.1.20.
+Oct 29, 2012 8:11:33 PM org.apache.catalina.core.AprLifecycleListener init
+INFO: APR capabilities: IPv6 [true], sendfile [true], accept filters [false], random [true].
+Oct 29, 2012 8:11:33 PM org.apache.catalina.startup.SetAllPropertiesRule begin
+WARNING: [SetAllPropertiesRule]{Server/Service/Connector} Setting property 'clientAuth' to 'false' did not find a matching property.
+Oct 29, 2012 8:11:33 PM org.apache.coyote.http11.Http11AprProtocol init
+INFO: Initializing Coyote HTTP/1.1 on http-9890
+Oct 29, 2012 8:11:33 PM org.apache.coyote.http11.Http11AprProtocol init
+INFO: Initializing Coyote HTTP/1.1 on http-9900
+Oct 29, 2012 8:11:33 PM org.apache.catalina.startup.Catalina load
+INFO: Initialization processed in 859 ms
+Oct 29, 2012 8:11:34 PM org.apache.catalina.core.StandardService start
+INFO: Starting service Catalina
+Oct 29, 2012 8:11:34 PM org.apache.catalina.core.StandardEngine start
+INFO: Starting Servlet Engine: Apache Tomcat/6.0.33
+Oct 29, 2012 8:11:34 PM org.apache.catalina.startup.HostConfig deployWAR
+INFO: Deploying web application archive RepositoryBrowser.war
+Oct 29, 2012 8:11:41 PM org.apache.catalina.startup.HostConfig deployWAR
+INFO: Deploying web application archive ubersvn.war
+Oct 29, 2012 8:11:42 PM org.apache.catalina.core.StandardContext addApplicationListener
+INFO: The listener "com.sun.faces.config.ConfigureListener" is already configured for this context. The duplicate definition has been ignored.
+Oct 29, 2012 8:11:46 PM com.sun.faces.config.ConfigureListener contextInitialized
+INFO: Initializing Mojarra 2.0.3 (FCS b03) for context '/ubersvn'
+Oct 29, 2012 8:11:49 PM org.apache.catalina.startup.HostConfig deployDirectory
+INFO: Deploying web application directory ROOT
+Oct 29, 2012 8:11:49 PM org.apache.coyote.http11.Http11AprProtocol start
+INFO: Starting Coyote HTTP/1.1 on http-9890
+Oct 29, 2012 8:11:49 PM org.apache.coyote.http11.Http11AprProtocol start
+INFO: Starting Coyote HTTP/1.1 on http-9900
+Oct 29, 2012 8:11:49 PM org.apache.catalina.startup.Catalina start
+INFO: Server startup in 15215 ms

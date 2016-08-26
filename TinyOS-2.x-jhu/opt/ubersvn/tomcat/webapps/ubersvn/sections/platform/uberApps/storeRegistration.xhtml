@@ -1,0 +1,213 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:p="http://primefaces.prime.com.tr/ui" xmlns:h="http://java.sun.com/jsf/html">
+<ui:composition>
+  <ol id="sub-toc">
+    <li><h:outputLink title="#{msg.uberAppsStoreTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/uberApps/viewStore.jsf">
+        <span>#{msg.uberAppsStoreTabText}</span>
+      </h:outputLink>
+    </li>
+    <li class="current"><h:outputLink title="#{msg.uberAppsAccountTabAltText}"
+        rendered="#{basePage.purchaser and storeAccountManagedBean.registered}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/uberApps/viewAccount.jsf">
+        <span>#{msg.uberAppsAccountTabText}</span>
+      </h:outputLink>
+    </li>
+    <li class="current"><h:outputLink title="#{msg.uberAppsAccountTabAltText}"
+        rendered="#{basePage.purchaser and !storeAccountManagedBean.registered}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/uberApps/storeRegistration.jsf">
+        <span>#{msg.uberAppsAccountTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink title="#{msg.uberAppsRequestedTabAltText}" rendered="#{basePage.purchaser or basePage.systemAdmin}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/uberApps/viewRequested.jsf">
+        <span>#{msg.uberAppsRequestedTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink title="#{msg.uberAppsInstalledTabAltText}" rendered="#{basePage.systemAdmin}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/uberApps/viewInstalled.jsf">
+        <span>#{msg.uberAppsInstalledTabText}</span>
+      </h:outputLink>
+    </li>
+  </ol>
+  <p:panel id="uberAppsRegistrationPurchasePanel" styleClass="tabbed-panel" style="height:605px;">
+      <p:panel style="width:100%; text-align:center;">
+        <!-- Registration -->
+
+        <h:outputText styleClass="storeFrontTitle" value="#{msg.accountRegistration}" style="text-align:center; font-size:40px;" />
+        <h:panelGrid columns="3" style="width:100%" columnClasses="appAccountLabelColumn, appAccountFieldColumn, appAccountValidationColumn">
+
+          <!-- First name -->
+          <h:panelGroup>
+            <h:outputText value="#{msg.accountFirstName}"></h:outputText>
+            <h:outputText value="*" style="color:red;" />
+          </h:panelGroup>
+          <h:inputText id="accountFirstName" value="#{storeRegistrationManagedBean.firstName}" required="true" style="width:100%"
+            styleClass="wizardFormField" requiredMessage="#{msg.accountFirstNameRequired}">
+            <f:validator validatorId="com.wandisco.ubersvn.containsNoNumbers" />
+          </h:inputText>
+          <h:message for="accountFirstName" />
+          <!-- Last Name -->
+          <h:panelGroup>
+            <h:outputText value="#{msg.accountLastName}" />
+            <h:outputText value="*" style="color:red;" />
+          </h:panelGroup>
+          <h:inputText id="accountLastName" value="#{storeRegistrationManagedBean.lastName}" required="true" style="width:100%"
+            styleClass="wizardFormField" requiredMessage="#{msg.accountLastNameRequired}">
+            <f:validator validatorId="com.wandisco.ubersvn.containsNoNumbers" />
+          </h:inputText>
+          <h:message for="accountLastName" />
+          <!-- Email -->
+          <h:panelGroup>
+            <h:outputText value="#{msg.accountEmail}" />
+            <h:outputText value="*" style="color:red;" />
+          </h:panelGroup>
+          <h:inputText id="accountEmail" value="#{storeRegistrationManagedBean.email}" required="true" style="width:100%"
+            styleClass="wizardFormField" requiredMessage="#{msg.accountEmailRequired}">
+            <f:validator validatorId="com.wandisco.ubersvn.isValidEmail" />
+          </h:inputText>
+          <h:message for="accountEmail" />
+          <!-- Company -->
+          <h:panelGroup>
+            <h:outputText value="#{msg.accountCompany}" />
+            <h:outputText value="*" style="color:red;" />
+          </h:panelGroup>
+          <h:inputText id="accountCompany" value="#{storeRegistrationManagedBean.company}" required="true" style="width:100%"
+            styleClass="wizardFormField" requiredMessage="#{msg.accountCompanyRequired}" />
+          <h:message for="accountCompany" />
+        </h:panelGrid>
+        
+        <p:spacer style="height:2px" />
+        <h:panelGrid columns="3" style="width:100%" columnClasses="appAccountLabelColumn, appAccountFieldColumn, appAccountValidationColumn">
+          <!-- Billing -->
+          <p:spacer />
+          <h:outputText styleClass="storeFrontTitle" value="#{msg.billing}" style="text-align:center; font-size:24px;" />
+          <p:spacer />
+          <!-- Address -->
+          <h:panelGroup>
+            <h:outputText value="#{msg.billingAddress}" />
+            <h:outputText value="*" style="color:red;" />
+          </h:panelGroup>
+          <h:inputText id="billingAddress" value="#{storeRegistrationManagedBean.billingAddress1}" required="true" style="width:100%"
+            styleClass="wizardFormField" requiredMessage="#{msg.billingAddressRequired}" />
+          <h:message for="billingAddress" />
+          <p:spacer />
+          <h:inputText value="#{storeRegistrationManagedBean.billingAddress2}" style="width:100%" styleClass="wizardFormField" />
+          <p:spacer />
+          <!-- Town/City -->
+          <h:panelGroup>
+            <h:outputText value="#{msg.billingTownCity}" />
+            <h:outputText value="*" style="color:red;" />
+          </h:panelGroup>
+          <h:inputText id="billingTownCity" value="#{storeRegistrationManagedBean.townCity}" required="true" style="width:100%"
+            styleClass="wizardFormField" requiredMessage="#{msg.billingTownCityRequired}" />
+          <h:message for="billingTownCity" />
+          <!-- Country -->
+          <h:panelGroup>
+            <h:outputText value="#{msg.billingCountry}" />
+            <h:outputText value="*" style="color:red;" />
+          </h:panelGroup>
+          <h:selectOneMenu id="this" value="#{storeRegistrationManagedBean.country}" style="width:100%;" styleClass="wizardFormField"
+            immediate="true">
+            <f:selectItems value="#{storeRegistrationManagedBean.countryOptions}" var="country" itemLabel="#{country}" itemValue="#{country}" />
+            <p:ajax event="change"
+              update="stateOptions billingStateProvince billingStateProvince3 billingStateProvince2 errorOptions billingStateProvince billingStateProvince2 billingStateProvince3" />
+          </h:selectOneMenu>
+          <p:spacer />
+          <!-- State/Province -->
+          <h:panelGroup>
+            <h:outputText value="#{msg.billingStateProvince}" />
+            <h:outputText value="*" style="color:red;" />
+          </h:panelGroup>
+
+          <h:panelGroup id="stateOptions" style="width:100%">
+            <h:inputText id="billingStateProvince" value="#{storeRegistrationManagedBean.stateProvince}" required="true" style="width:100%"
+              styleClass="wizardFormField" requiredMessage="#{msg.billingStateProvinceRequired}"
+              rendered="#{storeRegistrationManagedBean.country!='United States'&amp;&amp;storeRegistrationManagedBean.country!='Canada'}">
+              <f:validator validatorId="com.wandisco.ubersvn.containsNoNumbers" />
+            </h:inputText>
+            <h:selectOneMenu id="billingStateProvince2" value="#{storeRegistrationManagedBean.usStateProvince}" style="width:100%;"
+              styleClass="wizardFormField" rendered="#{storeRegistrationManagedBean.country=='United States'}" var="usState" itemLabel="#{usState}" itemValue="#{usState}">
+              <f:selectItems value="#{storeRegistrationManagedBean.usStateOptions}" />
+            </h:selectOneMenu>
+            <h:selectOneMenu id="billingStateProvince3" value="#{storeRegistrationManagedBean.canadaStateProvince}" var="canadaState" itemLabel="#{canadaState}" itemValue="#{canadaState}" style="width:100%;"
+              styleClass="wizardFormField" rendered="#{storeRegistrationManagedBean.country=='Canada'}">
+              <f:selectItems value="#{storeRegistrationManagedBean.canadaStateOptions}" />
+            </h:selectOneMenu>
+          </h:panelGroup>
+          <h:panelGroup id="errorOptions">
+            <h:message for="billingStateProvince" id="errorStateProvinces"
+              rendered="#{storeRegistrationManagedBean.country!='United States'&amp;&amp;storeRegistrationUpdateManagedBean.country!='Canada'}" />
+            <h:message for="billingStateProvince2" id="errorStateProvinces2"
+              rendered="#{storeRegistrationManagedBean.country=='United States'}" />
+            <h:message for="billingStateProvince3" id="errorStateProvinces3"
+              rendered="#{storeRegistrationManagedBean.country=='Canada'}" />
+          </h:panelGroup>
+          <!-- Zip/Postcode -->
+          <h:panelGroup>
+            <h:outputText value="#{msg.billingZipPostcode}"></h:outputText>
+            <h:outputText value="*" style="color:red;" />
+          </h:panelGroup>
+          <h:inputText id="billingZipPostcode" value="#{storeRegistrationManagedBean.zipPostCode}" required="true" style="width:100%"
+            styleClass="wizardFormField" requiredMessage="#{msg.billingZipPostcodeRequired}" />
+          <h:message for="billingZipPostcode" />
+        </h:panelGrid>
+        <p:spacer style="height:2px" />
+        <h:panelGrid columns="3" style="width:100%" columnClasses="appAccountLabelColumn, appAccountFieldColumn, appAccountValidationColumn">
+          <!-- Security -->
+          <p:spacer />
+          <h:outputText styleClass="storeFrontTitle" value="#{msg.security}" style="text-align:center; font-size:24px;" />
+          <p:spacer />
+          <!-- Question -->
+          <h:panelGroup>
+            <h:outputText value="#{msg.securityQuestion}" />
+            <h:outputText value="*" style="color:red;" />
+          </h:panelGroup>
+          <h:inputText id="securityQuestion" value="#{storeRegistrationManagedBean.securityQuestion}" required="true" style="width:100%"
+            styleClass="wizardFormField" requiredMessage="#{msg.securityQuestionRequired}" />
+          <h:message for="securityQuestion" />
+          <!-- Answer-->
+          <h:panelGroup>
+            <h:outputText value="#{msg.securityAnswer}" />
+            <h:outputText value="*" style="color:red;" />
+          </h:panelGroup>
+          <h:inputText id="securityAnswer" value="#{storeRegistrationManagedBean.securityAnswer}" required="true" style="width:100%"
+            styleClass="wizardFormField" requiredMessage="#{msg.securityAnswerRequired}" />
+          <h:message for="securityAnswer" />
+        </h:panelGrid>
+      </p:panel>
+
+      <!-- Next/Cancel -->
+      <h:panelGroup>
+        <h:panelGroup styleClass="bottomLeft" style="width:30%;">
+          <h:outputLink styleClass="cancelLink"
+            value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/uberApps/viewStore.jsf"
+            title="#{msg.uberAppsCancelLinkAltText}">
+            <span><u>#{msg.addUserCancelLinkText}</u> </span>
+          </h:outputLink>
+        </h:panelGroup>
+        <h:panelGroup styleClass="bottomRight" style="width:50%; margin-right:10px; margin-bottom:10px;">
+          <h:message style="color: red; font-size: 10px;" for="tcs" />
+
+          <h:outputLink value="http://www.ubersvn.com/accountTerms" target="blank">
+            <h:outputText value="#{msg.accountTermsAndConditions}" />
+          </h:outputLink>
+
+          <h:selectBooleanCheckbox id="tcs" value="#{storeRegistrationManagedBean.tsAndCs}" required="true"
+            requiredMessage="#{msg.accountTermsAndConditionsRequired}">
+            <f:validator validatorId="com.wandisco.ubersvn.requiredCheckboxValidator" />
+          </h:selectBooleanCheckbox>
+          <p:commandButton action="#{storeRegistrationManagedBean.register}" styleClass="roundedButtonSmall" value="#{msg.registerButtonText}"
+            ajax="false" onclick="statusDialog.show()" oncomplete="statusDialog.hide()" />
+        </h:panelGroup>
+      </h:panelGroup>
+    <p:dialog modal="true" widgetVar="statusDialog" header="#{msg.accountRegisteringAccount}" draggable="false" closable="false"
+      resizable="false" width="240" height="150">
+      <h:graphicImage id="progressImage" style="border:0; margin-left: auto; margin-right: auto; display: block;" library="img/platform"
+        name="progress.gif" />
+    </p:dialog>
+  </p:panel>
+</ui:composition>
+</html>

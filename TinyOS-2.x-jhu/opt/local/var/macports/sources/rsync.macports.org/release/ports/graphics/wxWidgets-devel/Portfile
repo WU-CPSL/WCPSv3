@@ -1,0 +1,133 @@
+# $Id: Portfile 88028 2011-12-16 20:00:03Z jwa@macports.org $
+
+PortSystem 1.0
+PortGroup               archcheck 1.0
+
+name            wxWidgets-devel
+conflicts       wxgtk wxWidgets
+version         2.9.3
+
+license         wxwidgets-3.1
+categories      graphics devel
+platforms       darwin
+maintainers     jwa
+description     mature cross-platform C++ GUI framework
+long_description    wxWidgets is a mature open-source cross-platform C++ \
+    GUI framework for Mac OS, Unix, Linux, Windows. It can \
+    make use of a variety of native widget sets as well as \
+    its own widget set: Mac OS, GTK+, Motif, WIN32. \
+    wxWidgets will even run on embedded systems using \
+    Linux and X11.
+
+homepage        http://www.wxwidgets.org/
+distname        wxWidgets
+master_sites    sourceforge:project/wxwindows/${version} \
+                http://biolpc22.york.ac.uk/pub/${version}/
+
+use_bzip2       yes
+
+distfiles       ${distname}-${version}${extract.suffix}
+dist_subdir     ${distname}/${version}
+
+checksums           md5     6b6003713289ea4d3cd9b49c5db5b721 \
+                    sha1    e0a3463f419053ab1fd800eaed7319289746772a \
+                    rmd160  aac2761f5ea855320dcedd5ddd987029b2f65da9
+                    
+depends_lib     port:jpeg \
+                port:tiff \
+                port:libpng \
+                port:zlib \
+                port:libiconv \
+                port:expat
+
+archcheck.files lib/libjpeg.dylib \
+                lib/libtiff.dylib \
+                lib/libpng.dylib \
+                lib/libz.dylib \
+                lib/libiconv.dylib \
+                lib/libexpat.dylib
+
+set worksrcdir  ${distname}-${version}/build
+
+extract.only    ${distname}-${version}${extract.suffix}
+
+patch.dir   ${worksrcpath}/..
+patchfiles  patch-configure-change_install_names.diff
+
+if {${configure.compiler} == "clang"} {
+    configure.compiler llvm-gcc-4.2
+}
+
+configure.cmd   ../configure
+configure.ldflags   -L${build.dir}/lib -L${prefix}/lib
+
+configure.env-append CPP=${configure.cpp}
+configure.env-append CXXCPP=${configure.cpp}
+
+configure.args  --mandir=${prefix}/share/man \
+                --with-libiconv-prefix=${prefix} \
+                --with-libjpeg \
+                --with-libtiff \
+                --with-libpng \
+                --with-zlib \
+                --with-opengl \
+                --with-cocoa \
+                --without-sdl \
+                --disable-sdltest \
+                --enable-unicode \
+                --enable-display
+
+build.target
+
+use_parallel_build  yes
+
+variant universal {
+    configure.args-append   --enable-universal_binary \
+        --with-macosx-sdk=${configure.sdkroot}/ \
+        --with-macosx-version-min=${macosx_deployment_target}
+}
+
+configure.ccache    no
+
+post-destroot {
+    set confscript ${prefix}/lib/wx/config/osx_cocoa-unicode-2.9
+    ln -sf ${confscript} ${destroot}${prefix}/bin/wx-config
+}
+
+platform darwin 11 {
+    # 'InsetRect' was not declared in this scope
+    macosx_deployment_target 10.6
+}
+
+post-patch {
+    reinplace "s|@@MP_ARCH_FLAGS@@|[get_canonical_archflags]|g" ${worksrcpath}/../configure
+}
+
+default_variants    +sdl
+
+variant monolithic description {build only one library} {
+    configure.args-append   --enable-monolithic
+}
+
+variant debug description {add debug info to libraries} {
+    configure.args-append   --enable-debug
+}
+
+variant sdl description {Use SDL for audio on Unix} { 
+    depends_lib-append          path:lib/pkgconfig/sdl.pc:libsdl 
+    depends_lib-append          port:libsdl_mixer 
+    configure.args-delete       --without-sdl 
+    configure.args-append       --with-sdl 
+} 
+     
+variant stdlib description {add support for various standard library features} { 
+    configure.args-append       --enable-stl \
+    --enable-std_containers \
+    --enable-std_iostreams \
+    --enable-std_string \
+    --enable-std_string_conv_in_wxstring
+} 
+
+livecheck.type      regex
+livecheck.url       ${homepage}/downloads/
+livecheck.regex     Latest Development Release.*(2\\.\[0-9\]\\.\[0-9\]+)

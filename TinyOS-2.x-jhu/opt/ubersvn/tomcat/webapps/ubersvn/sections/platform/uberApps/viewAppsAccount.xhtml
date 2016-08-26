@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:p="http://primefaces.prime.com.tr/ui" xmlns:h="http://java.sun.com/jsf/html">
+<ui:composition>
+  <ol id="sub-toc">
+    <li><h:outputLink title="#{msg.uberAppsStoreTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/uberApps/viewStore.jsf">
+        <span>#{msg.uberAppsStoreTabText}</span>
+      </h:outputLink></li>
+    <li class="current"><h:outputLink title="#{msg.uberAppsAccountTabAltText}"
+        rendered="#{basePage.purchaser and storeAccountManagedBean.registered}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/uberApps/viewAccount.jsf">
+        <span>#{msg.uberAppsAccountTabText}</span>
+      </h:outputLink></li>
+    <li class="current"><h:outputLink title="#{msg.uberAppsAccountTabAltText}"
+        rendered="#{basePage.purchaser and !storeAccountManagedBean.registered}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/uberApps/storeRegistration.jsf">
+        <span>#{msg.uberAppsAccountTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.uberAppsRequestedTabAltText}" rendered="#{basePage.purchaser or basePage.systemAdmin}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/uberApps/viewRequested.jsf">
+        <span>#{msg.uberAppsRequestedTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.uberAppsInstalledTabAltText}" rendered="#{basePage.systemAdmin}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/uberApps/viewInstalled.jsf">
+        <span>#{msg.uberAppsInstalledTabText}</span>
+      </h:outputLink></li>
+  </ol>
+  <p:panel id="uberAppsRegistrationPurchasePanel" styleClass="storeFront tabbed-panel">
+    <h:outputText value="#{msg.viewAccountDetails}" style="font-size: 18px; color: #7F7F7F;"></h:outputText>
+    <p:panel>
+      <h:outputText styleClass="storeFrontTitle" value="Account Registration"></h:outputText>
+      <h:panelGrid columns="2" style="width:100%;" columnClasses="alignTop,alignTop">
+        <h:panelGrid columns="1" style="width:80%">
+
+          <!-- Registration -->
+          <h:outputText value="#{msg.accountFirstName}" styleClass="viewAccountLabel"></h:outputText>
+          <h:outputText value="#{storeAccountManagedBean.user.billingFirstName}" styleClass="viewAccountField"></h:outputText>
+          <h:outputText value="#{msg.accountLastName}" styleClass="viewAccountLabel"></h:outputText>
+          <h:outputText value="#{storeAccountManagedBean.user.billingLastName}" styleClass="viewAccountField"></h:outputText>
+          <h:outputText value="#{msg.accountEmail}" styleClass="viewAccountLabel"></h:outputText>
+          <h:outputText value="#{storeAccountManagedBean.user.billingEmail}" styleClass="viewAccountField"></h:outputText>
+          <h:outputText value="#{msg.accountCompany}" styleClass="viewAccountLabel"></h:outputText>
+          <h:outputText value="#{storeAccountManagedBean.user.billingCompany}" styleClass="viewAccountField"></h:outputText>
+          <h:outputText value="#{msg.billingAddress}" styleClass="viewAccountLabel"></h:outputText>
+          <h:outputText value="#{storeAccountManagedBean.completeBillingAddress}" styleClass="viewAccountField" />
+
+        </h:panelGrid>
+
+        <p:commandButton id="updateReg" immediate="true" value="#{msg.uberAppsEditRegistration}" styleClass="roundedButtonMedium"
+          style="margin-top:10px;" action="#{storeAccountManagedBean.viewEditAccount}" />
+      </h:panelGrid>
+      <h:panelGrid columns="3">
+        <p:commandButton id="addPaymentMethod" value="#{msg.uberAppsAddPaymentButton}" styleClass="roundedButtonLarge"
+          action="#{storeAccountManagedBean.viewManagedPaymentsPage}" immediate="true"
+          update="uberAppsRegistrationPurchasePanel edtdlgContent growl" onclick="statusDialog.show()"
+          oncomplete="statusDialog.hide(); addPaymentMethodDialog.show()" />
+        <p:commandButton action="#{basePage.returnToLastProduct}" styleClass="roundedButtonSmall" value="#{msg.viewAccountGoPrevious}"
+          ajax="false" rendered="#{basePage.hasLastProduct}" />
+      </h:panelGrid>
+
+    </p:panel>
+  </p:panel>
+  <p:dialog modal="true" widgetVar="statusDialog" header="" draggable="false" closable="false" resizable="false" width="240" height="150">
+    <h:graphicImage id="progressImage" style="border:0; margin-left: auto; margin-right: auto; display: block;" library="img/platform"
+      name="progress.gif" />
+  </p:dialog>
+  <p:dialog id="addPaymentMethodDialogId" header="#{msg.viewAccountManagePayment}" modal="true" widgetVar="addPaymentMethodDialog"
+    draggable="false" closable="true" resizable="false" width="800" height="650">
+    <p:panel id="edtdlgContent">
+      <iframe src="#{storeAccountManagedBean.mppUrl}" width="100%" height="575" style="overflow-x: hidden;">
+        <p>Your browser does not support iframes.</p>
+      </iframe>
+    </p:panel>
+
+  </p:dialog>
+
+</ui:composition>
+</html>

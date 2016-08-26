@@ -1,0 +1,55 @@
+# $Id: Portfile 80485 2011-07-13 17:07:56Z jmr@macports.org $
+
+PortSystem 1.0
+
+name		xorg-xcmiscproto
+version		1.2.1
+categories	x11 devel
+license		X11
+maintainers	jeremyhu openmaintainer
+description	X.org xcmiscproto
+homepage	http://www.x.org
+platforms	darwin
+supported_archs	noarch
+long_description Prototype headers for the XCMisc extension to X11
+master_sites 	xorg:individual/proto/
+
+distname	xcmiscproto-${version}
+checksums           md5     cd7372cd827bfd7ca7e9238f2ce274b1 \
+                    sha1    ff7ddb6e5698bf4461a524ca30f3b32e2a9dce8a \
+                    rmd160  f3259b96fac1e00534d29f93b8effd7717b04b41
+use_bzip2	yes
+
+configure.args \
+	--without-xmlto \
+	--without-fop \
+	--disable-specs
+
+build.args V=1
+
+# Depending on ghostscript for the PDF documentation creates a dependency
+# loop, so you may want to install first without the docs variant
+variant docs description "Install extra documentation" {
+	depends_build-append \
+		port:fop \
+		port:xmlto \
+		port:xorg-sgml-doctools
+
+	configure.args-delete \
+		--without-xmlto \
+		--without-fop \
+		--disable-specs
+
+	configure.args-append \
+		--with-xmlto \
+		--with-fop \
+		--enable-specs
+
+	configure.env-append \
+		XMLTO="${prefix}/bin/xmlto" \
+		FOP="${prefix}/bin/fop"
+}
+
+livecheck.type  regex
+livecheck.url   http://xorg.freedesktop.org/archive/individual/proto/?C=M&O=D
+livecheck.regex xcmiscproto-(\\d+(?:\\.\\d+)*)

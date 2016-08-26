@@ -1,0 +1,39 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89685 2012-02-06 19:34:48Z jmr@macports.org $
+
+PortSystem          1.0
+
+name                gobject-introspection
+version             1.30.0
+set branch          [join [lrange [split ${version} .] 0 1] .]
+categories          gnome
+platforms           darwin
+# library under LGPL-2+, tools under GPL-2+
+license             {LGPL GPL-2+}
+maintainers         singingwolfboy openmaintainer
+description         GObject Introspection
+
+long_description    Gobject Introspection acts as a bridge between low-level C+GObject code and \
+                    a managed runtime (JavaScript, Python, Java, Lua, .NET, Scheme, etc.). 
+
+homepage            http://live.gnome.org/GObjectIntrospection
+master_sites        gnome:sources/${name}/${branch}/
+use_xz              yes
+
+checksums           rmd160  c5e66f2e818e0cdbe38b42516ea3a36e7fbb09e6 \
+                    sha256  8e4274579096e983fad3148cdab50295a4701e45cd9a4e02f7242fc0a04c47b2
+
+depends_build       port:pkgconfig
+
+depends_lib         path:lib/pkgconfig/cairo.pc:cairo \
+                    path:lib/pkgconfig/glib-2.0.pc:glib2 \
+                    port:libffi \
+                    port:python27
+
+configure.python    ${prefix}/bin/python2.7
+
+build.args          CC=${configure.cc}
+
+livecheck.type      regex
+livecheck.url       http://ftp.gnome.org/pub/gnome/sources/${name}/${branch}/
+livecheck.regex     {LATEST-IS-(\d+(?:\.\d+)*)}

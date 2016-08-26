@@ -1,0 +1,34 @@
+/.platform/1.1.1.1/Tue Aug 14 18:01:07 2007//
+/BusArbitration.nc/1.4/Sun Oct 26 20:44:40 2008//
+/BusArbitrationC.nc/1.4/Sun Oct 26 20:44:40 2008//
+/BusArbitrationM.nc/1.4/Sun Oct 26 20:44:40 2008//
+/GpioCapture32khz32C.nc/1.2/Sun Oct 26 20:12:58 2008//
+/GpioCapture32khz32P.nc/1.2/Sun Oct 26 20:12:58 2008//
+/GpioCaptureC.nc/1.1.1.1/Tue Aug 14 18:01:04 2007//
+/HPL1wire.nc/1.2/Sun Oct 26 20:12:58 2008//
+/HPL1wireC.nc/1.2/Sun Oct 26 20:12:58 2008//
+/HPL1wireM.nc/1.2/Sun Oct 26 20:12:58 2008//
+/HPLSpi.h/1.2/Sun Oct 26 20:12:58 2008//
+/HPLSpiM.nc/1.2/Sun Oct 26 20:12:58 2008//
+/Leds.nc/1.1.1.1/Tue Aug 14 18:01:04 2007//
+/LedsC.nc/1.1.1.1/Tue Aug 14 18:01:07 2007//
+/LedsP.nc/1.2/Thu Oct 11 11:50:53 2007//
+/LoggerPinsC.nc/1.2/Sun Oct 26 20:12:58 2008//
+/Micro4SerialP.nc/1.1.1.1/Tue Aug 14 18:01:10 2007//
+/MotePlatformC.nc/1.1.1.1/Tue Aug 14 18:01:07 2007//
+/Msp430ClockP.nc/1.1.1.1/Tue Aug 14 18:01:04 2007//
+/Msp430Timer32khzMapC.nc/1.1.1.1/Tue Aug 14 18:01:07 2007//
+/PlatformLedsC.nc/1.5/Sun Oct 26 20:44:40 2008//
+/PlatformSerialC.nc/1.2/Sun Oct 26 20:12:58 2008//
+/PlatformStdOutC.nc/1.2/Sun Oct 26 20:12:58 2008//
+/PlatformStdOutP.nc/1.2/Sun Oct 26 20:12:58 2008//
+/SimpleMacC.nc/1.2/Sun Oct 26 20:12:58 2008//
+/Spi.nc/1.2/Sun Oct 26 20:12:58 2008//
+/SpiC.nc/1.2/Sun Oct 26 20:12:58 2008//
+/UartC.nc/1.1/Sun Oct 26 20:12:58 2008//
+/hpl1wire.h/1.1.1.1/Tue Aug 14 18:01:06 2007//
+/platform.h/1.1.1.1/Tue Aug 14 18:01:06 2007//
+D/accelerometer////
+D/flash////
+D/internalflash////
+D/radio////

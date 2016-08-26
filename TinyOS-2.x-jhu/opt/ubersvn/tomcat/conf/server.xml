@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='utf-8'?>
+ <Server port="14123" shutdown="wqzOiwGm6QV6KC0csPvq5DBukUmhc7">
+  <Listener className="org.apache.catalina.core.AprLifecycleListener" SSLEngine="on" />
+  <Listener className="org.apache.catalina.core.JasperListener" />
+  <Listener className="org.apache.catalina.core.JreMemoryLeakPreventionListener" />
+  <Listener className="org.apache.catalina.mbeans.ServerLifecycleListener" />
+  <Listener className="org.apache.catalina.mbeans.GlobalResourcesLifecycleListener" />
+  <GlobalNamingResources>
+    <Resource name="UserDatabase" auth="Container"
+              type="org.apache.catalina.UserDatabase"
+              description="User database that can be updated and saved"
+              factory="org.apache.catalina.users.MemoryUserDatabaseFactory"
+              pathname="conf/tomcat-users.xml" />
+  </GlobalNamingResources>
+  <Service name="Catalina">
+    <Connector port="9890" protocol="HTTP/1.1"
+               connectionTimeout="20000" redirectPort="9900" />
+    <Connector protocol="org.apache.coyote.http11.Http11AprProtocol"
+               port="9900" maxThreads="200"
+               scheme="https" secure="true" SSLEnabled="true"
+               SSLCertificateFile="${catalina.base}/../openssl/certs/ubersvn.crt"
+               SSLCertificateKeyFile="${catalina.base}/../openssl/certs/ubersvn.key"
+               enableLookups="false" clientAuth="false" sslProtocol="TLS" />
+    <Engine name="Catalina" defaultHost="localhost">
+      <Realm className="org.apache.catalina.realm.UserDatabaseRealm"
+             resourceName="UserDatabase"/>
+      <Host name="localhost" appBase="webapps"
+            unpackWARs="true" autoDeploy="true"
+            xmlValidation="false" xmlNamespaceAware="false">
+      </Host>
+    </Engine>
+  </Service>
+</Server>

@@ -1,0 +1,35 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 84981 2011-10-06 12:32:15Z ryandesign@macports.org $
+
+PortSystem          1.0
+PortGroup           muniversal 1.0
+
+name                libedit
+epoch               20090923
+version             20110802-3.0
+categories          devel
+platforms           darwin
+license             BSD
+maintainers         mcalhoun openmaintainer
+
+description         command line editing and history library
+long_description    libedit is a command line editing and history library. \
+                    It is designed to be used by interactive programs that \
+                    allow the user to type commands at a terminal prompt.
+
+homepage            http://www.thrysoee.dk/editline/
+master_sites        ${homepage}
+
+checksums           rmd160  64f67ec68f0614acee4e887ea0bb35164db1c545 \
+                    sha256  0b5ec9aa41faff761cda7819add93e9d8cb9c0bad85e65a686475e8375ac8a71
+
+depends_lib         port:ncurses
+
+patchfiles          patch-Makefile.in.diff \
+                    src_sys.h.patch
+
+configure.args      --enable-widec
+
+livecheck.type      regex
+livecheck.url       ${master_sites}
+livecheck.regex     "${name}-(\\d+-\\d+(?:\\.\\d+)*)${extract.suffix}"

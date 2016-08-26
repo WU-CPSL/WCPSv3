@@ -1,0 +1,13 @@
+prefix=/opt/local
+exec_prefix=${prefix}
+libdir=/opt/local/lib
+includedir=/opt/local/include
+
+Name: glut
+Description: Mesa OpenGL Utility Toolkit library
+Requires: gl glu
+Requires.private: 
+Version: 3.7.1
+Libs: -L${libdir} -lglut
+Libs.private: 
+Cflags: -I${includedir} 

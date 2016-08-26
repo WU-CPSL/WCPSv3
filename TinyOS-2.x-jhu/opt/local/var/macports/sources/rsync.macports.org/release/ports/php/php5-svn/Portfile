@@ -1,0 +1,33 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 74291 2010-12-10 21:29:32Z ryandesign@macports.org $
+
+PortSystem              1.0
+PortGroup               php5extension 1.0
+
+php5extension.setup     svn 1.0.1 pecl
+categories-append       devel
+platforms               darwin
+maintainers             ryandesign
+
+description             PHP bindings for Subversion
+
+long_description        ${description}
+
+checksums               sha1    5a2048567532b1d42f819940e18a109b9a6d95cd \
+                        rmd160  29e4d79011bb306421628cb67685e012ea29f779
+
+depends_lib-append      port:subversion
+
+patchfiles              patch-hook_emailcommit.php
+
+post-patch {
+    reinplace "s|@PREFIX@|${prefix}|g" ${worksrcpath}/examples/hook_emailcommit.php
+}
+
+configure.args-append   --with-svn=${prefix} \
+                        --with-svn-apr=${prefix}/bin/apr-1-config
+
+post-destroot {
+    xinstall -d ${destroot}${prefix}/share/examples
+    copy ${worksrcpath}/examples ${destroot}${prefix}/share/examples/${name}
+}

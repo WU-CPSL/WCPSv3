@@ -1,0 +1,17 @@
+# $Id: Portfile 33297 2008-01-23 09:32:47Z ryandesign@macports.org $
+
+PortSystem 1.0
+
+name			libbuffers
+version			0.4.0
+categories		devel
+platforms		darwin
+maintainers		nomaintainer
+description		C++ library for handling buffers of various kinds
+long_description	${description}
+
+homepage		http://libarxx.sourceforge.net/
+master_sites	sourceforge:libarxx
+checksums		md5 3706033bca439e3e2973bf530caa1c53
+use_bzip2		yes
+

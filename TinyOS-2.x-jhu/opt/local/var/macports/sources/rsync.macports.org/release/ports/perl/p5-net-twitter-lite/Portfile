@@ -1,0 +1,22 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 84550 2011-09-27 21:05:11Z snc@macports.org $
+
+PortSystem          1.0
+PortGroup           perl5 1.0
+
+perl5.setup         Net-Twitter-Lite 0.10002
+revision            2
+if {${perl5.major} != ""} {
+depends_lib-append  port:p${perl5.major}-json-any port:p${perl5.major}-libwww-perl port:p${perl5.major}-uri
+}
+maintainers         gmail.com:blair.christensen openmaintainer
+description         A perl interface to the Twitter API
+long_description    ${description}
+homepage            http://github.com/semifor/net-twitter-lite
+platforms           darwin
+
+checksums           md5     fd3534bc7930943890ae55440a7c7539 \
+                    sha1    e05ea54ef6222d9dfb235da1c4ed0e99d4b9adfa \
+                    rmd160  cb12619a2ad494ac54c03dbfe49892e98c38c100
+
+supported_archs noarch

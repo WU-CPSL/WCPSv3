@@ -1,0 +1,94 @@
+<dsd xmlns="http://www.brics.dk/DSD/2.0"
+     xmlns:m="http://www.brics.dk/DSD/2.0/meta"
+     xmlns:nesc="http://www.tinyos.net/nesC">
+
+  <m:doc>Many attribute names have the same format everywhere
+    (some contents may choose to place further restrictions).
+    Declare those global rules here.
+    Attributes which rely on these rules will have no `stringtype ref'
+    Currently: name, qname, ref, size, alignment, value, scoped, loc</m:doc>
+
+  <m:doc>A unique identifier for the entity denoted by this element. For
+    instance, a "variable-ref" and a "variable" denoting the same C
+    variable will have the same unique value for their ref attribute.</m:doc>
+  <if>
+    <attribute name="ref"/>
+    <require>
+      <attribute name="ref">
+        <stringtype ref="nesc:ref"/>
+      </attribute>
+    </require>
+  </if>
+   
+  <if>
+    <attribute name="name"/>
+    <require>
+      <attribute name="name">
+        <stringtype ref="nesc:identifier"/>
+      </attribute>
+    </require>
+  </if>
+   
+  <m:doc>The name of a nesC component or interface. This is guaranteed to be
+    unique, so serves as an identifier. The name of generic component
+    instantiations represents their instantiation "path", e.g., generic
+    module Foo instantiated in configuration Bar is Bar.Foo, and generic
+    module Foo instantiated in generic configuration Baz, itself instantiated
+    in configuration Main is Main.Baz.Foo</m:doc>
+  <if>
+    <attribute name="qname"/>
+    <require>
+      <attribute name="qname">
+        <stringtype ref="nesc:path"/>
+      </attribute>
+    </require>
+  </if>
+   
+  <m:doc>Present on entities (e.g., variables) that are non-global</m:doc>
+  <if>
+    <attribute name="scoped"/>
+    <require>
+      <attribute name="scoped">
+        <stringtype ref="nesc:empty"/>
+      </attribute>
+    </require>
+  </if>
+   
+  <if>
+    <attribute name="size"/>
+    <require>
+      <attribute name="size">
+        <stringtype ref="nesc:constant"/>
+      </attribute>
+    </require>
+  </if>
+   
+  <if>
+    <attribute name="alignment"/>
+    <require>
+      <attribute name="alignment">
+        <stringtype ref="nesc:constant"/>
+      </attribute>
+    </require>
+  </if>
+   
+  <if>
+    <attribute name="cst"/>
+    <require>
+      <attribute name="cst">
+        <stringtype ref="nesc:constant"/>
+      </attribute>
+    </require>
+  </if>
+   
+  <m:doc>A source code location.</m:doc>
+  <if>
+    <attribute name="loc"/>
+    <require>
+      <attribute name="loc">
+        <stringtype ref="nesc:location"/>
+      </attribute>
+    </require>
+  </if>
+   
+</dsd>

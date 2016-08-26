@@ -1,0 +1,21 @@
+/Makefile/1.1/Wed May  6 05:52:14 2009//
+/codeZeros.h/1.1/Wed May  6 05:52:14 2009//
+/dctApp.c/1.1/Wed May  6 05:52:15 2009//
+/dctfstBlk.h/1.1/Wed May  6 05:52:15 2009//
+/decodeZeros.h/1.1/Wed May  6 05:52:15 2009//
+/huffmanCompress.h/1.1/Wed May  6 05:52:15 2009//
+/huffmanUncompress.c/1.1/Wed May  6 05:52:15 2009//
+/huffmanUncompress.h/1.1/Wed May  6 05:52:15 2009//
+/idctApp.c/1.1/Wed May  6 05:52:15 2009//
+/idctfstBlk.h/1.1/Wed May  6 05:52:15 2009//
+/jpegTOS.c/1.1/Wed May  6 05:52:15 2009//
+/jpegTOS.h/1.1/Wed May  6 05:52:15 2009//
+/jpegUncompress.c/1.1/Wed May  6 05:52:15 2009//
+/jpegUncompress.h/1.1/Wed May  6 05:52:15 2009//
+/jpeghdr.h/1.1/Wed May  6 05:52:15 2009//
+/quanttables.h/1.1/Wed May  6 05:52:15 2009//
+/quanttables_odrb.h/1.1/Wed May  6 05:52:15 2009//
+/rgb2ycc.h/1.1/Wed May  6 05:52:15 2009//
+/tinyos_macros.h/1.1/Wed May  6 05:52:15 2009//
+/ycc2rgb.h/1.1/Wed May  6 05:52:15 2009//
+D

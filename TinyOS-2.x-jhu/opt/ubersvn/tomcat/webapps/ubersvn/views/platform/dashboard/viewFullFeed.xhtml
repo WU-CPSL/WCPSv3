@@ -1,0 +1,14 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.prime.com.tr/ui"
+  xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core">
+<ui:composition template="/templates/platform/ubersvn-template.xhtml">
+  <ui:param name="pageTitle" value="Welcome to uberSVN Base" />
+  <ui:define name="headerTabName">
+    <h:inputHidden id="tabName" value="dashboardTab" />
+  </ui:define>
+  <ui:define name="pageContentView">
+    <ui:include src="/sections/platform/dashboard/fullfeed.xhtml" />
+  </ui:define>
+</ui:composition>
+</html>

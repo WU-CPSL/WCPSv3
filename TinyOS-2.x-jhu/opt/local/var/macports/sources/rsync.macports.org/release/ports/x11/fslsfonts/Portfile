@@ -1,0 +1,28 @@
+# $Id: Portfile 80076 2011-07-03 23:46:28Z jmr@macports.org $
+
+PortSystem          1.0
+
+name                fslsfonts
+version             1.0.3
+categories          x11 graphics
+maintainers         jeremyhu openmaintainer
+description         List fonts served by X11 font server
+long_description    ${description}
+
+platforms           darwin
+
+homepage            http://www.x.org/
+master_sites        xorg:individual/app/
+use_bzip2           yes
+
+checksums           md5     9b50d967ac6d4bae9bffb62a5e527a50 \
+                    sha1    00177564597ac629207ca597f663b689902817df \
+                    rmd160  7106f9a5f8cc2ef0fe13a090fcf89b9c8daaa8c2
+
+depends_build       port:pkgconfig
+
+depends_lib         port:xorg-libFS port:xorg-libX11
+
+livecheck.type      regex
+livecheck.regex     ${name}-(\[\\d.\]+)${extract.suffix}
+livecheck.url       http://xorg.freedesktop.org/archive/individual/app/?C=M&O=D

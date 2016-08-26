@@ -1,0 +1,7 @@
+#Use the "new" Make structure
+LGL_CONTRIB ?= /opt/tinyos-2.x-contrib/stanford-lgl
+TOSMAKE_PATH += $(LGL_CONTRIB)/support/make
+include $(MAKERULES)
+
+#Include LGL Libs and platforms
+$(call TOSMake_include,lgl.extra)

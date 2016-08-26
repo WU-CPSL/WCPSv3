@@ -1,0 +1,14 @@
+# $Id: Portfile 82547 2011-08-15 16:46:16Z jmr@macports.org $
+
+PortSystem		1.0
+PortGroup		perl5 1.0
+
+perl5.setup		Term-Shell 0.01 Term
+revision        2
+maintainers		FaerieMUD.org:ged
+description		A simple command-line shell framework.
+long_description	${description}
+checksums		md5 0a2772da9627b56d133ed1004260a366
+platforms		darwin
+
+supported_archs noarch

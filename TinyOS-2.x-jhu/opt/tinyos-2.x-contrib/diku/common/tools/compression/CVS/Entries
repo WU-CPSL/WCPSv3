@@ -1,0 +1,28 @@
+/.svnignore/1.1.1.1/Tue Aug 14 18:00:14 2007//
+/Makefile/1.1.1.1/Tue Aug 14 18:00:20 2007//
+/Makefile.rules/1.1.1.1/Tue Aug 14 18:00:18 2007//
+/README/1.1.1.1/Tue Aug 14 18:00:14 2007//
+/average/1.1.1.1/Tue Aug 14 18:00:20 2007//
+/average.cc/1.1.1.1/Tue Aug 14 18:00:14 2007//
+/buffer.c/1.1.1.1/Tue Aug 14 18:00:14 2007//
+/buffer.h/1.1.1.1/Tue Aug 14 18:00:14 2007//
+/buffer_pc.c/1.1.1.1/Tue Aug 14 18:00:20 2007//
+/compress/1.1/Sun Oct 26 20:12:56 2008//
+/compress.cc/1.1.1.1/Tue Aug 14 18:00:13 2007//
+/compressor.h/1.1.1.1/Tue Aug 14 18:00:13 2007//
+/crc.h/1.5/Sun Oct 26 20:44:40 2008//
+/decompress/1.1/Sun Oct 26 20:12:56 2008//
+/decompress.cc/1.1.1.1/Tue Aug 14 18:00:14 2007//
+/frequency/1.1.1.1/Tue Aug 14 18:00:16 2007//
+/frequency.cc/1.1.1.1/Tue Aug 14 18:00:13 2007//
+/node-comm/1.1/Sun Oct 26 20:12:56 2008//
+/node-comm-power.cc/1.1.1.1/Tue Aug 14 18:00:14 2007//
+/node-comm.cc/1.1.1.1/Tue Aug 14 18:00:18 2007//
+/node-comm.hh/1.1.1.1/Tue Aug 14 18:00:20 2007//
+D/huffman////
+D/huffman-test////
+D/lz77////
+D/passthru////
+D/power-test////
+D/ratio-test////
+D/simple////

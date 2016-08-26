@@ -1,0 +1,62 @@
+; File generated automatically from ./iphlpapi.spec; do not edit!
+
+LIBRARY iphlpapi.dll
+
+EXPORTS
+  AddIPAddress@20 @1
+  AllocateAndGetIfTableFromStack@16 @3
+  AllocateAndGetIpAddrTableFromStack@16 @4
+  AllocateAndGetIpForwardTableFromStack@16 @5
+  AllocateAndGetIpNetTableFromStack@16 @6
+  AllocateAndGetTcpTableFromStack@16 @7
+  AllocateAndGetUdpTableFromStack@16 @8
+  CancelIPChangeNotify@4 @9
+  CreateIpForwardEntry@4 @10
+  CreateIpNetEntry@4 @11
+  CreateProxyArpEntry@12 @12
+  DeleteIPAddress@4 @13
+  DeleteIpForwardEntry@4 @14
+  DeleteIpNetEntry@4 @15
+  DeleteProxyArpEntry@12 @16
+  EnableRouter@8 @17
+  FlushIpNetTable@4 @18
+  GetAdapterIndex@8 @20
+  GetAdaptersAddresses@20 @22
+  GetAdaptersInfo@8 @23
+  GetBestInterface@8 @24
+  GetBestInterfaceEx@8 @25
+  GetBestRoute@12 @27
+  GetFriendlyIfIndex@4 @29
+  GetIcmpStatistics@4 @30
+  GetIfEntry@4 @32
+  GetIfTable@12 @34
+  GetInterfaceInfo@8 @37
+  GetIpAddrTable@12 @38
+  GetIpForwardTable@12 @40
+  GetIpNetTable@12 @42
+  GetIpStatistics@4 @44
+  GetNetworkParams@8 @46
+  GetNumberOfInterfaces@4 @47
+  GetPerAdapterInfo@12 @48
+  GetRTTAndHopCount@16 @49
+  GetTcpStatistics@4 @50
+  GetTcpTable@12 @52
+  GetUdpStatistics@4 @54
+  GetUdpTable@12 @56
+  GetUniDirectionalAdapterInfo@8 @58
+  IcmpCloseHandle@4 @59
+  IcmpCreateFile@0 @60
+  IcmpSendEcho2@44 @62
+  IcmpSendEcho@32 @63
+  IpReleaseAddress@4 @79
+  IpRenewAddress@4 @80
+  NotifyAddrChange@8 @88
+  NotifyRouteChange@8 @89
+  SendARP@16 @107
+  SetIfEntry@4 @110
+  SetIpForwardEntry@4 @112
+  SetIpNetEntry@4 @115
+  SetIpStatistics@4 @118
+  SetIpTTL@4 @120
+  SetTcpEntry@4 @123
+  UnenableRouter@8 @125

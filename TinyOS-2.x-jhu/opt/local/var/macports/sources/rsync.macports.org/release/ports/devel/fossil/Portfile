@@ -1,0 +1,97 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 87942 2011-12-13 18:07:04Z ciserlohn@macports.org $
+
+PortSystem          1.0
+
+name                fossil
+version             1.21
+epoch               20110901182519
+categories          devel
+platforms           darwin
+license             BSD
+maintainers         ciserlohn
+
+description         Simple, high-reliability, distributed software configuration management
+
+long_description    Fossil is a distributed software configuration management which supports \
+                    distributed version control, distributed bug tracking, distributed wiki, \
+                    and a distributed blog mechanism all in single integrated package. It provides \
+                    an easy-to-use web interface to access and administrate projects over the \
+                    built-in webserver or CGI.
+
+homepage            http://www.fossil-scm.org/
+
+master_sites        ${homepage}download/
+distname            ${name}-src-20111213135356
+
+checksums           rmd160  ed75d0f95f605e2dbcaf905c0119fefd8e41428d \
+                    sha256  c98556cd1fa6abc2e02aa38de1af425fa9ff09247e72f631c9ff6c239c46e71d
+
+test.run            yes
+
+depends_build       port:tcl
+
+depends_lib         port:zlib \
+                    port:openssl
+
+configure.args-append       --disable-lineedit
+
+configure.env-append CC_FOR_BUILD="${configure.cc} [get_canonical_archflags]"
+
+post-destroot {
+    set docdir ${destroot}${prefix}/share/doc/${name}
+    xinstall -d ${docdir}
+    xinstall -m 644 -W ${worksrcpath} \
+        COPYRIGHT-BSD2.txt \
+        ${docdir}
+}
+
+post-activate {
+    
+    if [file exists $::env(HOME)/.fossil] {
+        ui_msg "* Trying to rebuild known repositories:" 
+
+        set exec_cmd exec
+        set fossil_list {fossil all list}
+        set fossil_rebuild {fossil rebuild}
+
+        if [catch {eval $exec_cmd $fossil_list} repositories] {
+            ui_error "failed to execute $fossil_list"
+        }
+
+        if [llength $repositories] {
+            foreach repo $repositories {
+                if {![catch {eval $exec_cmd $fossil_rebuild $repo} result]} {
+                    ui_msg "* successfully rebuild $repo"
+                } else {
+                    ui_msg "* failed to rebuild $repo"
+                }
+            }
+        } else {
+            ui_msg "* No repositories found"
+        }
+
+        ui_msg "* Finished rebuilding repositories"
+    }
+}
+
+variant readline description {Enable readline support for the embedded sqlite shell in the 'fossil sqlite3' command} {
+    depends_lib-append      port:readline
+    configure.args-delete   --disable-lineedit
+}
+
+notes {
+    ************************************************
+    * It is recommended to rebuild repositories    *
+    * created with earlier versions of fossil.     *
+    * To rebuild a repository run:                 *
+    * fossil rebuild /<path>/<to>/<repository>     *
+    * Rebuilding a repository is a safe operation, *
+    * executing it more then once will not harm    *
+    * the integrity of a repository.               *
+    ************************************************
+}
+
+livecheck.type      regex
+livecheck.url       ${homepage}/download.html
+livecheck.regex     {Version ([\d.]*)}

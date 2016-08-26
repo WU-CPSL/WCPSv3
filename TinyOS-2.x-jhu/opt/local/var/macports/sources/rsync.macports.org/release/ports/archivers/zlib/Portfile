@@ -1,0 +1,61 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89487 2012-01-31 23:11:51Z ryandesign@macports.org $
+
+PortSystem              1.0
+PortGroup               xcodeversion 1.0
+
+name                    zlib
+version                 1.2.6
+categories              archivers
+maintainers             landonf ryandesign openmaintainer
+license                 zlib
+homepage                http://www.zlib.net/
+platforms               darwin freebsd
+use_bzip2               yes
+
+description             zlib lossless data-compression library
+
+long_description        zlib is designed to be a free, general-purpose, \
+                        legally unencumbered, lossless data-compression \
+                        library for use on virtually any computer hardware \
+                        and operating system.
+
+master_sites            ${homepage}
+
+checksums               rmd160  fb9f9c7e27c0d049d98bff91db0d9cb1ad157562 \
+                        sha256  fa3e3e4881fa5810b8903f2c7e0dcd5a0a673535f0438021c4bbb5db1b918c8e
+
+minimum_xcodeversions   {8 2.4.1 9 3.1}
+
+patchfiles              clang.patch
+
+configure.universal_args
+
+use_parallel_build      yes
+
+test.run                yes
+
+destroot.destdir        prefix=${destroot}${prefix}
+
+post-destroot {
+    platform darwin {
+        foreach {neededfile} "${prefix}/lib/libz.dylib" {
+            if {![file exists ${destroot}${neededfile}]} {
+                ui_error "${neededfile} is not in the destroot. Please clean ${name} and try again."
+                return -code error "missing ${neededfile} in destroot"
+            }
+        }
+    }
+    
+    set docdir ${prefix}/share/doc/${name}
+    xinstall -d ${destroot}${docdir}
+    xinstall -m 0644 -W ${worksrcpath} ChangeLog FAQ README zlib.3.pdf ${destroot}${docdir}
+    
+    set examplesdir ${prefix}/share/examples/${name}
+    xinstall -d ${destroot}${examplesdir}
+    eval xinstall -m 0644 [glob ${worksrcpath}/example{.c,s/*}] ${destroot}${examplesdir}
+}
+
+livecheck.type          regex
+livecheck.url           ${homepage}
+livecheck.regex         ${name}-(\[0-9.\]+)\\.tar

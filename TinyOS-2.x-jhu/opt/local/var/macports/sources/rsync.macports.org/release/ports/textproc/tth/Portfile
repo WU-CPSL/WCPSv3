@@ -1,0 +1,52 @@
+# $Id: Portfile 74677 2010-12-27 22:54:14Z toby@macports.org $
+
+PortSystem 1.0
+
+name            tth
+version         4.00
+categories      textproc print
+maintainers     toby
+description     a TeX to HTML transaltor
+long_description \
+    TTH translates TEX, the predominant mark-up language for 	\
+    expressing mathematics, into HTML, the language of 		\
+    world-wide-web browsers. It thereby enables mathematical 	\
+    documents to be made available on the web. Document structure, 	\
+    using either the Plain or LaTeX macro packages, is also 	\
+    translated and incorporated in the form of hyperlinks.
+platforms       darwin freebsd
+homepage        http://hutchinson.belmont.ma.us/tth/
+
+master_sites    ${homepage}tth-noncom/
+distname        ${name}_C
+extract.suffix  .tgz
+
+dist_subdir     ${name}/${version}
+
+checksums       md5 0c5ca8ecba950075f12c98bd9ae42087 \
+                sha1 b0d290b8f15e10889a56b504892780a5caa9e126 \
+                rmd160 64ee3b3fc147de45bb316bb31d2d606bca3fd77e
+
+# sigh
+configure {}
+set mycflags ${configure.cflags}
+if {[variant_isset universal]} {
+    set mycflags "$mycflags ${configure.universal_cflags}"
+} else {
+    if {[info exists configure.cc_archflags]} { set mycflags "$mycflags ${configure.cc_archflags}" }
+}
+
+build.cmd       ${configure.cc}
+build.pre_args
+build.args      $mycflags ${name}.c -o ${name}
+
+destroot {
+    xinstall -m 755 ${worksrcpath}/tth ${destroot}${prefix}/bin
+    xinstall -m 755 ${worksrcpath}/latex2gif ${destroot}${prefix}/bin
+    xinstall -m 755 ${worksrcpath}/ps2gif ${destroot}${prefix}/bin
+    xinstall -m 755 ${worksrcpath}/ps2png ${destroot}${prefix}/bin
+    xinstall -m 644 ${worksrcpath}/tth.1 ${destroot}${prefix}/share/man/man1
+}
+
+livecheck.url   ${homepage}Version
+livecheck.regex \"(.*)\"

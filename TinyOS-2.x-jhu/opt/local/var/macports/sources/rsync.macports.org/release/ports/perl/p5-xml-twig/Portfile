@@ -1,0 +1,21 @@
+# $Id: Portfile 85749 2011-10-16 04:51:08Z dports@macports.org $
+
+PortSystem	1.0
+PortGroup	perl5 1.0
+
+perl5.setup	XML-Twig 3.32
+revision    2
+maintainers	janusresearch.com:frank.mcpherson
+license 	{Artistic-1 GPL}
+description	A perl module to process efficiently XML documents
+long_description	Twig offers a tree-oriented interface \
+			to a document while handling large docs.
+platforms	darwin
+checksums           md5     9df9dcab00aa093c4e540caa5cb759fa \
+                    sha1    f8fb38e0e088f2c56c7eb4d804d943872e6ddf98
+
+if {${perl5.major} != ""} {
+depends_lib-append	port:p${perl5.major}-xml-parser
+
+supported_archs noarch
+}

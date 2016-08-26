@@ -1,0 +1,39 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89615 2012-02-04 05:28:00Z ryandesign@macports.org $
+
+PortSystem                      1.0
+PortGroup                       php5extension 1.0
+
+php5extension.setup             {odbc pdo_odbc} 5.3.10 bundled
+categories-append               databases
+platforms                       darwin
+maintainers                     ryandesign
+license				PHP-3.01
+
+description                     a PHP interface for accessing databases via \
+                                Open DataBase Connectivity (ODBC)
+
+long_description                ${description}
+
+checksums                       rmd160  acab30a19b340f21a64e06b524906f2b064dd1c9 \
+                                sha256  339157af2b386534597d287da292f2545e81d9b452e8b3fe525fb2c534ff344a
+
+use_parallel_build              yes
+
+variant iodbc conflicts unixodbc description {Use iODBC} {
+    depends_lib-append          port:libiodbc
+    patchfiles-append           patch-iODBC.diff
+    configure.args-append       --with-iODBC=${prefix} \
+                                --with-pdo-odbc=iODBC,${prefix}
+}
+
+variant unixodbc conflicts iodbc description {Use unixODBC} {
+    depends_lib-append          port:unixODBC
+    patchfiles-append           patch-unixODBC.diff
+    configure.args-append       --with-unixODBC=${prefix} \
+                                --with-pdo-odbc=unixODBC,${prefix}
+}
+
+if {![variant_isset iodbc]} {
+    default_variants +unixodbc
+}

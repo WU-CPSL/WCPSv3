@@ -1,0 +1,25 @@
+# $Id: Portfile 76088 2011-02-18 05:59:53Z ryandesign@macports.org $
+
+PortSystem 1.0
+PortGroup  php5extension 1.0
+
+php5extension.setup rrdtool 1.0
+revision          6
+categories-append net devel
+platforms         darwin
+maintainers       markd
+description       PHP 5 glue for rrdtool
+long_description  ${description}
+
+homepage          http://oss.oetiker.ch/rrdtool/pub/contrib/php_rrdtool.txt
+
+master_sites      http://oss.oetiker.ch/rrdtool/pub/contrib/
+checksums	  md5 c86a45cfc54517b9066c480bbc589d43
+distfiles	  php_rrdtool.tar.gz
+
+depends_lib-append port:rrdtool port:re2c port:libpng
+
+worksrcdir	  rrdtool
+
+configure.cflags-append     "-DHAVE_RRD_12X"
+configure.args    --with-rrdtool=${prefix}

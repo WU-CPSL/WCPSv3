@@ -1,0 +1,20 @@
+# $Id: Portfile 82547 2011-08-15 16:46:16Z jmr@macports.org $
+
+PortSystem          1.0
+PortGroup           perl5 1.0
+
+epoch               1
+perl5.setup         JSON-XS 2.23
+revision            2
+maintainers         nottwo
+description         JSON serialising/deserialising, done correctly and fast
+long_description    This module converts Perl data structures to JSON and \
+                    vice versa. Its primary goal is to be *correct* and its \
+                    secondary goal is to be *fast*.  To reach the latter goal \
+                    it was written in C.
+
+platforms           darwin
+
+checksums           md5 e5bad5004706d82762cc1d0ec6ddc961 \
+                    sha1 4760c22b5919dcec5d4451ab7f681d80ef8c0f4e \
+                    rmd160 b35d17d34725debb97dd51acd0c49f5d745e19ae \

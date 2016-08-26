@@ -1,0 +1,62 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 88985 2012-01-16 07:54:27Z ryandesign@macports.org $
+
+PortSystem                  1.0
+
+name                        pianobar
+version                     2012.01.10
+categories                  audio
+platforms                   darwin
+maintainers                 gmail.com:aguynamedryan+pianobar
+homepage                    http://6xq.net/projects/pianobar/
+master_sites                http://6xq.net/static/projects/pianobar/
+use_bzip2                   yes
+
+description                 Console-based pandora.com player
+
+long_description            pianobar is a console client for the \
+                            personalized web radio pandora \
+                            (http://www.pandora.com).\
+                            Play and manage stations, rate songs and \
+                            see why they were selected, show upcoming \
+                            configure keybindings, last.fm scrobbling, \
+                            proxy support for listening outside of USA.
+
+checksums                   sha256  6d19e5abde542bcdf8b9cfa50448fbe95c1e113f59e54065c9f4e0fbf78690f9 \
+                            rmd160  60573b71376d3494b4b46421c5ba24369136f025
+
+depends_lib                 port:gnutls
+
+configure.cflags-append     -std=c99
+
+use_configure               no
+
+variant universal {}
+
+build.args                  CC="${configure.cc} [get_canonical_archflags]" \
+                            PREFIX=${prefix} \
+                            CFLAGS="${configure.cflags} ${configure.cppflags}" \
+                            LDFLAGS="${configure.ldflags}"
+
+destroot.args               PREFIX=${prefix}
+
+subport pianobar {
+    depends_lib-append      port:faad2 \
+                            port:libao \
+                            port:libmad
+}
+
+subport libpiano {
+    build.target            libpiano.so.0
+    destroot.target         install-libpiano
+    platform darwin {
+        build.target        libpiano.0.dylib
+    }
+}
+
+platform darwin {
+    patchfiles-append       patch-Makefile.diff
+}
+
+livecheck.type              regex
+livecheck.regex             ${name}-(\[0-9.\]+)${extract.suffix}

@@ -1,0 +1,25 @@
+# $Id: Portfile 84871 2011-10-03 18:41:30Z jmr@macports.org $
+
+PortSystem            1.0
+PortGroup             perl5 1.0
+
+perl5.setup           Config-Any 0.20
+revision              2
+license               {Artistic-1 GPL}
+maintainers           nomaintainer
+description           Load configuration from different file formats, transparently
+long_description      Config::Any provides a facility for Perl applications \
+                      and libraries to load configuration data from multiple \
+                      different file formats.
+
+platforms             darwin
+
+checksums             md5 d7272b42ecaa6e6d1ed9a9bd5bd65786 \
+                      sha1 e72fd7fdb990a79ee21e40cd8b7a7252a8ea9d4c \
+                      rmd160 1ac04de15cbfdf1ceab3af07154b1e7731f5cbf6
+
+if {${perl5.major} != ""} {
+depends_lib-append    port:p${perl5.major}-module-pluggable
+
+supported_archs       noarch
+}

@@ -1,0 +1,14 @@
+/CoreMessages.proto/1.1/Fri Mar 12 00:56:33 2010/-ko/
+/README.txt/1.1/Fri Mar 12 00:56:33 2010/-ko/
+/__init__.py/1.1/Fri Mar 12 00:56:33 2010/-ko/
+/connection.py/1.1/Fri Mar 12 00:56:33 2010/-ko/
+/mapper.py/1.1/Fri Mar 12 00:56:33 2010/-ko/
+/message.py/1.1/Fri Mar 12 00:56:33 2010/-ko/
+/packet.py/1.1/Fri Mar 12 00:56:33 2010/-ko/
+/queue.py/1.1/Fri Mar 12 00:56:33 2010/-ko/
+/server.py/1.1/Fri Mar 12 00:56:33 2010/-ko/
+/test.py/1.1/Fri Mar 12 00:56:33 2010/-ko/
+/util.py/1.1/Fri Mar 12 00:56:33 2010/-ko/
+D/.svn////
+D/proto////
+D/test////

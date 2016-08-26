@@ -1,0 +1,59 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89439 2012-01-29 10:06:13Z stromnov@macports.org $
+
+PortSystem          1.0
+PortGroup           python 1.0
+
+name                py-sqlalchemy
+version             0.7.5
+revision            0
+categories-append   databases
+license             MIT
+platforms           darwin
+
+maintainers         landonf akitada openmaintainer
+
+description         Python SQL ORM
+
+long_description    SQLAlchemy is the Python SQL toolkit and Object \
+                    Relational Mapper that gives application developers \
+                    the full power and flexibility of SQL.
+
+homepage            http://www.sqlalchemy.org/
+master_sites        sourceforge:sqlalchemy
+
+distname            SQLAlchemy-${version}
+
+checksums           rmd160  c5cdc88b54d84f5ba9fff99d7a6b55ed1dd093b0 \
+                    sha256  c0e7ad519490c9cae5361e60e33f395d565532d79eba7e2de91655f8dd88bc2f
+
+python.versions     24 25 26 27
+
+if {$subport != $name} {
+    depends_build-append    port:py${python.version}-distribute
+
+    post-destroot {
+        # Install example files not installed by the Makefile
+        if {$subport == "py24-sqlalchemy" || $subport == "py25-sqlalchemy"} {
+            xinstall -m 755 -d ${destroot}${prefix}/share/doc/${subport}/examples
+            foreach f [glob -directory ${worksrcpath}/doc *] {
+                copy $f ${destroot}${prefix}/share/doc/${subport}/[file tail $f]
+            }
+            foreach f [glob -directory ${worksrcpath}/examples *] {
+                copy $f ${destroot}${prefix}/share/doc/${subport}/examples/[file tail $f]
+            }
+        } elseif {$subport == "py26-sqlalchemy" || $subport == "py27-sqlalchemy"} {
+            xinstall -m 755 -d ${destroot}${python.prefix}/share/doc/sqlalchemy/examples
+            foreach f [glob -directory ${worksrcpath}/doc *] {
+                copy $f ${destroot}${python.prefix}/share/doc/sqlalchemy/[file tail $f]
+            }
+            foreach f [glob -directory ${worksrcpath}/examples *] {
+                copy $f ${destroot}${python.prefix}/share/doc/sqlalchemy/examples/[file tail $f]
+            }
+        }
+    }
+}
+
+livecheck.regex     {<a href="/download\.html"><b>(.+?)</b></a>}
+livecheck.type      regex
+livecheck.url       ${homepage}

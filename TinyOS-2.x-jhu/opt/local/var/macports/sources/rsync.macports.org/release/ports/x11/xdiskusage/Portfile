@@ -1,0 +1,34 @@
+# $Id: Portfile 78054 2011-04-21 08:43:53Z jmr@macports.org $
+
+PortSystem 1.0
+
+name			xdiskusage
+version			1.48
+revision        	1
+categories		x11
+platforms		darwin
+maintainers		nomaintainer
+description		program to show you what is using up all your disk space
+long_description	${description}
+
+homepage		http://xdiskusage.sourceforge.net/
+master_sites	${homepage}
+extract.suffix	.tgz
+checksums		md5 a902aa9d73761ade98256c3cd5c1f533
+
+depends_lib		port:fltk
+
+# fltk is 32-bit only
+supported_archs i386 ppc
+
+patchfiles      patch-configure.diff
+
+destroot.destdir	prefix=${destroot}${prefix} mandir=${destroot}${prefix}/share/man
+
+platform macosx {
+    patchfiles-append       patch-makeinclude.in.diff
+    
+    post-activate {
+        system "${prefix}/bin/fltk-config --post xdiskusage"
+    }
+}

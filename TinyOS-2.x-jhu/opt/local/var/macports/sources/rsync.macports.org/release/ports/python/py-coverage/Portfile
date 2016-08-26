@@ -1,0 +1,46 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 87936 2011-12-13 12:36:43Z snc@macports.org $
+
+PortSystem          1.0
+PortGroup           python 1.0
+
+name                py-coverage
+version             3.5.1
+python.versions     25 26 27
+python.default_version  27
+categories-append   devel
+maintainers         gmail.com:larry.velazquez openmaintainer
+license             BSD
+description         Code coverage measurement for Python
+long_description    Coverage measures code coverage, typically during test \
+                    execution. It uses the code analysis tools and tracing \
+                    hooks provided in the Python standard library to \
+                    determine which lines are executable, and which have \
+                    been executed.
+
+platforms           darwin
+
+homepage            http://nedbatchelder.com/code/coverage/
+master_sites        http://pypi.python.org/packages/source/c/coverage/
+distname            coverage-${version}
+
+checksums           rmd160  054797366f8bc1968fc75e0121aaba3d12576200 \
+                    sha256  baae44f36d7b4028ae57ebcfe47a541363a8d2cd0c58a4b90538d0944d2282a0
+
+if {${subport} != ${name}} {
+    depends_lib         port:py${python.version}-distribute
+
+    post-patch {
+        # Permissions in the archive are 700
+        # Set directories to 755, *.py to 755, other files to 644
+        system "find ${worksrcpath} -type d -exec chmod 755 {} \\;"
+        system "find ${worksrcpath} -type f -name '*.py' -exec chmod 775 {} \\;"
+        system "find ${worksrcpath} -type f -not -name '*.py' -exec chmod 644 {} \\;"
+    }
+    
+    livecheck.type      none
+} else {
+    livecheck.type      regex
+    livecheck.url       http://pypi.python.org/pypi/coverage
+    livecheck.regex     {/pypi/coverage/(\d+(?:\.\d+)*)"}
+}

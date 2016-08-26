@@ -1,0 +1,50 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 78657 2011-05-16 10:10:12Z ryandesign@macports.org $
+
+PortSystem          1.0
+
+name                openfst
+version             1.2.7
+categories          devel
+platforms           darwin
+license             Apache-2.0
+maintainers         nomaintainer
+
+description         C++ finite-state transducers library
+
+long_description    OpenFst is a library for constructing, combining, \
+                    optimizing, and searching weighted finite-state \
+                    transducers (FSTs).
+
+homepage            http://www.openfst.org/
+master_sites        ${homepage}twiki/pub/FST/FstDownload/
+
+checksums           sha1    75aa24fe050c295e16aaeb31a216c1d97952c84e \
+                    rmd160  a24279f4deb85f79875b237c548f0b600c3a6af8
+
+# OpenFst doesn't like Xcode's compiler before Snow Leopard.
+# See http://www.openfst.org/twiki/bin/view/FST/CompilingOnMacOSX
+if {${os.platform} == "darwin" && ${os.major} < 10} {
+    variant gcc43 conflicts gcc44 gcc45 description {Compile with gcc 4.3} {
+        configure.compiler macports-gcc-4.3
+        depends_lib-append port:gcc43
+    }
+    
+    variant gcc44 conflicts gcc43 gcc45 description {Compile with gcc 4.4} {
+        configure.compiler macports-gcc-4.4
+        depends_lib-append port:gcc44
+    }
+    
+    variant gcc45 conflicts gcc43 gcc44 description {Compile with gcc 4.5} {
+        configure.compiler macports-gcc-4.5
+        depends_lib-append port:gcc45
+    }
+    
+    if {![variant_isset gcc43] && ![variant_isset gcc44] && ![variant_isset gcc45]} {
+        default_variants +gcc45
+    }
+}
+
+livecheck.type      regex
+livecheck.url       ${homepage}twiki/bin/view/FST/FstDownload
+livecheck.regex     ${name}-(\[0-9.\]+)\\.

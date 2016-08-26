@@ -1,0 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:p="http://primefaces.prime.com.tr/ui" xmlns:h="http://java.sun.com/jsf/html">
+<ui:composition>
+  <p:panel id="extensionTab1Panel" styleClass="tabbed-panel">
+    <h:panelGrid columns="1" rendered="#{basePage.renderTab2}">
+      <h:panelGroup>
+        <h:panelGrid columns="1" columnClasses="repoNameColumnFull">
+          <h:panelGroup>
+            <h:outputText id="extensionName" styleClass="formOutputText" style="font-size: 24px;"
+              value="#{basePage.tab3ExtensionName}" />
+            <br />
+            <hr />
+          </h:panelGroup>
+        </h:panelGrid>
+        <h:panelGroup>
+          <iframe frameborder="0" height="545" width="100%" scrolling="yes" src="#{basePage.tab3ExtensionURL}" />
+        </h:panelGroup>
+      </h:panelGroup>
+    </h:panelGrid>
+  </p:panel>
+</ui:composition>
+</html>

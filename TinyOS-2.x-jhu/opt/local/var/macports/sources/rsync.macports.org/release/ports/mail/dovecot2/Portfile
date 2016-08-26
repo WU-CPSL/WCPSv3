@@ -1,0 +1,127 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89838 2012-02-13 00:07:39Z pixilla@macports.org $
+
+PortSystem          1.0
+
+name                dovecot2
+set base_name       dovecot
+conflicts           ${base_name}
+# Please revbump port:dovecot2-sieve on port:dovecot2 version changes.
+version             2.0.18
+set branch          [join [lrange [split ${version} .] 0 1] .]
+categories          mail
+maintainers         pixilla
+platforms           darwin
+
+description         Secure, fast imap and pop3 server
+long_description    Dovecot is an IMAP and POP3 server for Linux/UNIX-like \
+                    systems, written with security primarily in mind. Although \
+                    it's written in C, it uses several coding techniques to \
+                    avoid most of the common pitfalls.
+
+homepage            http://dovecot.org/
+master_sites        ${homepage}releases/${branch}
+
+distname            ${base_name}-${version}
+
+checksums           rmd160  e6260b009e3b0f5b58113dd71a2755edee665e0e \
+                    sha256  92fc68af6ef0309990c749fcab39eeebce56ea8888c3d73ba812b65a74d1fa1b
+
+depends_build       port:pkgconfig
+depends_lib         port:libiconv \
+                    port:zlib \
+                    port:openssl
+
+set default_internal_user \
+    _dovecot
+set default_login_user \
+    _dovenull
+
+patchfiles          patch-doc-example-config-conf.d-10-master.conf.diff
+
+post-patch {
+    reinplace "s|@@default_internal_user@@|${default_internal_user}|g" \
+        ${worksrcpath}/doc/example-config/conf.d/10-master.conf
+    reinplace "s|@@default_login_user@@|${default_login_user}|g" \
+        ${worksrcpath}/doc/example-config/conf.d/10-master.conf
+}
+
+configure.args      --sysconfdir=${prefix}/etc \
+                    --localstatedir=${prefix}/var \
+                    --with-ioloop=kqueue \
+                    --with-ssl=openssl \
+                    --with-ssldir=${prefix}/etc/ssl
+
+configure.cppflags  -I${prefix}/include/openssl
+
+pre-install {
+    # Create the internal user and group if needed
+    if { ![existsgroup ${default_internal_user}]} {
+        addgroup ${default_internal_user}
+    }
+    if { ![existsuser ${default_internal_user}]} {
+        set gid [existsgroup ${default_internal_user}]
+        adduser ${default_internal_user} gid=${gid} realname=Dovecot
+    }
+    # Create the login user and group if needed
+    if { ![existsgroup ${default_login_user}]} {
+        addgroup ${default_login_user}
+    }
+    if { ![existsuser ${default_login_user}]} {
+        set gid [existsgroup ${default_login_user}]
+        adduser ${default_login_user} gid=${gid} realname=Dovecot
+    }
+}
+
+variant postgresql82 conflicts postgresql83 postgresql84 postgresql90 postgresql91 description {Enable PostgreSQL 8.2 support} {
+    depends_lib-append          port:postgresql82
+    configure.env-append        PG_CONFIG=${prefix}/lib/postgresql82/bin/pg_config
+    configure.args-append       --with-pgsql
+}
+
+variant postgresql83 conflicts postgresql82 postgresql84 postgresql90 postgresql91 description {Enable PostgreSQL 8.3 support} {
+    depends_lib-append          port:postgresql83
+    configure.env-append        PG_CONFIG=${prefix}/lib/postgresql83/bin/pg_config
+    configure.args-append       --with-pgsql
+}
+
+variant postgresql84 conflicts postgresql82 postgresql83 postgresql90 postgresql91 description {Enable PostgreSQL 8.4 support} {
+    depends_lib-append          port:postgresql84
+    configure.env-append        PG_CONFIG=${prefix}/lib/postgresql84/bin/pg_config
+    configure.args-append       --with-pgsql
+}
+
+variant postgresql90 conflicts postgresql82 postgresql83 postgresql84 postgresql91 description {Enable PostgreSQL 9.0 support} {
+    depends_lib-append          port:postgresql90
+    configure.env-append        PG_CONFIG=${prefix}/lib/postgresql90/bin/pg_config
+    configure.args-append       --with-pgsql
+}
+
+variant postgresql91 conflicts postgresql82 postgresql83 postgresql84 postgresql90 description {Enable PostgreSQL 9.1 support} {
+    depends_lib-append          port:postgresql91
+    configure.env-append        PG_CONFIG=${prefix}/lib/postgresql91/bin/pg_config
+    configure.args-append       --with-pgsql
+}
+
+variant mysql5 description {Enable MySQL support} {
+    depends_lib-append          path:bin/mysql_config5:mysql5
+    configure.env-append        MYSQL_CONFIG=${prefix}/bin/mysql_config5
+    configure.args-append       --with-mysql
+}
+
+variant ldap description {Enable LDAP support} {
+    configure.args-append       --with-ldap
+    depends_lib-append          port:openldap
+}
+
+variant no_startupitem description {Do not install a launchd plist} {}
+
+if {![variant_isset "no_startupitem"]} {
+    startupitem.create      yes
+    startupitem.executable  ${prefix}/sbin/${base_name}
+    startupitem.pidfile     auto ${prefix}/var/run/${base_name}/master.pid
+}
+
+livecheck.url       [lindex ${master_sites} 0]
+livecheck.type      regex
+livecheck.regex     "${base_name}-(\\d+\\.\\d+(\[0-9rc.\]+)?).tar.gz"

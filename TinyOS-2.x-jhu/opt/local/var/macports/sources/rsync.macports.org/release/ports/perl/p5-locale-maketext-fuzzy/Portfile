@@ -1,0 +1,14 @@
+# $Id: Portfile 82547 2011-08-15 16:46:16Z jmr@macports.org $
+
+PortSystem           1.0
+PortGroup            perl5 1.0
+
+perl5.setup          Locale-Maketext-Fuzzy 0.02
+revision             2
+maintainers	     nomaintainer
+platforms            darwin
+checksums            md5 0425610d448900a774ed253eb678c559
+description          Maketext from already interpolated strings
+long_description     ${description}
+
+supported_archs noarch

@@ -1,0 +1,34 @@
+# $Id: Portfile 88494 2012-01-03 11:48:48Z mww@macports.org $
+
+PortSystem 1.0
+PortGroup ocaml 1.0
+
+name                ocaml-extunix
+version             0.0.3
+revision            1
+categories          devel ml
+maintainers         mww openmaintainer
+license             LGPL-2.1
+description         Extended Unix Library for OCaml
+long_description    A User-supported Extended Unix Library for OCaml
+homepage            http://extunix.forge.ocamlcore.org/
+platforms           darwin
+master_sites        https://forge.ocamlcore.org/frs/download.php/646/
+
+checksums           md5     82c72d2201301788347763509682d023 \
+                    rmd160  cf16ec5bbec91ca12b6598f9a22db87d0a8923eb \
+                    sha256  c44b921227e074f0d13292e78c081252590dbf6fd9f751945d29823d990e2eeb
+
+depends_lib-append  port:ocaml-ounit
+
+patchfiles          patch-src-discover.ml.diff
+
+use_oasis yes
+use_oasis_doc yes
+
+configure.args-append "--override datarootdir ${destroot}${prefix}/share"
+
+livecheck.type      regex
+livecheck.url       https://forge.ocamlcore.org/frs/?group_id=175
+livecheck.regex     {>ocaml-extunix-(.*)\.tar\.gz}
+

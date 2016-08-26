@@ -1,0 +1,30 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 88821 2012-01-12 23:02:19Z dports@macports.org $
+
+PortSystem          1.0
+PortGroup           texlive 1.0
+
+name                texlive-documentation-english
+version             22612
+revision            0
+
+categories          tex
+maintainers         dports
+license             Copyleft Permissive
+description         TeX Live: English documentation
+long_description    English documentation
+
+checksums           texlive-documentation-english-22612-run.tar.xz \
+                    rmd160  8051894629b8074a4907568eb979067edfd9b19a \
+                    sha256  1da10d1fb67d2bdc4aa8f07700f1a59fe5b5db89c7824e9f7329fc84d6263da7 \
+                    texlive-documentation-english-22612-doc.tar.xz \
+                    rmd160  0e98d9f33baa9bb73749cb9ee69051120d44fc99 \
+                    sha256  69c341471c8e552424c769c7db023f87c5a326af36e32b15ff04b0504c114c93 \
+                    texlive-documentation-english-22612-src.tar.xz \
+                    rmd160  6ce64264259eb7ebc5000ee695f2171e3886c6b8 \
+                    sha256  92c6f20f97669c49a68ddc7dc6a74f230c4b8579e48651162799ecdd596ed805
+
+depends_lib         port:texlive-documentation-base
+
+
+texlive.texmfport

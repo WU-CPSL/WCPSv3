@@ -1,0 +1,65 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 87569 2011-11-26 02:11:29Z devans@macports.org $
+
+PortSystem      1.0
+
+name            libtorrent-rasterbar
+conflicts       libtorrent-rasterbar-devel
+version         0.15.9
+license         permissive
+categories      net
+maintainers     devans openmaintainer
+platforms       darwin
+homepage        http://www.rasterbar.com/products/libtorrent/
+master_sites    http://libtorrent.googlecode.com/files/
+
+description \
+    A C++ bittorrent library (not the same as port libtorrent)
+
+long_description \
+    A C++ bittorrent library designed to run on anything from embedded systems to large scale \
+    seed servers. It comes with python bindings and detailed documentation.
+
+checksums       sha1    d86eb9d4452d07715a355d3a67312f162d6eff3a \
+                rmd160  54461ff314af9602309a9a34a97cb481dc38179c
+
+depends_build   port:pkgconfig
+
+depends_lib     port:boost \
+                port:libgeoip \
+                port:openssl
+
+patchfiles      patch-configure.diff \
+                patch-bindings-python-setup.py.in.diff
+
+post-patch      {
+                    reinplace "s|__MP_BUILD_ARCH__|${build_arch}|" ${worksrcpath}/bindings/python/setup.py.in
+                }
+
+configure.args  --disable-silent-rules \
+                --enable-python-binding \
+                --enable-geoip \
+                --with-libgeoip \
+                --with-boost-libdir="${prefix}/lib"
+
+variant python26 conflicts python27 description {Build bindings for Python 2.6} {
+        depends_lib-append port:python26
+        configure.python ${prefix}/bin/python2.6
+        configure.env-append \
+                "PYTHON_INSTALL_PARAMS=--prefix=${destroot}${prefix}/Library/Frameworks/Python.framework/Versions/2.6"
+}
+
+variant python27 conflicts python26 description {Build bindings for Python 2.7} {
+        depends_lib-append port:python27
+        configure.python ${prefix}/bin/python2.7
+        configure.env-append \
+                "PYTHON_INSTALL_PARAMS=--prefix=${destroot}${prefix}/Library/Frameworks/Python.framework/Versions/2.7"
+}
+
+if {![variant_isset python26]} {
+        default_variants +python27
+}
+
+livecheck.type  regex
+livecheck.url   http://code.google.com/p/libtorrent/downloads/list
+livecheck.regex "${name}-(\\d+(?:\\.\\d+)*)${extract.suffix}"

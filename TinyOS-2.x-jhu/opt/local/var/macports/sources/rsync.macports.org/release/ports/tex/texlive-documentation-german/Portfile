@@ -1,0 +1,30 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 88821 2012-01-12 23:02:19Z dports@macports.org $
+
+PortSystem          1.0
+PortGroup           texlive 1.0
+
+name                texlive-documentation-german
+version             23053
+revision            0
+
+categories          tex
+maintainers         dports
+license             Copyleft Permissive
+description         TeX Live: German documentation
+long_description    German documentation
+
+checksums           texlive-documentation-german-23053-run.tar.xz \
+                    rmd160  f19c56d581211a4eb78ae089c16fe61b4d82cfac \
+                    sha256  1ed0fe349c21c4ca724b4fbf2565c6438442510f539eb1525a4222637799857d \
+                    texlive-documentation-german-23053-doc.tar.xz \
+                    rmd160  02935e1962782a95f499ef7988189e6c1c98e018 \
+                    sha256  6320266ecce69da4997b05b0314b3fe7de14c118959b7ffd4c27b6b6faf88804 \
+                    texlive-documentation-german-23053-src.tar.xz \
+                    rmd160  2f24fa1ddb61e741a6248a8ddb1dbb679bf8a743 \
+                    sha256  f7c01993a9ea3f0491e6b52967c4433fbd57b16a12d6434172faa9545d2f59cb
+
+depends_lib         port:texlive-documentation-base
+
+
+texlive.texmfport

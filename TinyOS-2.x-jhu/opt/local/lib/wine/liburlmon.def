@@ -1,0 +1,61 @@
+; File generated automatically from ./urlmon.spec; do not edit!
+
+LIBRARY urlmon.dll
+
+EXPORTS
+  AsyncInstallDistributionUnit@36 @4
+  BindAsyncMoniker@20 @5
+  CoGetClassObjectFromURL@40 @6
+  CoInternetCombineUrl@28 @8
+  CoInternetCompareUrl@12 @9
+  CoInternetCreateSecurityManager@12 @10
+  CoInternetCreateZoneManager@12 @11
+  CoInternetGetSecurityUrl@16 @13
+  CoInternetGetSession@12 @14
+  CoInternetIsFeatureEnabled@8 @15
+  CoInternetParseUrl@28 @16
+  CoInternetQueryInfo@28 @17
+  CoInternetSetFeatureEnabled@12 @18
+  CopyStgMedium@8 @21
+  CreateAsyncBindCtx@16 @22
+  CreateAsyncBindCtxEx@24 @23
+  CreateFormatEnumerator@12 @24
+  CreateIUriBuilder@16 @25
+  CreateUri@16 @26
+  CreateURLMoniker@12 @27
+  CreateURLMonikerEx@16 @28
+  DllCanUnloadNow@0 @29 PRIVATE
+  DllGetClassObject@12 @30 PRIVATE
+  DllInstall@8 @31 PRIVATE
+  DllRegisterServer@0 @32 PRIVATE
+  DllRegisterServerEx@0 @33 PRIVATE
+  DllUnregisterServer@0 @34 PRIVATE
+  Extract@8 @35
+  FaultInIEFeature@16 @36
+  FindMimeFromData@32 @39
+  GetClassFileOrMime@28 @40
+  GetSoftwareUpdateInfo@8 @44
+  HlinkNavigateString@8 @48
+  HlinkSimpleNavigateToMoniker@32 @49
+  HlinkSimpleNavigateToString@32 @50
+  IsAsyncMoniker@4 @51
+  IsLoggingEnabledA@4 @52
+  IsLoggingEnabledW@4 @53
+  IsValidURL@12 @54
+  MkParseDisplayNameEx@16 @55
+  ObtainUserAgentString@12 @56
+  RegisterBindStatusCallback@16 @58
+  RegisterFormatEnumerator@12 @59
+  ReleaseBindInfo@4 @62
+  RevokeBindStatusCallback@8 @63
+  RevokeFormatEnumerator@8 @64
+  URLDownloadToCacheFileA@24 @67
+  URLDownloadToCacheFileW@24 @68
+  URLDownloadToFileA@20 @69
+  URLDownloadToFileW@20 @70
+  URLOpenBlockingStreamA@20 @72
+  URLOpenBlockingStreamW@20 @73
+  URLOpenStreamA@16 @76
+  URLOpenStreamW@16 @77
+  UrlMkGetSessionOption@20 @79
+  UrlMkSetSessionOption@16 @80

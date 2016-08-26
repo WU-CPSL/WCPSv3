@@ -1,0 +1,92 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 85597 2011-10-15 00:56:45Z dports@macports.org $
+
+PortSystem          1.0
+
+name                shibboleth
+version             2.4.3
+revision        1
+categories          security www shibboleth
+license             Apache
+maintainers         snc scantor
+description         Shibboleth Native Service Provider
+long_description    The Shibboleth System is a standards based, open source \
+                    software package for web single sign-on across or within \
+                    organizational boundaries. It allows sites to make \
+                    informed authorization decisions for individual access of \
+                    protected online resources in a privacy-preserving manner.
+
+homepage            http://shibboleth.internet2.edu/
+
+platforms           darwin
+depends_lib         port:opensaml \
+                    port:xmltooling \
+                    port:xercesc3 \
+                    port:xml-security-c \
+                    port:log4shib
+
+pre-fetch {
+    set status 0
+    if {[catch {exec ${prefix}/bin/curl --version | grep SSL} results]} {
+        if {[lindex $::errorCode 0] eq "CHILDSTATUS"} {
+            set status [lindex $::errorCode 2]
+        } else {
+            set status [lindex $::errorCode 3]
+        }
+    }
+    if {${status} != 0} {
+        return -code error "\n
+    ${name} requires curl to be installed with SSL support.
+    Please deactivate your current curl installation and
+    install the proper version of curl:
+        sudo port deactivate curl
+        sudo port install curl +ssl\n"
+    }
+}
+master_sites        http://www.shibboleth.net/downloads/service-provider/${version}/
+distname            ${name}-sp-${version}
+worksrcdir          ${name}-${version}
+checksums           rmd160  e2a909f5ea49d6c295056cc3530708fc5534eb63 \
+                    sha256  9e0b219707046b55d0ca38627fb213b799ac98cf11541845b7e6b036a89dcdcf
+
+configure.args      --with-xmltooling=${prefix} \
+                    --with-opensaml=${prefix} \
+                    --with-xerces=${prefix} \
+                    --with-xmlsec=${prefix}
+
+variant odbc description {enable odbc support} {
+	depends_lib-append port:unixODBC
+        configure.args-append --enable-odbc
+}
+
+destroot.keepdirs ${destroot}${prefix}/var/log/${name} ${destroot}${prefix}/var/log/httpd ${destroot}${prefix}/var/run/${name}
+
+destroot.args	NOKEYGEN=1
+
+post-destroot {
+	eval file delete [glob ${destroot}${prefix}/etc/${name}/*.logger]
+	eval file delete [glob ${destroot}${prefix}/etc/${name}/*.html]
+	eval file delete [glob ${destroot}${prefix}/etc/${name}/*.xml]
+	eval file delete [glob ${destroot}${prefix}/etc/${name}/shibd-*]
+	eval file delete [glob ${destroot}${prefix}/lib/${name}/*.la]
+}
+
+post-activate {
+    # Make sure initial conf files are present and set up correctly
+    set confDir ${prefix}/etc/${name}
+    foreach f [glob -tails -directory ${confDir} *.dist] {
+        regexp {(.+)\.dist} $f ign destname
+        if {![file exists ${confDir}/${destname}]} {
+            file copy ${confDir}/${f} ${confDir}/${destname}
+        }
+    }
+    system "cd ${prefix}/etc/${name} && ./keygen.sh -b"
+}
+
+startupitem.create      yes
+startupitem.name        shibd
+startupitem.executable  ${prefix}/sbin/shibd -F -f -p ${prefix}/var/run/${name}/shibd.pid
+
+livecheck.type          regex
+livecheck.url           http://www.shibboleth.net/downloads/service-provider/latest/
+livecheck.regex         ${name}-sp-(\\d+\\.\\d+(\\.\\d+)?)

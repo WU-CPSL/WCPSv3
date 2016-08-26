@@ -1,0 +1,26 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89413 2012-01-28 12:34:21Z jmr@macports.org $
+
+PortSystem          1.0
+PortGroup           kde4   1.1
+
+name                ksaneplugin
+version             4.8.0
+categories          kde kde4
+license             {LGPL-2.1 LGPL-3}
+maintainers         nicos openmaintainer
+description         Plugin for sane support.
+long_description    ${description} Based on libksane library from KDE.
+platforms           darwin
+homepage            http://www.kde.org/
+master_sites        kde:stable/${version}/src/
+use_bzip2           yes
+distname            ksaneplugin-${version}
+checksums           rmd160  81c0d5bad3ccb8fa83b806b08903d48c7d0ef816 \
+                    sha256  b6cb4def80965be579601df1eb814290aa263dc4cbee54db30333de42babaa6e
+
+depends_lib-append  port:kdelibs4 \
+                    port:libksane
+
+livecheck.url       http://kde.mirrors.hoobly.com/stable/latest/src/
+livecheck.regex     ksaneplugin-(\\d+\\.\\d+\\.\\d+)${extract.suffix}

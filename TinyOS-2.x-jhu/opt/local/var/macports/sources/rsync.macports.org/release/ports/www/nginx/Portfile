@@ -1,0 +1,221 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89761 2012-02-09 23:35:34Z cal@macports.org $
+
+PortSystem          1.0
+
+name                nginx
+version             1.0.12
+categories          www mail
+platforms           darwin
+license             BSD
+maintainers         cal openmaintainer
+
+description         High-performance HTTP(S) server, HTTP(S) reverse proxy and IMAP/POP3 proxy server
+long_description    Nginx ("engine x") is a high-performance HTTP(S) server \
+                    and reverse proxy, as well as an IMAP/POP3 proxy server. \
+                    Nginx was written by Igor Sysoev for Rambler.ru, Russia's \
+                    second-most visited website, where it has been running in \
+                    production for over two and a half years. Igor has \
+                    released the source code under a BSD-like license. \
+                    Although still in beta, Nginx is known for its stability, \
+                    rich feature set, simple configuration, and low resource \
+                    consumption.
+
+homepage            http://nginx.org/
+master_sites        http://nginx.org/download:nginx \
+                    http://www.grid.net.ru/nginx/download/:upload_module \
+                    http://wiki.nginx.org/images/1/10/:secure_download_module \
+                    http://wiki.nginx.org/images/b/bb/:zip_module \
+                    http://people.freebsd.org/~osa/:redis_module
+
+distfiles           ${name}-${version}${extract.suffix}:nginx
+checksums           ${name}-${version}${extract.suffix} \
+                    rmd160  a6f424f5b9c74ba7d0d4dba4f0eee0931116a779 \
+                    sha256  ba98242ed35086aa0df95441a860353ec1ecb95cd112f248f9a8ef368262332b
+
+depends_lib         \
+                    port:pcre \
+                    port:zlib
+
+patchfiles          patch-auto__install.diff \
+                    patch-conf__nginx.conf.diff
+
+set nginx_confdir   ${prefix}/etc/${name}
+set nginx_logdir    ${prefix}/var/log/${name}
+set nginx_rundir    ${prefix}/var/run/${name}
+set nginx_pidfile   ${nginx_rundir}/${name}.pid
+
+configure.args-append \
+                    --with-cc-opt=\"${configure.cppflags} ${configure.cflags}\" \
+                    --with-ld-opt=\"${configure.ldflags}\" \
+                    --conf-path=${nginx_confdir}/${name}.conf \
+                    --error-log-path=${nginx_logdir}/error.log \
+                    --http-log-path=${nginx_logdir}/access.log \
+                    --pid-path=${nginx_pidfile} \
+                    --lock-path=${nginx_rundir}/${name}.lock \
+                    --http-client-body-temp-path=${nginx_rundir}/client_body_temp \
+                    --http-proxy-temp-path=${nginx_rundir}/proxy_temp \
+                    --http-fastcgi-temp-path=${nginx_rundir}/fastcgi_temp \
+                    --http-uwsgi-temp-path=${nginx_rundir}/uwsgi_temp
+
+default_variants    +ipv6
+universal_variant   no
+
+build.target        build
+destroot.keepdirs   ${destroot}${nginx_logdir} \
+                    ${destroot}${nginx_rundir}
+
+set nginx_conf ${prefix}/etc/${name}/${name}.conf
+post-destroot {
+    delete ${destroot}${nginx_conf}
+    file mkdir ${destroot}${prefix}/share/nginx
+    file rename ${destroot}${prefix}/html ${destroot}${prefix}/share/nginx
+}
+pre-activate {
+    # Try to cover for the fact that, in earlier revisions of this port, the
+    # configuration file was installed live instead of an example, in which
+    # case an upgrade will clobber any customisations that a user might have
+    # made :(
+    set nginx_conf_is_registered_to_nginx \
+        [expr {[registry_file_registered ${nginx_conf}] == "${name}"}]
+    set nginx_conf_differs \
+        [catch {exec cmp ${nginx_conf} ${nginx_conf}.example}]
+    if { ${nginx_conf_is_registered_to_nginx} && ${nginx_conf_differs} } {
+        copy ${nginx_conf} ${nginx_conf}.altered
+        ui_msg ""
+        ui_msg "###############################################################"
+        ui_msg "# It appears that you have altered ${nginx_conf},"
+        ui_msg "# and that upgrading or uninstalling your previous installation"
+        ui_msg "# of ${name} will clobber your copy.  It has been copied to"
+        ui_msg "# ${nginx_conf}.altered for preservation when you upgrade or"
+        ui_msg "# uninstall ${name}.  This problem should not occur with future"
+        ui_msg "# upgrades or installations of this port.\n"
+        ui_msg "###############################################################"
+        ui_msg ""
+    }
+}
+
+startupitem.create      yes
+startupitem.executable  ${prefix}/sbin/nginx
+startupitem.pidfile     auto ${nginx_pidfile}
+
+variant dav description {Add WebDAV support to server} {
+    configure.args-append   --with-http_dav_module
+}
+
+variant flv description {Add FLV (Flash Video) streaming support to server} {
+    configure.args-append   --with-http_flv_module
+}
+
+variant mail description {Add IMAP4/POP3 mail proxy support} {
+    configure.args-append   --with-mail
+}
+
+variant ssl description {Add SSL (HTTPS) support to the server, and\
+        also to the mail proxy if that is enabled} {
+    depends_lib-append      port:openssl
+    configure.args-append   --with-http_ssl_module
+    if [variant_isset mail] {
+        configure.args-append   --with-mail_ssl_module
+    }
+}
+
+variant status description {Add /nginx_status support to the server} {
+    configure.args-append   --with-http_stub_status_module
+}
+
+variant ipv6 description {Add support for ipv6} {
+    configure.args-append   --with-ipv6
+}
+
+# This variant has been labelled "perl5" so as to allow users to easily stick
+# with perl 5.x once perl 6.x is released; a "perl6" variant will also be added
+# at that time.
+variant perl5 description {Add perl support to the server directly within\
+        nginx and call perl via SSI} {
+    depends_run-append	    path:bin/perl:perl5
+    configure.args-append   --with-http_perl_module \
+                            --with-perl=${prefix}/bin/perl
+}
+
+variant realip description {Using nginx as a backend} {
+    configure.args-append   --with-http_realip_module
+}
+
+variant addition description {Append text to pages} {
+    configure.args-append   --with-http_addition_module
+}
+
+variant substitution description {Replace text in pages} {
+    configure.args-append   --with-http_sub_module
+}
+
+variant gzip_static description {Avoids compressing the same file each\
+        time it is requested} {
+    configure.args-append   --with-http_gzip_static_module
+}
+
+variant google_perftools description {Enable Google Performance Tools\
+        profiling for workers} {
+    depends_lib-append      port:google-perftools
+    configure.args-append   --with-google_perftools_module
+}
+
+variant upload description {Enable Valery Kholodkov's upload module\
+        (http://grid.net.ru/nginx/upload.en.html)} {
+    set upload_filename nginx_upload_module
+    set upload_version  2.2.0
+    set upload_distname ${upload_filename}-${upload_version}
+    distfiles-append    ${upload_distname}.tar.gz:upload_module
+    checksums-append    ${upload_distname}.tar.gz \
+                        md5     2681a6167551830a23336fa41bc539a1 \
+                        sha1    93d6e83e613a0ce2ed057a434b344fa1b6609b47 \
+                        rmd160  5734af837be3fe8ec444a7e5e7f6707118594098
+    configure.args-append   --add-module=${workpath}/${upload_distname}
+}
+
+variant secure_download description {Enable Ngx http secure download \
+        (http://wiki.nginx.org/HttpSecureDownload)} {
+
+    set secure_download_distname Ngx_http_secure_download
+    distfiles-append    ${secure_download_distname}.tar.gz:secure_download_module
+    checksums-append    ${secure_download_distname}.tar.gz \
+                            md5     8d83bfb4853ed76eb22453712c394519
+    configure.args-append   --add-module=${workpath}/${secure_download_distname}
+    depends_lib-append  port:mhash
+}
+
+variant zip description {Enable Ngx zip download module \
+        (http://wiki.nginx.org/NginxNgxZip)} {
+
+    set zip_distname Mod_zip-1.1.4
+    distfiles-append    ${zip_distname}.tar.gz:zip_module
+    checksums-append    ${zip_distname}.tar.gz \
+                            md5     be934138446793ca783ebfcc1a74883d
+    configure.args-append   --add-module=${workpath}/${zip_distname}
+}
+
+variant redis description {Enable Ngx HTTP Redis module} {
+    set redis_filename  ngx_http_redis
+    set redis_version   0.3.1
+    set redis_distname  ${redis_filename}-${redis_version}
+    distfiles-append    ${redis_distname}.tar.gz:redis_module
+    checksums-append    ${redis_distname}.tar.gz \
+                            md5     c731d6ac14b4c8a99fda2c7e89356a8f
+    configure.args-append   --add-module=${workpath}/${redis_distname}
+}
+
+variant geoip description {Enable Ngx http GeoIP module \
+        (http://wiki.nginx.org/HttpGeoIPModule)} {
+
+    configure.args-append  --with-http_geoip_module
+    depends_lib-append  port:libgeoip
+}
+
+variant debug description {Enable debug mode} {
+    configure.args-append   --with-debug
+}
+
+livecheck.type      regex
+livecheck.url       http://trac.nginx.org/nginx/browser/nginx_org/xml/versions.xml?format=txt
+livecheck.regex     "<stable> *(\\d+(?:\\.\\d+)*)"

@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.prime.com.tr/ui"
+  xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core">
+<ui:composition template="/templates/platform/ubersvn-template.xhtml">
+  <ui:param name="pageTitle" value="#{msg.viewUsersPanelHeading}" />
+  <ui:define name="headerTabName">
+    <h:inputHidden id="tabName" value="usersTab" />
+  </ui:define>
+  <ui:define name="pageContentView">
+    <div class="base-main-panel-full">
+      <p:panel id="usersContentPanel" styleClass="base-plain-panel" rendered="#{login.loggedIn}">
+        <f:facet name="header">
+          <h:outputText value="#{msg.viewUsersPanelHeading}" />
+          <p:ajaxStatus style="float: right; width:16px;height:16px;">
+            <f:facet name="start">
+              <h:graphicImage value="#{resource['img/platform:ajaxloading.gif']}" />
+            </f:facet>
+            <f:facet name="complete">
+              <h:outputText value="" />
+            </f:facet>
+          </p:ajaxStatus>
+        </f:facet>
+        <ui:include id="viewUsersPage" src="/sections/platform/users/viewUsers.xhtml" />
+      </p:panel>
+    </div>
+  </ui:define>
+</ui:composition>
+</html>

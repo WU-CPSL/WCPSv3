@@ -1,0 +1,28 @@
+# $Id: Portfile 80076 2011-07-03 23:46:28Z jmr@macports.org $
+
+PortSystem          1.0
+
+name                xpr
+version             1.0.3
+categories          x11
+maintainers         jeremyhu openmaintainer
+description         Print an X11 window dump
+long_description    ${description}
+
+platforms           darwin
+
+homepage            http://www.x.org/
+master_sites        xorg:individual/app/
+use_bzip2           yes
+
+checksums           md5     1c2c540d240def3ea65ff2030f059f8a \
+                    sha1    9dbd0ff136b612285e00d92d0c7675a4207b1c4a \
+                    rmd160  97d333a80d277ae9304306e7f5f21743d586d0bb
+
+depends_build       port:pkgconfig
+
+depends_lib         port:xorg-libXmu
+
+livecheck.type      regex
+livecheck.regex     ${name}-(\[\\d.\]+)${extract.suffix}
+livecheck.url       http://xorg.freedesktop.org/archive/individual/app/?C=M&O=D

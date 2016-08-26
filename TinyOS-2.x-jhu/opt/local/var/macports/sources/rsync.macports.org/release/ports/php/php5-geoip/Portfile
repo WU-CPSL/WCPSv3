@@ -1,0 +1,36 @@
+# $Id: Portfile 74826 2011-01-03 10:28:48Z nox@macports.org $
+
+PortSystem      1.0
+PortGroup       php5extension 1.0
+
+php5extension.setup geoip 1.0.7 pecl
+revision        1
+license         PHP
+categories      php devel
+platforms       darwin
+maintainers     nomaintainer
+description     Map IP address to geographic places
+
+long_description \
+    This PHP extension allows you to find the location of an IP address - \
+    City, State, Country, Longitude, Latitude, and other information as all, \
+    such as ISP and connection type.
+
+checksums       md5     ca5397a1dacb62afd426c2065fc1e106 \
+                sha1    d3445f559813a6ec0972320cf6409b894f843642 \
+                rmd160  a9bdd0d71a4b2fc8111cfeb08bd2d2161f029174
+
+depends_lib-append port:libgeoip
+
+use_parallel_build yes
+
+post-destroot {
+    set docdir ${prefix}/share/doc/${name}
+    xinstall -d ${destroot}${docdir}
+    xinstall -m 644 -W ${worksrcpath} ChangeLog README \
+        ${destroot}${docdir}
+}
+
+test.run yes
+
+livecheck.regex {(\d+(?:\.\d+)*)</a></th>}

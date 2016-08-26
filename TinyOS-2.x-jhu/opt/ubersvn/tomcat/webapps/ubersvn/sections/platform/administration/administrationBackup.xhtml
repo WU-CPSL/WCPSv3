@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:p="http://primefaces.prime.com.tr/ui" xmlns:h="http://java.sun.com/jsf/html" xmlns:wd="http://www.wansdisco.com/jsf">
+<ui:composition>
+  <ol id="sub-toc">
+    <li><h:outputLink title="#{msg.adminStatusTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationStatus.jsf">
+        <span>#{msg.adminStatusTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminApacheServerSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationApacheServerSettings.jsf">
+        <span>#{msg.adminSubversionServerSettingsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminUberServerSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUberServerSettings.jsf">
+        <span>#{msg.adminUberServerSettingsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminUberPreferenceSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUberPreferenceSettings.jsf">
+        <span>#{msg.adminUberPreferenceSettingsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminEmailServerSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationEmailServerSettings.jsf">
+        <span>#{msg.adminEmailServerSettingsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminLogsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationLogs.jsf">
+        <span>#{msg.adminLogsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminUpdatesTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUpdates.jsf">
+        <span>#{msg.adminUpdatesTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminLDAPTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUberLDAPSettings.jsf">
+        <span>#{msg.adminLDAPTabText}</span>
+      </h:outputLink></li>
+    <li class="current"><h:outputLink title="#{msg.backup}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationBackup.jsf">
+        <span>#{msg.backup}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink title="#{msg.adminExtensionsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationViewExtensions.jsf">
+        <span>#{msg.adminExtensionsTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink title="#{msg.adminSubversionReleaseLinkText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationSubversionRelease.jsf">
+        <span>#{msg.adminSubversionReleaseLinkText}</span>
+      </h:outputLink>
+    </li>
+  </ol>
+  <p:panel id="adminBackupRestorePanel" styleClass="tabbed-panel">
+    <ol id="innerTab">
+      <li id="administrationBackupInnerTab" class="current"><h:outputLink
+          value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationBackup.jsf"
+          title="Backup">
+          <span>#{msg.backup}</span>
+        </h:outputLink>
+      </li>
+      <li id="administrationRestoreInnerTab"><h:outputLink
+          value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationRestore.jsf"
+          title="Restore">
+          <span>#{msg.restore}</span>
+        </h:outputLink>
+      </li>
+    </ol>
+
+    <p:panel styleClass="base-tab-panel" style="height:560px;">
+      <p:panel styleClass="base-tab-inner-panel" id="currentComponentPanel" style="height:550px;">
+        <p:panel style="border: none; background: transparent; width: 70%; height: 300px; margin:100px auto;">
+          <div style="text-align: center;">
+            <h:outputText styleClass="configurationTitle" value="#{msg.createBackup}" />
+            <br /> <br />
+            <h:panelGroup>
+              <h:outputText value="#{msg.backupWarningWarning}" style="font-size:14px;color:red;" />
+              <br />
+              <h:outputText value="#{msg.backupWarning1}" style="font-size:14px;" />
+              <br />
+              <h:outputText value="#{msg.backupWarning2}" style="font-size:14px;" />
+            </h:panelGroup>
+            <br/><br/>
+          </div>
+          <h:panelGrid cellspacing="10px" style="width:100%" columns="2" columnClasses="wizardLabelColumn, wizardFieldColumn">
+            <h:outputText value="#{msg.filename}" />
+            <h:panelGroup>
+              <p:inputText id="fileNameInput" value="#{administrationBackupManagedBean.fileName}" required="true"
+                requiredMessage="#{msg.invalidBackupFileName}" size="50" styleClass="configurationWizardFormField">
+                <f:validateRegex pattern="[^/?*:,;{}\\]+" />
+                <wd:maxLengthValidator field="#{msg.filename}" maxLength="50" />
+              </p:inputText>
+              <h:message style="color: red; font-size: 10px; height: 11px;" for="fileNameInput" />
+            </h:panelGroup>
+            <h:outputText value="#{msg.backupFolderLocation}" />
+            <h:panelGroup>
+              <h:inputText id="backupFolderLocation" required="true" requiredMessage="#{msg.backupPathRequired}" size="50"
+                styleClass="configurationWizardFormField" value="#{administrationBackupManagedBean.backupFolder}" />
+              <h:graphicImage style="cursor: pointer;" library="img/platform/icons" name="mag_glass.png"
+                onclick="document.forms[1].popupField.value='backupFolderLocation';window.open('#{administratorManagedBean.facesContext.externalContext.requestContextPath}/ubersvn/faces/folderChooserPopup.jsp','Browse_Server', 'height=630,width=750,top='+((screen.height-(screen.height/1.618))-(500/2))+',left='+((screen.width-650)/2)+',scrollbars,resizable')" />
+              <h:message style="color: red; font-size: 10px; height: 11px;" for="backupFolderLocation" />
+            </h:panelGroup>
+          </h:panelGrid>
+          <h:panelGroup id="backupBottomRight" style="margin-bottom: 10px; margin-right: 10px;" styleClass="bottomRight">
+            <p:commandButton id="administrationExport" value="#{msg.backup}" styleClass="roundedButtonSmall" onclick="backupDialog.show()"
+              oncomplete="backupDialog.hide()" action="#{administrationBackupManagedBean.exportBackup}" ajax="false" />
+          </h:panelGroup>
+        </p:panel>
+      </p:panel>
+    </p:panel>
+    <p:dialog modal="true" widgetVar="backupDialog" header="#{msg.creatingBackup}" draggable="false" closable="false" resizable="false"
+      width="200" height="150">
+      <h:graphicImage id="updatingImage" style="border:0; margin-left: auto; margin-right: auto; display: block;" library="img/platform"
+        name="progress.gif" />
+    </p:dialog>
+  </p:panel>
+</ui:composition>
+</html>

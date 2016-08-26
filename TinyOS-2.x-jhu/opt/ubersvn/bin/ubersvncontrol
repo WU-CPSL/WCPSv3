@@ -1,0 +1,163 @@
+#!/bin/bash
+# uberSVN Tomcat Portal SysV Init Script
+# Copyright WANdisco Inc 2011
+#
+# chkconfig: 2345 10 90
+# description:  Service control for the UberSVN administration portal
+#
+
+# The path to the uberSVN install dir
+if [ "$(uname -s)" = "Linux" ] ; then
+	export UBER_HOME=$( (cd "$(dirname $(readlink -f $0))/.." && pwd) )
+else
+	export UBER_HOME=$( (cd "$(dirname $0)/.." && pwd) )
+fi
+
+# Catalina and Java config
+export CATALINA_HOME="$UBER_HOME/tomcat"
+export CATALINA_OUT="$UBER_HOME/data/logs/catalina.out"
+export CATALINA_PID="$UBER_HOME/data/run/tomcat.pid"
+export CATALINA_OPTS="-Xms128m -Xmx1024m -XX:MaxPermSize=256m"
+export JAVA_HOME="$UBER_HOME/jre"
+export JAVA_OPTS="-Djava.library.path=$UBER_HOME/lib -Djava.awt.headless=true -Dfile.encoding=UTF-8"
+export JENKINS_HOME="$UBER_HOME/jenkins"
+
+# Uber user details
+UBER_USER=ubersvn
+UBER_USER_ID=`id -u $UBER_USER`
+
+# Current user details
+RUNNING_USER=`id -un`
+RUNNING_USER_ID=`id -u`
+
+function usage() {
+	echo "Usage: $0 {run|start|stop|restart}"
+}
+
+# Are we running interactively?
+have_tty=0
+if [ "`tty`" != "not a tty" ] ; then
+	have_tty=1
+fi
+
+# Must have at least one argument
+if [ $# -lt 1 ] ; then
+	usage
+	exit 2
+fi
+
+# Must be run as the correct user
+SU_CMD=""
+if [ "$RUNNING_USER_ID" != "$UBER_USER_ID" -a "$RUNNING_USER" != "$UBER_USER" ] ; then
+	if [ "$(uname -s)" != "Darwin" ] ; then
+		if [ "$RUNNING_USER_ID" = "0" ] ; then
+			SU_CMD="su $UBER_USER"
+		else
+			echo "This script must be run as the root or $UBER_USER user, please try:"
+			echo "  \$  sudo $0 $@"
+			echo "Or:"
+			echo "  \$  sudo su - $UBER_USER -c '$0 $@'"
+			exit 2
+		fi
+	else
+		echo "This script must be run as the $UBER_USER user, please try:"
+		echo "  \$  sudo su - $UBER_USER -c '$0 $@'"
+		exit 2
+	fi
+fi
+
+# Runs Tomcat in the foreground
+function run() {
+	if [ $have_tty -eq 1 ]; then
+		echo "Running Tomcat"
+	fi
+	# Allow any signal which would kill a process to stop Tomcat
+	trap stop HUP INT QUIT ABRT KILL ALRM TERM TSTP
+	$SU_CMD $CATALINA_HOME/bin/catalina.sh run
+}
+
+# Start SysV init service
+function start() {
+	if [ $have_tty -eq 1 ]; then
+		echo "Starting SysV Tomcat"
+	fi
+	$SU_CMD $CATALINA_HOME/bin/catalina.sh start
+}
+
+# Stop SysV init service
+function stop() {
+	if [ $have_tty -eq 1 ]; then
+		echo "Stopping SysV Tomcat"
+	fi
+	$SU_CMD $CATALINA_HOME/bin/catalina.sh stop
+}
+
+# Restart SysV init service
+function restart() {
+	stop
+	sleep 8
+	start
+}
+
+# Start launchd service
+function mac-start() {
+	if [ $have_tty -eq 1 ]; then
+		echo "Starting launchd Tomcat"
+	fi
+	# Remove cron job on success in case we were restarting and not starting from stopped
+	test -z "`launchctl load -w /Library/LaunchDaemons/com.wandisco.ubersvn_tomcat.plist 2>&1`" && crontab -r > /dev/null 2>&1
+}
+
+# Stop launchd service
+function mac-stop() {
+	if [ $have_tty -eq 1 ]; then
+		echo "Stopping launchd Tomcat"
+	fi
+	# Launchctl runs asynchronously, so fire it off and wait till it's done
+	# (Other stuff depends on this being a blocking operation)
+	launchctl stop com.wandisco.ubersvn_tomcat
+	while true ; do
+		launchctl list -x com.wandisco.ubersvn_tomcat > /dev/null 2>&1
+		if [ $? -ne 0 ] ; then
+			break
+		fi
+		sleep 1
+	done
+}
+
+# Restart launchd service
+function mac-restart() {
+	# This process exits when we kill it's parent, which means we never get further than "mac-stop" when invoked from tomcat
+	# So the hack is to install a cron job before stopping -- it will start back up again "later"
+	echo "* * * * * /opt/ubersvn/bin/ubersvncontrol mac-start" | crontab
+	mac-stop
+	if [ $have_tty -eq 1 ]; then
+		echo "Starting launchd Tomcat"
+	fi
+}
+
+ERROR=0
+case "$1" in
+	run)
+		$1
+		;;
+	start|stop|restart)
+		if [ "$(uname -s)" = "Darwin" ] ; then
+			mac-$1
+		else
+			$1
+		fi
+		;;
+	mac-start|mac-stop|mac-restart)
+		if [ "$(uname -s)" != "Darwin" ] ; then
+			`echo "$1" | sed -e 's@mac-@@'`
+		else
+			$1
+		fi
+		;;
+	*)
+		usage
+		ERROR=2
+		;;
+esac
+exit $ERROR

@@ -1,0 +1,60 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 84550 2011-09-27 21:05:11Z snc@macports.org $
+
+PortSystem              1.0
+
+name                    freeradius
+version                 2.1.9
+revision            1
+categories              sysutils
+maintainers             nomaintainer
+homepage                http://www.freeradius.org/
+platforms               darwin freebsd
+use_bzip2               yes
+distname                ${name}-server-${version}
+
+description             Free Radius Implementation
+
+long_description        The FreeRADIUS Server Project is an attempt to create \
+                        a high-performance and highly-configurable GPLd free \
+                        RADIUS server. The server is similar to Livingston's \
+                        2.0 server. FreeRADIUS is a variant of the Cistron \
+                        RADIUS server, but they don't share a lot in common \
+                        anymore.
+
+master_sites            ftp://ftp.freeradius.org/pub/freeradius/ \
+                        ftp://ftp.freeradius.org/pub/freeradius/old
+
+checksums           rmd160  5c51cf7483ad5c912cec7eb78342c2f7e1a1c32f \
+                    sha256  b0b7c5fe334e826e2f643569485ce203520ecb1d058d42b8df2a94a73acb05b1
+
+depends_lib             port:libtool \
+                        port:libpcap \
+                        port:openldap \
+                        port:openssl \
+                        port:unixODBC \
+                        port:gdbm
+
+patchfiles              patch-configure.in.diff
+
+use_autoconf            yes
+
+configure.args          --with-openssl-includes=${prefix}/include/openssl \
+                        --with-openssl-libraries=${prefix}/lib \
+                        --with-system-libtool \
+                        --without-rlm_krb5
+
+configure.cflags-append -I${prefix}/include
+
+use_parallel_build      no
+
+destroot.env-append     R=${destroot}
+
+variant kerberos description { Use Kerberos } {
+     depends_lib-append port:kerberos5
+     configure.args-delete --without-rlm_krb5
+}
+
+livecheck.type          regex
+livecheck.url           [lindex ${master_sites} 0]
+livecheck.regex         ${name}-server-(\[0-9.\]+)\\.tar

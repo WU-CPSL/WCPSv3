@@ -1,0 +1,19 @@
+# $Id: Portfile 88353 2011-12-29 10:42:54Z jmr@macports.org $
+
+PortSystem          1.0
+PortGroup           perl5 1.0
+
+perl5.setup         Digest-CRC 0.16
+revision            2
+license             public-domain
+maintainers         nomaintainer
+description         Generic CRC functions
+long_description    The Digest::CRC module calculates CRC sums of all \
+                    sorts. It contains wrapper functions with the correct \
+                    parameters for CRC-CCITT, CRC-16 and CRC-32.
+
+platforms           darwin
+
+checksums           md5 6ddd9861434f2b09bbce2363d0edc90c \
+                    sha1 215407b38b5180fa78b1f7e2b7655b299cc8ed8d \
+                    rmd160 e540041616d4c618690649fa2f925bab535d0171

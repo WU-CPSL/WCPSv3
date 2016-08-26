@@ -1,0 +1,54 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 88369 2011-12-29 20:06:54Z ryandesign@macports.org $
+
+PortSystem          1.0
+
+name                rtorrent
+conflicts           rtorrent-devel
+set real_name       rtorrent
+version             0.8.9
+categories          net
+platforms           darwin
+maintainers         gmail.com:gardnermj
+license             GPL
+
+description         console-based BitTorrent client
+
+long_description    rTorrent is a console-based BitTorrent client. It aims to \
+                    be a fully-featured and efficient client with the ability to \
+                    run in the background using screen. It supports fast-resume \
+                    and session management.
+
+homepage            http://libtorrent.rakshasa.no/
+master_sites        ${homepage}downloads/
+distname            ${real_name}-${version}
+
+checksums           sha1    0ac51c185e98b5a386e5f1a07bca9a9963e2d6ce \
+                    rmd160  d79eacf6d63d13514c07c1c35a662fea5f35aef1
+
+depends_build       port:pkgconfig
+
+depends_lib         port:curl \
+                    port:libsigcxx2 \
+                    port:libtorrent \
+                    port:ncurses \
+                    port:openssl \
+                    port:zlib
+
+if {${configure.compiler} == "clang"} {
+    configure.compiler llvm-gcc-4.2
+}
+
+configure.args      --mandir=${prefix}/share/man \
+                    --disable-debug \
+                    --enable-ipv6
+
+variant xmlrpc description {Enable XMLRPC interface} {
+    configure.args-append   --with-xmlrpc-c
+    depends_lib-append      port:xmlrpc-c
+}
+
+livecheck.type      regex
+livecheck.name      ${real_name}
+livecheck.url       ${master_sites}
+livecheck.regex     ${name}-(\\d+(?:\\.\\d+)*)${extract.suffix}

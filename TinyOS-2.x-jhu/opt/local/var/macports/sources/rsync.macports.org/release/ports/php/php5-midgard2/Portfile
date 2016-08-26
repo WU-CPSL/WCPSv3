@@ -1,0 +1,46 @@
+# $Id: Portfile 87294 2011-11-16 18:23:08Z jwa@macports.org $
+
+PortSystem 1.0
+
+name		php5-midgard2
+version		10.05.5
+
+categories	php
+maintainers	jwa
+description	A content management system
+long_description Midgard is a content management system platform using \
+    Apache, PHP and MySQL.
+platforms	darwin
+homepage	http://www.midgard-project.org/
+
+master_sites	http://www.midgard-project.org/midcom-serveattachmentguid-1f60f206056311e1837909bf34170fdf0fdf/
+
+#use_bzip2	yes
+checksums           md5     7f17d76419ed1568b8c5a2e5419cdc50 \
+                    sha1    530898b614576554527187dda0ce40659ab7af12 \
+                    rmd160  7d60bdcb23b66629cc7c0bceca48c30182e8b203
+
+depends_lib	port:midgard2-core \
+    path:bin/php:php5
+
+pre-configure	{
+    system "cd ${worksrcpath} && phpize"
+}
+
+configure.args	--sysconfdir=${prefix}/etc/midgard/ \
+    --with-php-config=${prefix}/bin/php-config
+
+destroot.destdir	INSTALL_ROOT=${destroot}
+
+post-install {
+    ui_msg "========================   IMPORTANT   ========================="
+    ui_msg "If this is the first time you're installing Midgard, or you have"
+    ui_msg "recently upgraded PHP, make sure to check your php.ini to verify"
+    ui_msg "that extension_dir at least includes"
+    system "php-config --extension-dir"
+    ui_msg "================================================================"
+}
+
+livecheck.type	regex
+livecheck.url	${homepage}download
+livecheck.regex {download/[0-9-]+/">([0-9.]+)}

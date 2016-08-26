@@ -1,0 +1,20 @@
+; File generated automatically from ./wtsapi32.spec; do not edit!
+
+LIBRARY wtsapi32.dll
+
+EXPORTS
+  WTSCloseServer@4 @1
+  WTSDisconnectSession@12 @2
+  WTSEnumerateProcessesA@20 @3
+  WTSEnumerateProcessesW@20 @4
+  WTSEnumerateSessionsA@20 @7
+  WTSEnumerateSessionsW@20 @8
+  WTSFreeMemory@4 @9
+  WTSOpenServerA@4 @11
+  WTSOpenServerW@4 @12
+  WTSQuerySessionInformationA@20 @13
+  WTSQuerySessionInformationW@20 @14
+  WTSQueryUserToken@8 @17
+  WTSRegisterSessionNotification@8 @18
+  WTSUnRegisterSessionNotification@4 @27
+  WTSWaitSystemEvent@12 @35

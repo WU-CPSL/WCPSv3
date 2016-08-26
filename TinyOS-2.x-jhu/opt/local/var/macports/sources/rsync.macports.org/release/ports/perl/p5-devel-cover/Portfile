@@ -1,0 +1,22 @@
+# $Id: Portfile 82782 2011-08-20 01:07:52Z ryandesign@macports.org $
+
+PortSystem            1.0
+PortGroup             perl5 1.0
+
+perl5.setup           Devel-Cover 0.78
+revision              1
+maintainers           nomaintainer
+description           Code coverage metrics for Perl
+long_description      ${description}
+
+platforms             darwin
+
+checksums             sha1    d8e61a6df0a56dd8625fe48e25ea38145fc85054 \
+                      rmd160  3e59c2f93c3528d66ecfc609d4f75a56183921c2
+
+if {${perl5.major} != ""} {
+depends_lib-append    port:p${perl5.major}-perl-tidy \
+                      port:p${perl5.major}-pod-coverage \
+                      port:p${perl5.major}-test-differences \
+                      port:p${perl5.major}-test-warn
+}

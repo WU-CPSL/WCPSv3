@@ -1,0 +1,73 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 88854 2012-01-13 13:37:52Z hum@macports.org $
+
+PortSystem          1.0
+
+name                MMDAgent
+version             1.2
+categories          audio japanese multimedia
+platforms           darwin
+maintainers         hum openmaintainer
+license             BSD
+
+homepage            http://www.mmdagent.jp/
+description         MMDAgent is a toolkit for building voice interaction systems.
+long_description    ${description}
+
+# Install sample data and scripts in the example package.
+set ex_name         ${name}_Example
+#set ex_distname     ${ex_name}-${version}
+set ex_distname     ${ex_name}-1.1
+
+use_zip             yes
+distfiles-append    ${ex_distname}${extract.suffix}:ex
+
+master_sites        sourceforge:project/mmdagent/${name}/${distname}/ \
+                    sourceforge:project/mmdagent/${ex_name}/${ex_distname}/:ex
+
+checksums           ${distname}${extract.suffix} \
+                    rmd160  a0ecbf3e599b3d327d09daa0c7a50f38bfdc7956 \
+                    sha256  eed9e47c156fa115163e54853cefa275bd4a06da29ecf80083fc8403d5d7cab7 \
+                    ${ex_distname}${extract.suffix} \
+                    rmd160  69ef644ceeec042a0aa41d53b5b86e365761c087 \
+                    sha256  8a280c83ec5778b29d711bfd368e57c5fba31aa3fdc4d46ae02ef471e4bf8930
+
+supported_archs     i386
+
+depends_lib         port:portaudio
+
+patchfiles          patch-Makefile.diff \
+                    patch-Plugin_Audio.diff
+patch.pre_args      -p1
+post-patch {
+    foreach module {Julius Open\_JTalk} {
+        reinplace "s|\\.\\./Library_PortAudio/lib/PortAudio.a|${prefix}/lib/libportaudio.a|" \
+            ${worksrcpath}/Plugin_${module}/Makefile.carbon
+    }
+}
+
+use_configure       no
+
+use_parallel_build  no
+build.target        carbon
+
+destroot {
+    # install the application.
+	xinstall -m 755 -d ${destroot}${applications_dir}
+	file copy ${worksrcpath}/Release/MMDAgent.app \
+		${destroot}${applications_dir}
+
+    # install the sample data and scripts.
+    foreach dir {Accessory Expression Model Motion Stage Voice} {
+        file copy ${workpath}/${ex_distname}/${dir} \
+            ${destroot}${applications_dir}/MMDAgent.app/Contents/MacOS/
+    }
+    foreach ext {dic fst mdf ojt} {
+        file copy -force ${workpath}/${ex_distname}/MMDAgent_Example.${ext} \
+            ${destroot}${applications_dir}/MMDAgent.app/Contents/MacOS/MMDAgent.${ext}
+    }
+}
+
+livecheck.type      regex
+livecheck.url       http://sourceforge.net/projects/mmdagent/files/${name}/
+livecheck.regex     /${name}-(\[0-9.\]+)/

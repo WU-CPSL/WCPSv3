@@ -1,0 +1,14 @@
+# $Id: Portfile 82547 2011-08-15 16:46:16Z jmr@macports.org $
+
+PortSystem	1.0
+PortGroup	perl5 1.0
+
+perl5.setup	Time-Piece 1.20
+revision    2
+maintainers	nomaintainer
+description	Object-oriented time objects
+long_description	${description} 	
+platforms	darwin
+
+checksums       sha1    3d3e71543740719e2b2d9e16b50f8a1aea5c88fc \
+                rmd160  5d7bb573a9df4786939ca99d555984ee6271bbd6

@@ -1,0 +1,47 @@
+# $Id: Portfile 64800 2010-03-15 20:01:22Z gwright@macports.org $
+
+PortSystem 1.0
+
+# hs-cabal installs an executable, not a library, so PortGroup haskell
+# is inappropriate.
+
+name		hs-cabal
+set canonicalname	cabal-install
+version		0.8.0
+categories	devel haskell
+maintainers	gwright
+platforms	darwin
+
+description	User interface to Haskell's Cabal build system (development version).
+long_description	\
+		Cabal is a system for building and packaging Haskell	\
+		libraries and programs It defines a common interface	\
+		for package authors and distributors to easily build	\
+		their applications in a portable way. Cabal is part of	\
+		a larger infrastructure for distributing, organizing,	\
+		and cataloging Haskell libraries and programs.
+
+homepage	http://www.haskell.org/cabal
+master_sites	http://hackage.haskell.org/packages/archive/${canonicalname}/${version}
+distname	${canonicalname}-${version}
+
+checksums	md5     7c25667125f377e919058f4bb1b85d75 \
+		sha1    f047f03e4c12de0030ae1f7e66ed62aa46e057cc \
+		rmd160  2af161fbcaf976014eb08d1eada9feceb034e93e
+
+universal_variant	no
+
+depends_lib	port:hs-libcabal	\
+		port:hs-zlib		\
+		port:hs-HTTP
+
+configure	{ system "cd ${worksrcpath} && runhaskell Setup configure -v --ghc --prefix=${prefix} --with-gcc=${configure.cc} --program-suffix=\"-${version}\""
+		}
+
+build		{ system "cd ${worksrcpath} && runhaskell Setup build -v"
+		}
+
+destroot	{ system "cd ${worksrcpath} && runhaskell Setup copy --copy-prefix=${destroot}${prefix}"
+                }
+
+

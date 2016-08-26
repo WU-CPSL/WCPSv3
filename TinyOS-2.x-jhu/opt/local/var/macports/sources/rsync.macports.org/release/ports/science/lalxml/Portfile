@@ -1,0 +1,41 @@
+# $Id: Portfile 89106 2012-01-19 18:49:18Z ram@macports.org $
+
+PortSystem    1.0
+
+name          lalxml
+version       1.1.2
+categories    science
+platforms     darwin
+maintainers   ram
+license       GPL
+
+description   LSC Algorithm Library - XML
+long_description \
+  LIGO Scientific Collaboration Algorithm Library - XML containing \
+  routines for accessing XML files using libxml2.
+
+homepage      https://www.lsc-group.phys.uwm.edu/daswg/projects/lalsuite.html
+master_sites  http://www.lsc-group.phys.uwm.edu/daswg/download/software/source/lalsuite
+
+checksums     md5 175cd04284749939506579d2026e2e0f \
+              sha1 ecdc861ba65d4635e1cebf6b00847feb0f45407f \
+              rmd160 f30267d9631e983e5049eb753b677cebb2738281
+
+depends_build port:pkgconfig \
+              port:python27
+
+depends_lib   port:lal \
+              port:libxml2 \
+              port:gsl
+
+configure.python ${prefix}/bin/python2.7
+configure.args --mandir=${prefix}/share/man \
+               --disable-gcc-flags
+
+build.args    V=1
+
+use_parallel_build yes
+
+livecheck.type   regex
+livecheck.url    ${master_sites}
+livecheck.regex  {lalxml-(\d+(?:\.\d+)*).tar.gz}

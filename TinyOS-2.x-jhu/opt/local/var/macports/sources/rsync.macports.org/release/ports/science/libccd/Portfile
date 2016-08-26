@@ -1,0 +1,22 @@
+# $Id: Portfile 89753 2012-02-09 14:08:33Z mmoll@macports.org $
+
+PortSystem 1.0
+PortGroup  cmake 1.0
+
+name                libccd
+version             1.1
+categories          science
+maintainers         mmoll openmaintainer
+description         A library for collision detection between convex shapes
+long_description    $description
+homepage            http://libccd.danfis.cz/
+platforms           darwin
+license             BSD
+master_sites        ${homepage}/files
+checksums           md5     9c8d3606486188f6e09fe4836711537c \
+                    sha1    f118f1489df87fb3ad55f3a73ed7bd4b9c494772 \
+                    rmd160  0cf383901fd5bdbcc77af394ab9579dffe913f32
+
+livecheck.type      regex
+livecheck.url       ${homepage}
+livecheck.regex     ${name}-(\[0-9.\]+).tar.gz

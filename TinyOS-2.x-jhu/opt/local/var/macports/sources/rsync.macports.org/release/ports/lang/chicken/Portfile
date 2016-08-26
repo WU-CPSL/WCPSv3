@@ -1,0 +1,48 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89936 2012-02-16 03:25:23Z jmr@macports.org $
+
+PortSystem 1.0
+
+name		chicken
+version		4.7.0
+revision	1
+categories	lang scheme
+license         BSD public-domain
+maintainers	gmail.com:arto.bendiken waqar gmail.com:ivan.g.raikov
+description	Compiler for the Scheme programming language
+long_description	\
+	Chicken produces portable, efficient C, supports almost all 	\
+	of the current Scheme language standard, the Revised5 Report 	\
+	on the Algorithmic Language Scheme (R5RS ), and includes many 	\
+	enhancements and extensions.
+homepage	http://www.call-with-current-continuation.org/
+platforms	darwin
+master_sites	http://code.call-cc.org/releases/${version}
+
+checksums           md5     9389388fdf04c3c64de29633aae12539 \
+                    sha1    504036951eccda7680547dae63ad44e8960d3f72 \
+                    rmd160  421f6e7383a666b836a7ad9d5ac342c8033bfff6
+
+patchfiles	patch-Makefile.macosx \
+            eval.c.patch
+
+post-patch {
+    # use full path with dlopen (#28617)
+    # this is ugly because we can't edit the scheme source (we'd need to
+    # already have the compiler) and the generated C uses an octal length
+    # prefix for strings.
+    set len [expr [string length ${prefix}] + [string length "/lib/libchicken"]]
+    reinplace "s|031__PREFIX__|[format %03o $len]${prefix}|" ${worksrcpath}/eval.c
+}
+
+use_configure	no
+
+build.args	C_COMPILER=${configure.cc} \
+		PLATFORM=macosx \
+		PREFIX=${prefix}
+
+if {"x86_64" == ${configure.build_arch}} {
+    build.args-append ARCH=x86-64
+}
+
+destroot.args	${build.args}

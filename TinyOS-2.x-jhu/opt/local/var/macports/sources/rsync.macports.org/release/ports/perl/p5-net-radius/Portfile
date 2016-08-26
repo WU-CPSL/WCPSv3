@@ -1,0 +1,15 @@
+# $Id: Portfile 87216 2011-11-14 06:28:36Z jmr@macports.org $
+
+PortSystem		1.0
+PortGroup		perl5 1.0
+
+perl5.setup		Net-Radius 1.56
+revision        2
+license			{Artistic-1 GPL}
+maintainers		nomaintainer
+description		An interface to the RADIUS protocol.
+long_description	${description}
+checksums		md5 ec6fa61f56f68a150e6dd96b6c30e0a8
+platforms		darwin
+
+supported_archs noarch

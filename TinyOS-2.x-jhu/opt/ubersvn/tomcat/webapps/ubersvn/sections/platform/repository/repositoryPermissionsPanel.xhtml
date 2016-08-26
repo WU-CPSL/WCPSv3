@@ -1,0 +1,155 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:p="http://primefaces.prime.com.tr/ui" xmlns:h="http://java.sun.com/jsf/html">
+<ui:composition>
+  <h:panelGrid columns="2">
+    <h:panelGroup>
+      <input id="Internal" name="AUTH__repoAuthorisationType" value="Internal" type="radio"
+        checked="#{repositoryAdministrationManagedBean.repo.authorisationType == 'Internal' ? 'checked' : ''}" />
+      <p:spacer />
+      <p:commandLink id="InternalLink" style="display:none; visibility: hidden;" ajax="false">
+        <f:setPropertyActionListener target="#{repositoryAdministrationManagedBean.repo.authorisationType}" value="Internal" />
+      </p:commandLink>
+    </h:panelGroup>
+
+    <h:panelGroup>
+      <label style="font-size: 16px;" for="Internal">uberSVN Internally Managed</label>
+    </h:panelGroup>
+    <p:spacer />
+    <p:spacer rendered="#{repositoryAdministrationManagedBean.repo.authorisationType != 'Internal'}" />
+    <h:panelGroup rendered="#{repositoryAdministrationManagedBean.repo.authorisationType == 'Internal'}">
+      <!-- 	<h:panelGrid columns="2" columnClasses="wizardLabelColumn, wizardFieldColumn"> -->
+      <h:panelGroup styleClass="wizardFieldColumn">
+        <p:focus />
+        <p:autoComplete forceSelection="true" id="addRepoPermissions" value="#{repositoryPermissionsManagedBean.permissionNameToAdd}"
+          completeMethod="#{repositoryPermissionsManagedBean.autoCompletePermissionNames}" styleClass="autoCompleteInputText"
+          style="border: 1px solid #006DFD; background: white;" />
+        <p:spacer width="10" />
+        <p:commandButton action="#{repositoryPermissionsManagedBean.addPermission}" styleClass="roundedButtonExtraSmall"
+          value="#{msg.addButtonText}" image="greenCross" ajax="true" update="addRepoPermissions, permissionTable"
+          oncomplete="jQuery('#saveLink').click();" />
+        <h:commandLink id="saveLink" action="#{repositoryPermissionsManagedBean.savePermissions}" style="display:none;" ajax="true" />
+        <script>
+			jQuery(document).ready(
+				function() {
+    				jQuery('input[name^="PERM__"]').change(function(e) {
+						jQuery('#saveLink').click();
+					});
+    			});
+		</script>
+        <br />
+        <h:message style="color: red; font-size: 9px;" for="addRepoPermissions" />
+      </h:panelGroup>
+      <!-- /h:panelGrid -->
+      <h:panelGroup rendered="#{repositoryAdministrationManagedBean.repo.authorisationType == 'Internal'}">
+        <p:dataTable var="permission" value="#{repositoryPermissionsManagedBean.repoPermissionsToAdd}" rows="9" paginator="true"
+          paginatorPosition="bottom" paginatorAlwaysVisible="false" id="permissionTable"
+          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+          <p:column styleClass="permissionLabelColumn">
+            <h:outputLabel value="#{permission.name}" />
+          </p:column>
+          <p:column styleClass="permissionRadioButtonFieldColumn">
+            <f:facet name="header">
+              <h:outputText value="#{msg.readOnlyColumnHeader}" />
+            </f:facet>
+            <h:panelGroup rendered="#{permission.canEdit}">
+              <input name="PERM__#{permission.name}" value="r" type="radio" checked="#{permission.readonlyChecked}" />
+            </h:panelGroup>
+            <h:panelGroup rendered="#{!permission.canEdit}">
+              <input name="PERM__#{permission.name}" value="r" type="radio" checked="#{permission.readonlyChecked}" disabled="disabled" />
+            </h:panelGroup>
+          </p:column>
+          <p:column styleClass="permissionRadioButtonFieldColumn">
+            <f:facet name="header">
+              <h:outputText value="#{msg.readAndWriteColumnHeader}" />
+            </f:facet>
+            <h:panelGroup rendered="#{permission.canEdit}">
+              <input name="PERM__#{permission.name}" value="rw" type="radio" checked="#{permission.readwriteChecked}" />
+            </h:panelGroup>
+            <h:panelGroup rendered="#{!permission.canEdit}">
+              <input name="PERM__#{permission.name}" value="rw" type="radio" checked="#{permission.readwriteChecked}" disabled="disabled" />
+            </h:panelGroup>
+          </p:column>
+          <p:column styleClass="permissionRadioButtonFieldColumn">
+            <f:facet name="header">
+              <h:outputText value="#{msg.adminColumnHeader}" />
+            </f:facet>
+            <h:panelGroup rendered="#{!permission.teamPermission}">
+              <h:panelGroup rendered="#{!permission.canEdit}">
+                <input name="PERM__#{permission.name}" value="admin" type="radio" checked="#{permission.repoAdminChecked}"
+                  disabled="disabled" />
+              </h:panelGroup>
+              <h:panelGroup rendered="#{permission.canEdit}">
+                <input name="PERM__#{permission.name}" value="admin" type="radio" checked="#{permission.repoAdminChecked}" />
+              </h:panelGroup>
+            </h:panelGroup>
+            <h:panelGroup rendered="#{permission.teamPermission}">
+              <h:outputText value="#{msg.teamRepoColumn}" />
+            </h:panelGroup>
+          </p:column>
+          <p:column
+            rendered="#{repositoryPermissionsManagedBean.systemAdmin or repositoryPermissionsManagedBean.globalRepoAdmin or repositoryProfileManagedBean.repo.delegatedRepoAdmin}">
+            <h:commandLink action="#{repositoryPermissionsManagedBean.removePermission}" update="repositoryPermissionsPanel" ajax="true">
+              <f:setPropertyActionListener target="#{repositoryPermissionsManagedBean.permissionNameToRemove}" value="#{permission}" />
+              <h:graphicImage library="img/platform/icons" name="cross.png" style="border: none;" />
+            </h:commandLink>
+          </p:column>
+        </p:dataTable>
+        <br />
+        <h:panelGroup>
+          <h:outputLink style="font-size: 18px; text-decoration: underline; padding-left: 5px; padding-right: 5px;"
+            value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/users/addUser.jsf"
+            rendered="#{basePage.systemAdmin}">
+            <span>#{msg.addRepoPermissionsCreateUserLink}</span>
+          </h:outputLink>
+          <h:outputLink style="font-size: 18px; text-decoration: underline; padding-left: 5px; padding-right: 5px;"
+            value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/teams/addTeam.jsf"
+            rendered="#{basePage.teamAdmin}">
+            <span>#{msg.addRepoPermissionsCreateTeamLink}</span>
+          </h:outputLink>
+        </h:panelGroup>
+        <br />
+        <br />
+        <h:panelGroup rendered="#{repositoryAdministrationManagedBean.repo.authorisationType == 'Internal'}">
+          <h:selectBooleanCheckbox label="#{msg.enableAnonymousReads}" value="#{repositoryAdministrationManagedBean.repo.anonymousReadEnabled}" />
+          <h:outputText value="#{msg.enableAnonymousReads}" />
+        </h:panelGroup>
+      </h:panelGroup>
+      <p:spacer rendered="#{repositoryAdministrationManagedBean.repo.authorisationType == 'Internal'}" />
+      <p:spacer rendered="#{repositoryAdministrationManagedBean.repo.authorisationType == 'Internal'}" />
+    </h:panelGroup>
+    <p:spacer />
+    <p:spacer />
+    <h:panelGroup>
+      <input id="External" name="AUTH__repoAuthorisationType" value="External" type="radio"
+        checked="#{repositoryAdministrationManagedBean.repo.authorisationType == 'External' ? 'checked' : ''}" />
+      <p:spacer />
+      <p:commandLink id="ExternalLink" style="display:none; visibility: hidden;" ajax="false">
+        <f:setPropertyActionListener target="#{repositoryAdministrationManagedBean.repo.authorisationType}" value="External" />
+      </p:commandLink>
+    </h:panelGroup>
+    <h:panelGroup>
+      <label style="font-size: 16px;" for="External">#{msg.useAlternativeAuthZFile}</label>
+    </h:panelGroup>
+    <p:spacer />
+    <h:panelGroup rendered="#{repositoryAdministrationManagedBean.repo.authorisationType == 'External'}">
+      <h:outputLabel value="#{msg.repoAuthenticationExternalFileLabel} :" />
+      <h:outputText id="repoAdminRepositoryAuthzFileLocation" value="#{repositoryAdministrationManagedBean.alternativeAuthzFile}" />
+    </h:panelGroup>
+  </h:panelGrid>
+  <h:panelGroup styleClass="bottomRight">
+    <p:commandButton action="#{repositoryAdministrationManagedBean.savePermissionSettings}" onclick="statusDialog.show()"
+      oncomplete="statusDialog.hide()" styleClass="roundedButtonSmall" value="#{msg.saveButtonText}" ajax="false" />
+  </h:panelGroup>
+  <script>
+			jQuery(document).ready(function() {
+				jQuery('input:radio').click(function() {
+					// Submit the new radio button selection
+					var id = jQuery(this).attr('id');
+					jQuery('#' + id + 'Link').click();
+				});
+			});
+		</script>
+</ui:composition>
+</html>

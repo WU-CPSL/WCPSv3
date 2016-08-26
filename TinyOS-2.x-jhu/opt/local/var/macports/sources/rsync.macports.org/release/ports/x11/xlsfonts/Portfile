@@ -1,0 +1,29 @@
+# $Id: Portfile 80076 2011-07-03 23:46:28Z jmr@macports.org $
+
+PortSystem          1.0
+
+name                xlsfonts
+version             1.0.3
+revision            1
+categories          x11
+maintainers         jeremyhu openmaintainer
+description         List available fonts on an X11 server
+long_description    ${description}
+
+platforms           darwin
+
+homepage            http://www.x.org/
+master_sites        xorg:individual/app/
+use_bzip2           yes
+
+checksums           md5     bf6f3e7074479839d5182ffed735d2be \
+                    sha1    9d4e0adbcb83362dd9234e90507c0528f60e309b \
+                    rmd160  b9add9e6cccb7370ea2651b24eea966a1bce6cb8
+
+depends_build       port:pkgconfig
+
+depends_lib         port:xorg-libX11
+
+livecheck.type      regex
+livecheck.regex     ${name}-(\[\\d.\]+)${extract.suffix}
+livecheck.url       http://xorg.freedesktop.org/archive/individual/app/?C=M&O=D

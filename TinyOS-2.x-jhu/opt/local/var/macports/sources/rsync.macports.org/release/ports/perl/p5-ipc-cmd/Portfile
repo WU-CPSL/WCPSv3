@@ -1,0 +1,23 @@
+# $Id: Portfile 89800 2012-02-11 00:48:09Z dports@macports.org $
+
+PortSystem            1.0
+PortGroup             perl5 1.0
+
+perl5.setup           IPC-Cmd 0.76 ../by-authors/id/B/BI/BINGOS/
+license               {Artistic GPL}
+maintainers           nomaintainer
+description           finding and running system commands made easy
+long_description      ${description}
+
+platforms             darwin
+
+checksums           rmd160  a44e066d65c2475551928900b5c8148648d2107c \
+                    sha256  1db1164093402bc462d58b89bb5862542aee15b2878829d32cb903f36db75575
+
+if {${perl5.major} != ""} {
+depends_lib-append    port:p${perl5.major}-locale-maketext-simple \
+                      port:p${perl5.major}-module-load-conditional \
+                      port:p${perl5.major}-params-check
+
+supported_archs       noarch
+}

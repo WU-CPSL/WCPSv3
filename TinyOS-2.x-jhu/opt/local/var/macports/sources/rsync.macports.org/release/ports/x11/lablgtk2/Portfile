@@ -1,0 +1,75 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89410 2012-01-28 10:59:22Z jmr@macports.org $
+
+PortSystem          1.0
+
+name                lablgtk2
+version             2.14.2
+revision            1
+categories          x11 ml
+platforms           darwin
+maintainers         nomaintainer
+# the apps have a much more restrictive license than the library code
+license             {LGPL-2 Restrictive/Distributable}
+
+description         Objective Caml interface to gtk+ 2.x
+
+long_description    LablGTK2 is is an Objective Caml interface to gtk+ 2.x. \
+                    It uses the rich type system of Objective Caml 3 to provide a \
+                    strongly typed, yet very comfortable, object-oriented interface to \
+                    gtk+. This is not that easy if you know the dynamic typing approach \
+                    taken by gtk+.
+
+homepage            http://lablgtk.forge.ocamlcore.org/
+master_sites        http://wwwfun.kurims.kyoto-u.ac.jp/soft/olabl/dist/
+distname            lablgtk-${version}
+
+checksums           sha1    fd184418ccbc542825748ca63fba75138d2ea561 \
+                    rmd160  aa463705398eb60712187ef6a252849fb59cbff2
+
+depends_build       port:pkgconfig
+depends_lib         port:ocaml \
+                    port:ocaml-findlib \
+                    port:gtk2 \
+                    port:libpng \
+                    port:libglade2 \
+                    port:libgnomecanvas \
+                    port:libgnomeui
+
+# ocaml is not universal
+universal_variant   no
+
+patchfiles          patch-META
+
+configure.args      --without-gl \
+                    --without-rsvg \
+                    --with-glade \
+                    --with-gnomecanvas \
+                    --with-gnomeui \
+                    --without-panel \
+                    --without-gtkspell \
+                    --without-gtksourceview
+
+build.target        world
+use_parallel_build  no
+
+variant rsvg description "enable rsvg support" {
+    configure.args-delete   --without-rsvg
+    configure.args-append   --with-rsvg
+    depends_lib-append      port:librsvg
+}
+
+variant gtksourceview description "enable gtksourceview support" {
+    configure.args-delete   --without-gtksourceview
+    configure.args-append   --with-gtksourceview
+    depends_lib-append      port:gtksourceview
+}
+
+post-destroot {
+    set ocaml_site_path [exec ocamlfind printconf destdir]
+    file mkdir ${destroot}${ocaml_site_path}/lablgtk2
+    file copy ${worksrcpath}/META ${destroot}${ocaml_site_path}/lablgtk2
+}
+
+livecheck.type      regex
+livecheck.regex     {lablgtk-([0-9]+(\.[0-9]+)+)\.}

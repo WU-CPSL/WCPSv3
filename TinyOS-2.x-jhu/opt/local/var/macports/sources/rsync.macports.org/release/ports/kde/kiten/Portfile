@@ -1,0 +1,30 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89388 2012-01-27 21:19:08Z snc@macports.org $
+
+PortSystem          1.0
+PortGroup           kde4   1.1
+
+name                kiten
+version             4.8.0
+categories          kde kde4
+maintainers         snc sharky michaelld
+license             GPL-2+ LGPL-2+ GFDL-1.2
+description         Japanese Reference/Study Tool
+long_description    KDE ${description}
+homepage            http://www.kde.org
+
+platforms           darwin
+depends_lib-append  port:libkdeedu
+
+master_sites        kde:stable/${version}/src/
+use_bzip2           yes
+
+checksums           rmd160  6c045b04c50fd0918d14ce65525e53638544dc86 \
+                    sha256  f045bf2bb6827dea587990645d6de07793a82c4ab31ca8083c77d14bc4e0d34a
+
+if {![variant_isset doc]} {
+    patchfiles-append   patch-CMakeLists.txt.diff
+}
+
+livecheck.url       http://kde.mirrors.hoobly.com/stable/latest/src/
+livecheck.regex     ${name}-(\\d+(\\.\\d+)+)

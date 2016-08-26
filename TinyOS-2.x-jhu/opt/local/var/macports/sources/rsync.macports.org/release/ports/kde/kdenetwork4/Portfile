@@ -1,0 +1,51 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89388 2012-01-27 21:19:08Z snc@macports.org $
+
+PortSystem          1.0
+PortGroup           kde4   1.1
+
+name                kdenetwork4
+version             4.8.0
+categories          kde kde4 network
+maintainers         snc sharky
+description         KDE4 networking applications
+long_description    Networking applications such as an instant messenger \
+                    and download manager
+platforms           darwin
+homepage            http://www.kde.org
+master_sites        kde:stable/${version}/src
+use_bzip2           yes
+distname            kdenetwork-${version}
+
+checksums           rmd160  48eb3b1666daa8ff696d1c4a91d1c34f30bcb9bb \
+                    sha256  e6df98cc3a344be55313b9f99ccc8eb5aae8a1e55f9c7bc46d8467883a4dd9e3
+
+depends_lib-append  port:kde4-runtime \
+                    port:meanwhile \
+                    port:kdepimlibs4 \
+                    port:libtelepathy \
+                    port:qca \
+                    path:lib/libspeex.dylib:speex \
+                    port:libotr \
+                    port:xmms \
+                    port:libmsn \
+                    port:LibVNCServer \
+                    port:libktorrent \
+                    port:libgcrypt \
+                    port:libmms \
+                    port:libidn
+depends_run-append  port:qca-ossl
+
+configure.args-append   -DQCA2_LIBRARIES=${prefix}/lib/libqca.2.dylib \
+                        -DQCA2_INCLUDE_DIR=${prefix}/include/QtCrypto \
+                        -DWITH_Alsa=OFF \
+                        -DWITH_KDE4Workspace=OFF \
+                        -DWITH_Libgadu=OFF \
+                        -DWITH_msiLBC=OFF \
+                        -DWITH_LiboRTP=OFF \
+                        -DWITH_Mediastreamer=OFF
+
+universal_variant   no
+
+livecheck.url       http://kde.mirrors.hoobly.com/stable/latest/src/
+livecheck.regex     kdenetwork-(\\d+\\.\\d+\\.\\d+)${extract.suffix}

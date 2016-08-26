@@ -1,0 +1,43 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 87241 2011-11-14 22:10:55Z dports@macports.org $
+
+PortSystem 1.0
+
+name                sshfs
+version             2.3
+categories          fuse
+
+platforms           darwin
+maintainers         dports openmaintainer
+description         SSH filesystem for FUSE
+long_description    This is a filesystem client based on the \
+                    SSH File Transfer Protocol. Since most SSH \
+                    servers already support this protocol it is \
+                    very easy to set up: i.e. on the server side \
+                    there's nothing to do.  On the client side \
+                    mounting the filesystem is as easy as logging \
+                    into the server with ssh.
+
+homepage            http://fuse.sourceforge.net/sshfs.html
+
+distname            sshfs-fuse-${version}
+master_sites        sourceforge:fuse
+license             GPL-2
+
+checksums           rmd160  5ea1180cbc60ff9401d7e53774dfda3a78f37ab1 \
+                    sha256  ce229f87869d136c8347cca646f1dd6394c604127d021507a57205668d9288bb
+
+livecheck.distname  sshfs-fuse
+
+depends_build       path:bin/pkg-config:pkgconfig
+depends_lib         port:gettext \
+                    path:lib/pkgconfig/glib-2.0.pc:glib2 \
+                    path:lib/pkgconfig/fuse.pc:fuse4x \
+                    port:libiconv \
+                    bin:ssh:openssh
+
+patchfiles          patch-from-fuse4x.diff \
+                    patch-configure.ac.diff
+patch.pre_args      -p1
+
+use_autoreconf      yes

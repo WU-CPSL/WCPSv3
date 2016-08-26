@@ -1,0 +1,30 @@
+# $Id: Portfile 88704 2012-01-08 19:40:41Z mww@macports.org $
+
+PortSystem 1.0
+
+name                mpop
+version             1.0.26
+categories          mail
+platforms           darwin
+maintainers         mww
+license             GPL-3+
+description         small and fast POP3 client
+long_description    mpop is a small and fast POP3 client with header based \
+                    mail filtering capabilities.
+
+homepage            http://mpop.sourceforge.net/
+master_sites        sourceforge
+checksums           md5     36399ce64f64cbd2077ad36ea0d01b8d \
+                    sha1    01657d2b5e47fd401b7b9047762eb1aaa0a1ad08 \
+                    rmd160  6cd5baa086aed186c5e7b22c3bb5e3bb66e6a227
+use_bzip2           yes
+
+depends_build       port:pkgconfig
+depends_lib         port:gnutls port:gettext port:libgsasl
+
+configure.ldflags-append "-lintl"
+
+configure.args      --with-libiconv-prefix=${prefix} \
+                    --with-ssl=gnutls \
+                    --mandir=${prefix}/share/man \
+                    --infodir=${prefix}/share/info

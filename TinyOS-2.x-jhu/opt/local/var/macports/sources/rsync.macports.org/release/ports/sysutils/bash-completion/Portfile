@@ -1,0 +1,47 @@
+# $Id: Portfile 88300 2011-12-27 16:11:43Z raimue@macports.org $
+
+PortSystem      1.0
+
+name            bash-completion
+epoch           1
+version         1.3
+revision        4
+categories      sysutils
+platforms       darwin
+supported_archs noarch
+license         GPL-2+
+maintainers     raimue
+description     Programmable bash completions
+long_description \
+    Programmable completion library for bash.
+
+homepage        http://bash-completion.alioth.debian.org/
+master_sites    http://bash-completion.alioth.debian.org/files/
+checksums       md5     a1262659b4bbf44dc9e59d034de505ec \
+                sha1    6a46b93f44c56cc336632ab28d90c0595fbcc98f \
+                rmd160  222be4aee5a9542e5b27133d8bfd697c2c95262d
+use_bzip2 yes
+
+patchfiles      patch-man.diff
+
+post-patch {
+    reinplace "s:/etc/bash_completion:${prefix}/etc/bash_completion:g" \
+        ${worksrcpath}/bash_completion
+    reinplace "s:readlink -f:readlink:g" \
+        ${worksrcpath}/bash_completion
+}
+
+post-destroot {
+    xinstall -m 644 -W ${filespath} port launchctl ${destroot}${prefix}/etc/bash_completion.d/
+}
+
+notes "
+To use bash_completion, add the following lines at the end of your .bash_profile:
+  if \[ -f ${prefix}/etc/bash_completion ]; then
+      . ${prefix}/etc/bash_completion
+  fi
+"
+
+livecheck.type      regex
+livecheck.url       ${homepage}
+livecheck.regex     "${name}-(\\d+(?:\\.\\d+)*)${extract.suffix}"

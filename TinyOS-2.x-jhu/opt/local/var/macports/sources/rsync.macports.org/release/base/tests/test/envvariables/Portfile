@@ -1,0 +1,26 @@
+# $Id: Portfile 23699 2007-04-07 02:09:22Z pguyot@kallisys.net $
+
+PortSystem 1.0
+name		envvariables
+version		1
+categories	test
+maintainers	pguyot@kallisys.net
+description	Test port for env variables
+homepage	http://www.macports.org/
+platforms	darwin
+
+long_description ${description}
+
+fetch		{}
+checksum	{}
+extract		{}
+configure	{}
+build		{}
+destroot	{
+	system "touch ${destroot}${prefix}/lib/${name}"
+}
+
+test {
+	puts $env(ENVA)
+	puts $env(ENVB)
+}

@@ -1,0 +1,31 @@
+# $Id: Portfile 84390 2011-09-25 08:03:06Z jmr@macports.org $
+
+PortSystem          1.0
+
+name                xorg-font-util
+set my_name         font-util
+version             1.2.0
+categories          x11 graphics
+license             X11 BSD
+maintainers         jeremyhu openmaintainer
+description         X.org font utilities bdftruncate and ucs2any
+long_description    ${description}
+
+platforms           darwin
+
+homepage            http://www.x.org/
+master_sites        xorg:individual/font/
+distname            ${my_name}-${version}
+use_bzip2           yes
+
+checksums           md5     1bdd8ed070e02b2165d7b0f0ed93280b \
+                    sha1    011fa9c8fe08d9f6f848df570374ed1cb7488146 \
+                    rmd160  1cc25721fe18d86f7e11038a3128b6466a02378d
+
+depends_build       port:pkgconfig
+
+configure.args      --with-fontrootdir=${prefix}/share/fonts
+
+livecheck.type      regex
+livecheck.regex     ${my_name}-(\[\\d.\]+)${extract.suffix}
+livecheck.url       http://xorg.freedesktop.org/archive/individual/font/?C=M&O=D

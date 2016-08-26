@@ -1,0 +1,111 @@
+# $Id: Portfile 89990 2012-02-18 20:10:10Z jeremyhu@macports.org $
+
+PortSystem              1.0
+PortGroup select        1.0
+
+set llvm_version        2.9
+revision                2
+name                    llvm-${llvm_version}
+set suffix              mp-${llvm_version}
+set sub_prefix          ${prefix}/libexec/${name}
+categories              lang
+platforms               darwin
+license                 NCSA
+maintainers             jeremyhu openmaintainer
+description             llvm is a next generation compiler infrastructure (svn trunk version)
+long_description        The LLVM Core libraries provide a modern source- and \
+                        target-independent optimizer, along with code \
+                        generation support for many popular CPUs (as well as \
+                        some less common ones!) These libraries are built \
+                        around a well specified code representation known as \
+                        the LLVM intermediate representation ("LLVM IR").
+
+homepage                http://llvm.org/
+
+depends_lib             port:libffi
+depends_run             bin:perl:perl5 port:llvm_select
+
+#fetch.type              svn
+#svn.revision            146339
+#version                 ${llvm_version}-r${svn.revision}
+#worksrcdir              release_29
+#svn.url                 http://llvm.org/svn/llvm-project/llvm/branches/${worksrcdir}
+
+version                 ${llvm_version}
+epoch                   1
+master_sites            ${homepage}releases/${version}/
+extract.suffix          .tgz
+distfiles               llvm-${version}${extract.suffix}
+worksrcdir              llvm-${version}
+checksums           sha1    500f587f840199ac53c4fc7572839d08fa9d9123 \
+                    rmd160  caeaa067fda1eb34196b356a087645f83731cfb7 \
+                    sha256  661236cfa17428b48cfa9cbb9909f7569c64b8ecd219fd91dbc00e3b557b3779
+
+universal_variant       no
+
+build.env-append        REQUIRE_RTTI=1
+configure.cppflags
+configure.ldflags
+configure.pre_args-delete --prefix=${prefix}
+configure.args          --enable-bindings=none --enable-libffi --enable-shared --enable-jit \
+                        --enable-optimized --enable-assertions --disable-profiling \
+                        --enable-debug-symbols --disable-debug-runtime \
+                        --prefix="${sub_prefix}"
+
+select.group    llvm
+select.file     ${filespath}/mp-${name}
+
+build.args-append VERBOSE=1
+
+platform darwin {
+    if {${build_arch} == "i386" } {
+        configure.pre_args-append --build=i686-apple-darwin${os.major}
+    } else {
+        configure.pre_args-append --build=${build_arch}-apple-darwin${os.major}
+    }
+
+    post-destroot {
+        foreach liba [glob ${destroot}${sub_prefix}/lib/*dylib] {
+            set liba_nodr [string map "${destroot} {}" ${liba}]
+            system "install_name_tool -id ${liba_nodr} ${liba}"
+
+            foreach libb [glob ${destroot}${sub_prefix}/lib/*dylib] {
+                set libb_base [string map "${destroot}${sub_prefix}/lib/ {}" ${libb}]
+                set libb_nodr [string map "${destroot} {}" ${libb}]
+
+                system "install_name_tool -change @executable_path/../lib/${libb_base} ${libb_nodr} ${liba}"
+            }
+        }
+    }
+}
+
+platform darwin 8 {
+    configure.args-delete   --enable-shared --enable-jit
+}
+
+variant ocaml description {Enable generation of OCaml binding} {
+    depends_lib-append   port:ocaml
+
+    configure.args-delete --enable-bindings=none
+    configure.args-append --enable-bindings=ocaml
+
+    destroot.args-append  OVERRIDE_libdir=${sub_prefix}/lib
+}
+
+post-destroot {
+    file mkdir ${destroot}${prefix}/share/doc
+    file rename ${destroot}${sub_prefix}/docs/llvm ${destroot}${prefix}/share/doc/${name}
+
+    foreach man [glob ${destroot}${sub_prefix}/share/man/man1/*.1] {
+	set basename [string map "${destroot}${sub_prefix}/share/man/man1/ {}" ${man}]
+        file rename ${man} ${destroot}${prefix}/share/man/man1/[string map ".1 -${suffix}.1" ${basename}]
+    }
+
+    foreach bin [glob ${destroot}${sub_prefix}/bin/*] {
+        set bin_filename [string map "${sub_prefix} ${prefix}" ${bin}]-${suffix}
+        set exec_path [string map "${destroot}${sub_prefix} ${sub_prefix}" ${bin}]
+
+        xinstall -m 755 "${filespath}/llvm-bin" "${bin_filename}"
+        reinplace "s:EXEC_PATH:${exec_path}:" "${bin_filename}"
+    }
+}

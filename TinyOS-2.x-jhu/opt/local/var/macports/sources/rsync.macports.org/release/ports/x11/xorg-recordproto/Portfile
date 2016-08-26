@@ -1,0 +1,55 @@
+# $Id: Portfile 80869 2011-07-19 22:01:43Z jmr@macports.org $
+
+PortSystem 1.0
+
+name		xorg-recordproto
+version		1.14.1
+categories	x11 devel
+license		X11
+maintainers	jeremyhu openmaintainer
+description	X.org recordproto
+homepage	http://www.x.org
+platforms	darwin
+supported_archs	noarch
+long_description Prototype headers for the Record extension to X11
+master_sites 	xorg:individual/proto/
+
+distname	recordproto-${version}
+checksums           md5     24541a30b399213def35f48efd926c63 \
+                    sha1    14acb36540814bfe5d3caf47311b72a3bf1322bd \
+                    rmd160  cab883a9175adef6bab78b814a6c36ac22518fae
+use_bzip2	yes
+
+configure.args \
+	--without-xmlto \
+	--without-fop \
+	--disable-specs
+
+build.args V=1
+
+# Depending on ghostscript for the PDF documentation creates a dependency
+# loop, so you may want to install first without the docs variant
+variant docs description "Install extra documentation" {
+	depends_build-append \
+		port:fop \
+		port:xmlto \
+		port:xorg-sgml-doctools
+
+	configure.args-delete \
+		--without-xmlto \
+		--without-fop \
+		--disable-specs
+
+	configure.args-append \
+		--with-xmlto \
+		--with-fop \
+		--enable-specs
+
+	configure.env-append \
+		XMLTO="${prefix}/bin/xmlto" \
+		FOP="${prefix}/bin/fop"
+}
+
+livecheck.type  regex
+livecheck.url   http://xorg.freedesktop.org/archive/individual/proto/?C=M&O=D
+livecheck.regex recordproto-(\\d+(?:\\.\\d+)*)

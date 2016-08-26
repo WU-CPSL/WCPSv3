@@ -1,0 +1,55 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:filetype=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 88485 2012-01-03 11:01:15Z mww@macports.org $
+
+PortSystem 1.0
+PortGroup ocaml 1.0
+
+name            ocaml-bitstring
+version         2.0.2
+platforms       macosx
+categories      devel ocaml
+maintainers     nomaintainer
+license         {GPL-2 LGPL-2.1+}
+description     bitstrings and bitstring matching for OCaml
+
+long_description \
+    The ocaml-bitstring project adds Erlang-style bitstrings and matching over bitstrings as a syntax extension and library for OCaml. \
+    (This project was formerly known as bitmatch). You can use this module to both parse and generate binary formats, files and protocols. \
+    Bitstring handling is added as primitives to the language, making it exceptionally simple to use and very powerful.
+
+homepage        http://code.google.com/p/bitstring/
+master_sites    googlecode:bitstring
+
+checksums       md5     0c9fa24a0e5201e8bb61f355b9058fe9 \
+                sha1    5ddfe2e138962a972b9a782ac55c38c4e872142c \
+                rmd160  6d0eef1f04b012560c7504004898b551efc546c4
+
+patchfiles      patch-Makefile.in-ocamlfind.diff \
+                patch-Makefile.in-top_srcdir.diff
+
+depends_lib     port:ocaml port:ocaml-findlib
+
+use_parallel_build no
+
+test.run        yes
+
+post-activate {
+    set ldconf  [open ${prefix}/lib/ocaml/ld.conf r+]
+    set found   0
+
+    while {[gets ${ldconf} line] != -1} {
+        if {${line} eq "${prefix}/lib/ocaml/site-lib/bitstring"} {
+            set found 1
+            break
+        }
+    }
+
+    if {!${found}} {
+        puts ${ldconf} ${prefix}/lib/ocaml/site-lib/bitstring
+    }
+
+    close ${ldconf}
+}
+
+livecheck.type  regex
+livecheck.regex ${name}-(\\d+(?:\\.\\d+)*)

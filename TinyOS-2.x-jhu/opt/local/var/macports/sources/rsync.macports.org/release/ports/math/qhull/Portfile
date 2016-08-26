@@ -1,0 +1,45 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89591 2012-02-03 17:25:12Z mmoll@macports.org $
+
+PortSystem 1.0
+PortGroup           cmake 1.0
+
+name                qhull
+version             2012.1
+categories          math
+platforms           darwin
+maintainers         mmoll
+license             Permissive
+
+description Programs and library for computing convex hulls.
+long_description    \
+    Qhull computes the convex hull, Delaunay triangulation, Voronoi \
+    diagram, halfspace intersection about a point, furthest-site \
+    Delaunay triangulation, and furthest-site Voronoi diagram. The \
+    software runs in 2-d, 3-d, 4-d, and higher dimensions. Qhull \
+    implements the Quickhull algorithm for computing the convex hull. \
+    It handles roundoff errors from floating point arithmetic. Qhull \
+    also computes volumes, surface areas, and approximations to the \
+    convex hull.
+
+homepage            http://www.qhull.org
+master_sites        ${homepage}/download
+distname            ${name}-${version}-src
+extract.suffix      .tgz
+checksums           md5     ed81aa19b203aa0fdb75b41fe6f7a40f \
+                    sha1    7982ce08436d0b1797d311abd8944c35218639dc \
+                    rmd160  9923f5dc89d5dd79dd1a304cf5c9083f07291ccd
+patchfiles          patch-CMakeLists.txt.diff \
+                    patch-nested-const-iterator.diff
+# last patch is for g++-4.0 / Leopard, see #31053
+worksrcdir          ${name}-${version}
+configure.args-append   -DDOC_INSTALL_DIR=share/doc/qhull -DMAN_INSTALL_DIR=share/man/man1
+post-destroot {
+    ln -s ${prefix}/include/libqhull ${destroot}${prefix}/include/qhull
+    ln -s ${prefix}/include/libqhull/libqhull.h ${destroot}${prefix}/include/libqhull/qhull.h
+#    ln -s ${prefix}/include/libqhull/qhull.h-deprecated ${destroot}${prefix}/include/libqhull/qhull.h
+    ln -s ${prefix}/lib/libqhullstatic.a ${destroot}${prefix}/lib/libqhull.a
+}
+livecheck.type      regex
+livecheck.url       ${master_sites}
+livecheck.regex     Download: Qhull (\[0-9.\]+) for Unix

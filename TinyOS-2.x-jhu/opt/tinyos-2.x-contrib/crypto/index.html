@@ -1,0 +1,52 @@
+<html>
+<head>
+   <title>Cryptography algorithms for TinyOS</title>
+</head>
+<body TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EF" VLINK="#55188A" ALINK="#FF0000">
+<div align="center">
+<img src="http://www.tinyos.net/scoop/images/tos-jwall.jpg"></img>
+<img src="html/img/Iisc-logo.jpg" width="18%" height="27%"></img>
+<img src="html/img/EPFL_LOG.png" width="30%" height="22%"></img>
+
+<h1>Cryptography algorithms for TinyOS</h1>
+
+</div>
+<p>
+The aim of this project is to provide Cryptography algorithms in TinyOS 2.x. All contributions are welcomed.
+</p>
+<h2> Implementation done:</h2>
+<h3> Block cipher </h3>
+<h4> AES </h4>
+We provide an interface which provide AES block encryption and decryption. This implementation is based on the <a href="http://code.google.com/p/byte-oriented-aes/downloads/list">Public Domain implementation</a> of Karl Malbrain.
+For more information about this implementation, consult the <a href="doc/null/index.html">source code documentation</a>.
+<h3> Stream cipher </h3>
+<h4> Trivium </h4>
+The Trivium stream cipher is now implemented as a TinyOS interface for 8-bit and 16-bit microcontroller. This implementation follows the original implementation available
+in the <a href="http://www.ecrypt.eu.org/stream/svn/viewcvs.cgi/ecrypt/trunk/submissions/trivium/">eSTREAM repository</a>. Some applications using this interface are available in the <i>apps</i> folder of the project. 
+For more information consult the cipher <a href="http://www.ecrypt.eu.org/stream/triviumpf.html">webpage</a>.<br>
+For more information about this implementation, consult the <a href="doc/null/index.html">source code documentation</a>.
+<h3> Universal hash functions </h3>
+<h4> MMH </h4>
+We have implemented the MMH universal function as a TinyOS interface. This function was proposed in the paper of Shai Halevi and Hugo Krawczyk : <a href="http://cr.yp.to/bib/1997/halevi-mmh.ps"><i>MMH: Software Message Authentication in the Gbit/Second Rates</i></a>. We also provide an application which uses this interface and the Trivium interface to construct a Wegman-Carter authentication. This application is available in the <i>apps</i> folder. 
+<h4> Poly32 </h4>
+We have implemented the Poly32 universal function as a TinyOS interface. This implementation follows the original paper of Ted Krovetz and Phillip Rogaway : <a href="http://www.springerlink.com/content/ycn0r8u3t7nfvenu/"><i>Fast Universal Hashing with Small Keys and No Preprocessing: The <b>PolyR</b> Construction</i></a>
+. We also provide an application which uses this interface and the Trivium interface to construct a Wegman-Carter authentication. This application is available in the <i>apps</i> folder. 
+<br><br>
+For more information about thesw two implementations, consult the source code documentation.
+<h2> Download </h2>
+The CVS directory can be browsed at the <a href="http://tinyos.cvs.sourceforge.net/viewvc/tinyos/tinyos-2.x-contrib/crypto/">address</a>.<br>
+The directory can be downloaded with the CVS command:<br>
+<b>cvs -z3 -d:pserver:anonymous@tinyos.cvs.sourceforge.net:/cvsroot/tinyos checkout -P tinyos-2.x-contrib/crypto/</b><br>
+<h2> Installation </h2>
+To install or remove all the interfaces provided by this directory in the TinyOS tree, the scripts <b>install.sh</b> and <b>uninstall.sh</b> can be used. They must have the execution permission with the command:<br>
+<b>chmod +x install.sh uninstall.ch</b><br>
+Then the command:<br>
+<b>./install.sh</b><br>
+copies all the files in the TinyOS tree.<br><br>
+For each application example in the folder <i>apps</i>, there is a Makefile which can compile the application the same way as standard TinyOS applications.
+
+<h2> Contact </h2>
+You can contact me at:<br><br>
+<i>sylvain.pelissier[at]gmail.com</i>
+</body>
+</html>

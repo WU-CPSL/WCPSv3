@@ -1,0 +1,15 @@
+# $Id: Portfile 88355 2011-12-29 10:45:48Z jmr@macports.org $
+
+PortSystem 1.0
+PortGroup perl5 1.0
+
+perl5.setup		DBIx-DBSchema 0.31
+revision        2
+license			{Artistic-1 GPL}
+maintainers		nomaintainer
+description		Database-independent schema objects
+long_description	${description}
+checksums		md5 bee0e44ff328adfea5b2c204ae5c606b
+platforms		darwin
+
+supported_archs noarch

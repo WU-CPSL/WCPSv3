@@ -1,0 +1,19 @@
+# $Id: Portfile 85300 2011-10-12 11:41:49Z jmr@macports.org $
+
+PortSystem 1.0
+PortGroup perl5 1.0
+
+perl5.setup			Compress-Bzip2 2.09
+revision            2
+license				{Artistic-1 GPL}
+maintainers			nomaintainer
+description			Perl interface to the bzip2 compression algorithms
+long_description	${description}
+
+platforms			darwin
+
+if {${perl5.major} != ""} {
+depends_lib-append	port:bzip2
+
+checksums			md5 1699fde3e86f2a036f135ae606d456bf
+}

@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.prime.com.tr/ui"
+  xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core">
+<ui:composition template="/templates/platform/ubersvn-configuration-template.xhtml">
+
+  <ui:define name="pageContentView">
+    <div style="text-align: center; margin-bottom: 40px;">
+      <h:outputText style="font-size: 24px; color: #6D6D6D; text-align: center;" value="#{msg.welcomeMessage1}" />
+      <h:graphicImage library="img/platform/logos" name="mk2_logo_login.png" />
+      <h:outputText style="font-size: 24px; color: #6D6D6D; text-align: center;" value="#{msg.welcomeMessage2}" />
+    </div>
+    <div style="width: 100%; text-align: center;">
+      <h:outputText styleClass="configurationTitle" value="Completing configuration" />
+    </div>
+    <p:panel styleClass="configurationPanel" style="width:100%; height:430px;">
+
+      <h:outputText value="#{msg.installationComplete}" styleClass="wizardComment" style="margin-bottom:30px;" />
+
+      <h:panelGrid columns="2" styleClass="finishGrid" cellspacing="10px" style="margin-top:40px;"
+        columnClasses="finishLabelColumn,finishOutputColumn">
+
+        <h:outputLabel for="dependenciesCheck" id="dependenciesCheckLabel" value="#{msg.checkingDependencies}" />
+        <h:graphicImage id="dependenciesCheck" style="border: none; display:none;" library="img/platform" name="tick.png" />
+
+        <h:outputLabel for="creatingAdminCheck" id="creatingAdminCheckLabel" value="#{msg.creatingAdmin}" />
+        <h:graphicImage id="creatingAdminCheck" style="border: none; display:none;" library="img/platform" name="tick.png" />
+
+        <h:outputLabel for="creatingConfigCheck" id="creatingConfigCheckLabel" value="#{msg.checkingConfigEntities}" />
+        <h:graphicImage id="creatingConfigCheck" style="border: none; display:none;" library="img/platform" name="tick.png" />
+
+        <h:outputLabel for="startingApacheCheck" id="startingApacheCheckLabel" value="#{msg.startingApache}" />
+        <h:graphicImage id="startingApacheCheck" style="border: none; display:none;" library="img/platform" name="tick.png" />
+
+        <h:outputLabel for="restartingPortalCheck" id="restartingPortalCheckLabel" value="#{msg.restartingPortal}" />
+        <h:graphicImage id="restartingPortalCheck" style="border: none; display:none;" library="img/platform" name="tick.png" />
+
+        <h:outputLabel for="uberSVNReadyCheck" id="uberSVNReadyCheckLabel" value="#{msg.uberSVNisReady}" />
+        <h:graphicImage id="uberSVNReadyCheck" style="border: none; display:none;" library="img/platform" name="tick.png" />
+      </h:panelGrid>
+      <h:panelGroup>
+        <div style="width: 100%; text-align: center; margin-top: 30px;">
+          <p:commandButton id="redirectButton" onclick="redirect()" styleClass="roundedButtonLarge" value="Start using uberSVN"
+            style="display:none;" />
+        </div>
+        <p:commandButton id="submitButton" actionListener="#{webConfiguratorManagedBean.submitConfiguration}" style="display:none;" />
+      </h:panelGroup>
+
+    </p:panel>
+
+    <script type="text/javascript">
+					jQuery(document)
+							.ready(
+									function() {
+										var isWindows = '#{webConfiguratorManagedBean.isWindows}';
+										document.getElementById("submitButton")
+												.click();
+										if (isWindows) {
+											setTimeout(
+													"document.getElementById('dependenciesCheck').style.display = 'block'",
+													13000);
+											setTimeout(
+													"document.getElementById('creatingAdminCheck').style.display = 'block'",
+													20000);
+											setTimeout(
+													"document.getElementById('creatingConfigCheck').style.display = 'block'",
+													32000);
+											setTimeout(
+													"document.getElementById('startingApacheCheck').style.display = 'block'",
+													45000);
+											setTimeout(
+													"document.getElementById('restartingPortalCheck').style.display = 'block'",
+													60000);
+											setTimeout(
+													"document.getElementById('uberSVNReadyCheck').style.display = 'block'",
+													70000);
+											setTimeout(
+													"document.getElementById('redirectButton').style.display = 'inline-block'",
+													70000)
+										} else {
+											setTimeout(
+													"document.getElementById('dependenciesCheck').style.display = 'block'",
+													8000);
+											setTimeout(
+													"document.getElementById('creatingAdminCheck').style.display = 'block'",
+													10000);
+											setTimeout(
+													"document.getElementById('creatingConfigCheck').style.display = 'block'",
+													17000);
+											setTimeout(
+													"document.getElementById('startingApacheCheck').style.display = 'block'",
+													25000);
+											setTimeout(
+													"document.getElementById('restartingPortalCheck').style.display = 'block'",
+													35000);
+											setTimeout(
+													"document.getElementById('uberSVNReadyCheck').style.display = 'block'",
+													40000);
+											setTimeout(
+													"document.getElementById('redirectButton').style.display = 'inline-block'",
+													40000)
+										}
+
+									});
+
+					function redirect() {
+						var uberSVNPort = '#{webConfiguratorManagedBean.uberSVNPort}';
+						var hostname = '#{webConfiguratorManagedBean.hostname}';
+						self.location = "http://" + hostname + ":"
+								+ uberSVNPort + "/ubersvn";
+					}
+				</script>
+  </ui:define>
+</ui:composition>
+</html>

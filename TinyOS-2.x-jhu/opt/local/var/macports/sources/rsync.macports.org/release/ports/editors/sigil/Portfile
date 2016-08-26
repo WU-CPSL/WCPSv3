@@ -1,0 +1,57 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; truncate-lines: t; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+# $Id: Portfile 89101 2012-01-19 18:07:55Z krischik@macports.org $
+# vim: set fileencoding=utf-8 tabstop=8 shiftwidth=4 softtabstop=4 noexpandtab filetype=tcl :
+
+PortSystem	    1.0
+PortGroup       qt4 1.0
+
+name		    sigil
+conflicts	    tidy
+version		    0.4.905
+platforms	    darwin
+categories	    editors
+maintainers	    openmaintainer krischik
+description	    Sigil, the ePub editor
+long_description					\
+    Sigil is a multi-platform WYSIWYG ebook editor. It	\
+    is designed to edit books in ePub format
+
+homepage	    http://code.google.com/p/sigil
+master_sites	    googlecode
+distfiles	    Sigil-${version}-Code.zip
+worksrcdir	    build 
+use_parallel_build  yes
+universal_variant   no
+
+checksums           md5     ddee3254ca7ecba48d4f1e0e5f3055c3 \
+                    sha1    db9ef0abf4f0dff94cf882515f7aa59541de756c \
+                    rmd160  3c8f475a57027c5d2dfeb9f0f348a54246f93f70
+
+depends_build-append bin:cmake:cmake \
+		    bin:gmake:gmake
+
+extract.mkdir	    yes
+extract.suffix      .zip
+extract.cmd         unzip
+extract.pre_args    -q
+extract.post_args   "-d ${workpath}/Sigil-${version}-Code"
+
+configure.cmd	    "cmake"
+configure.args	    "-G \"Unix Makefiles\" ${workpath}/Sigil-${version}-Code"
+
+build.cmd	    "gmake"
+build.args	    ""
+build.target	    "Sigil"
+
+pre-configure {
+	reinplace "s|ppc;i386|${configure.build_arch}|g" ${workpath}/Sigil-${version}-Code/CMakeLists.txt
+	file mkdir ${worksrcpath}
+}
+
+destroot {
+    xinstall -d ${destroot}${applications_dir}
+
+    copy					\
+	${worksrcpath}/bin/Sigil.app		\
+	${destroot}${applications_dir}
+}

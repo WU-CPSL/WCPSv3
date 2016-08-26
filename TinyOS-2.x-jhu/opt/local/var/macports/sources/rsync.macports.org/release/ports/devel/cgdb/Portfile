@@ -1,0 +1,33 @@
+# $Id: Portfile 75061 2011-01-13 21:07:47Z ryandesign@macports.org $
+
+PortSystem 1.0
+
+name            cgdb
+version         0.6.5
+revision        1
+categories      devel
+platforms       darwin
+maintainers     gmail.com:jfrederich
+description     A curses-based interface to the GNU Debugger (GDB).
+long_description \
+  CGDB is a curses-based interface to the GNU Debugger (GDB). \
+  The goal of CGDB is to be lightweight and responsive, not   \
+  encumbered with unnecessary features.
+
+homepage        http://cgdb.sourceforge.net
+master_sites    sourceforge
+checksums       md5     f7d054ec74b1431f3f8304195ddd21b4 \
+                sha1    a47892b3eee5d3520e5f99f207e8ca2bc18ecf43 \
+                rmd160  cdf3c135b6ef01227e11a8dc2962a0aa93b74d9f
+
+patchfiles      patch-various-util-src-pseudo.c.diff \
+                patch-implicit-declaration-of-cgdb_malloc.diff
+
+depends_lib     port:ncurses port:readline
+
+configure.args  --infodir=${prefix}/share/info \
+                --mandir=${prefix}/share/man
+
+livecheck.type  regex
+livecheck.url   http://sourceforge.net/projects/cgdb/files/
+livecheck.regex "${name}-(\\d+(?:\\.\\d+)+)${extract.suffix}"

@@ -1,0 +1,47 @@
+# $Id: Portfile 88486 2012-01-03 11:11:30Z mww@macports.org $
+
+PortSystem          1.0
+PortGroup ocaml 1.0
+
+name                ocaml-sqlite3
+version             1.6.1
+revision            1
+categories          devel ml databases
+maintainers         landonf openmaintainer
+license             BSD
+description         OCaml bindings for SQLite 3
+long_description    ${description}
+
+homepage            http://www.ocaml.info/home/ocaml_sources.html
+platforms           darwin
+master_sites        http://www.ocaml.info/ocaml_sources/
+
+distname            ocaml-sqlite3-${version}
+
+checksums           sha1    1f67e2bd80907a755ac5689fc466020f5f2c394c \
+                    rmd160  dbfdb928041fdb8ccaac8f1d14223124d6bfe8ec
+
+depends_lib         port:ocaml \
+                    port:ocaml-findlib \
+                    port:sqlite3
+
+patchfiles          patch-Makefile.in
+
+# ocamlmklib does not hanle the -arch flag
+if {[info exists build_arch] && ${os.platform} == "darwin"} {
+  configure.cc_archflags
+  configure.ld_archflags
+  configure.pre_args-append --build=${build_arch}-apple-darwin${os.major}
+}
+
+configure.args      --with-sqlite3=${prefix}
+
+use_parallel_build  no
+
+pre-destroot {
+    xinstall -m 755 -d ${destroot}${prefix}/share/doc
+    file copy ${worksrcpath}/doc ${destroot}${prefix}/share/doc/${name}
+}
+
+livecheck.type      regex
+livecheck.regex     {>ocaml-sqlite3-release-(.*)\.tar\.bz2}

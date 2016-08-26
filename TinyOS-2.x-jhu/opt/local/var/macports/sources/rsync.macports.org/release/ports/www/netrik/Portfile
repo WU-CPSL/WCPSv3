@@ -1,0 +1,23 @@
+# $Id: Portfile 30257 2007-10-23 02:28:30Z jmpp@macports.org $
+
+PortSystem 1.0
+
+name			netrik
+version			1.15.3
+categories		www
+platforms		darwin
+maintainers		nomaintainer
+description		netrik is a fast text mode web browser
+long_description	${description}
+
+homepage		http://netrik.sourceforge.net/
+master_sites	sourceforge
+checksums		md5 2b59632ce712de05fbf5ca13fd9849a6
+patchfiles		patch-Makefile.in
+
+depends_lib		lib:readline:readline
+
+configure.args	--mandir=${prefix}/share/man
+configure.cflags-append	"-I${prefix}/include"
+
+build.env		${configure.env}

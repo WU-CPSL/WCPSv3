@@ -1,0 +1,3 @@
+COMPONENT=TestMultiChannelAppC
+
+include $(MAKERULES)

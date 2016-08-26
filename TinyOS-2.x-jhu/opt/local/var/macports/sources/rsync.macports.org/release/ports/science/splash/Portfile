@@ -1,0 +1,79 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 83330 2011-08-29 22:20:52Z macsforever2000@macports.org $
+
+PortSystem          1.0
+
+name                splash
+version             1.15.0
+categories          science graphics
+platforms           darwin
+maintainers         monash.edu:daniel.price
+description         Smoothed Particle Hydrodynamics visualisation tool
+long_description    SPLASH is a tool for visualisation of (mainly astrophysical) \
+                    Smoothed Particle Hydrodynamics simulations
+                    
+homepage            http://users.monash.edu.au/~dprice/splash
+master_sites        ${homepage}/releases/
+license             GPL-2+
+
+worksrcdir          ${name}
+
+checksums           rmd160  430e64f7740dc04cc8bd898b3b0e4ddc87f277ab \
+                    sha256  f3e3331dbf544f35bfbe2dc2b4dd3da7963011f2b1bd2c7e5d1418244c32eb55
+
+if { ![variant_isset gcc42] && ![variant_isset gcc43] && ![variant_isset gcc44] && ![variant_isset gcc45] && ![variant_isset gcc46]} {
+   default_variants      +gcc44
+}
+default_variants    +pgplot
+
+use_configure       no
+
+build.cmd           make
+build.args          SYSTEM=gfortran
+
+destroot.args       PREFIX=${prefix}
+use_parallel_build  no
+
+variant pgplot description {use PGPLOT as the backend graphics library} {
+   depends_lib-append      port:pgplot
+   build.env-append        PGPLOT_DIR=${prefix}/lib \
+                           PGPLOT_DEV=/xw
+}
+
+variant gcc46 description {build with gfortran/gcc v4.6} conflicts gcc42 gcc43 gcc44 gcc45 {
+   depends_build-append    port:gcc46
+   build.args-append       F90C=gfortran-mp-4.6
+}
+
+variant gcc45 description {build with gfortran/gcc v4.5} conflicts gcc42 gcc43 gcc44 gcc46 {
+   depends_build-append    port:gcc45
+   build.args-append       F90C=gfortran-mp-4.5
+}
+
+variant gcc44 description {build with gfortran/gcc v4.4} conflicts gcc42 gcc43 gcc45 gcc46 {
+   depends_build-append    port:gcc44
+   build.args-append       F90C=gfortran-mp-4.4
+}
+
+variant gcc43 description {build with gfortran/gcc v4.3} conflicts gcc42 gcc44 gcc45 gcc46 {
+   depends_build-append    port:gcc43
+   build.args-append       F90C=gfortran-mp-4.3
+}
+
+variant gcc42 description {build with gfortran/gcc v4.2} conflicts gcc43 gcc44 gcc45 gcc46 {
+   depends_build-append    port:gcc42
+   build.args-append       F90C=gfortran-mp-4.2
+}
+
+variant read_hdf5formats description {compiles data reads that depend on HDF5} conflicts read_extraformats1 {
+   build.args-append       flash HDF5ROOT=${prefix}
+   depends_lib-append      port:hdf5
+}
+
+variant read_extraformats1 description {compiles additional data reads: foulkes, mbatesph, oilonwater, rsph, urban (f/b/o/r/usplash)} conflicts read_hdf5formats read_extraformats2 {
+   build.args-append       all foulkes mbatesph oilonwater rsph urban
+}
+
+variant read_extraformats2 description {compiles additional data reads: Bauswein, UCLA, vanaverbeke data read (bsplash, usplash, vsplash)} conflicts read_extraformats1 {
+   build.args-append       all bauswein ucla vanaverbeke
+}

@@ -1,0 +1,28 @@
+# $Id: Portfile 89396 2012-01-28 06:52:03Z jeremyhu@macports.org $
+
+PortSystem 1.0
+
+name		quartz-wm
+version		1.2.2
+categories	x11
+maintainers	jeremyhu openmaintainer
+description     Apple's Window Manager for X11
+homepage	http://xquartz.macosforge.org
+platforms	macosx
+long_description quartz-wm is the XQuartz window-manager.
+master_sites	${homepage}/downloads/src
+license         APSL-2
+
+checksums           sha1    c86b43c9256bc9bdf8294fd02febe1d4c5c1b7eb \
+                    rmd160  36f82f6ca539d80b2613f632323d3b5b5fad4226 \
+                    sha256  6bddeccd96a9d4a49fbd449f0cc389882d2f11bcbfaa4d3b5c72ce719f68207b
+
+use_bzip2       yes
+
+depends_build   port:pkgconfig  
+
+depends_lib     port:xorg-libXinerama \
+                port:xorg-libXrandr \
+                port:xorg-libAppleWM
+
+configure.args --with-bundle-id-prefix=org.macports

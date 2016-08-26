@@ -1,0 +1,82 @@
+# $Id: Portfile 78214 2011-04-28 16:44:51Z jmr@macports.org $
+
+PortSystem          1.0
+
+name                proftpd
+version             1.3.3c
+revision            1
+categories          net
+maintainers         jinhyung.org:jenix
+description         Highly configurable ftp-server.
+long_description    ProFTPD is a highly configurable ftp daemon for unix \
+                    and unix-like operating systems. ProFTPD is designed \
+                    to be somewhat of a "drop-in" replacement for wu-ftpd \
+                    with a configuration format like Apache.
+homepage            http://www.proftpd.org
+platforms           darwin freebsd
+master_sites        ftp://ftp.proftpd.org/distrib/source/ \
+                    ftp://ftp-stud.fht-esslingen.de/pub/Mirrors/ftp.proftpd.net/distrib/source/ \
+                    ftp://mirror.hostfuss.com/proftpd/distrib/source/ \
+                    ftp://ftp.piotrkosoft.net/pub/mirrors/ftp.proftpd.org/distrib/source/ \
+                    ftp://proftpd.get7.biz/proftpd/distrib/source/ \
+                    ftp://ftp.ibiblio.org/pub/mirrors/proftpd/distrib/source/ \
+                    ftp://ftp.solnet.ch/mirror/proftpd.org/distrib/source/
+checksums           md5 8571bd78874b557e98480ed48e2df1d2 \
+                    sha1 167d2f5f22f2bf8a5365b18adfd18a5fc750b07f \
+                    rmd160 08a6fac94aa3449192e92848c6271cca33ea26cc
+                    
+depends_lib         port:openssl
+use_bzip2           yes
+
+configure.args      --sysconfdir=${prefix}/etc --localstatedir=${prefix}/var/run \
+                    --mandir=${prefix}/share/man install_user=`id -u` install_group=`id -g`
+
+# only one --with-modules arg can be used, likewise --with-{includes,libraries}
+set modules mod_tls
+set includes {}
+set libs {}
+pre-configure {
+    configure.args-append --with-modules=[join $modules :]
+    if {$includes != {}} {
+        configure.args-append --with-includes=[join $includes :]
+    }
+    if {$libs != {}} {
+        configure.args-append --with-libraries=[join $libs :]
+    }
+}
+
+pre-destroot {
+    reinplace "s|nogroup|nobody|g" ${worksrcpath}/sample-configurations/basic.conf
+    xinstall -m 755 -d ${destroot}${prefix}/var/run/proftpd
+    system "touch ${destroot}${prefix}/var/run/proftpd/proftpd.scoreboard"
+}
+
+variant mysql4 conflicts mysql5 postgresql84 description {Build with mysql4 support} {
+    depends_lib-append      port:mysql4
+    lappend modules mod_sql mod_sql_mysql
+    lappend includes ${prefix}/include/mysql
+    lappend libs ${prefix}/lib/mysql
+}
+
+variant mysql5 conflicts mysql4 postgresql84 description {Build with mysql5 support} {
+    depends_lib-append   path:bin/mysql_config5:mysql5
+    lappend modules mod_sql mod_sql_mysql
+    lappend includes ${prefix}/include/mysql5/mysql
+    lappend libs ${prefix}/lib/mysql5/mysql
+}
+
+variant postgresql84 conflicts mysql5 mysql4 description {Build with PostgreSQL 8.4 support} {
+    depends_lib-append      port:postgresql84
+    lappend modules mod_sql mod_sql_postgres
+    lappend includes ${prefix}/include/postgresql84
+    lappend libs ${prefix}/lib/postgresql84
+}
+
+variant quotatab description {Build with SQL quota support} {
+    lappend modules mod_quotatab mod_quotatab_sql
+}
+
+startupitem.create  yes
+startupitem.start   "${prefix}/sbin/proftpd"
+startupitem.restart "/bin/kill -HUP \$(/bin/cat ${prefix}/var/run/proftpd.pid)"
+startupitem.stop    "/bin/kill -15 \$(/bin/cat ${prefix}/var/run/proftpd.pid)"

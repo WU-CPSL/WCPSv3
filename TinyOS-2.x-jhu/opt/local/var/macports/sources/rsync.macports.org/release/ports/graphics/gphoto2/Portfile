@@ -1,0 +1,47 @@
+# $Id: Portfile 86062 2011-10-18 21:34:52Z nicos@macports.org $
+
+PortSystem          1.0
+name                gphoto2
+version             2.4.11
+categories          graphics
+license             GPL-2 LGPL-2+
+maintainers         nomaintainer
+description         command line interface to libgphoto2.
+long_description \
+   gphoto2 is the command line interface to libgphoto2.  It allows almost \
+   everything that libgphoto2 can do.
+
+platforms           darwin
+
+homepage            http://www.gphoto.org/proj/gphoto2/
+master_sites        sourceforge:gphoto
+use_bzip2           yes
+
+checksums           sha1    008918c1871128cbc2f3a796132d7093529a5566 \
+                    rmd160  923fc0bf85cfa26174eab4a13c76901b5b4a97ba
+
+depends_build       path:bin/pkg-config:pkgconfig
+depends_lib         port:gettext \
+                    port:jpeg \
+                    port:libexif \
+                    port:libgphoto2 \
+                    port:libiconv \
+                    port:libusb-compat \
+                    port:popt \
+                    port:readline
+
+configure.cflags-append   -I${prefix}/include
+configure.env       POPT_CFLAGS="-I${prefix}/include" \
+                    POPT_LIBS="-L${prefix}/lib -lpopt"
+configure.args      --without-cdk --without-aalib
+
+destroot.target     install-strip
+post-destroot {
+   xinstall -m 755 -d ${destroot}${prefix}/share/doc/${name}
+   xinstall -m 644 -W ${worksrcpath} COPYING ChangeLog INSTALL NEWS README \
+      TODO ${destroot}${prefix}/share/doc/${name}
+}
+
+livecheck.type      regex
+livecheck.url       http://sourceforge.net/projects/gphoto/files/
+livecheck.regex     /${name}-(\[0-9.\]+)\\.tar

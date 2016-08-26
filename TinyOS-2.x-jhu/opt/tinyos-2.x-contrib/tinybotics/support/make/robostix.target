@@ -1,0 +1,21 @@
+#-*-Makefile-*- vim:syntax=make
+
+PLATFORM = robostix
+PROGRAMMER ?= uisp
+
+ifeq ($(PROGRAMMER),uisp)
+  PROGRAMMER_PART ?= -dpart=ATmega128
+endif
+
+PFLAGS += -I$(TOSROOT)/../tinyos-2.x-contrib/tinybotics/tos/platforms/$(PLATFORM)
+
+AVR_FUSE_H ?= 0xc4
+
+DEFAULT_PROGRAM ?= stk500
+
+$(call TOSMake_include_platform,avr)
+$(call TOSMake_include_platform,avr_extras)
+
+robostix: $(BUILD_DEPS)
+	@:
+

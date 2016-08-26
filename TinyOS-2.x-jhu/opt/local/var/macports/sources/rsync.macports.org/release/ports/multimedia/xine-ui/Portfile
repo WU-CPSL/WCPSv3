@@ -1,0 +1,43 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 79994 2011-07-01 08:55:09Z ryandesign@macports.org $
+
+PortSystem              1.0
+
+name                    xine-ui
+version                 0.99.5
+maintainers             ryandesign openmaintainer
+categories              multimedia
+platforms               darwin
+license                 GPL-2+
+homepage                http://www.xine-project.org/
+master_sites            sourceforge:project/xine/xine-ui/${version}
+
+checksums               md5     e643cd1fcad4d98a5ae4eb877ce5087b \
+                        sha1    4f452516319f31cda01d08ea2779f195933af0bb \
+                        rmd160  64cb69549d88d904d986ea7dd7b36a51d5b91756
+
+depends_build           path:bin/pkg-config:pkgconfig
+
+depends_lib             port:xine-lib \
+                        port:xorg-libXtst \
+                        port:xorg-libXv \
+                        port:xorg-libXxf86vm \
+                        port:Xft2 \
+                        port:libssh2 \
+                        port:readline \
+                        port:curl
+
+# xine-lib is not universal
+universal_variant       no
+
+patchfiles              patch-network.c.diff
+
+configure.args          --mandir=${prefix}/share/man \
+                        --disable-lirc \
+                        --with-readline=${prefix}
+
+use_parallel_build      yes
+
+livecheck.type          regex
+livecheck.url           ${homepage}releases
+livecheck.regex         ${name}-(\[0-9.\]+)\\.

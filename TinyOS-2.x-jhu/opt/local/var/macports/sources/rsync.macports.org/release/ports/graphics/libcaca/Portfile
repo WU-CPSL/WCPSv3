@@ -1,0 +1,51 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 87223 2011-11-14 10:49:10Z phw@macports.org $
+
+PortSystem 1.0
+
+name             libcaca
+version          0.99.beta17
+revision         3
+categories       graphics
+license          WTFPL-2 LGPL-2+
+maintainers      phw openmaintainer
+description      Colour AsCii Art library
+long_description \
+    The libcaca library is a graphics library that outputs text \
+    instead of pixels, so that it can work on older video cards \
+    or text terminals. It is not unlike the famous AAlib library.
+homepage         http://libcaca.zoy.org/wiki/libcaca
+platforms        darwin
+depends_lib      port:ncurses \
+                 port:imlib2
+master_sites     http://caca.zoy.org/files/libcaca/
+#master_sites     http://libcaca.zoy.org/raw-attachment/wiki/libcaca/
+checksums           md5     790d6e26b7950e15909fdbeb23a7ea87 \
+                    sha1    24cdb9fb7dc4a01be2787a9009304fad419f79db \
+                    rmd160  86a4d86ced5a9fcf0eddfbd4f86268a68d49bca9
+
+# http://caca.zoy.org/ticket/90
+patchfiles alias.patch
+
+configure.args   --mandir=${prefix}/share/man \
+                 --disable-win32 --disable-conio --disable-slang \
+                 --disable-imlib2 --disable-doc \
+                 --disable-x11 --enable-ncurses --enable-imlib2 \
+                 --disable-ruby
+
+variant	x11 {
+	depends_lib-append	port:xorg-libX11
+	configure.args-delete   --disable-x11
+	configure.args-append	--enable-x11 \
+	                        --x-includes=${prefix}/include \
+	                        --x-libraries=${prefix}/lib 
+}
+
+if {${configure.compiler} == "llvm-gcc-4.2"} {
+    configure.compiler clang
+}
+
+build.asroot 	yes
+livecheck.type  regex
+livecheck.url   ${master_sites}
+livecheck.regex "${name}-(\\d+(?:\\.\\d+)\\.beta(?:\\d+)*)${extract.suffix}"

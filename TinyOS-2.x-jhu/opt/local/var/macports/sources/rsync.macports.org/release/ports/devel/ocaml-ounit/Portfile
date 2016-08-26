@@ -1,0 +1,34 @@
+# $Id: Portfile 88494 2012-01-03 11:48:48Z mww@macports.org $
+
+PortSystem          1.0
+PortGroup ocaml     1.0
+name                ocaml-ounit
+version             1.1.0
+categories          devel ml
+maintainers         landonf openmaintainer
+license             BSD
+description         Unit test framework for OCaml
+long_description    OUnit is a unit test framework for OCaml. \
+                    It allows one to easily create unit-tests for OCaml code. \
+                    It is based on HUnit, a unit testing framework for Haskell. \
+                    It is similar to JUnit, and other XUnit testing frameworks. 
+
+homepage            http://ounit.forge.ocamlcore.org/
+platforms           darwin
+master_sites        http://forge.ocamlcore.org/frs/download.php/495/
+
+distname            ounit-${version}
+
+checksums           md5     bf82bd7f8853cd9a1aff7be716192643 \
+                    sha1    e477f8a1b4fcd6a838cbbc04450a80b1cea3456c \
+                    rmd160  f7d82446970f40eccc917a3ee57e7d6526b1b177
+
+livecheck.type      regex
+livecheck.url       http://forge.ocamlcore.org/frs/?group_id=162
+livecheck.regex     {>ounit-(.*)\.tar\.gz}
+
+use_oasis           yes
+use_oasis_doc       yes
+
+configure.args-append "--override datarootdir ${destroot}${prefix}/share"
+

@@ -1,0 +1,90 @@
+# $Id: Portfile 87248 2011-11-15 00:37:26Z ryandesign@macports.org $
+
+PortSystem 1.0
+
+name		couchdb
+version		1.1.1
+
+categories	databases
+platforms	darwin
+
+description	CouchDB is a document database server
+maintainers	jwa
+long_description  ${description} with a restful HTTP API, capable of \
+	storing arbitrary JSON documents, building powerful data views, \
+	defined in JavaScript, and processed in parallel using Map/Reduce. \
+	It leaves out SQL and transactions for simplicity's sake, to \
+	improve scalability and to relax users' lives.
+
+homepage	http://couchdb.apache.org/
+master_sites	apache
+master_sites.mirror_subdir	${name}/${version}/
+distname	apache-${name}-${version}
+
+checksums           md5     cd126219b9cb69a4c521abd6960807a6 \
+                    sha1    c901676663279338095642462bafa2d0667df98b \
+                    rmd160  e61acf6649dbcfdd4834cc5f0920f38fd0d4ba76
+
+depends_lib	port:automake \
+    port:autoconf \
+    port:libtool \
+    port:help2man \
+    port:icu \
+    port:spidermonkey \
+    port:curl \
+    port:erlang
+
+patchfiles          patch-configure.diff
+
+pre-configure {
+    file mkdir ${workpath}/home
+    # this check was copied from configure.ac
+    if {[catch {system -W ${workpath} "HOME=${workpath}/home ${prefix}/bin/erl -eval 'case application:load(crypto) of ok -> ok; _ -> exit(no_crypto) end.' -noshell -s init stop"}]} {
+        ui_error "${name} requires erlang to be installed with the +ssl variant"
+        return -code error "incompatible erlang installation"
+    }
+}
+
+configure.args   --with-js-include=${prefix}/include/js \
+                 --with-erlang=${prefix}/lib/erlang/usr/include \
+    --enable-js-trunk
+
+# erlang is not universal
+universal_variant   no
+
+set dbgroup couchdb
+set dbuser couchdb
+set logdir ${prefix}/var/log/couchdb
+set dbdir ${prefix}/var/lib/couchdb
+set plistdir /Library/LaunchDaemons
+startupitem.uniquename org.apache.couchdb
+set plist ${startupitem.uniquename}.plist
+
+post-destroot {
+    addgroup ${dbgroup}
+    adduser ${dbuser} gid=[existsgroup ${dbgroup}]
+    xinstall -m 755 -o ${dbuser} -g ${dbgroup} -d \
+	${destroot}${dbdir} \
+	${destroot}${logdir} \
+	${destroot}${plistdir}
+    destroot.keepdirs-append \
+        ${destroot}${dbdir} \
+        ${destroot}${logdir}
+    system "cd ${destroot}${plistdir} && ln -sf ${prefix}${plistdir}/${plist}"
+# the following patches can be removed after next version
+    reinplace "s;`${prefix}/bin/icu-config --invoke`;;" ${destroot}${prefix}/bin/couchdb
+    reinplace "s;^.*DYLD_LIBRARY_PATH.*$;;g" ${destroot}${prefix}${plistdir}/${plist}
+}
+
+post-activate {
+    ui_msg "########################################################################"
+    ui_msg "# Run the following command to install the CouchDB launchd"
+    ui_msg "# startup item in order to start and re-start service automatically:"
+    ui_msg "#"
+    ui_msg "# sudo launchctl load -w ${plistdir}/${plist}"
+    ui_msg "########################################################################"
+}
+
+livecheck.type	regex
+livecheck.url	http://couchdb.apache.org/downloads.html
+livecheck.regex	apache-${name}-(\[0-9.\]+\[0-9\]+)

@@ -1,0 +1,62 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 82039 2011-08-06 21:24:29Z jmr@macports.org $
+
+PortSystem      1.0
+
+name            libprelude
+version         0.9.21.3
+categories      security
+maintainers     googlemail.com:usx303 \
+                openmaintainer
+
+description     Prelude Universal SIM - framework library
+
+long_description \
+        Prelude is a Universal "Security Information Management" (SIM) system. \
+        Prelude collects, normalizes, sorts, aggregates, correlates and \
+        reports all security-related events independently of the product brand \
+        or license giving rise to such events. \
+        Libprelude is a library that guarantees secure connections between \
+        all sensors and the Prelude Manager.
+
+homepage        http://www.prelude-ids.org/
+master_sites    ${homepage}/download/releases/libprelude/
+platforms       darwin
+build.type      gnu
+checksums       md5 1d9b16d2d7b6d64c52daae23076c2673\
+                sha1 11a52960f1d9d237c6c47e4ebd7db876af298e3d\
+                rmd160 9e14a1a94d32047f33a859050c3dbb1d79f1e503
+ 
+depends_build   port:pkgconfig
+depends_lib     port:gettext port:gnutls port:libgcrypt port:libgpg-error \
+                port:libiconv port:libtasn1 port:zlib
+
+configure.args  --mandir=${prefix}/share/man \
+                --with-html-dir=${prefix}/share/doc \
+                --localstatedir=${prefix}/var \
+                --without-perl \
+                --without-python
+
+destroot.keepdirs \
+        ${destroot}${prefix}/var/spool/prelude \
+        ${destroot}${prefix}/etc/prelude/profile
+
+post-destroot { file delete -force "${destroot}${prefix}/lib/charset.alias" }
+
+variant python24 conflicts python25 description {python2.4 bindings} {
+        configure.args-delete	--without-python
+        configure.args-append	--with-python=${prefix}/bin/python2.4
+        depends_lib-append port:python24
+}
+
+variant python25 conflicts python24 description {python2.5 bindings} {
+        configure.args-delete	--without-python
+        configure.args-append	--with-python=${prefix}/bin/python2.5
+        depends_lib-append port:python25
+}
+
+variant perl description {perl bindings} {
+        configure.args-delete	--without-perl
+        configure.args-append	--with-perl=${prefix}/bin/perl
+        depends_lib-append path:bin/perl:perl5
+}

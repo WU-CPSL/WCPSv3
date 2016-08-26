@@ -1,0 +1,18 @@
+# $Id: Portfile 86959 2011-11-07 15:09:05Z jmr@macports.org $
+
+PortSystem 1.0
+PortGroup perl5 1.0
+
+perl5.setup		Text-Autoformat 1.13
+revision        2
+license			Artistic-1
+maintainers		nomaintainer
+description		Automatic text wrapping and reformatting
+long_description	${description}
+checksums		md5 1a944e3e21e176178bb4f87a6068f041
+platforms		darwin
+if {${perl5.major} != ""} {
+depends_lib-append	port:p${perl5.major}-text-reform
+
+supported_archs noarch
+}

@@ -1,0 +1,12 @@
+May 22, 2012 12:03:26 AM org.apache.catalina.core.ApplicationContext log
+INFO: Initializing Spring root WebApplicationContext
+May 22, 2012 12:03:28 AM org.apache.catalina.core.ApplicationContext log
+INFO: Initializing Spring FrameworkServlet 'sventon'
+May 22, 2012 12:03:30 AM org.apache.catalina.core.ApplicationContext log
+INFO: Initializing Spring FrameworkServlet 'sventon-old'
+May 22, 2012 12:04:03 AM org.apache.catalina.core.ApplicationContext log
+INFO: Destroying Spring FrameworkServlet 'sventon'
+May 22, 2012 12:04:03 AM org.apache.catalina.core.ApplicationContext log
+INFO: Destroying Spring FrameworkServlet 'sventon-old'
+May 22, 2012 12:04:03 AM org.apache.catalina.core.ApplicationContext log
+INFO: Closing Spring root WebApplicationContext

@@ -1,0 +1,85 @@
+# $Id: Portfile 85597 2011-10-15 00:56:45Z dports@macports.org $
+
+PortSystem      1.0
+PortGroup       cmake 1.0
+
+name            zorba
+version         1.4.0
+revision        3
+license         Apache-2
+categories      textproc devel
+platforms       darwin
+maintainers     nomaintainer
+description     The XQuery Processor
+
+long_description \
+    Zorba is a general purpose XQuery processor implementing in C++ the W3C \
+    family of specifications. It is not an XML database. The query processor \
+    has been designed to be embeddable in a variety of environments such as \
+    other programming languages extended with XML processing capabilities, \
+    browsers, database servers, XML message dispatchers, or smartphones. Its \
+    architecture employes a modular design, which allows customizing the Zorba \
+    query processor to the environment’s needs. In particular the architecture \
+    of the query processor allows a pluggable XML store (e.g. main memory, DOM \
+    stores, persistent disk-based large stores, S3 stores).
+
+homepage        http://www.zorba-xquery.com/
+master_sites    sourceforge
+
+checksums       md5     ee2130e52f9aa7b03b17a91acff33b83 \
+                sha1    3444b1c82e1a149efc61769af1f8a0aa1a6c7a48 \
+                rmd160  67fc76f41c9e31bb452edb9e942c7fbbb787596a
+
+# In-source-builds are not allowed
+worksrcdir      ${distname}/build
+
+post-extract {
+    xinstall -d ${worksrcpath}
+}
+
+patch.dir       ${worksrcpath}/..
+
+post-patch {
+    # Do not install dependencies' libraries
+    reinplace s/APPLE/FALSE/ ${patch.dir}/src/CMakeLists.txt
+
+    # XMLScanner::loadGrammar's toCache argument is optional
+    reinplace {s/toCache/toCache = false/} \
+        ${patch.dir}/src/types/schema/SchemaValidatorFilter.h
+
+    # Install documentation in an unversioned directory
+    reinplace {s/zorba-[^/)]*/zorba/} \
+        ${patch.dir}/doc/c/examples/CMakeLists.txt \
+        ${patch.dir}/doc/CMakeLists.txt \
+        ${patch.dir}/doc/cxx/examples/CMakeLists.txt
+}
+
+depends_build-append \
+    port:bison \
+    port:flex
+
+depends_lib \
+    port:boost \
+    port:curl \
+    port:icu \
+    port:libiconv \
+    port:libxml2 \
+    port:libxslt \
+    port:xercesc3 \
+    port:tidy
+
+configure.post_args ..
+configure.args-append \
+    -DCMAKE_INSTALL_NAME_DIR=${prefix}/lib \
+    -DCURL_FOUND=YES \
+    -DCURL_INCLUDE_DIR=${prefix}/include \
+    -DCURL_LIBRARY=${prefix}/lib/libcurl.dylib \
+    -DZORBA_USE_SWIG=NO \
+    -DZORBA_XQUERYX=YES
+
+test.env DYLD_LIBRARY_PATH=${worksrcpath}/src
+test.run yes
+
+livecheck.type  regex
+livecheck.url   ${homepage}index.php/download/
+livecheck.regex {zorba-(\d+(?:\.\d+)*)\.}

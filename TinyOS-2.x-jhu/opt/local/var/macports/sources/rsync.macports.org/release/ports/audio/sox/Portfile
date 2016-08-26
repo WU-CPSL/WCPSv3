@@ -1,0 +1,42 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89461 2012-01-30 15:07:51Z ryandesign@macports.org $
+
+PortSystem 1.0
+
+name             sox
+version          14.3.2
+categories       audio
+maintainers      stare.cz:hans
+description      SOund eXchange - universal sound sample translator
+long_description \
+	SoX (also known as Sound eXchange) translates sound samples between \
+	different file formats, and optionally applies various sound \
+	effects. SoX is intended as the Swiss Army knife of sound processing \
+	tools. It doesn't do anything very well, but sooner or later it \
+	comes in very handy.
+homepage         http://sox.sourceforge.net/
+master_sites     sourceforge:project/sox/sox/${version}
+platforms        darwin
+use_bzip2        yes
+
+depends_lib      port:libao \
+                 port:libsndfile \
+                 port:libid3tag \
+                 port:libsamplerate \
+                 port:libvorbis \
+                 port:ffmpeg \
+                 port:libmad \
+                 port:flac \
+                 port:wavpack \
+                 port:file \
+                 port:libpng
+
+checksums        sha1    026636c90d7accba76225a2821aaa2ffa6fe41a3 \
+                 rmd160  1b06f5349e24c459357c7da2428c36f0f576fdf6
+
+configure.args   --mandir=\\\${prefix}/share/man \
+                 --disable-gomp --without-libltdl
+
+build.env        ${configure.env}
+
+destroot.destdir prefix=${destroot}${prefix}

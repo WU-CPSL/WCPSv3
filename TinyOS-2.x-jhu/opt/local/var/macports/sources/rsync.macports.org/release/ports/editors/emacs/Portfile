@@ -1,0 +1,109 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89451 2012-01-29 22:16:49Z dports@macports.org $
+
+PortSystem 1.0
+PortGroup  muniversal 1.0
+
+name            emacs
+version         23.4
+
+categories      editors
+license         GPL-3+
+maintainers     dports openmaintainer
+description     The GNU Emacs text editor
+long_description \
+    GNU Emacs is a self-documenting, customizable, extensible real-time \
+    display editor. Users new to Emacs will be able to use basic        \
+    features fairly rapidly by studying the tutorial and using the      \
+    self-documentation features. Emacs also has an extensive            \
+    interactive manual browser. It is easily extensible since its       \
+    editing commands are written in Lisp.
+
+platforms       darwin freebsd
+homepage        http://www.gnu.org/software/emacs/emacs.html
+master_sites    gnu
+
+checksums      rmd160  5fb7e4cd4270a524b8723ad86a145a0e47336bf7 \
+               sha256  b9a2b8434052771f797d2032772eba862ff9aa143029efc72295170607289c18
+
+patchfiles      patch-configure.diff
+
+configure.args  --without-x \
+                --without-dbus \
+                --without-gconf \
+                --without-libotf \
+                --without-m17n-flt \
+                --without-gpm \
+                --infodir ${prefix}/share/info/${name}
+
+depends_build   port:pkgconfig \
+                port:texinfo
+depends_lib     port:ncurses
+
+post-destroot {
+    xinstall -d ${destroot}${prefix}/share/emacs/${version}/leim
+    delete ${destroot}${prefix}/bin/ctags
+    delete ${destroot}${prefix}/share/man/man1/ctags.1
+}
+
+livecheck.type  regex
+livecheck.url   http://ftp.gnu.org/gnu/emacs/?C=M&O=D
+livecheck.regex ${name}-(\\d+\\.\\d+\\w*)\\.tar
+
+variant x11 description {Builds emacs as a X11 program with Lucid widgets} {
+    configure.args-delete   --without-x
+    configure.args-append   --with-x-toolkit=lucid \
+                            --without-xaw3d \
+                            --with-xpm \
+                            --with-jpeg \
+                            --with-tiff \
+                            --with-gif \
+                            --with-png \
+                            --without-rsvg \
+                            --with-xft 
+    depends_lib-append      port:xorg-libXmu \
+                            port:xorg-libXaw \
+                            port:xpm \
+                            port:jpeg \
+                            port:tiff \
+                            port:giflib \
+                            port:libpng \
+                            port:Xft2
+
+    # autoconf appears to be dropping linker flags for freetype &
+    # fontconfig; work around this. See #28083
+    configure.ldflags-append -lfreetype -lfontconfig
+}
+
+platform darwin 11 {
+    configure.ldflags-append -Wl,-no_pie
+}
+
+variant motif requires x11 description {Builds emacs as an X11 program with Motif widgets} {
+    configure.args-delete   --with-x-toolkit=lucid
+    configure.args-append   --with-x-toolkit=motif
+    depends_lib-append      lib:libXm:openmotif
+}
+
+variant gtk requires x11 description {Builds emacs as an X11 program with GTK+2 widgets} {
+    configure.args-delete   --with-x-toolkit=lucid
+    configure.args-delete   --without-gconf
+    configure.args-delete   --without-rsvg
+    configure.args-append   --with-x-toolkit=gtk
+    configure.args-append   --with-gconf
+    configure.args-append   --with-rsvg
+    depends_lib-append      port:gtk2 \
+                            path:lib/pkgconfig/glib-2.0.pc:glib2 \
+                            port:gconf \
+                            port:librsvg
+}
+
+variant dbus description {Builds emacs with D-Bus support} {
+    configure.args-delete   --without-dbus
+    configure.args-append   --with-dbus
+    depends_lib-append      port:dbus
+}
+
+if {![variant_isset dbus]} {
+    notes "D-Bus support is no longer included in the default Emacs installation. To build Emacs with D-Bus support, please install with the +dbus variant."
+}

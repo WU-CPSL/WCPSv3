@@ -1,0 +1,15 @@
+# $Id: Portfile 86339 2011-10-24 14:44:46Z jmr@macports.org $
+
+PortSystem      1.0
+PortGroup       perl5 1.0
+
+perl5.setup     Class-Loader 2.03
+revision        2
+license         {Artistic-1 GPL}
+maintainers     nomaintainer
+description     Load modules and create objects on demand
+long_description ${description}
+platforms       darwin
+checksums       md5 2e2ace3429380e2dad2f0e82137511b8
+
+supported_archs noarch

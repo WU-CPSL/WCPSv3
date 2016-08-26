@@ -1,0 +1,30 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 88566 2012-01-04 11:45:08Z phw@macports.org $
+PortSystem 1.0
+
+name			tex-songs
+version			2.13
+categories		tex
+platforms		darwin
+maintainers		phw	openmaintainer
+description		tex package for creating songbooks
+long_description	${description}
+
+homepage		http://songs.sourceforge.net/
+master_sites	sourceforge:songs
+distname		songs-${version}
+checksums           md5     b7a21eeb84307ac0da7c3f8eb7d731e1 \
+                    sha1    045b455ceefc747ce36d518794b41dbfbe773457 \
+                    rmd160  1b3f93dcbd48476db2abf00ab4318094f7c18100
+
+depends_lib		bin:tex:texlive
+
+configure.post_args --with-texmf-path=${prefix}/share/texmf-texlive-dist/
+
+use_parallel_build no
+
+post-activate       { system "mktexlsr" }
+
+livecheck.type		regex
+livecheck.url		${homepage}/downloads.html
+livecheck.regex 	"Newest version: (\\d+(?:\\.\\d+)*)"

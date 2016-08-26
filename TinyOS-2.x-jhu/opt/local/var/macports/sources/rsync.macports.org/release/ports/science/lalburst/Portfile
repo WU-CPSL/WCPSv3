@@ -1,0 +1,43 @@
+# $Id: Portfile 89108 2012-01-19 18:49:30Z ram@macports.org $
+
+PortSystem    1.0
+
+name          lalburst
+version       1.1.1
+categories    science
+platforms     darwin
+maintainers   ram
+license       GPL
+
+description   LSC Algorithm Library - Burst
+long_description \
+  LIGO Scientific Collaboration Algorithm Library - Burst, containing \
+  routines for burst gravitational wave data analysis.
+
+homepage      https://www.lsc-group.phys.uwm.edu/daswg/projects/lalsuite.html
+master_sites  http://www.lsc-group.phys.uwm.edu/daswg/download/software/source/lalsuite
+
+checksums     md5 cc599959f5559460377cfbe7e1911059 \
+              sha1 764091cea7c61e7b17c1b836ec9d0004e5a29c57 \
+              rmd160 4d331a4b3de44c897027b607156aabd7f2fac2c4
+
+depends_build port:pkgconfig \
+              port:python27
+
+depends_lib   port:lal \
+              port:lalmetaio \
+              port:lalsimulation \
+              port:gsl \
+              port:metaio
+
+configure.python ${prefix}/bin/python2.7
+configure.args --mandir=${prefix}/share/man \
+               --disable-gcc-flags
+
+build.args    V=1
+
+use_parallel_build yes
+
+livecheck.type   regex
+livecheck.url    ${master_sites}
+livecheck.regex  {lalburst-(\d+(?:\.\d+)*).tar.gz}

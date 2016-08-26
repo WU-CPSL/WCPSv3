@@ -1,0 +1,12 @@
+# $Id: Portfile 82547 2011-08-15 16:46:16Z jmr@macports.org $
+
+PortSystem 1.0
+PortGroup perl5 1.0
+
+perl5.setup			Text-LevenshteinXS 0.03
+revision            2
+maintainers			nomaintainer
+description			An XS implementation of the Levenshtein edit distance
+long_description	${description}
+platforms			darwin
+checksums			md5 576d6dc3e6aa9e80686f244969e885e6

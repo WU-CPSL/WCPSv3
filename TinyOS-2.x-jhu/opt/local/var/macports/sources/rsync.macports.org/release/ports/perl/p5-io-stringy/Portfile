@@ -1,0 +1,19 @@
+# $Id: Portfile 84657 2011-09-29 11:22:17Z jmr@macports.org $
+
+PortSystem 1.0
+PortGroup perl5 1.0
+
+perl5.setup		IO-stringy 2.110
+revision        2
+license		{Artistic-1 GPL}
+maintainers		nomaintainer
+description		I/O on in-core objects like strings and arrays
+long_description	This toolkit primarily provides modules for \
+					performing both traditional and object-oriented i/o \
+					on things *other* than normal filehandles, in \
+					particular, IO::Scalar, IO::ScalarArray, and \
+					IO::Lines.
+checksums		md5 2e6a976cfa5521e815c1fdf4006982de
+platforms		darwin
+
+supported_archs noarch

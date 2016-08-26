@@ -1,0 +1,174 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89214 2012-01-21 11:32:57Z hum@macports.org $
+
+PortSystem          1.0
+
+name                hadoop
+version             1.0.0
+revision            1
+categories          java science
+platforms           darwin
+maintainers         hum openmaintainer
+license             Apache-2.0
+
+description         Open-source software for reliable, scalable, distributed computing
+
+long_description    Hadoop is a distributed computing platform written in Java. \
+                    It incorporates features similar to those of the Google File System \
+                    and of MapReduce.
+
+homepage            http://hadoop.apache.org/
+master_sites        apache:hadoop/common/${distname}
+checksums           rmd160  2ab9edac417f9ce555bb96ed20c87ea28f9f0d6b \
+                    sha256  587bc9389d062f4e8042f2604b2d9a574080d4178614cccc07c5e5d743836f71
+
+patchfiles          patch-hadoop-env.sh.diff
+
+use_configure       no
+supported_archs     noarch
+
+build {}
+
+set hadoopuser      hadoop
+
+set java_home       /System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home
+
+pre-configure {
+    if {![file exists ${java_home}]} {
+        ui_error "Java 1.6 is required, but not located at ${java_home}"
+        return -code error "Java 1.6 missing"
+    }
+}
+
+# Hadoop home and conf directories.
+set hadoop_basedir  ${prefix}/share/java
+set hadoop_home     ${hadoop_basedir}/${distname}
+set hadoop_conf_dir ${hadoop_home}/conf
+
+# Working directories.
+set hadoop_var_dir  ${prefix}/var/${name}
+set hadoop_log_dir  ${hadoop_var_dir}/log
+set hadoop_pid_dir  ${hadoop_var_dir}/run
+
+destroot {
+    # Copy the distribution to Hadoop home directory.
+    xinstall -m 755 -d  ${destroot}${hadoop_basedir}
+    copy ${worksrcpath} ${destroot}${hadoop_basedir}
+
+    # Patch for Mahout 0.4 to suppress warnings.
+    xinstall -m 755 -d \
+        ${destroot}${hadoop_home}/webapps/secondary/WEB-INF
+
+    # Install an extra script for this port.
+    set hadoop_bin ${destroot}${prefix}/bin/hadoop-bin
+    xinstall -m 755 ${filespath}/hadoop-bin      ${hadoop_bin}
+    reinplace "s|@hadoop_home@|${hadoop_home}|g" ${hadoop_bin}
+    reinplace "s|@java_home@|${java_home}|g"     ${hadoop_bin}
+    reinplace "s|@hadoopuser@|${hadoopuser}|g"   ${hadoop_bin}
+
+    # Setup 'hadoop-env.sh' in conf.
+    set env_sh ${destroot}${hadoop_conf_dir}/hadoop-env.sh
+    reinplace "s|@java_home@|${java_home}|g"           ${env_sh}
+    reinplace "s|@hadoop_log_dir@|${hadoop_log_dir}|g" ${env_sh}
+    reinplace "s|@hadoop_pid_dir@|${hadoop_pid_dir}|g" ${env_sh}
+
+    add_hadoop_user_and_group
+
+    # Create working directories.
+    xinstall -m 755 -o ${hadoopuser} -g ${hadoopuser} -d \
+        ${destroot}${hadoop_var_dir} \
+        ${destroot}${hadoop_log_dir} \
+        ${destroot}${hadoop_pid_dir}
+    destroot.keepdirs-append \
+        ${destroot}${hadoop_var_dir} \
+        ${destroot}${hadoop_log_dir} \
+        ${destroot}${hadoop_pid_dir}
+}
+
+pre-activate {
+    add_hadoop_user_and_group
+}
+
+proc add_hadoop_user_and_group {} {
+    global hadoopuser hadoop_var_dir
+    if {![existsgroup ${hadoopuser}]} {
+        addgroup ${hadoopuser}
+        adduser ${hadoopuser} \
+            gid=[existsgroup ${hadoopuser}] \
+            realname=Hadoop\ Server \
+            home=${hadoop_var_dir} \
+            shell=/bin/bash
+    }
+}
+
+post-deactivate {
+    ui_msg "********************************************************"
+    ui_msg "* To revert the system after uninstalling the port:"
+    ui_msg "* 1) Delete Hadoop working directory:"
+    ui_msg "*  $ sudo rm -rf ${hadoop_var_dir}"
+    ui_msg "* 2) Delete Hadoop user and group:"
+    ui_msg "*  $ sudo dscl . -delete /Users/${hadoopuser}"
+    ui_msg "*  $ sudo dscl . -delete /Groups/${hadoopuser}"
+    ui_msg "********************************************************"
+}
+
+default_variants    +pseudo
+
+set hadoop_tmp_dir  ${hadoop_var_dir}/cache
+
+variant pseudo description {Run on a single-node in a pseudo-distributed mode} {
+    patchfiles-append  patch-conf.diff
+
+    post-destroot {
+        # Set conf directory for a pseudo-distributed mode.
+        copy ${destroot}${hadoop_conf_dir} ${destroot}${hadoop_conf_dir}.pseudo
+        move ${destroot}${hadoop_conf_dir} ${destroot}${hadoop_conf_dir}.local
+        ln -s conf.pseudo ${destroot}${hadoop_conf_dir}
+
+        # Set the maximum number of tasks based on the number of the CPUs (cores).
+        regexp {\d+} [exec sysctl hw.ncpu] ncpu
+        set tasks_max [expr $ncpu + 2]
+
+        # Setup configuration files.
+        reinplace "s|@tasks_max@|${tasks_max}|g" \
+            ${destroot}${hadoop_conf_dir}.pseudo/mapred-site.xml
+        reinplace "s|@hadoop_tmp_dir@|${hadoop_tmp_dir}|" \
+            ${destroot}${hadoop_conf_dir}.pseudo/core-site.xml
+
+        # Create a temporary directory.
+        xinstall -m 755 -o ${hadoopuser} -g ${hadoopuser} -d \
+            ${destroot}${hadoop_tmp_dir}
+        destroot.keepdirs-append \
+            ${destroot}${hadoop_tmp_dir}
+    }
+
+    post-activate {
+        # Setup passphraseless ssh.
+        set ssh_dir ${hadoop_var_dir}/.ssh
+        if {![file exists ${ssh_dir}]} {
+            xinstall -m 700 -o ${hadoopuser} -g ${hadoopuser} -d ${ssh_dir}
+            system "sudo -u ${hadoopuser} ssh-keygen -t rsa -P '' -f ${ssh_dir}/id_rsa"
+            xinstall -m 644 -o ${hadoopuser} -g ${hadoopuser} \
+                ${ssh_dir}/id_rsa.pub \
+                ${ssh_dir}/authorized_keys
+        }
+
+        ui_msg "********************************************************"
+        ui_msg "* To run on a single-node in a pseudo-distributed mode:"
+        ui_msg "* 1) Turn on Remote Login (sshd):"
+        ui_msg "*  check 'System Preferences > Sharing > Remote Login'"
+        ui_msg "* 2) Format a new distributed-filesystem:"
+        ui_msg "*  $ hadoop-bin hadoop namenode -format"
+        ui_msg "* 3) Start the hadoop daemons:"
+        ui_msg "*  $ hadoop-bin start-all.sh"
+        ui_msg "* 4) Perform operations you like. To see examples:"
+        ui_msg "*  $ open file://${hadoop_home}/docs/single_node_setup.html"
+        ui_msg "* 5) When you're done, stop the daemons with:"
+        ui_msg "*  $ hadoop-bin stop-all.sh"
+        ui_msg "********************************************************"
+    }
+}
+
+livecheck.type      regex
+livecheck.url       http://www.apache.org/dist/hadoop/common/
+livecheck.regex     ${name}-(\[0-9.\]+)

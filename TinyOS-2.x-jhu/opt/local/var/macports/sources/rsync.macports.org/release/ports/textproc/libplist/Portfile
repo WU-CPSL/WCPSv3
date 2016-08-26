@@ -1,0 +1,25 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 77145 2011-03-21 06:14:23Z rmstonecipher@macports.org $
+
+PortSystem          1.0
+PortGroup           cmake 1.0
+
+name                libplist
+version             1.4
+categories          textproc multimedia
+maintainers         rmstonecipher openmaintainer
+description         Library for working with Apple Binary and XML Property Lists
+long_description    ${description}
+platforms           darwin
+homepage            http://libimobiledevice.org/
+master_sites        http://libimobiledevice.org/downloads/
+use_bzip2           yes
+depends_lib         path:lib/pkgconfig/glib-2.0.pc:glib2 \
+                    port:libxml2 \
+                    port:swig-python
+checksums           md5     2ef8bf33d9aeb078c6d8b6ecafbc6396 \
+                    sha1    82e98d13cdff1a62ad1184d515d71e8898866ee4 \
+                    rmd160  a00366f0fe164d7bd5d516092e2731b3233ac075
+livecheck.type      regex
+livecheck.url       ${homepage}
+livecheck.regex     "${name}-(\\d+(?:\\.\\d+)*)${extract.suffix}"

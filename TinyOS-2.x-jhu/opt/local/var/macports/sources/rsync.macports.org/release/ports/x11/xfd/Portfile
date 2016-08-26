@@ -1,0 +1,28 @@
+# $Id: Portfile 80076 2011-07-03 23:46:28Z jmr@macports.org $
+
+PortSystem          1.0
+
+name                xfd
+version             1.1.0
+categories          x11
+maintainers         jeremyhu openmaintainer
+description         Display all the characters in an X11 font
+long_description    ${description}
+
+platforms           darwin
+
+homepage            http://www.x.org/
+master_sites        xorg:individual/app/
+use_bzip2           yes
+
+checksums           md5     17d8ef0d490301158f8abf7641cca243 \
+                    sha1    9cf24f00b428bc02d8635634cdb3b7422e7d74a5 \
+                    rmd160  25dab79fe74808fede23c21abdd9ece141dd006e
+
+depends_build       port:pkgconfig
+
+depends_lib         port:xorg-libXaw port:Xft2
+
+livecheck.type      regex
+livecheck.regex     ${name}-(\[\\d.\]+)${extract.suffix}
+livecheck.url       http://xorg.freedesktop.org/archive/individual/app/?C=M&O=D

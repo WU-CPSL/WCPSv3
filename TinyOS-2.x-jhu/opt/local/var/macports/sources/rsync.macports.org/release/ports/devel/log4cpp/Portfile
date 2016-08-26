@@ -1,0 +1,21 @@
+# $Id: Portfile 78753 2011-05-21 14:00:08Z ryandesign@macports.org $
+
+PortSystem 1.0
+
+name               log4cpp
+version            1.0
+categories         devel
+platforms          darwin
+maintainers        nomaintainer
+description        configurable logging for C++
+long_description   Log4cpp is library of C++ classes for flexible logging to \
+                   files, syslog, IDSA and other destinations. It is modeled \
+                   after the Log4j Java library, staying as close to their \
+                   API as is reasonable.
+homepage           http://log4cpp.sourceforge.net/
+master_sites       sourceforge
+configure.args     --disable-doxygen \
+                   --disable-dot \
+                   --disable-html-docs \
+                   --disable-latex-docs
+checksums          sha1 bdb2fa7a8c8af738d79156bf9f6191875cdba5cc

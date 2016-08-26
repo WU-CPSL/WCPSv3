@@ -1,0 +1,10 @@
+# $Id: Portfile 88536 2012-01-04 02:21:08Z mww@macports.org $
+
+PortSystem          1.0
+replaced_by ocaml-text
+PortGroup obsolete 1.0
+
+name                caml-text
+version             0.2
+revision            1
+categories          devel ml

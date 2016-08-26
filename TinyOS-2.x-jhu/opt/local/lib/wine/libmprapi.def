@@ -1,0 +1,6 @@
+; File generated automatically from ./mprapi.spec; do not edit!
+
+LIBRARY mprapi.dll
+
+EXPORTS
+  MprAdminIsServiceRunning@4 @33

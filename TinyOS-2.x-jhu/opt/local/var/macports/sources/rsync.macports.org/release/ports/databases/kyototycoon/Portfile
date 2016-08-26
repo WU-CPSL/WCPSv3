@@ -1,0 +1,78 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89721 2012-02-08 09:42:15Z stromnov@macports.org $
+
+PortSystem          1.0
+
+name                kyototycoon
+version             0.9.53
+revision            0
+categories          databases
+license             GPL
+platforms           darwin
+
+maintainers         stromnov openmaintainer
+
+description         Kyoto Tycoon is a lightweight database server.
+
+long_description    \
+    Kyoto Tycoon is a lightweight database server  with  auto  expiration \
+    mechanism,  which  is  useful  to  handle  cache  data   of   various \
+    applications.  Kyoto Tycoon is also a package of network interface to \
+    the DBM called Kyoto Cabinet. Though the DBM has high performance and \
+    high concurrency,  you might bother in case that  multiple  processes \
+    share the same database,  or remote processes  access  the  database. \
+    Thus, Kyoto Tycoon is provided for concurrent and remote  connections \
+    to Kyoto Cabinet.  Kyoto Tycoon is composed  of  the  server  process \
+    managing  multiple  databases  and  its  access  library  for  client \
+    applications.
+
+homepage            http://fallabs.com/${name}/
+master_sites        http://fallabs.com/${name}/pkg/
+
+checksums           rmd160  107cad248583ce876dbf7b973922d1d8e7823fea \
+                    sha256  e2c77fbe70a0f680f909aa8d53f38aafa304e40862227720ea186ff386cb7a23
+
+patchfiles          patch-configure.diff
+
+depends_lib         port:kyotocabinet
+
+# To avoid linking against a previously installed version, remove the default
+# CPPFLAGS and LDFLAGS. The build scripts already add the
+# destination include and lib directories.
+configure.cppflags
+configure.ldflags
+
+if {${configure.compiler} == "clang"} {
+    configure.compiler llvm-gcc-4.2
+}
+
+configure.args      --mandir=${prefix}/share/man \
+                    --datadir=${prefix}/share/doc \
+                    --disable-lua
+
+universal_variant   no
+
+test.run            yes
+test.target         check
+
+variant debug conflicts devel profile description {build for debugging} {
+    configure.args-append   --enable-debug
+}
+
+variant devel conflicts debug profile description {build for development} {
+    configure.args-append   --enable-devel
+}
+
+variant profile conflicts debug devel description {build for profiling} {
+    configure.args-append   --enable-profile
+}
+
+variant lua description {build with Lua extension} {
+    configure.args-delete   --disable-lua
+    configure.args-append   --enable-lua
+    depends_lib-append      port:lua
+}
+
+livecheck.type      regex
+livecheck.url       ${master_sites}
+livecheck.regex     "${name}-(\\d+(?:\\.\\d+)*)${extract.suffix}"

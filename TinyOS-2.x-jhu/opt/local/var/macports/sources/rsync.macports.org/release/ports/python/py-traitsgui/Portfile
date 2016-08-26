@@ -1,0 +1,42 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89529 2012-02-01 18:11:40Z macsforever2000@macports.org $
+
+PortSystem          1.0
+PortGroup	        python 1.0
+
+name                py-traitsgui
+version             3.6.0
+categories-append   devel
+maintainers         vcn.com:jjstickel openmaintainer
+description         The Enthought traitsgui package
+long_description    The TraitsGUI project contains a\
+    toolkit-independent GUI abstraction layer (known as Pyface),\
+    which is used to support the "visualization" features of the Traits package.
+platforms           darwin
+homepage            http://code.enthought.com/projects/traits_gui/
+master_sites        http://www.enthought.com/repo/ets/
+distname            TraitsGUI-${version}
+
+checksums           md5     cf88abd88508034e193e784b3f2de2ad \
+                    sha1    2950ac9160fb6902260da67290e36da676439bea \
+                    rmd160  4b41e9f150043cb9893b530f621c1fa0e246d35a
+
+python.versions        25 26 27
+python.default_version 25
+
+if {$subport != $name} {
+    depends_build-append    port:py${python.version}-distribute
+    depends_lib-append      port:py${python.version}-enthoughtbase
+    
+    variant wx conflicts qt4 description {Use wxWidgets backend} {
+       depends_lib-append port:py${python.version}-traitsbackendwx
+    }
+    
+    variant qt4 conflicts wx description {Use Qt4 backend} {
+       depends_lib-append port:py${python.version}-traitsbackendqt
+    }
+    
+    if {![variant_isset qt4]} {
+        default_variants-append +wx
+    }
+}

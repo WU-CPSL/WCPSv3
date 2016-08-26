@@ -1,0 +1,34 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.prime.com.tr/ui"
+  xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core">
+<ui:composition template="/templates/platform/ubersvn-configuration-template.xhtml">
+
+  <ui:define name="pageContentView">
+    <div style="text-align: left; margin-bottom: 20px; margin-left: 30px;">
+      <h:outputText style="font-size: 40px; color: #434343;	text-align: left;" value="#{msg.errorPageTitle}" />
+    </div>
+    <div style="text-align: left; margin-left: 30px;">
+      <h:outputText style="font-size: 18px; color: #434343;	text-align: left;" value="#{msg.errorPageSorry}" />
+    </div>
+    <div style="text-align: left; margin-left: 30px;">
+      <h:outputText style="font-size: 18px; color: #434343;	text-align: left;" value="#{msg.errorPagePlease}" />
+      <h:outputText value="&#160;" />
+      <h:outputLink value="http://www.ubersvn.com/support" target="blank">
+        <h:outputText value="#{msg.errorPageLetUsKnow}" style="font-size: 18px;" />
+      </h:outputLink>
+      <h:outputText value="&#160;" />
+      <h:outputText style="font-size: 18px; color: #434343;	text-align: left;" value="#{msg.errorPageIfYouBelieve}" />
+    </div>
+
+    <div style="text-align: center; margin-left: 30px; margin-top: 30px;">
+      <h:inputTextarea style="width:50%;" rows="7" enabled="false" value="#{requestScope['javax.servlet.error.exception']}" />
+    </div>
+
+    <div style="text-align: center; margin-top: 200px;">
+      <p:commandButton action="#{errorPageManagedBean.getBaseUrl}" ajax="false" styleClass="roundedButtonLarge" value="#{msg.takeMeHome}" />
+    </div>
+
+  </ui:define>
+</ui:composition>
+</html>

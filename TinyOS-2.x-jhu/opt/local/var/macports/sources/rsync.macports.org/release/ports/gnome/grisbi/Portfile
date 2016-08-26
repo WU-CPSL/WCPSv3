@@ -1,0 +1,38 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 84550 2011-09-27 21:05:11Z snc@macports.org $
+
+PortSystem 1.0
+
+name		grisbi
+version             0.6.0
+description       Easy Personnal Finance Manager for All.
+long_description  Grisbi is a personnal accounting application. \
+		  Grisbi can manage multiple accounts, currencies and users. It manages \
+		  third party, expenditure and receipt categories, as well as budgetary \
+		  lines, financial years, and other informations that makes it quite \
+		  adapted for associations (except those that require double entry \
+		  accounting).
+maintainers	grisbi.org:gerald
+categories	gnome
+platforms	darwin
+homepage	http://www.grisbi.org
+checksums           sha1    d76973eaa068827d0239b2a6d7c411f78ae743fb \
+                    rmd160  dedd2375136b36ab69026f42207cecb18c74190f
+master_sites        http://grisbi.gegeweb.org/src/${version} \
+                    sourceforge
+depends_lib	lib:libgtk.2:gtk2 lib:libxml2.2.6.16:libxml2 lib:libofx.0:libofx
+use_bzip2	yes
+
+configure.args              --mandir=${prefix}/share/man
+configure.args-append       --with-balance-estimate
+configure.cppflags-append   "	-L${prefix}/lib"
+
+universal_variant   no
+supported_archs     ppc i386
+
+variant no_ofx description {Don't include LibOFX support} {
+	depends_lib-delete	lib:libofx.0:libofx
+	configure.args-append	--without-ofx
+}
+
+livecheck.regex "<title>${name} (\\d+(?:\\.\\d+)*) released.*</title>"

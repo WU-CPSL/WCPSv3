@@ -1,0 +1,6 @@
+# $Id: install.extra,v 1.1 2007/12/05 18:08:18 yuecelm Exp $ #
+
+# author: Mustafa Yuecel <mustafa.yuecel@alumni.ethz.ch> #
+
+NODEID = $(INSTALL)
+BUILD_DEPS = tosimage $(POST_BUILD_EXTRA_DEPS) setid program delsetid

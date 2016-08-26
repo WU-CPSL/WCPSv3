@@ -1,0 +1,9 @@
+; File generated automatically from ./windowscodecs.spec; do not edit!
+
+LIBRARY windowscodecs.dll
+
+EXPORTS
+  DllGetClassObject@12 @1 PRIVATE
+  DllRegisterServer@0 @2 PRIVATE
+  DllUnregisterServer@0 @3 PRIVATE
+  WICConvertBitmapSource@12 @106

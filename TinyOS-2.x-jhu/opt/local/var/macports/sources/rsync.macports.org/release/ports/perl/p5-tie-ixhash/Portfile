@@ -1,0 +1,16 @@
+# $Id: Portfile 85263 2011-10-12 06:19:56Z jmr@macports.org $
+
+PortSystem              1.0
+PortGroup               perl5 1.0
+
+perl5.setup             Tie-IxHash 1.21
+revision                2
+license                 {Artistic-1 GPL}
+maintainers             nomaintainer
+description             Module that preserves order in perl associative arrays.
+long_description        ${description}
+
+checksums               md5 567ddc13081596b52cfe3d82218cb264
+platforms               darwin
+
+supported_archs noarch

@@ -1,0 +1,25 @@
+; File generated automatically from ./cfgmgr32.spec; do not edit!
+
+LIBRARY cfgmgr32.dll
+
+EXPORTS
+  CM_Connect_MachineA@8=setupapi.CM_Connect_MachineA @10
+  CM_Connect_MachineW@8=setupapi.CM_Connect_MachineW @11
+  CM_Create_DevNodeA@16=setupapi.CM_Create_DevNodeA @12
+  CM_Create_DevNodeW@16=setupapi.CM_Create_DevNodeW @13
+  CM_Disconnect_Machine@4=setupapi.CM_Disconnect_Machine @26
+  CM_Enumerate_Classes@12=setupapi.CM_Enumerate_Classes @30
+  CM_Get_Device_IDA@16=setupapi.CM_Get_Device_IDA @63
+  CM_Get_Device_IDW@16=setupapi.CM_Get_Device_IDW @64
+  CM_Get_Device_ID_ExW@20=setupapi.CM_Get_Device_ID_ExW @66
+  CM_Get_Device_ID_ListA@16=setupapi.CM_Get_Device_ID_ListA @67
+  CM_Get_Device_ID_ListW@16=setupapi.CM_Get_Device_ID_ListW @68
+  CM_Get_Device_ID_Size@12=setupapi.CM_Get_Device_ID_Size @75
+  CM_Get_Device_Interface_List_Size_ExA@20=setupapi.CM_Get_Device_Interface_List_Size_ExA @87
+  CM_Get_Device_Interface_List_Size_ExW@20=setupapi.CM_Get_Device_Interface_List_Size_ExW @88
+  CM_Get_Parent@12=setupapi.CM_Get_Parent @107
+  CM_Locate_DevNodeA@12=setupapi.CM_Locate_DevNodeA @120
+  CM_Locate_DevNodeW@12=setupapi.CM_Locate_DevNodeW @121
+  CM_Locate_DevNode_ExA@16=setupapi.CM_Locate_DevNode_ExA @122
+  CM_Locate_DevNode_ExW@16=setupapi.CM_Locate_DevNode_ExW @123
+  CMP_WaitNoPendingInstallEvents@4=setupapi.CMP_WaitNoPendingInstallEvents @180

@@ -1,0 +1,30 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89388 2012-01-27 21:19:08Z snc@macports.org $
+
+PortSystem          1.0
+PortGroup           kde4   1.1
+
+name                klettres
+version             4.8.0
+categories          kde kde4
+maintainers         snc sharky michaelld
+license             GPL-2+ GFDL-1.2
+description         Learn the Alphabet
+long_description    KDE ${description}
+homepage            http://www.kde.org
+
+platforms           darwin
+depends_lib-append  port:libkdeedu
+
+master_sites        kde:stable/${version}/src/
+use_bzip2           yes
+
+checksums           rmd160  64a56e3f53dd11960c737be11cf253ccbaeefb12 \
+                    sha256  c776313b9057a1310e3bbcda71365d649ad47715c69f8f6e8268ded1292c372d
+
+if {![variant_isset doc]} {
+    patchfiles-append   patch-CMakeLists.txt.diff
+}
+
+livecheck.url       http://kde.mirrors.hoobly.com/stable/latest/src/
+livecheck.regex     ${name}-(\\d+(\\.\\d+)+)

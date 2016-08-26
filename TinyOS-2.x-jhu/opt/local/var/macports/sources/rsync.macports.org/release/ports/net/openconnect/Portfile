@@ -1,0 +1,54 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 87616 2011-11-28 21:20:12Z ryandesign@macports.org $
+
+PortSystem          1.0
+
+name                openconnect
+version             3.15
+categories          net
+platforms           darwin
+maintainers         nomaintainer
+license             LPGL-2.1
+
+description         OpenConnect is a client for Cisco's AnyConnect SSL VPN
+long_description    ${description}, which is supported by the ASA5500 Series, \
+                    by IOS 12.4(9)T or later on Cisco SR500, 870, 880, 1800, \
+                    2800, 3800, 7200 Series and Cisco 7301 Routers, and \
+                    probably others.
+
+homepage            http://www.infradead.org/openconnect/
+
+depends_build       port:pkgconfig
+
+depends_lib         port:libxml2 \
+                    port:zlib \
+                    port:openssl \
+                    port:gettext \
+                    port:tuntaposx \
+                    port:libproxy
+
+master_sites        ftp://ftp.infradead.org/pub/openconnect/
+
+# md5 is needed for http master_site below
+checksums           md5     94245f4bac42a288100becab0b4ca29a \
+                    rmd160  2219367eb44de3257900876631eb3febb90a5037 \
+                    sha256  b533083f47643621ff4decb293300ce49339d6b3ff3c21b75f5035d6df5edcc2
+
+foreach {type checksum} ${checksums} {
+    if {${type} == "md5"} {
+        master_sites-append http://pkgs.fedoraproject.org/lookaside/pkgs/openconnect/${distfiles}/${checksum}
+    }
+}
+
+post-destroot {
+    set docdir ${destroot}${prefix}/share/doc/${name}
+    xinstall -d ${docdir}
+    xinstall -m 644 -W ${worksrcpath} \
+        AUTHORS \
+        COPYING.LGPL \
+        TODO \
+        ${docdir}
+}
+
+livecheck.url       ${homepage}download.html
+livecheck.regex     OpenConnect v(\[0-9.\]+)

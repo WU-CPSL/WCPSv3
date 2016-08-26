@@ -1,0 +1,77 @@
+# $Id: Portfile 89315 2012-01-24 22:31:47Z ryandesign@macports.org $
+
+PortSystem 1.0
+
+name                    qemu
+version                 1.0
+categories              emulators
+license                 GPL-2+
+platforms               darwin
+maintainers             nomaintainer
+
+description             Emulator for various architectures
+long_description        QEMU is a generic and open source machine emulator. \
+                        It can run OSes and programs made for one machine on a \
+                        different machine. By using dynamic translation, it \
+                        achieves very good performance.
+
+homepage                http://qemu.org
+master_sites            ${homepage}/download
+
+checksums               md5     a64b36067a191451323b0d34ebb44954 \
+                        sha1    7dcb1b3516554d6d899d7488cd444dbb7721fcee \
+                        rmd160  3a60aef6cfebba6896bdb12c99525da5456172fd
+
+patchfiles              patch-configure.diff \
+                        patch-cocoa-uint16-redefined.diff
+
+depends_build           port:texinfo \
+                        port:pkgconfig
+
+depends_lib             port:curl \
+                        port:cyrus-sasl2 \
+                        port:gnutls \
+                        port:libidn \
+                        port:libtasn1 \
+                        port:ncurses \
+                        port:libpng \
+                        port:jpeg \
+                        port:ossp-uuid
+
+# target-i386/exec.h:31:30: error: global register variables are not supported
+if {${configure.compiler} == "llvm-gcc-4.2"} {
+    configure.compiler gcc-4.2
+} elseif {${configure.compiler} == "clang"} {
+    depends_build-append port:apple-gcc42
+    configure.compiler apple-gcc-4.2
+    # base (as of 2.0.3) doesn't set cxx for apple-gcc-4.2
+    configure.cxx ${prefix}/bin/g++-apple-4.2
+}
+
+configure.args          --cc=${configure.cc} \
+                        --host-cc=${configure.cc}
+if {$build_arch != ""} {
+    configure.args-append --cpu=${build_arch}
+}
+
+set target_list {}
+pre-configure {
+    configure.args-append --target-list=${target_list}
+}
+
+foreach t {i386 x86_64 ppc ppc64 arm cris m68k mips mipsel mips64 mips64el ppcemb sh4 sh4eb sparc} {
+    variant target_${t} description "add ${t} target support" "append target_list \",${t}-softmmu\""
+}
+default_variants    +target_i386 +target_x86_64
+
+# Default universal variant does not work
+universal_variant       no
+
+platform darwin 8 {
+    depends_build-append port:gmake
+    build.cmd ${prefix}/bin/gmake
+}
+
+livecheck.type regex
+livecheck.url http://download.savannah.gnu.org/releases/${name}/
+livecheck.regex ${name}-(\\d+(?:\\.\\d+)*)\\.tar

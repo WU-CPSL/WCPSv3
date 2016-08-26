@@ -1,0 +1,37 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 72817 2010-10-28 00:23:27Z ryandesign@macports.org $
+
+PortSystem 1.0
+
+name		picocom
+version		1.6
+categories	comms
+maintainers	gmail.com:ranauei
+platforms	darwin
+description	Minimal dump-terminal emulation program
+long_description \
+		Picocom was designed to serve as a simple, manual, \
+		modem configuration, testing, and debugging tool. \
+		It has also served (quite well) as a low-tech \
+		"terminal-window" to allow operator intervention in \
+		PPP connection scripts (something like the ms-windows \
+		"open terminal window before / after dialing" feature). \
+		It could also prove useful in many other similar tasks.
+homepage	http://code.google.com/p/picocom
+master_sites	googlecode
+
+checksums	md5     426c3d30b82cbc80b0dafdccd6020c6c \
+		sha1    f042e15fa76ab3349c74a70062aa210b527e6bdc \
+		rmd160  ac823d8045ab8ae05b19e99b1b3756b61d0e587e
+
+patchfiles	patch-picocom.c.diff patch-term.c.diff
+
+use_configure	no
+
+build.target	""
+build.args      CC=${configure.cc}
+
+destroot {
+	xinstall ${worksrcpath}/${name} ${destroot}${prefix}/bin
+	xinstall -m 644 ${worksrcpath}/${name}.8 ${destroot}${prefix}/share/man/man8
+}

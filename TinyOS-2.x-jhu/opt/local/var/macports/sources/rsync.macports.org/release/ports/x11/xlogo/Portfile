@@ -1,0 +1,28 @@
+# $Id: Portfile 80076 2011-07-03 23:46:28Z jmr@macports.org $
+
+PortSystem          1.0
+
+name                xlogo
+version             1.0.3
+categories          x11
+maintainers         jeremyhu openmaintainer
+description         X11 Window System logo
+long_description    ${description}
+
+platforms           darwin
+
+homepage            http://www.x.org/
+master_sites        xorg:individual/app/
+use_bzip2           yes
+
+checksums           md5     8149f95f5a0f04f404549363557eef41 \
+                    sha1    5016e74ba16ac80f3eac1c97738a6afbfc8b3bdd \
+                    rmd160  e2aca451a0a862eeeaf160b695bcdd87f4a04341
+
+depends_build       port:pkgconfig
+
+depends_lib         port:xorg-libXaw port:Xft2
+
+livecheck.type      regex
+livecheck.regex     ${name}-(\[\\d.\]+)${extract.suffix}
+livecheck.url       http://xorg.freedesktop.org/archive/individual/app/?C=M&O=D

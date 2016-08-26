@@ -1,0 +1,71 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 88878 2012-01-14 06:03:32Z ryandesign@macports.org $
+
+PortSystem          1.0
+PortGroup           python 1.0
+
+name                py-mysql
+version             1.2.3
+categories          python devel databases
+platforms           darwin
+maintainers         nomaintainer
+license             GPL
+
+description         Python interface to mysql
+
+long_description    A package containing a Python module that allows you to \
+                    connect to MySQL databases
+
+homepage            http://sourceforge.net/projects/mysql-python/
+master_sites        sourceforge:mysql-python
+
+distname            MySQL-python-${version}
+
+checksums           rmd160  e394e7bf08127068795aeebfbaea7dc3b2127c86 \
+                    sha256  7de66fbbf923634e7c965aeaefa74642ba75ae20ee1cefcefc3009595b7a7e6e
+
+python.versions     24 25 26 27
+python.default_version 27
+
+if {$subport != $name} {
+    depends_lib-append  port:py${python.version}-distribute
+    
+    patch.pre_args      -p1
+    patchfiles          patch-site.cfg.diff
+    
+    post-patch {
+        reinplace "s|@PREFIX@|${prefix}|g" \
+            ${worksrcpath}/site.cfg
+        reinplace "s|@MYSQL_SUFFIX@|${mysql_suffix}|g" \
+            ${worksrcpath}/site.cfg
+    }
+    
+    pre-configure {
+        if {![variant_isset mysql4] && ![variant_isset mysql5]} {
+            return -code error "you must select either mysql4 or mysql5"
+        }
+    }
+    
+    post-destroot {
+        xinstall -m 755 -d ${destroot}${prefix}/share/doc/${subport}
+        xinstall -m 644 -W ${worksrcpath} \
+            HISTORY README \
+            ${destroot}${prefix}/share/doc/${subport}
+    }
+    
+    variant mysql4 conflicts mysql5 description {Build with MySQL 4} {
+        depends_lib-append  port:mysql4
+    }
+    
+    variant mysql5 conflicts mysql4 description {Build with MySQL 5} {
+        depends_lib-append  path:bin/mysql_config5:mysql5
+    }
+    
+    set mysql_suffix    {}
+    if {![variant_isset mysql4]} {
+        set mysql_suffix 5
+        default_variants +mysql5
+    }
+    
+    livecheck.type      none
+}

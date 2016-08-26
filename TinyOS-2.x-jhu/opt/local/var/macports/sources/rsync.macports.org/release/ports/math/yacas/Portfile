@@ -1,0 +1,52 @@
+# $Id: Portfile 63716 2010-02-13 13:52:50Z raimue@macports.org $
+
+PortSystem 1.0
+
+name		yacas
+version		1.2.2
+revision        1
+categories	math
+platforms       darwin
+homepage        http://yacas.sourceforge.net/
+maintainers	nomaintainer
+description	Yet Another Computer Algebra System
+long_description YACAS is an easy to use, general purpose Computer Algebra\
+	System, a program for symbolic manipulation of mathematical\
+	expressions. It uses its own programming language designed for\
+	symbolic as well as arbitrary-precision numerical computations.  The\
+	system has a library of scripts that implement many of the symbolic\
+	algebra operations - new algorithms can be easily added to the library.
+
+master_sites	http://yacas.sourceforge.net/backups/
+
+checksums   md5 329f149ca3ceb976a7e596b56fc3cba5 \
+            sha1 8e753c22c207a5aa5e9fd2a9d519605d5b73d5b9 \
+            rmd160 6c49ca60e4f1f92e7d30e8d91b6126e55d77321b
+
+
+# perl is used to build documentation
+# ${prefix}/share/yacas/manmake/txt2yacasdoc.pl requires perl after build
+depends_lib	path:bin/perl:perl5
+
+post-patch {
+    #Ensure that the correct perl is used
+    foreach f {ytxt2tex Makefile.in book2ys.sh book2xml.sh book2txt.sh book2TeX.sh} {
+        reinplace -E "s|(\[^a-zA-Z_\])perl |\\1${prefix}/bin/perl |g" ${worksrcpath}/manmake/${f}
+    }
+    foreach f [glob -directory ${worksrcpath}/manmake *.pl] {
+         reinplace  "s|/usr/bin/perl|${prefix}/bin/perl|g" ${f}
+    }
+}
+
+configure.args-append   --with-html-dir=${prefix}/share/doc/${name}
+
+default_variants +server
+
+variant server description {Add the ability to run as server} {
+    configure.args-append   --enable-server
+}
+
+test.run	yes
+
+livecheck.url    http://yacas.sourceforge.net/downloads.html
+livecheck.regex  "version (\\d(?:\\.\\d+)*)"

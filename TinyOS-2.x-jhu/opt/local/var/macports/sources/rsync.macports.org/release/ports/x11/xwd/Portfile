@@ -1,0 +1,28 @@
+# $Id: Portfile 80076 2011-07-03 23:46:28Z jmr@macports.org $
+
+PortSystem          1.0
+
+name                xwd
+version             1.0.4
+categories          x11 graphics
+maintainers         jeremyhu openmaintainer
+description         Dump an image of an X11 window
+long_description    ${description}
+
+platforms           darwin
+
+homepage            http://www.x.org/
+master_sites        xorg:individual/app/
+use_bzip2           yes
+
+checksums           md5     ecd9167fbfdfc3cfef7e0bb089edd25b \
+                    sha1    4ef4fd9072a507e9a1ee88ba1d28b314006cc109 \
+                    rmd160  e65b338b778a0a8fa09d06868b0d4a604e8c0dd5
+
+depends_build       port:pkgconfig
+
+depends_lib         port:xorg-libX11
+
+livecheck.type      regex
+livecheck.regex     ${name}-(\[\\d.\]+)${extract.suffix}
+livecheck.url       http://xorg.freedesktop.org/archive/individual/app/?C=M&O=D

@@ -1,0 +1,146 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:p="http://primefaces.prime.com.tr/ui" xmlns:h="http://java.sun.com/jsf/html">
+<ui:composition>
+  <ol id="sub-toc">
+    <li><h:outputLink title="#{msg.adminStatusTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationStatus.jsf">
+        <span>#{msg.adminStatusTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminApacheServerSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationApacheServerSettings.jsf">
+        <span>#{msg.adminSubversionServerSettingsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminUberServerSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUberServerSettings.jsf">
+        <span>#{msg.adminUberServerSettingsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminUberPreferenceSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUberPreferenceSettings.jsf">
+        <span>#{msg.adminUberPreferenceSettingsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminEmailServerSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationEmailServerSettings.jsf">
+        <span>#{msg.adminEmailServerSettingsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminLogsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationLogs.jsf">
+        <span>#{msg.adminLogsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminUpdatesTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUpdates.jsf">
+        <span>#{msg.adminUpdatesTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminLDAPTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUberLDAPSettings.jsf">
+        <span>#{msg.adminLDAPTabText}</span>
+      </h:outputLink></li>
+    <li class="current"><h:outputLink title="#{msg.backup}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationBackup.jsf">
+        <span>#{msg.backup}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink title="#{msg.adminExtensionsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationViewExtensions.jsf">
+        <span>#{msg.adminExtensionsTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink title="#{msg.adminSubversionReleaseLinkText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationSubversionRelease.jsf">
+        <span>#{msg.adminSubversionReleaseLinkText}</span>
+      </h:outputLink></li>
+  </ol>
+  <p:panel id="adminBackupRestorePanel" styleClass="tabbed-panel">
+    <ol id="innerTab">
+      <li id="administrationBackupInnerTab"><h:outputLink
+          value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationBackup.jsf"
+          title="Backup">
+          <span>#{msg.backup}</span>
+        </h:outputLink>
+      </li>
+      <li id="administrationRestoreInnerTab" class="current"><h:outputLink
+          value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationRestore.jsf"
+          title="Restore">
+          <span>#{msg.restore}</span>
+        </h:outputLink>
+      </li>
+    </ol>
+    <p:panel styleClass="base-tab-panel">
+      <p:panel styleClass="base-tab-inner-panel" id="currentComponentPanel">
+        <p:accordionPanel tabChangeListener="#{userManagedBean.onTabChange}" autoHeight="false">
+          <p:tab title="#{msg.updateFromPreviousVersion}">
+            <h:panelGroup>
+              <p:dataTable id="restoreTableId" widgetVar="restoreTable" var="backups"
+                value="#{administrationBackupManagedBean.lazyBackupsModel}" lazy="true" rows="10">
+                <p:column>
+                  <f:facet name="header">
+                    <h:outputText value="#{msg.backupFileName}" />
+                  </f:facet>
+                  <h:commandLink action="#{administrationBackupManagedBean.importKnownBackup}" onclick="uberSVNStatusDialog.show()">
+                    <f:setPropertyActionListener target="#{administrationBackupManagedBean.selectedBackup}" value="#{backups}" />
+                    <h:outputText value="#{backups.name}" />
+                  </h:commandLink>
+                </p:column>
+                <p:column>
+                  <f:facet name="header">
+                    <h:outputText value="#{msg.backupPath}" />
+                  </f:facet>
+                  <h:commandLink action="#{administrationBackupManagedBean.importKnownBackup}" onclick="uberSVNStatusDialog.show()">
+                    <f:setPropertyActionListener target="#{administrationBackupManagedBean.selectedBackup}" value="#{backups}" />
+                    <h:outputText value="#{backups.path}" />
+                  </h:commandLink>
+                </p:column>
+                <p:column>
+                  <f:facet name="header">
+                    <h:outputText value="#{msg.backupDate}" />
+                  </f:facet>
+                  <h:commandLink action="#{administrationBackupManagedBean.importKnownBackup}" onclick="uberSVNStatusDialog.show()">
+                    <f:setPropertyActionListener target="#{administrationBackupManagedBean.selectedBackup}" value="#{backups}" />
+                    <h:outputText value="#{backups.lastModified}" />
+                  </h:commandLink>
+                </p:column>
+              </p:dataTable>
+            </h:panelGroup>
+          </p:tab>
+          <p:tab title="#{msg.updateFromLocalFile}">
+
+            <h:panelGroup>
+              <h:inputText id="backupFolderLocation" styleClass="configurationWizardFormField"
+                value="#{administrationBackupManagedBean.importUploadPath}" style="width:30%" />
+              <h:graphicImage style="cursor: pointer;" library="img/platform/icons" name="mag_glass.png"
+                onclick="document.forms[1].popupField.value='backupFolderLocation';window.open('#{administratorManagedBean.facesContext.externalContext.requestContextPath}/ubersvn/faces/fileChooserPopup.jsp','Browse_Server', 'height=630,width=750,top='+((screen.height-(screen.height/1.618))-(500/2))+',left='+((screen.width-650)/2)+',scrollbars,resizable')" />
+              <p:commandButton id="administrationRestoreFromLocal" value="Restore" styleClass="roundedButtonExtraSmall" type="submit"
+                onclick="uberSVNStatusDialog.show()" action="#{administrationBackupManagedBean.importBackup}" ajax="false" />
+            </h:panelGroup>
+          </p:tab>
+          <p:tab title="#{msg.updateFromUpload}">
+            <h:panelGroup>
+
+              <p:commandButton id="administrationEmailSaveChanges" value="#{msg.selectLocalFile}" styleClass="roundedButtonSmall"
+                onclick="restoreLocalDlg.show();" ajax="true" />
+            </h:panelGroup>
+          </p:tab>
+          
+        </p:accordionPanel>
+      </p:panel>
+    </p:panel>
+  </p:panel>
+  <p:dialog modal="true" onShow="reloadPage()" widgetVar="uberSVNStatusDialog" header="Restoring database" draggable="false"
+    closable="false" resizable="false" width="200" height="150">
+    <h:graphicImage id="uberSVNStatusImage" style="border:0; margin-left: auto; margin-right: auto; display: block;" library="img/platform"
+      name="progress.gif" />
+  </p:dialog>
+  <script type="text/javascript">
+			jQuery(document).ready(function() {
+				jQuery('input:radio').click(function() {
+					jQuery('#addExistingRepositoryPath').val("");
+					jQuery('#addRepositoryDumpFilePath').val("");
+					// Submit the new radio button selection
+					var id = jQuery(this).attr('id');
+					jQuery('#' + id + 'Link').click();
+				});
+			});
+		</script>
+</ui:composition>
+</html>

@@ -1,0 +1,32 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 79327 2011-06-09 17:00:51Z ryandesign@macports.org $
+
+PortSystem 1.0
+PortGroup python27 1.0
+
+name            py27-beautifulsoup
+version         3.2.0
+revision        1
+categories      python textproc
+platforms       darwin
+maintainers     lightnin openmaintainer
+supported_archs noarch
+
+description     Python HTML/XML parser
+long_description    Beautiful Soup is a Python HTML/XML parser designed for \
+                    quick turnaround projects like screen-scraping.
+
+homepage        http://www.crummy.com/software/BeautifulSoup/
+master_sites    http://www.crummy.com/software/BeautifulSoup/download/3.x/
+distname        BeautifulSoup-${version}
+checksums       md5 ef1e78f7689ea61314f7bddebcfde88c \
+                sha1 924eb4e43144e233e3749edadc8dc5cd8ec8a3be \
+                rmd160 44c04cf55cf8fe7d192a32d8362a36d292acb767
+
+post-destroot   {
+    xinstall -m 644 -W ${worksrcpath} PKG-INFO \
+        ${destroot}${prefix}/share/doc/${name}
+}
+
+livecheck.type  regex
+livecheck.regex BeautifulSoup-(\[0-9.\]+)${extract.suffix}

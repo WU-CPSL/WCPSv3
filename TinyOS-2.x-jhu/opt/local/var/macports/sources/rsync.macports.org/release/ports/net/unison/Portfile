@@ -1,0 +1,57 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 88712 2012-01-09 10:59:47Z mww@macports.org $
+
+PortSystem        1.0
+name              unison
+version           2.40.63
+categories        net
+maintainers       nomaintainer
+license           GPL-3
+description       Unison File Synchronizer
+long_description  Unison is a file-synchronization tool for Unix and \
+                  Windows. It allows two replicas of a collection of \
+                  files and directories to be stored on different hosts \
+                  (or different disks on the same host), modified \
+                  separately, and then brought up to date by propagating \
+                  the changes in each replica to the other.
+homepage          http://www.cis.upenn.edu/~bcpierce/unison/
+master_sites      ${homepage}/download/releases/stable/
+platforms         darwin openbsd
+checksums           md5     3281207850cf6f0a17fe73f371893bd3 \
+                    sha1    645e70bc37a5d4e8e9ccb7bad065fc579b18cf75 \
+                    rmd160  5dede9ea2f1213d4a22ed1914da7bfb1921f9993
+
+patchfiles          patch-Makefile \
+                    patch-uimacnew-uimacnew.xcodeproj-project.pbxproj.diff
+
+use_configure	no
+
+build.args		UISTYLE=text NATIVE=true THREADS=true
+depends_build	bin:camlp4:ocaml
+
+destroot.args	PREFIX=${prefix} UISTYLE=text NATIVE=true THREADS=true
+
+variant x11 {
+	depends_lib-append		port:lablgtk2
+
+	build.args-delete		UISTYLE=text
+	build.args-append		UISTYLE=gtk2
+
+	destroot.args-delete	UISTYLE=text
+	destroot.args-append	UISTYLE=gtk2
+}
+
+variant aqua description {Build Aqua front-end} {
+	build.args-delete		UISTYLE=text
+	build.args-append		UISTYLE=macnew
+	destroot {
+		xinstall -d -m 0755 ${destroot}${applications_dir}
+		system "cd ${worksrcpath}/uimacnew/build && mv Default/* . || true"
+		file copy ${worksrcpath}/uimacnew/build/Unison.app \
+			${destroot}${applications_dir}
+	}
+}
+
+livecheck.type      regex
+livecheck.url       ${master_sites}
+livecheck.regex     {unison-(\d+(?:\.\d+)*)}

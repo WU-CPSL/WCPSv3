@@ -1,0 +1,76 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 87743 2011-12-03 18:55:46Z ciserlohn@macports.org $
+
+PortSystem          1.0
+
+name                play
+conflicts           sox
+version             1.2.4
+categories          devel java www
+platforms           darwin
+license             Apache-2
+maintainers         ciserlohn
+supported_archs     noarch
+
+description         Rapid webapplication development framework
+
+long_description    The Play framework is a clean alternative to bloated Enterprise Java stacks. \
+                    It focuses on developer productivity and targets RESTful architectures. \
+                    Play is a perfect companion to agile software development. \
+                    Play is a pure Java framework and allows you to keep your preferred \
+                    development tools and libraries. If you already use Java as a  \
+                    development platform you don't need to switch to another language, \
+                    another IDE and other libraries. \
+                    The Play framework's goal is to ease web applications \
+                    development while sticking with Java. (From the documentation)
+
+homepage            http://www.playframework.org/
+master_sites        https://github.com/playframework/play/tarball/${version}
+
+checksums           rmd160  aab8b1306c8f60402754ef951213c7f787f17b74 \
+                    sha256  81045840dae4c4631f599e840db5294a0e238b7331c745df1690e7c3325e5236
+
+depends_build       port:apache-ant
+
+depends_lib         port:python27
+
+post-extract {
+    file rename [glob ${workpath}/playframework-play-*] ${worksrcpath}
+
+    # delete windows specific files
+    delete ${worksrcpath}/play.bat ${worksrcpath}/python
+}
+
+patchfiles          patch-framework-build.xml.diff
+
+post-patch {
+    reinplace "s|/usr/bin/env python|${prefix}/bin/python2.7|" ${worksrcpath}/play
+}
+
+use_configure       no
+
+build.cmd           ant
+build.target        package
+build.dir           ${worksrcpath}/framework
+
+destroot {
+    xinstall -m 755 -d ${destroot}${prefix}/share/java/${distname}
+    file attributes ${build.dir}/dist/play -permissions rwxr-xr-x
+    foreach f [glob -directory ${build.dir}/dist *] {
+        file copy $f ${destroot}${prefix}/share/java/${distname}
+    }
+
+    # symlink the binary
+    ln -s ${prefix}/share/java/${distname}/play ${destroot}${prefix}/bin
+
+    # symlink the documentation
+    set docdir ${destroot}${prefix}/share/doc/${name}
+    xinstall -d ${docdir}
+    ln -s ${prefix}/share/java/${distname}/documentation/api ${docdir}
+    ln -s ${prefix}/share/java/${distname}/samples-and-tests ${docdir}
+
+}
+
+livecheck.type      regex
+livecheck.url       ${homepage}download
+livecheck.regex     ${name}-(\\d+(\\.\\d+)*).zip

@@ -1,0 +1,32 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 84550 2011-09-27 21:05:11Z snc@macports.org $
+
+PortSystem 1.0
+
+name             byacc
+version          20110908
+categories       devel
+maintainers      toby
+license             public-domain
+description      Berkeley Yacc
+long_description \
+	Berkeley Yacc (byacc) is generally conceded to \
+	be the best yacc variant available. In contrast \
+	to bison, it is written to avoid dependencies \
+	upon a particular compiler.
+homepage         http://invisible-island.net/byacc/
+platforms        darwin
+
+master_sites     ftp://invisible-island.net/byacc/ fink
+extract.suffix   .tgz
+
+checksums        md5 5665ee1f2ca482d57eef9591a2fe4768 \
+                 sha1 cf5b57f621adb8973192dc6041176f97d797e3e0 \
+                 rmd160 5e10035b3347ef2899df0fd0209a758cb982df38
+
+configure.args   --mandir=${prefix}/share/man \
+                 --program-prefix=b
+
+livecheck.type   regex
+livecheck.url    ftp://invisible-island.net/byacc/
+livecheck.regex  > byacc-(\[0-9\]+)

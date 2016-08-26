@@ -1,0 +1,18 @@
+#-*-Makefile-*- vim:syntax=make
+#$Id: bootloader.extra,v 1.2 2009/03/23 00:45:07 radler Exp $
+
+#Temporary change for enabling an isolated compile option
+#for bootloader.
+
+PROGRAM = bootloader
+
+BOOTLOADER = present
+
+#PXA27X_JTAG ?= $(TOSDIR)/../contrib/imote2/tools/bin/USBLoaderHost.exe
+PXA27X_JTAG ?= $(INTELMOTE2_CONTRIB_DIR)/tools/platforms/intelmote2/bootloader//USBLoaderHost.exe
+program: FORCE
+	@echo "    installing $(PLATFORM) binary using the USB boot loader"
+	$(PXA27X_JTAG) -p $(INSTALL_BIN)
+
+program_input: bin
+	@:

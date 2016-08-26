@@ -1,0 +1,12 @@
+# $Id: atevk1101.target,v 1.1 2007/12/05 18:08:17 yuecelm Exp $ #
+
+PLATFORM = atevk1101
+
+AVR32_MCU = at32uc3b0256
+
+PROGRAMMER ?= batchisp
+
+$(call TOSMake_include_platform,avr32)
+
+atevk1101: $(BUILD_DEPS)
+	@:

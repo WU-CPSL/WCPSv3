@@ -1,0 +1,21 @@
+# $Id: Portfile 87528 2011-11-24 10:13:03Z dports@macports.org $
+
+PortSystem            1.0
+PortGroup             perl5 1.0
+
+perl5.setup           Params-Check 0.32 ../by-authors/id/B/BI/BINGOS/
+license               {Artistic GPL}
+maintainers           nomaintainer
+description           A generic input parsing/checking mechanism
+long_description      ${description}
+
+platforms             darwin
+
+checksums             rmd160  85c05ee7125bb1921c0f626cc19af6b87a764752 \
+                      sha256  be8dc907c0b6dbbe253af04a053a042bfbbee1f07357119ec5c8372f3897d934
+                    
+if {${perl5.major} != ""} {
+depends_lib-append    port:p${perl5.major}-locale-maketext-simple
+
+supported_archs       noarch
+}

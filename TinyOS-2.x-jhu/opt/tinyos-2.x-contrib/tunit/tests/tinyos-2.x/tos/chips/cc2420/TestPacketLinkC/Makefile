@@ -1,0 +1,3 @@
+COMPONENT=TestPacketLinkC
+include $(MAKERULES)
+

@@ -1,0 +1,241 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89315 2012-01-24 22:31:47Z ryandesign@macports.org $
+
+PortSystem 1.0
+PortGroup xcodeversion 1.0
+PortGroup muniversal 1.0
+
+name            ffmpeg-devel
+conflicts       ffmpeg
+version         20111104
+set git_branch  38a444e05dd980af321211b1584421fb28b67faa
+license         GPL-2+
+categories      multimedia
+maintainers     devans openmaintainer
+
+description     FFmpeg is a complete solution to play, record, convert and \
+                stream audio and video.
+
+long_description        FFmpeg is a complete solution to record, convert and \
+                        stream audio and video. It includes libavcodec, the \
+                        leading audio/video codec library. \
+                        \
+                        The project is made of several components: \
+                        \
+                        ffmpeg is a command line tool to convert one video \
+                        file format to another. It also supports grabbing and \
+                        encoding in real time from a TV card. \
+                        \
+                        ffserver is an HTTP (RTSP is being developped) \
+                        multimedia streaming server for live broadcasts. Time \
+                        shifting of live broadcast is also supported. \
+                        \
+                        ffplay is a simple media player based on SDL and on \
+                        the ffmpeg libraries. \
+                        \
+                        ffprobe gathers information from multimedia streams and \
+                        prints it in human- and machine-readable fashion. \
+                        \
+                        libavcodec is a library containing all the ffmpeg \
+                        audio/video encoders and decoders. Most codecs were \
+                        developped from scratch to ensure best performances \
+                        and high code reusability. \
+                        \
+                        libavformat is a library containing parsers and \
+                        generators for all common audio/video formats.
+
+platforms       darwin
+homepage        http://www.ffmpeg.org/
+master_sites    "http://git.videolan.org/gitweb.cgi?p=ffmpeg.git;a=snapshot;h=${git_branch};sf=tgz;dummy="
+dist_subdir     ffmpeg
+
+depends_build   port:pkgconfig \
+                port:gmake \
+                port:texi2html
+
+depends_lib     port:lame \
+                port:libvorbis \
+                port:libogg \
+                port:libtheora \
+                port:libmodplug \
+                port:dirac \
+                port:schroedinger \
+                port:openjpeg \
+                path:lib/libspeex.dylib:speex \
+                port:XviD \
+                port:x264 \
+                port:libvpx \
+                path:lib/pkgconfig/sdl.pc:libsdl \
+                port:bzip2 \
+                port:zlib
+
+if {[string length "${git_branch}"] >= 7} {
+    set filetag [string range "${git_branch}" 0 6]
+    distname ffmpeg-${filetag}
+} else {
+    error "git branch hash must be at least 7 characters long."
+}
+
+checksums       rmd160  2b5f175b9681a3456d3c2081a2b89b7b3918732d
+
+patchfiles      patch-configure.diff
+
+build.cmd       ${prefix}/bin/gmake
+build.env-append V=1
+
+#
+# enable auto configure of mmx and related Intel optimizations by default
+# requires Xcode 3.1 or better on Leopard
+#
+minimum_xcodeversions {9 3.1}
+
+# Under some conditions, llvm-gcc-4.2 drops some "unused" code even though it is used
+# fixed in llvm-gcc trunk, but not in Apple's shipped llvm-gccs.
+#
+# similarly clang fails to build on i386 platforms
+if {${configure.compiler} == "llvm-gcc-4.2"} {
+    configure.compiler gcc-4.2
+} elseif {${configure.compiler} == "clang"} {
+    depends_build-append port:apple-gcc42
+    configure.compiler apple-gcc-4.2
+    # base (as of 2.0.3) doesn't set cxx for apple-gcc-4.2
+    configure.cxx ${prefix}/bin/g++-apple-4.2
+}
+
+configure.cflags-append    -DHAVE_LRINTF ${configure.cppflags}
+configure.args \
+        --enable-gpl \
+        --enable-postproc \
+        --enable-swscale --enable-avfilter \
+        --enable-libmp3lame \
+        --enable-libvorbis \
+        --enable-libtheora \
+        --enable-libdirac --enable-libschroedinger \
+        --enable-libopenjpeg \
+        --enable-libmodplug \
+        --enable-libxvid \
+        --enable-libx264 \
+        --enable-libvpx \
+        --enable-libspeex \
+        --mandir=${prefix}/share/man \
+        --enable-shared --enable-pthreads \
+        --cc=${configure.cc}
+
+test.run        yes
+
+#
+# configure isn't autoconf and they do use a dep cache
+#
+
+post-destroot {
+    file mkdir ${destroot}${prefix}/share/doc/ffmpeg
+    file copy ${worksrcpath}/doc/APIchanges ${destroot}${prefix}/share/doc/ffmpeg
+    file copy ${worksrcpath}/doc/RELEASE_NOTES ${destroot}${prefix}/share/doc/ffmpeg
+    foreach f [glob ${worksrcpath}/doc/*.txt] {
+        file copy $f ${destroot}${prefix}/share/doc/ffmpeg
+    }
+}
+
+platform powerpc {
+    # absence of altivec is not automatically detected
+    if {[catch {sysctl hw.vectorunit} result] || $result == 0} {
+        configure.args-append --disable-altivec
+    }
+}
+
+configure.universal_args-delete --disable-dependency-tracking
+
+if {[variant_isset universal]} {
+    foreach arch ${configure.universal_archs} {
+        lappend merger_configure_args($arch) --arch=${arch}
+        lappend merger_configure_env($arch)  ASFLAGS='-arch ${arch}'
+    }
+    if {[string match "*86*" ${configure.universal_archs}]} {
+        depends_build-append port:yasm
+    }
+    lappend merger_configure_args(i386) --enable-yasm
+    lappend merger_configure_args(x86_64) --enable-yasm
+} else {
+    configure.args-append --arch=${configure.build_arch}
+    configure.env-append  ASFLAGS='[get_canonical_archflags]'
+    if {$build_arch == "i386" || $build_arch == "x86_64"} {
+        depends_build-append port:yasm
+        configure.args-append --enable-yasm
+    }
+}
+
+variant no_mmx description {disable all x86 asm optimizations} {
+    configure.args-append --disable-mmx --disable-mmx2 --disable-sse --disable-ssse3 --disable-amd3dnow --disable-amd3dnowext
+}
+
+variant no_gpl conflicts nonfree description {disallow use of GPL code, license will be LGPL} {
+    configure.args-delete   --enable-gpl \
+                            --enable-postproc \
+                            --enable-libx264 \
+                            --enable-libxvid
+    depends_lib-delete      port:XviD \
+                            port:x264
+    license-delete          GPL-2+
+    license-append          LGPL-2.1+
+}
+
+# the build server uses the default variants, and we want distributable binaries
+# nonfree code is disabled by default but can be enabled using the +nonfree variant
+
+variant nonfree conflicts no_gpl description {enable nonfree code, libraries and binaries will not be redistributable} {
+    configure.args-append   --enable-nonfree \
+                            --enable-libfaac
+    depends_lib-append      port:faac
+    license-delete          GPL-2+
+    license-append          Restrictive
+}
+
+if {[variant_isset nonfree]} {
+notes "
+*******
+******* This build of ${name} includes nonfree code as follows:
+*******
+*******     libfaac
+*******
+******* The following libraries and binaries may not be redistributed:
+*******
+*******     ffmpeg
+*******     libavcodec
+*******     libavdevice
+*******     libavfilter
+*******     libavformat
+*******     libavutil
+*******
+******* To remove this restriction remove the variant +nonfree
+*******
+"
+} elseif {![variant_isset no_gpl]} {
+notes "
+*******
+******* This build of ${name} includes GPLed code and
+******* is therefore licensed under GPL v2 or later.
+*******
+******* The following modules are GPLed:
+*******
+*******      postproc
+*******      libx264
+*******      libxvid
+*******
+******* To include all nonfree, GPLed and LGPL code use variant +nonfree
+******* To remove nonfree and GPLed code leaving only LGPL code use variant +no_gpl
+*******
+"
+} else {
+notes "
+*******
+******* This build of ${name} includes no GPLed or nonfree
+******* code and is therefore licensed under LGPL v2.1 or later.
+*******
+"
+}
+
+#
+#disable livecheck
+#
+
+livecheck.type  none

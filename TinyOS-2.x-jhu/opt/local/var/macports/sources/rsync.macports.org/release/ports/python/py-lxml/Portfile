@@ -1,0 +1,26 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:filetype=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 83751 2011-09-10 16:39:04Z jmr@macports.org $
+
+PortSystem        1.0
+PortGroup         python24 1.0
+
+name              py-lxml
+version           2.1.2
+categories        python devel
+platforms         darwin
+maintainers       akitada openmaintainer
+description       Powerful and Pythonic XML processing library
+long_description  lxml is a Pythonic binding for the libxml2 and \
+                  libxslt libraries.  It is unique in that it \
+                  combines the speed and feature completeness of \
+                  these libraries with the simplicity of a native \
+                  Python API, mostly compatible but superior to \
+                  the well-known ElementTree API.
+
+homepage          http://codespeak.net/lxml/
+master_sites      http://pypi.python.org/packages/source/l/lxml/
+checksums         md5 d957423bbd56de25ef636671e7245069 \
+                  sha1 5354b3dd5f0bd16589da9970e0da7df60aaaa2f5 \
+                  rmd160 dbb0adc4ba9da3d313c73d68ecf909efea1d33c8
+distname          lxml-${version}
+depends_lib-append port:libxml2 port:libxslt port:py24-distribute

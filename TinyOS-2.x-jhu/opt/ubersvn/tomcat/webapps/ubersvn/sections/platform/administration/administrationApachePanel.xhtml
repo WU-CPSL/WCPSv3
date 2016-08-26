@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:wd="http://www.wansdisco.com/jsf" xmlns:p="http://primefaces.prime.com.tr/ui" xmlns:h="http://java.sun.com/jsf/html">
+<ui:composition>
+  <br />
+  <p:focus for="adminApacheServerPort"/>
+  <h:panelGrid id="currentComponentPanel" columns="2" columnClasses="col75,col25" style="width: 100%;">
+    <h:panelGrid columns="2" width="90%" columnClasses="repoAdminLabelColumn, repoAdminFieldColumn">
+      <h:panelGroup>
+        <h:outputLabel for="adminApacheServerName" value="#{msg.adminApacheServerNameLabel}" />
+        <p:spacer width="10" />
+      </h:panelGroup>
+      <h:panelGroup>
+        <h:inputText id="adminApacheServerName" styleClass="wizardFormField" size="30"
+          value="#{administrationManagedBean.configurations.uberServerName}" disabled="true" />
+        <p:spacer width="10" />
+        <h:message style="color: red; font-size: 10px; height: 11px;" for="adminApacheServerName" />
+      </h:panelGroup>
+      <h:panelGroup>
+        <h:outputLabel for="adminApacheServerPort" value="#{msg.adminApacheServerPortLabel}" />
+        <p:spacer width="10" />
+      </h:panelGroup>
+      <h:panelGroup>
+        <h:inputText id="adminApacheServerPort" styleClass="wizardFormField" size="30"
+          value="#{administrationManagedBean.configurations.apachePort}" required="true"
+          requiredMessage="#{msg.adminApacheServerPortRequired}">
+          <wd:apachePortValidator previousPort="#{administrationManagedBean.configurations.apachePort}" />
+        </h:inputText>
+        <p:spacer width="10" />
+        <h:message style="color: red; font-size: 10px; height: 11px;" for="adminApacheServerPort" />
+      </h:panelGroup>
+      <h:panelGroup>
+        <h:outputLabel for="adminApacheServerListenDirective" value="#{msg.adminApacheServerListenDirectiveLabel}" />
+        <p:spacer width="10" />
+      </h:panelGroup>
+      <h:panelGroup>
+        <h:inputText id="adminApacheServerListenDirective" styleClass="wizardFormField" size="30"
+          value="#{administrationManagedBean.configurations.apacheListenDirective}" validatorMessage="#{msg.apacheBindIpInvalid}">
+          <f:validateRegex
+            pattern="^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"
+            for="adminApacheServerListenDirective" />
+        </h:inputText>
+        <p:spacer width="10" />
+        <h:message style="color: red; font-size: 10px; height: 11px;" for="adminApacheServerListenDirective" />
+      </h:panelGroup>
+      <h:panelGroup>
+        <h:outputLabel for="adminApacheServerSSLEnabled" value="#{msg.adminApacheServerSSLEnabledLabel}" />
+        <p:spacer width="10" />
+      </h:panelGroup>
+      <h:selectBooleanCheckbox id="adminApacheServerSSLEnabled" styleClass="wizardFormField"
+        value="#{administrationManagedBean.configurations.apacheSSLEnabled}" />
+    </h:panelGrid>
+    <h:panelGrid columns="2" width="100%" columnClasses="adminServerLabelColumn, adminServerStatusControls">
+      <h:outputText id="adminStatusSubversionServerLabel" for="subversionServerStatus" value="#{msg.apacheServerLabel}" />
+      <h:panelGrid columns="3"
+        columnClasses="adminServerStatusControlsInner, adminServerStatusControlsInner, adminServerStatusControlsInner">
+        <p:commandLink actionListener="#{administrationManagedBean.stopApacheServer}" update="growl, currentComponentPanel"
+          rendered="#{administrationManagedBean.apacheServerAvailable}" onclick="statusDialog.show()" oncomplete="statusDialog.hide()">
+          <h:graphicImage style="border: none;" library="img/platform/icons" name="apache_stop_big.png" title="#{msg.stopApacheAltText}" />
+        </p:commandLink>
+        <p:spacer rendered="#{!administrationManagedBean.apacheServerAvailableCache}" />
+        <p:spacer rendered="#{!administrationManagedBean.apacheServerAvailableCache}" />
+        <p:commandLink actionListener="#{administrationManagedBean.startApacheServer}" update="growl, currentComponentPanel"
+          rendered="#{!administrationManagedBean.apacheServerAvailableCache}" onclick="statusDialog.show()" oncomplete="statusDialog.hide()">
+          <h:graphicImage style="border: none;" library="img/platform/icons" name="apache_start_big.png" title="#{msg.startApacheAltText}" />
+        </p:commandLink>
+        <p:spacer rendered="#{administrationManagedBean.apacheServerAvailableCache}" />
+        <p:commandLink actionListener="#{administrationManagedBean.restartApacheServer}" update="growl, currentComponentPanel"
+          rendered="#{administrationManagedBean.apacheServerAvailableCache}" onclick="statusDialog.show()" oncomplete="statusDialog.hide()">
+          <h:graphicImage style="border: none;" library="img/platform/icons" name="apache_restart_big.png"
+            title="#{msg.restartApacheAltText}" />
+        </p:commandLink>
+      </h:panelGrid>
+    </h:panelGrid>
+  </h:panelGrid>
+  <h:panelGrid style="border-collapse: collapse;" columns="5">
+    <h:outputLink style="font-size: 18px; text-decoration: underline; padding-left: 5px; padding-right: 5px;"
+      value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationApacheServerSettings.jsf">
+      <span>#{msg.adminApacheAdvancedSettingsLinkText}</span>
+    </h:outputLink>
+    <h:outputLink style="font-size: 18px; text-decoration: underline; padding-left: 5px; padding-right: 5px;"
+      value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationApacheHttpdEditor.jsf">
+      <span>#{msg.adminApacheHttpdEditorLinkText}</span>
+    </h:outputLink>
+    <h:outputLink style="font-size: 18px; text-decoration: underline; padding-left: 5px; padding-right: 5px;"
+      value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationApacheAltHtpasswdFile.jsf">
+      <span>#{msg.adminApacheAltHtpasswdFileLinkText}</span>
+    </h:outputLink>
+    <h:outputLink style="font-size: 18px; text-decoration: underline; padding-left: 5px; padding-right: 5px;"
+      value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationApacheAltAuthzFileEditor.jsf">
+      <span>#{msg.adminApacheAltAuthzEditorLinkText}</span>
+    </h:outputLink>
+  </h:panelGrid>
+  <p:dialog modal="true" widgetVar="statusDialog" header="Processing" draggable="false" closable="false" resizable="false" width="200"
+    height="150">
+    <h:graphicImage id="progressImage" style="border:0; margin-left: auto; margin-right: auto; display: block;" library="img/platform"
+      name="progress.gif" />
+  </p:dialog>
+</ui:composition>
+</html>

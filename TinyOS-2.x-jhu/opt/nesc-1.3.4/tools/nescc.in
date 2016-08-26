@@ -1,0 +1,266 @@
+#!@pathperl@
+# -*- perl -*-
+
+# This file is part of the nesC compiler.
+# 
+# This file is derived from the RC Compiler. It is thus
+#    Copyright (C) 2000-2001 The Regents of the University of California.
+# Changes for nesC are
+#    Copyright (C) 2002 Intel Corporation
+# 
+# The attached "nesC" software is provided to you under the terms and
+# conditions of the GNU General Public License Version 2 as published by the
+# Free Software Foundation.
+# 
+# nesC is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with nesC; see the file COPYING.  If not, write to
+# the Free Software Foundation, 59 Temple Place - Suite 330,
+# Boston, MA 02111-1307, USA.
+
+# Configuration
+$prefix = "@prefix@";
+$exec_prefix = "@exec_prefix@";
+$NCDIR = "@libdir@/ncc";
+
+# Runtime configuration
+$ENV{"PATH"} = "$NCDIR:$ENV{PATH}";
+$ENV{"NCDIR"} = $NCDIR;
+
+# Have fun with the arguments
+
+$gcc = "gcc";
+
+undef $ENV{NESCC_ARGS};
+undef $ENV{NESCC_CFILE};
+undef $ENV{NESCC_CONLY};
+undef $ENV{NESCC_DEPUTY};
+undef $ENV{NESCC_DEPUTY_ARGS};
+undef $ENV{NESCC_GCC};
+
+for ($i = 0; $i <= $#ARGV; $i++) {
+    $_ = $ARGV[$i];
+    if (/^-/) {
+	if (/^-v$/) {
+	    $verbose = 1;
+	}
+
+	if (/^-docdir=(.*)/) {
+            $docdir = $1;
+	} elsif (/^-topdir=(.*)/) {
+            push @topdirs, $1;
+	} elsif (/^-graphviz=(.*)/) {
+            if($1 =~ /^y/i) {
+                $use_graphviz = 1;
+            } else {
+                $use_graphviz = 0;
+            }
+	} elsif (/^--version$/) {
+	    $print_version = 1;
+	} elsif (/^-(fnesc-)?gcc=(.*)/) {
+	    $gcc = $2;
+	} elsif (/^-mingw-gcc$/) {
+	    $mingw_gcc = 1;
+	    push @nescc_args, "-fnesc-mingw-gcc";
+	} elsif (/^-conly$/) {
+	    $ENV{NESCC_CONLY} = "yes";
+	    push @nescc_args, "-fsyntax-only";
+	} elsif (/^-fnesc-cfile=(.*)$/) {
+	    $ENV{NESCC_CFILE} = $1;
+	} elsif (/^-_?fnesc-deputy$/) {
+	    $ENV{NESCC_DEPUTY} = "yes";
+	} elsif (/^-_?fnesc-deputy-args=(.*)$/) {
+	    $ENV{NESCC_DEPUTY_ARGS} = $1;
+	} elsif (/^(-(f|W|Wno-)nesc.*)$/) {
+	    # Don't confuse the non-nesC frontends with our -f and -W
+	    # flags (these were ignored in earlier C/etc frontends,
+	    # but current ones give error messages, preventing nescc
+	    # from compiling C files)
+	    push @nescc_args, $1;
+	} elsif (/^-([IDUAo])/) {
+	    $opt = $1;
+	    ($i, $val) = &extractarg($i);
+	    push @new_args, "-$opt", $val;
+	} elsif (/^(-include|-idirafter|-imacro|-iprefix|-iwithprefix|-iwithprefixbefore|-isystem|-isysroot|-X[a-zA-Z]*|--param)$/) {
+	    $opt = $1;
+	    ($i, $arg) = &nextarg($i);
+	    push @new_args, $opt, $arg;
+	} else {
+	    push @new_args, $_;
+	}
+    } else {
+	push @new_args, $_;
+    }
+}
+
+if ($verbose || $print_version) {
+    print "nescc: @PACKAGE_VERSION@\n";
+}
+
+if ($print_version) {
+    print "$gcc: ";
+    system "$gcc --version";
+    exit 0;
+}
+
+# Compute numeric version, assumes PACKAGE_VERSION is of the form a.b.cXXX
+# where XXX is any alphanumeric suffix, b, c are optional and between 0 and 9
+$_ = "@PACKAGE_VERSION@";
+if (/^(\d*)([a-zA-Z]\w*)?$/) {
+    $v_a = $1;
+    $v_b = 0;
+    $v_c = 0;
+} elsif (/^(\d*)\.(\d)([a-zA-Z]\w*)?$/) {
+    $v_a = $1;
+    $v_b = $2;
+    $v_c = 0;
+} elsif (/^(\d*)\.(\d)\.(\d)([a-zA-Z]\w*)?$/) {
+    $v_a = $1;
+    $v_b = $2;
+    $v_c = $3;
+}
+else {
+    &fail("Internal error: invalid version $_");
+}
+$numversion = $v_a * 100 + $v_b * 10 + $v_c;
+push @new_args, "-DNESC=$numversion";
+
+# Base network type definitions
+unshift @new_args, "-I$NCDIR";
+unshift @nescc_args, "-fnesc-include=nesc_nx";
+
+#
+# documentation generation options
+#
+if (defined($docdir)) {
+    # add the doc output dir
+    push @nescc_args, "-fnesc-docdir=$docdir";
+    
+    # add top level dirs, to strip out of package names
+    foreach my $dir (@topdirs) {
+        push @nescc_args, "-fnesc-topdir=$dir";
+    }
+
+    # add graphviz option
+    if (defined($use_graphviz)) {
+        push @nescc_args, "-fnesc-docs-use-graphviz" if $use_graphviz;
+    } else {
+        local $dot = `which dot 2>&1`;
+        push @nescc_args, "-fnesc-docs-use-graphviz" if $dot !~ /^\s*$/;
+    }
+}
+
+unshift @new_args, "-specs=$NCDIR/tdspecs";
+unshift @new_args, $gcc;
+
+if ($mingw_gcc) {
+    # Yuck. Convert unix paths to windows paths
+    $ENV{NCDIR} = &winpath($ENV{NCDIR});
+    $ENV{NESCC_CFILE} = &winpath($ENV{NESCC_CFILE});
+    @ARGV = @new_args;
+    @new_args = ();
+    for ($i = 0; $i <= $#ARGV; $i++) {
+	$_ = $ARGV[$i];
+	if (/^-/) {
+	    if (/^-([oIL])/) {
+		# convert argument filename which may be in same arg
+		$opt = $1;
+		($i, $file) = &extractarg($i);
+		$file = &winpath($file);
+		push @new_args, "-$opt$file";
+	    }
+	    elsif (/^-([xubV])/) {
+		# pass option and arg through unchanged
+		$opt = $1;
+		($i, $arg) = &extractarg($i);
+		push @new_args, "-$opt$arg";
+	    }
+	    elsif (/^(-include|-idirafter|-imacro|-iprefix|-iwithprefix|-iwithprefixbefore|-isystem|-isysroot|-Xlinker)/) {
+		# convert argument filename which is in next arg
+		$opt = $1;
+		($i, $arg) = &nextarg($i);
+		push @new_args, $opt, &winpath($arg);
+	    }
+	    elsif (/^-specs=(.*)$/) {
+		# convert argument filename
+		$path = &winpath($1);
+		push @new_args, "-specs=$path";
+	    }
+	    else {
+		push @new_args, $_;
+	    }
+	}
+	else {
+	    push @new_args, &winpath($_);
+	}
+    }
+}
+
+foreach (@nescc_args) {
+    $_ = quotemeta $_;
+    s/\\([-=,\.\/])/\1/g;
+}
+    
+$ENV{NESCC_ARGS} = join(' ', @nescc_args);
+$ENV{NESCC_GCC} = $gcc;
+
+printenv("NCDIR");
+printenv("NESCC_ARGS");
+printenv("NESCC_CFILE");
+printenv("NESCC_CONLY");
+printenv("NESCC_DEPUTY");
+printenv("NESCC_DEPUTY_ARGS");
+printenv("NESCC_GCC");
+
+print STDERR join(' ', @new_args), "\n" if $verbose;
+exec @new_args;
+print STDERR "Couldn't execute $gcc\n";
+exit 2;
+
+sub printenv {
+    local ($s) = @_;
+
+    print STDERR "$s=\"$ENV{$s}\"\n" if $verbose && defined($ENV{$s});
+}
+
+sub extractarg {
+    local ($i) = @_;
+
+    if (length($ARGV[$i]) == 2) {
+	return &nextarg($i);
+    }
+    else {
+	$arg = substr($ARGV[$i], 2);
+	return ($i, $arg);
+    }
+}
+
+sub nextarg {
+    local ($i) = @_;
+
+    if ($i < $#ARGV) {
+	$arg = $ARGV[++$i];
+    }
+    else {
+	printf STDERR "missing argument to $ARGV[$i]\n";
+	exit 2;
+    }
+    return ($i, $arg);
+}
+
+sub winpath {
+    local ($path) = @_;
+    $path = `cygpath -w $path`;
+    chop $path;
+
+    return $path;
+}
+
+sub fail {
+    print STDERR "$_[0]\n";
+    exit 2;
+}

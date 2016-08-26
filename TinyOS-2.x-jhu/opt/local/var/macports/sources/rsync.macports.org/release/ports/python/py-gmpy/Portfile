@@ -1,0 +1,32 @@
+# $Id: Portfile 30249 2007-10-23 02:12:47Z jmpp@macports.org $
+
+PortSystem 1.0
+PortGroup python24 1.0
+
+name			py-gmpy
+version			1.01
+categories		python
+platforms		darwin
+maintainers		nomaintainer
+description		general MultiPrecision arithmetic module for Python
+long_description	gmpy is a general MultiPrecision arithmetic module for \
+				Python wrapping the GNU arbitrary precision arithmetic \
+				library 'gmp'.
+
+homepage		http://gmpy.sourceforge.net/
+master_sites		sourceforge:gmpy
+distname		gmpy-sources-101
+checksums		md5 7b2e951912d4bee9613c35244ca32673
+use_zip			yes
+
+depends_lib-append	port:gmp
+
+worksrcdir		gmpy
+
+build.env		CFLAGS="-I${prefix}/include" \
+				LDFLAGS="-L${prefix}/lib"
+
+post-destroot	{
+	xinstall -m 644 -W ${worksrcpath} doc/gmpydoc.txt doc/index.html \
+		README ${destroot}${prefix}/share/doc/${name}
+}

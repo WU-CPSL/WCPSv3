@@ -1,0 +1,25 @@
+# $Id: Portfile 87520 2011-11-24 10:10:10Z dports@macports.org $
+
+PortSystem            1.0
+PortGroup             perl5 1.0
+
+perl5.setup           Module-Load-Conditional 0.46 ../by-authors/id/B/BI/BINGOS/
+license               {Artistic GPL}
+maintainers           nomaintainer
+description           Looking up module information / loading at runtime
+long_description      ${description}
+
+platforms             darwin
+
+checksums             rmd160  0a246ad9c94cc21c3157d48c27d43b15ef2ce2b2 \
+                      sha256  82f79c144654a9e3c0858481cca6fabeb821a7f4e0cbe7987d4b5b97c64eedeb
+
+if {${perl5.major} != ""} {
+depends_lib-append    port:p${perl5.major}-locale-maketext-simple \
+                      port:p${perl5.major}-module-corelist \
+                      port:p${perl5.major}-module-load \
+                      port:p${perl5.major}-params-check \
+                      port:p${perl5.major}-version
+
+supported_archs       noarch
+}

@@ -1,0 +1,47 @@
+# $Id: Portfile 76324 2011-02-20 08:18:07Z jmr@macports.org $
+
+PortSystem	1.0
+
+name		jpeg
+version     8c
+categories	graphics
+license     IJG
+maintainers	waqar openmaintainer
+description	Library for manipulating JPEG images
+long_description	\
+	This distribution contains the eighth public release of the 	\
+	Independent JPEG Group's free JPEG software. You are welcome 	\
+	to redistribute this software and to use it for any purpose, 	\
+	subject to the conditions under LEGAL ISSUES, below. 		\
+	Serious users of this software (particularly those 		\
+	incorporating it into larger programs) should contact IJG at 	\
+	jpeg-info@uunet.uu.net to be added to our electronic mailing 	\
+	list.  Mailing list members are notified of updates and have 	\
+	a chance to participate in technical discussions, etc.
+
+homepage        http://www.ijg.org/
+platforms       darwin freebsd sunos
+master_sites    http://www.ijg.org/files/
+
+distname        ${name}src.v${version}
+worksrcdir      ${name}-${version}
+                
+checksums       md5     a2c10c04f396a9ce72894beb18b4e1f9 \
+                sha1    f0a3b88ac4db19667798bee971537eeed552bce9 \
+                rmd160  b8455bec3e0d370069c64cc0bd41d25a859dc796
+
+configure.ldflags-delete	-L${prefix}/lib
+configure.cppflags-delete	-I${prefix}/include
+
+test.run        yes
+
+post-destroot {
+    xinstall -d ${destroot}${prefix}/share/doc/${name}
+    xinstall -m 444 -W ${worksrcpath} \
+        README change.log libjpeg.txt structure.txt usage.txt wizard.txt \
+        ${destroot}${prefix}/share/doc/${name}
+}
+
+livecheck.type  regex
+livecheck.url   [lindex $master_sites 0]/?M=D
+livecheck.regex [suffix ${name}src.v(.*?)]

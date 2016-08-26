@@ -1,0 +1,31 @@
+# $Id: Portfile 67494 2010-05-11 07:07:01Z jmr@macports.org $
+
+PortSystem 1.0
+
+name			pdnsd
+version			1.2.8
+categories		net
+platforms		darwin
+maintainers		mww
+description		proxy dns server with permanent caching
+long_description	pdnsd is a proxy dns server with permanent caching: the \
+			cache contents are written to hard disk on exit. It is designed to \
+			cope with unreachable or down dns servers, for example in dial-in \
+			networking.
+
+homepage		http://www.phys.uu.nl/~rombouts/pdnsd.html
+master_sites		http://www.phys.uu.nl/~rombouts/pdnsd/releases/
+distname		pdnsd-${version}-par
+checksums		sha1 538849975f29c59b1e7f0dd0756435cc6f0f2b30 \
+				rmd160 227a550ba210c2454b3cc39e8d8d056960d49b9f
+
+worksrcdir		${name}-${version}
+
+configure.args		--mandir=${prefix}/share/man \
+			--sysconfdir=${prefix}/etc/${name} \
+			--disable-ipv6 \
+			--with-cachedir=${prefix}/var/cache/pdnsd \
+			--with-random-device=arc4random
+
+livecheck.type		freshmeat
+livecheck.version	${version}-par

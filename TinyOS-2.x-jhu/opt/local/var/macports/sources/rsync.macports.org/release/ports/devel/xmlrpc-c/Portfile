@@ -1,0 +1,47 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 84550 2011-09-27 21:05:11Z snc@macports.org $
+
+PortSystem          1.0
+
+name                xmlrpc-c
+version             1.16.36
+categories          devel www
+platforms           darwin
+maintainers         nomaintainer
+
+description         Lightweight RPC library based on XML and HTTP
+
+long_description    XML-RPC is a quick-and-easy way to make procedure calls \
+                    over the Internet. It converts the procedure call into \
+                    XML document, sends it to a remote server using HTTP, and \
+                    gets back the response as XML. \
+                    This library provides a modular implementation of XML-RPC \
+                    for C and C++.
+
+homepage            http://xmlrpc-c.sourceforge.net/
+master_sites        sourceforge:project/xmlrpc-c/Xmlrpc-c%20Super%20Stable/${version}
+
+checksums           sha1    503213425f38fbcf045d61593afa2e096463173e \
+                    rmd160  4f7bbad7a233296abc8489334f35cd7f4471bfd7
+
+extract.suffix      .tgz
+
+depends_lib         port:libwww \
+                    port:openssl \
+                    port:curl
+
+if {[variant_isset universal]} {
+    set archflags ${configure.universal_cflags}
+} else {
+    set archflags ${configure.cc_archflags}
+}
+configure.cc-append ${archflags}
+configure.cxx-append ${archflags}
+configure.env-append CPP=${configure.cpp}
+
+platform darwin {
+    patchfiles-append config.mk.in.diff configure.diff
+}
+
+livecheck.type      sourceforge
+livecheck.regex     /${name}-(\[0-9.\]+)${extract.suffix}

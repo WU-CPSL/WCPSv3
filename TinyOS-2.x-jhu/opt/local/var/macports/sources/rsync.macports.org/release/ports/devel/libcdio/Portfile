@@ -1,0 +1,29 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 85289 2011-10-12 10:24:27Z jmr@macports.org $
+
+PortSystem 1.0
+
+name             libcdio
+version          0.82
+categories       devel
+license          GPL-3+
+maintainers      nomaintainer
+description      Compact Disc Input and Control Library
+long_description \
+	The libcdio package contains a library which encapsulates CD-ROM \
+	reading and control. Applications wishing to be oblivious of the \
+	OS- and device-dependent properties of a CD-ROM can use this library.
+homepage         http://www.gnu.org/software/libcdio/
+platforms        darwin
+master_sites     gnu
+checksums           md5     1c29b18e01ab2b966162bc727bf3c360 \
+                    sha1    b3a87283a373eed816c15584c373ad6d2f95f09a \
+                    rmd160  48dc71f349235ab501985a296fd3deee295c167f
+configure.args   --infodir=${prefix}/share/info \
+                 --disable-vcd-info \
+		 --mandir=${prefix}/share/man
+depends_build    port:pkgconfig
+depends_lib      port:libcddb port:libiconv port:gettext port:popt port:ncurses
+
+test.run         yes
+test.target      check

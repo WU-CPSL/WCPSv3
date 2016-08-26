@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:p="http://primefaces.prime.com.tr/ui" xmlns:h="http://java.sun.com/jsf/html" xmlns:wd="http://www.wansdisco.com/jsf">
+<ui:composition>
+  <ol id="sub-toc">
+    <li class="current"><h:outputLink title="#{msg.teamProfileTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/teams/teamProfile.jsf?teamId=#{teamProfileManagedBean.team.id}">
+        <span>#{msg.teamProfileTabText}</span>
+      </h:outputLink></li>
+  </ol>
+  <p:panel id="teamProfilePanel" styleClass="tabbed-panel">
+    <p:focus for="teamName" />
+    <h:panelGrid columns="2">
+      <h:panelGroup>
+        <h:panelGrid columns="2" columnClasses="teamNameColumn">
+          <h:panelGroup>
+            <h:panelGrid>
+              <h:outputLabel styleClass="formOutputLabel" for="teamName" value="#{msg.addTeamTeamNameLabel}" />
+              <h:panelGroup>
+                <h:inputText styleClass="formInputText" id="teamName" value="#{teamProfileManagedBean.team.name}" required="true" size="50"
+                  requiredMessage="#{msg.teamNameRequired}">
+                  <wd:validateUserTeam previousName="#{teamProfileManagedBean.team.name}" />
+                </h:inputText>
+                <p:spacer width="5" />
+                <h:message style="color: red; font-size: 9px; height: 11px;" for="teamName" />
+              </h:panelGroup>
+              <h:outputLabel styleClass="formOutputLabel" for="teamDescription" value="#{msg.addTeamDescriptionLabel}" />
+              <h:inputText styleClass="formInputText" id="teamDescription" value="#{teamProfileManagedBean.team.description}" size="50" />
+            </h:panelGrid>
+          </h:panelGroup>
+          <p:commandLink disabled="#{!basePage.teamAdmin}" onclick="teamAvatarDlg.show()">
+            <h:graphicImage styleClass="teamProfileAvatar" value="/avatarimage?teamid=#{teamProfileManagedBean.team.name}" />
+          </p:commandLink>
+        </h:panelGrid>
+        <p:commandButton  ajax="false" styleClass="roundedButtonExtraSmall" value="#{msg.saveButtonText}"
+          action="#{teamProfileManagedBean.updateTeam}" />
+        <ui:include src="/sections/platform/teams/activityTab.xhtml" />
+      </h:panelGroup>
+      <ui:include src="/sections/platform/teams/teamMembersRepositoriesTabs.xhtml" />
+    </h:panelGrid>
+  </p:panel>
+</ui:composition>
+</html>

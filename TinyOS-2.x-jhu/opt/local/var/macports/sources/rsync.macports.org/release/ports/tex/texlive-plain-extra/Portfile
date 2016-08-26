@@ -1,0 +1,30 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 88821 2012-01-12 23:02:19Z dports@macports.org $
+
+PortSystem          1.0
+PortGroup           texlive 1.0
+
+name                texlive-plain-extra
+version             21462
+revision            0
+
+categories          tex
+maintainers         dports
+license             Copyleft Permissive
+description         TeX Live: Plain TeX supplementary packages
+long_description    Add-on packages and macros that work with plain TeX.
+
+checksums           texlive-plain-extra-21462-run.tar.xz \
+                    rmd160  07b035b7318d958aa813b591b28525d9c782c3e2 \
+                    sha256  8a321ce35b4ec073ab0b0e9a2a25d1cf08cf3dffa28ea8d78bcf305e11fc0a1b \
+                    texlive-plain-extra-21462-doc.tar.xz \
+                    rmd160  89dbfabe33f42fc12a5999ef9203cc22a1d18dc0 \
+                    sha256  ee74b9e0666a3b9cb4d94dd22e7da4691110b8f16ebf1b2dc3612fc16fb083ae \
+                    texlive-plain-extra-21462-src.tar.xz \
+                    rmd160  148599c2d78b1decd4282b8e7bf4fc228ff6e861 \
+                    sha256  096f2c9841bb726187fbd5d81d7f10cf94d522ff7d4cd57469dd66a68d4a2de3
+
+depends_lib         port:texlive-basic
+
+
+texlive.texmfport

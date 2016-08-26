@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:p="http://primefaces.prime.com.tr/ui" xmlns:h="http://java.sun.com/jsf/html">
+<ui:composition>
+  <ol id="sub-toc">
+    <li><h:outputLink title="#{msg.adminStatusTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationStatus.jsf">
+        <span>#{msg.adminStatusTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink title="#{msg.adminApacheServerSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationApacheServerSettings.jsf">
+        <span>#{msg.adminSubversionServerSettingsTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink title="#{msg.adminUberServerSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUberServerSettings.jsf">
+        <span>#{msg.adminUberServerSettingsTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink title="#{msg.adminUberPreferenceSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUberPreferenceSettings.jsf">
+        <span>#{msg.adminUberPreferenceSettingsTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink title="#{msg.adminEmailServerSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationEmailServerSettings.jsf">
+        <span>#{msg.adminEmailServerSettingsTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink title="#{msg.adminLogsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationLogs.jsf">
+        <span>#{msg.adminLogsTabText}</span>
+      </h:outputLink>
+    </li>
+    <li class="current"><h:outputLink title="#{msg.adminUpdatesTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUpdates.jsf">
+        <span>#{msg.adminUpdatesTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink title="#{msg.adminLDAPTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUberLDAPSettings.jsf">
+        <span>#{msg.adminLDAPTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.backup}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationBackup.jsf">
+        <span>#{msg.backup}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminExtensionsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationViewExtensions.jsf">
+        <span>#{msg.adminExtensionsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminSubversionReleaseLinkText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationSubversionRelease.jsf">
+        <span>#{msg.adminSubversionReleaseLinkText}</span>
+      </h:outputLink></li>
+  </ol>
+  <p:panel id="adminStatusPanel" styleClass="tabbed-panel">
+    <p:commandButton styleClass="roundedButtonLarge" value="#{msg.checkForUpdatesButtonText}"
+      action="#{componentUpdateManagedBean.checkForUpdates}" ajax="false" onclick="updateDialog.show()" oncomplete="updateDialog.hide()" />
+    <ol id="innerTab">
+      <li id="componentsInnerTab"><h:outputLink
+          value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUpdates.jsf"
+          title="#{msg.componentsTabAltText}">
+          <span>#{msg.componentsTabText}</span>
+        </h:outputLink>
+      </li>
+      <li id="componentHistoryInnerTab"><h:outputLink
+          value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUpdateHistory.jsf"
+          title="#{msg.componentHistoryTabAltText}">
+          <span>#{msg.componentHistoryTabText}</span>
+        </h:outputLink>
+      </li>
+    </ol>
+    <p:panel styleClass="base-tab-panel">
+      <p:panel styleClass="base-tab-inner-panel">
+        <p:dataTable id="compHistTableId" widgetVar="compHistTable" var="hist" value="#{componentUpdateManagedBean.compHistories}"
+          width="450" paginator="true" rows="10" paginatorPosition="bottom" paginatorAlwaysVisible="false"
+          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+          selection="#{componentUpdateManagedBean.selectedHistory}">
+          <p:column style="width:40%;" sortBy="#{hist.componentName}" filterBy="#{hist.componentName}" filterStyle="display: none;"
+            width="150" filterMatchMode="startsWith">
+            <f:facet name="header">
+              <h:outputText value="#{msg.componentHistoryTableNameColumnHeader}" />
+            </f:facet>
+            <h:commandLink action="#{componentUpdateManagedBean.selectHistoryToView}" title="#{msg.historySelectTooltipText}">
+              <f:setPropertyActionListener target="#{componentUpdateManagedBean.selectedHistory}" value="#{hist}" />
+              <h:outputText value="#{hist.componentName}" />
+            </h:commandLink>
+          </p:column>
+          <p:column style="width:20%;">
+            <f:facet name="header">
+              <h:outputText value="#{msg.componentHistoryTableActionColumnHeader}" />
+            </f:facet>
+            <h:outputText value="#{hist.actionType}" />
+          </p:column>
+          <p:column style="width:20%;">
+            <f:facet name="header">
+              <h:outputText value="#{msg.componentHistoryTableOutcomeColumnHeader}" />
+            </f:facet>
+            <h:outputText value="#{hist.outcome}" />
+          </p:column>
+          <p:column style="width:20%;">
+            <f:facet name="header">
+              <h:outputText value="#{msg.componentHistoryTableDateColumnHeader}" />
+            </f:facet>
+            <h:outputText value="#{hist.installDate}" />
+          </p:column>
+        </p:dataTable>
+        <p:panel id="outputHistory" header="Install History Output">
+          <h:panelGrid width="100%" columns="2" columnClasses="taskOutputFirstCol">
+            <h:outputText value="#{msg.componentHistoryOutputStatusLabel}:"></h:outputText>
+            <h:outputText value="#{componentUpdateManagedBean.selectedHistory.outcome}"></h:outputText>
+            <h:outputText value="#{msg.componentHistoryOutputLabel}:"></h:outputText>
+            <h:outputText value="#{componentUpdateManagedBean.selectedHistory.logDetail}"></h:outputText>
+          </h:panelGrid>
+        </p:panel>
+      </p:panel>
+    </p:panel>
+  </p:panel>
+  <p:dialog modal="true" onHide="reloadPage()" widgetVar="updateDialog" header="Checking Updates" draggable="false" closable="false"
+    resizable="false" width="200" height="150">
+    <h:graphicImage id="updateImage" style="border:0; margin-left: auto; margin-right: auto; display: block;" library="img/platform"
+      name="progress.gif" />
+  </p:dialog>
+  <script type="text/javascript">
+			function reloadPage() {
+				setTimeout("location.reload(true);", 1);
+			}
+			jQuery(document).ready(function() {
+				var tabElement = '#componentHistoryInnerTab';
+				jQuery(tabElement).addClass('current');
+			});
+		</script>
+</ui:composition>
+</html>

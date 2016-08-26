@@ -1,0 +1,98 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 90077 2012-02-21 05:21:42Z ryandesign@macports.org $
+
+PortSystem      1.0
+
+name            libzzip
+set my_name     zziplib
+version         0.13.60
+set minor       [lindex [split ${version} .] 1]
+revision        1
+categories      archivers devel
+platforms       darwin
+license         LGPL-2+
+maintainers     nomaintainer
+description     library providing read access on ZIP-archives
+
+long_description \
+    The ZZIPlib provides read access on ZIP-archives. The \
+    library uses only the patent-free compression-algorithms \
+    supported by Zlib. It provides functions that transparently \
+    access files being either real files or zipped files, \
+    both with the same filepath.
+
+homepage        http://zziplib.sourceforge.net/
+master_sites    sourceforge:project/zziplib/zziplib${minor}/${version}
+distname        ${my_name}-${version}
+use_bzip2       yes
+
+checksums       sha1    821ff9a7984ddccb6734e4a753e401e93c7d47ee \
+                rmd160  1640194821a456593c843288c65ec2ba1ffd2504
+
+depends_build   port:pkgconfig \
+                port:xmlto
+
+depends_lib     port:zlib
+
+patchfiles      patch-zzip_Makefile.in.diff
+
+set docdir ${prefix}/share/doc/${name}
+
+if {[variant_isset universal]} {
+    patchfiles-append patch-configure.ac.diff
+    use_autoconf yes
+} else {
+    patchfiles-append patch-configure.diff
+}
+
+configure.env   PYTHON=/usr/bin/python
+
+post-configure {
+    set builddir [glob -dir ${worksrcpath} "Darwin*.d"]
+    reinplace -E {s|-arch [a-z0-9_]+||g} \
+        ${builddir}/zzip/zziplib-uninstalled.pc \
+        ${builddir}/zzip/zziplib.pc
+}
+
+# pax doesn't handle 32-bit uids, so running as nobody makes it fail...
+if {[getuid] == 0 && $macportsuser == "nobody"} {
+    build.asroot yes
+}
+
+post-destroot {
+    xinstall -d ${destroot}${docdir}/html
+
+    xinstall -m 0644 -W ${worksrcpath} COPYING.LIB ChangeLog README TODO \
+        ${destroot}${docdir}
+
+    eval xinstall -m 0644 [glob -directory ${worksrcpath}/docs "*.{css,htm}"] \
+        ${destroot}${docdir}/html
+
+    # We replace every soelim stub with a soft link, as ".so" groff directives
+    # don't work with gzip'd manpages.
+
+    foreach {f} [glob -directory ${destroot}${prefix}/share/man/man3 *.3] {
+        set channel [open ${f}]
+
+        if {[regexp {^\.so (.+)$} [read -nonewline ${channel}] _ target]} {
+            # This manpage is a soelim stub.
+            ln -sf [file tail ${target}] ${f}
+        }
+
+        close ${channel}
+    }
+}
+
+variant sdl description {Enable SDL support} {
+    depends_lib-append      path:lib/pkgconfig/sdl.pc:libsdl
+
+    configure.args-append   --enable-sdl
+
+    post-destroot {
+        xinstall -m 0644 ${worksrcpath}/docs/README.SDL ${destroot}${docdir}
+    }
+}
+
+livecheck.type      regex
+livecheck.url       http://sourceforge.net/projects/${my_name}/files/${my_name}13/
+livecheck.regex     "${my_name}13\/(\\d+(?:\\.\\d+)*)"

@@ -1,0 +1,38 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:p="http://primefaces.prime.com.tr/ui" xmlns:h="http://java.sun.com/jsf/html">
+<ui:composition>
+  <h:panelGroup styleClass="bottomRight" style="width: 27%; padding-right: 20px; padding-bottom: 15px;">
+    <ol id="innerTab">
+      <li id="teamsInnerTab"><h:outputLink
+          value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/users/userProfile.jsf">
+          <span>#{msg.teamsTabText}</span>
+        </h:outputLink>
+      </li>
+    </ol>
+    <p:panel styleClass="base-tab-panel" style="width: 315px;">
+      <p:panel styleClass="base-tab-inner-panel" style="width: 305px; min-height: 345px;">
+        <p:dataTable id="teamTableId" var="team" value="#{userProfileManagedBean.teams}" lazy="false" rows="12">
+          <p:column width="255" style="background: transparent; padding: none; border: none;">
+            <h:outputText value="#{team.name}" />
+          </p:column>
+          <p:column width="100" style="background: transparent;padding: none; border: none; text-align: right;">
+            <h:commandLink action="#{teamManagedBean.viewTeamProfile}" rendered="#{team.viewerInTeam}">
+              <f:setPropertyActionListener target="#{teamManagedBean.selectedTeam}" value="#{team}" />
+              <h:graphicImage style="border: none;" library="img/platform/icons" name="cog.png" />
+            </h:commandLink>
+          </p:column>
+        </p:dataTable>
+      </p:panel>
+    </p:panel>
+  </h:panelGroup>
+  <script type="text/javascript">
+    	jQuery(document).ready(function(){
+    		var tabElement = '#teamsInnerTab';
+    		jQuery(tabElement).addClass('current');
+    	});
+    </script>
+</ui:composition>
+</html>

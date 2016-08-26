@@ -1,0 +1,17 @@
+/common.rc/1.5/Tue Jul  3 18:30:06 2007//
+/descriptors.c/1.5/Tue Jul  3 18:30:06 2007//
+/error.c/1.5/Tue Jul  3 18:30:06 2007//
+/error.h/1.5/Tue Jul  3 18:30:06 2007//
+/inf_wizard.c/1.5/Tue Jul  3 18:30:06 2007//
+/inf_wizard_rc.rc/1.5/Tue Jul  3 18:30:06 2007//
+/install.c/1.5/Tue Jul  3 18:30:06 2007//
+/install_filter.c/1.5/Tue Jul  3 18:30:06 2007//
+/libusb_dyn.c/1.5/Tue Jul  3 18:30:06 2007//
+/registry.c/1.5/Tue Jul  3 18:30:06 2007//
+/registry.h/1.5/Tue Jul  3 18:30:06 2007//
+/resource.rc/1.5/Tue Jul  3 18:30:06 2007//
+/usb.c/1.5/Tue Jul  3 18:30:07 2007//
+/usb.h/1.5/Tue Jul  3 18:30:07 2007//
+/usbi.h/1.5/Tue Jul  3 18:30:07 2007//
+/windows.c/1.5/Tue Jul  3 18:30:07 2007//
+D/driver////

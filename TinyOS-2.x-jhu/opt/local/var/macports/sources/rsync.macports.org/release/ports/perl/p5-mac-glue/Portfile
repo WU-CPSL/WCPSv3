@@ -1,0 +1,27 @@
+# $Id: Portfile 87497 2011-11-23 16:07:56Z jmr@macports.org $
+
+PortSystem			1.0
+PortGroup			perl5 1.0
+
+perl5.setup			Mac-Glue 1.30
+revision			2
+license				{Artistic-1 GPL}
+maintainers			nomaintainer
+description			Glue to use Apple events with Applescript vocabulary
+long_description \
+	This is Mac::Glue, for using Apple events with AppleScript vocabulary. \
+	It is handled all using Apple events, AppleScript itself is bypassed.
+
+platforms			darwin
+
+checksums			md5 a8f203451bf666584b873c61c6ae8e46
+
+if {${perl5.major} != ""} {
+depends_lib-append	port:p${perl5.major}-mac-appleevents-simple	\
+					port:p${perl5.major}-mac-apps-launch			\
+					port:p${perl5.major}-mac-errors				\
+					port:p${perl5.major}-mldbm					\
+					port:p${perl5.major}-time-epoch				\
+					port:p${perl5.major}-test-pod
+}
+## vi:set noai ts=4:

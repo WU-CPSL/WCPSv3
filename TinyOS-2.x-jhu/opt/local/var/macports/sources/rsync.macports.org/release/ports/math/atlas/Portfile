@@ -1,0 +1,413 @@
+# $Id: Portfile 82758 2011-08-19 20:56:47Z vince@macports.org $
+
+PortSystem			1.0
+PortGroup			muniversal 1.0
+
+categories			math
+license				BSD
+name				atlas
+version				3.9.47
+
+# additional versions
+set lapackversion	3.3.1
+set lapackname		lapack
+set atlasdist		${name}${version}.tar.bz2
+set lapackdist		${lapackname}-${lapackversion}.tgz
+
+maintainers			jameskyle
+platforms			darwin
+
+description			Portable optimal linear algebra software
+long_description	The current version provides a complete BLAS and LAPACK API.\
+					For many operations, ATLAS achieves performance on par with\
+					machine-specific tuned libraries.
+
+homepage			http://math-atlas.sourceforge.net/
+
+master_sites		sourceforge:math-atlas:atlas \
+					http://www.netlib.org/lapack:lapack
+
+distfiles			${atlasdist}:atlas \
+					${lapackdist}:lapack
+
+patchfiles			patch-SpewMakeInc_c.diff \
+					patch-archinfo_freebsd_c.diff \
+					patch-ATL_goparallel_prank_c.diff \
+					patch-ATL_go_parallel_c.diff \
+					patch-atlas_l2g_base.diff \
+					patch-mmparse_h.diff \
+					patch-mvparse_h.diff \
+					patch-mvtesttime_h.diff \
+					patch-emit_mm_c.diff
+
+
+
+checksums			atlas${version}.tar.bz2 \
+					sha1    a3a4797669decea28308bd7d3e0adcac44267471 \
+					rmd160  036dbe08784bbda33ce1fa94b20a1999b22772cd \
+					lapack-${lapackversion}.tgz \
+					md5	 	d0d533ec9a5b74933c2a1e84eedc58b4 \
+					sha1	3ce437e05f0e9a3c8148ec41922f6efeef0ebdac \
+					rmd160	5e9d90122110045e07351f3ab30dc4e2b43d52db
+
+
+use_parallel_build	no
+build.target		build
+build.dir			${workpath}/${name}-${version}/build
+
+variant gcc46 conflicts gcc42 gcc43 gcc44 gcc45 description {build using macports-gcc-4.6} {}
+variant gcc45 conflicts gcc42 gcc43 gcc44 gcc46 description {build using macports-gcc-4.5} {}
+variant gcc44 conflicts gcc42 gcc43 gcc45 gcc46 description {build using macports-gcc-4.4} {}
+variant gcc43 conflicts gcc42 gcc44 gcc45 gcc46 conflicts universal description {build using macports-gcc-4.3} {}
+variant gcc42 conflicts gcc43 gcc44 gcc45 gcc46 conflicts universal description {build using macports-gcc-4.2} {
+	ui_warn 'Use of gcc42 is deprecated. Please upgrade if possible'}
+
+if { ${os.major} < 11 || ![variant_isset dragonegg45] } {
+	if { [variant_isset gcc42] } {
+		set gccversion	4.2
+	} elseif { [variant_isset gcc43] } {
+		set gccversion	4.3
+	} elseif { [variant_isset gcc44] } {
+		set gccversion	4.4
+	} elseif { [variant_isset gcc45 ] } {
+		set gccversion	4.5
+	} elseif { [variant_isset gcc46] } {
+		set gccversion	4.6
+	} else {
+	default_variants	+gcc44
+	set gccversion		4.4
+	}
+} else {
+	# On Lion, we can also select clang and llvm-gcc42 since these compilers
+	# give performance at least as good as gcc.
+	# Fortran compiler remains gcc (dragonegg to come?)
+	if { [variant_isset gcc42] } {
+		set gccversion	4.2
+	} elseif { [variant_isset gcc43] } {
+		set gccversion	4.3
+	} elseif { [variant_isset gcc44] } {
+		set gccversion	4.4
+	} elseif { [variant_isset gcc45 ] } {
+		set gccversion	4.5
+	} elseif { [variant_isset gcc46] } {
+		return -code error "GCC/GFortran 4.6 is not yet available"
+	} elseif { [variant_isset dragonegg45] } {
+		configure.compiler	clang
+		configure.f77		${prefix}/bin/gfortran-mp-4.5
+		patchfiles-append	patch-clang.diff
+	} else {
+		return -code error "GCC/GFortran 4.6 is not yet available"
+	}
+}
+
+destroot.dir			${build.dir}
+destroot.destdir		DESTDIR=${destroot}${prefix}
+depends_lib				port:bzip2 \
+						port:gzip
+
+if { [info exists gccversion] } {
+	set gccnumber		[join [split ${gccversion} .] ""]
+	configure.compiler	macports-gcc-${gccversion}
+	depends_lib-append	port:gcc${gccnumber}
+}
+
+if {[info exists depends_skip_archcheck] && [info exists gccversion]} {
+	depends_skip_archcheck gcc${gccnumber}
+}
+
+# No cross-compilation possible
+if { ${os.arch} == "i386" } {
+	set universal_archs_supported { i386 x86_64 }
+} else {
+	set universal_archs_supported { ppc  ppc64 }
+}
+
+if {${build_arch} == "x86_64" || ${build_arch} == "ppc64" } {
+	set my_arch 64
+} else {
+	set my_arch 32
+}
+
+configure.args		-C xc ${configure.cc} \
+					-C gc ${configure.cc} \
+					-C if ${configure.f77} \
+					-C ic ${configure.cc} \
+					-C dm ${configure.cc} \
+					-C sm ${configure.cc} \
+					-C dk ${configure.cc} \
+					-C sk ${configure.cc} \
+					--cc=${configure.cc} \
+					--with-netlib-lapack-tarfile=${distpath}/${lapackdist} \
+					-O 12 \
+					-b ${my_arch} \
+					-Fa alg -fPIC
+
+# Dragonegg
+if { [variant_isset dragonegg45] } {
+	configure.args-append -Fa if -fplugin=${prefix}/lib/dragonegg45.so
+}
+
+# At this point, no threading for ppc/ppc64
+
+if {${build_arch} == "ppc" || ${build_arch} == "ppc64"} {
+	configure.args-append	-t 0
+}
+
+# MacPorts defaults to ppc on G4 and G5, so we must override 64-bit detection
+# by Atlas, even if we are on a G5
+
+if {${build_arch} == "ppc" && ! [variant_isset universal]} {
+	configure.args-delete	--cc=${configure.cc} \
+							-Fa alg -fPIC
+
+	configure.args-append	--cc='${configure.cc} -m32' \
+							-A 4 \
+							-Fa alg '-fPIC -m32 -force_cpusubtype_ALL'
+	
+	# On Leopard, we may warn the user that ppc is not as efficient as ppc64
+	if {${os.major} == 9} {
+	    pre-configure {
+            if {![catch {sysctl hw.cpu64bit_capable} result] && $result == 1} {
+                ui_msg "--- Compiling for G4 arch (ppc) on a G5 (ppc64) machine."
+                ui_msg "--- This will lead to inferior performance."
+            }
+		}
+	}
+		
+}
+
+if { (${os.major} == 11 && [sysctl hw.optional.avx1_0] == 1) || \
+	 (${os.major} > 8 && [sysctl hw.cpufamily] == 1418770316) } {
+	# Corei2 is not supported yet because gcc4.5 does not
+	# support AVX instructions and gcc4.6 does not compile yet.
+	# Set CPU to Corei1 instead
+	configure.args-append -A 18
+}
+
+if { [variant_isset universal] } {
+	configure.universal_args-delete			--disable-dependency-tracking
+	configure.args-delete					--cc=${configure.cc} \
+											-b ${my_arch} \
+											-Fa alg -fPIC
+					
+	lappend merger_configure_args(ppc)		--cc='${configure.cc} -m32' \
+											-b 32 \
+											-A 4 \
+											-t 0 \
+											-s gas_ppc \
+											-Fa alg '-fPIC -m32 \
+											-force_cpusubtype_ALL'
+	lappend merger_configure_args(ppc64)	--cc='${configure.cc} -m64' \
+											-b 64 \
+											-A 5 \
+											-t 0 \
+											-s gas_ppc \
+											-Fa alg '-fPIC -m64 \
+											-force_cpusubtype_ALL'
+	lappend merger_configure_args(i386) 	--cc='${configure.cc} -m32' \
+											-b 32 \
+											-A 15 \
+											-s gas_x86_32 \
+											-Fa alg '-fPIC -m32'
+	lappend merger_configure_args(x86_64) 	--cc='${configure.cc} -m64' \
+											-b 64 \
+											-s gas_x86_64 \
+											-Fa alg '-fPIC -m64'
+} else {
+	lappend merger_configure_args(ppc)
+	lappend merger_configure_args(ppc64)
+	lappend merger_configure_args(i386)
+	lappend merger_configure_args(x86_64)
+}
+
+build.env-append	"CC=${configure.cc} CXX=${configure.cxx}"
+
+# we are configuring from the build directory
+configure.dir			${workpath}/${name}-${version}/build
+configure.cmd			../configure
+
+
+# change the default compilers to those of gcc and make into shared library
+extract {
+	# extract atlas and move to a consistent working directory name
+	system	"cd ${workpath} && bunzip2 -dc ${distpath}/${atlasdist} | \
+			 gnutar --no-same-owner -xf -"
+	system	"mv ${workpath}/ATLAS ${workpath}/${name}-${version}"
+}
+
+post-patch {
+	reinplace	"s|__MACPORTS_GCC__|${configure.cc}|g" \
+				 ${workpath}/${name}-${version}/CONFIG/src/SpewMakeInc.c
+	
+	reinplace	"s|XXXXX|${configure.cc}|g" \
+				${workpath}/${name}-${version}/include/atlas_mvtesttime.h
+
+	if { ${build_arch} == "ppc" || ${build_arch} == "ppc64" } {
+		reinplace \
+		"s|cMVFLAGS=\\\\\"%s\\\\\"|cMVFLAGS=\\\\\"-force_cpusubtype_ALL\ %s\\\\\"|" \
+		 ${workpath}/${name}-${version}/include/atlas_mvtesttime.h
+	}
+	# ar -r / ranlib / libtool seems to be buggy, so we have to supply a
+	# workaround to link properly.
+	reinplace	"s|XXXXX|${filespath}/ar2|" \
+				${workpath}/${name}-${version}/CONFIG/src/SpewMakeInc.c
+}
+
+pre-configure {
+
+	# i386 builds must be patch otherwise threading does not work.
+	if { [variant_isset universal] } {
+		foreach arch ${universal_archs_to_use} {
+			copy ${workpath}/${name}-${version} \
+			 ${workpath}/${name}-${version}-${arch}
+			if { ${arch} == "i386" } {
+				ui_msg	"Patching Make.ttune for i386 universal build"
+				system	"cd ${workpath}/${name}-${version}-i386/makes && \
+						 patch < ${filespath}/patch-Make_ttune-i386.diff"
+			}
+		}
+	}
+	
+	if { ${build_arch} == "i386" && ! [variant_isset universal] } {
+		ui_msg	"Patching Make.ttune for i386 build"
+		system	"cd ${workpath}/${name}-${version}/makes && \
+				 patch < ${filespath}/patch-Make_ttune-i386.diff"
+	}
+
+	reinplace	"s|cc=gcc|cc=${configure.cc}|g" ${worksrcpath}/configure
+	reinplace	"s|-no-cpp-precomp||g" \
+				 ${workpath}/${name}-${version}/CONFIG/src/atlcomp.txt
+
+	# Get some system specific variables for maximum optimization
+	set			cpufreq [expr {[sysctl hw.cpufrequency]/1000000}]
+	ui_debug	"Setting CPU Frequency for: ${cpufreq}"
+
+	if { ${os.arch} == "powerpc" } {
+		configure.args-append	-D c -DWALL
+	} else {
+		configure.args-append	-D c -DPentiumCPS=${cpufreq}
+	}
+
+	if { [variant_isset universal] } {
+		set	archs ${universal_archs_to_use}
+	} else {
+		set	archs ${build_arch}
+	}
+
+	foreach arch ${archs} {
+		if { ! [variant_isset universal] } {
+			set	atlas_path ${workpath}/${name}-${version}
+		} else {
+			set	atlas_path ${workpath}/${name}-${version}-${arch}
+		}
+
+		file mkdir ${atlas_path}/build
+	}
+}
+
+post-configure {
+	if { [variant_isset universal] } {
+		set	archs ${universal_archs_to_use}
+	} else {
+		set	archs ${build_arch}
+	}
+
+	foreach arch ${archs} {
+		if { ! [variant_isset universal] } {
+			set	atlas_path ${workpath}/${name}-${version}
+		} else {
+			set	atlas_path ${workpath}/${name}-${version}-${arch}
+		}
+
+		# recursively remove directories
+		ui_debug	"patch to recursively remove directories on clean"
+		reinplace	"s|rm -f|rm -rf|g" ${atlas_path}/build/Makefile
+
+		system	"cd ${atlas_path}/build/src/pthreads/misc && \
+				patch < ${filespath}/patch-Makefile_pthreads_misc.diff"
+
+		#Second patch for i386
+		if { ${arch} == "i386" } {
+			system	"cd ${atlas_path}/build/src/threads && \
+					 patch < ${filespath}/patch-threads-i386.diff"
+		}
+	}
+}
+
+proc make_dylib { lib lib_dir arch libs } {
+	global destroot prefix gccnumber
+	system "cd ${lib_dir} && \
+			( test ! -e ${lib}.a || \
+			  /usr/bin/ld -arch ${arch} -dynamic -dylib -single_module -dead_strip \
+			  -x -all_load -L. -L${prefix}/lib/gcc${gccnumber}/${arch} \ -L${prefix}/lib/gcc${gccnumber} -ldylib1.o \
+			  -dylib_install_name ${prefix}/lib/${lib}.dylib \
+			  ${lib}.a -o ${lib}.dylib ${libs} )"
+}
+
+post-build {
+  # We have to manually create the dylib shared libs as the default build does not do this
+
+  set ncpu [sysctl hw.ncpu]
+
+	if { [variant_isset universal] } {
+		set	archs ${universal_archs_to_use}
+	} else {
+		set	archs ${build_arch}
+	}
+
+	foreach arch ${archs} {
+		if { ! [variant_isset universal] } {
+			set	atlas_path  ${workpath}/${name}-${version}
+		} else {
+			set	atlas_path ${workpath}/${name}-${version}-${arch}
+		}
+
+		set			lib_dir ${atlas_path}/build/lib
+		make_dylib	libatlas ${lib_dir} ${arch} { -lSystem }
+
+		if { ${ncpu} == "1" } {
+	# there are no threaded libraries (libpt*) on single-core machines
+			make_dylib	libcblas   ${lib_dir} ${arch} { -latlas -lSystem }
+			make_dylib	libf77blas ${lib_dir} ${arch} { -lgfortran -latlas -lSystem }
+		} else {
+			make_dylib	libptcblas   ${lib_dir} ${arch} { -latlas -lSystem }
+			make_dylib	libptf77blas ${lib_dir} ${arch} { -lgfortran -latlas -lSystem }
+		}
+
+		make_dylib	liblapack ${lib_dir} ${arch} { -lf77blas -lcblas -latlas -lgfortran -lgcc_s.1 -lSystem }
+	}
+}
+
+pre-destroot {
+	if { [variant_isset universal] } {
+		set	archs ${universal_archs_to_use}
+	} else {
+		set	archs ${build_arch}
+	}
+
+	foreach arch ${archs} {
+		if { ! [variant_isset universal] } {
+			set	atlas_path  ${workpath}/${name}-${version}
+			set	dest_path   ${destroot}${prefix}/lib/
+		} else {
+			set	atlas_path ${workpath}/${name}-${version}-${arch}
+			set	dest_path  ${destroot}-${arch}${prefix}/lib/
+		}
+
+		set		lib_dir ${atlas_path}/build/lib
+		file	mkdir ${dest_path}
+		eval	xinstall -m 755 [glob ${lib_dir}/*.dylib] ${dest_path}
+	}
+}
+
+post-destroot {
+	if { ![file exists ${destroot}${prefix}/lib/libcblas.dylib] && [file exists ${destroot}${prefix}/lib/libptcblas.dylib]} {
+		ln -s libptcblas.dylib ${destroot}${prefix}/lib/libcblas.dylib
+	}
+	if { ![file exists ${destroot}${prefix}/lib/libf77blas.dylib] && [file exists ${destroot}${prefix}/lib/libptf77blas.dylib]} {
+		ln -s libptf77blas.dylib ${destroot}${prefix}/lib/libf77blas.dylib
+	}
+}
+
+livecheck.name		math-atlas
+livecheck.distname	Stable

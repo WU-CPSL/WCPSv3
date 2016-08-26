@@ -1,0 +1,28 @@
+# $Id: Portfile 84420 2011-09-26 08:48:57Z jmr@macports.org $
+
+PortSystem	1.0
+
+name		yasm
+version		1.1.0
+categories	lang
+license		{Artistic-1 GPL-2+ LGPL} BSD
+maintainers	acho
+description	yasm - a modular bsd reimplementation of NASM
+long_description A modular x86/amd64 assembler supporting NASM and GAS asm \
+		syntaxes and a variety of output formats.  It is licensed \
+		under the 3-clause BSD license except the nasm preprocessor \
+		which is LGPL.
+
+depends_lib	port:gettext
+
+platforms	darwin
+
+homepage	http://www.tortall.net/projects/yasm/
+master_sites	http://www.tortall.net/projects/yasm/releases/
+
+checksums           md5     8392e5f2235c2c2a981e1a633f2698cb \
+                    sha1    8b252d2a50f6d0d8fe13997183596c3cd7589db9 \
+                    rmd160  93e9ee40319ca02a3a8fff7f85af216d37fb1d06
+
+livecheck.url   ${master_sites}
+livecheck.regex "${name}-(\\d+(?:\\.\\d+)*)${extract.suffix}"

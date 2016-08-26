@@ -1,0 +1,111 @@
+# $Id: Portfile 84980 2011-10-06 11:55:50Z takanori@macports.org $
+
+PortSystem	1.0
+PortGroup muniversal 1.0
+
+name			cyrus-sasl2
+version			2.1.23
+revision                3
+categories		security net
+# license is BSD plus a fourth (almost redundant) acknowledgement clause
+license			Permissive
+maintainers		jmpp landonf openmaintainer
+description		SASL is an authentication library.
+long_description	SASL is the Simple Authentication and Security Layer, \
+			a method for adding authentication support to \
+			connection-based protocols. To use SASL, a protocol \
+			includes a command for identifying and authenticating \
+			a user to a server and for optionally negotiating \
+			protection of subsequent protocol interactions. If \
+			its use is negotiated, a security layer is inserted \
+			between the protocol and the connection.
+platforms		darwin
+homepage		http://asg.web.cmu.edu/sasl/
+master_sites		http://ftp.andrew.cmu.edu/pub/cyrus-mail/ \
+			ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/
+distname		cyrus-sasl-${version}
+checksums		md5 2eb0e48106f0e9cd8001e654f267ecbc \
+			sha1 5df33a6788d6cd8329b109eff777c6cfae1a21bd \
+			rmd160 b2cd9734fa8b4bad82663517f019f9b92d9d3519
+
+depends_lib		port:openssl \
+				port:zlib
+
+default_variants	+kerberos
+
+patchfiles		patch-config_ltconfig \
+                patch-utils_Makefile.in.diff
+
+configure.args \
+		--mandir=${prefix}/share/man \
+		--with-openssl=${prefix} \
+		--with-dbpath=${prefix}/etc/sasldb2 \
+		--with-plugindir=${prefix}/lib/sasl2 \
+		--with-saslauthd=${prefix}/var/state/saslauthd \
+		--with-pwcheck=${prefix}/var/pwcheck \
+		--disable-macos-framework \
+		--enable-srp \
+		--enable-srp-setpass \
+		--enable-login \
+		--enable-ntlm \
+		--with-rc4=openssl
+
+use_parallel_build  no
+
+#universal_variant no
+
+# This is a start towards universal... lib/Makefile.am and sasldb/Makefile.am need to be updated to not do blind ar-fu
+#post-extract {
+#	system "rm ${worksrcpath}/config/libtool.m4"
+#}
+
+#use_autoreconf yes
+#autoreconf.args -fvi
+#autoreconf.env ACLOCAL="aclocal -I${worksrcpath}/cmulocal -I${worksrcpath}/config"
+
+# This is a horrible hackaround as replacing the ar-fu as mentioned above is non-trivial
+pre-build {    
+    if {[variant_isset universal]} {
+        foreach arch ${universal_archs_to_use} {
+            reinplace -E "s|^CC=\\\"(\[^\\\"\]+)\\\"|CC=\"\\1 [muniversal_get_arch_flag ${arch}]\"|g" ${worksrcpath}-${arch}/libtool
+        }
+    } else {
+        reinplace -E "s|^CC=\\\"(\[^\\\"\]+)\\\"|CC=\"\\1 ${configure.cc_archflags}\"|g" ${worksrcpath}/libtool
+    }
+}
+
+destroot.keepdirs \
+    ${destroot}${prefix}/var/state/saslauthd \
+    ${destroot}${prefix}/var/pwcheck
+
+post-destroot {
+    xinstall -d \
+        ${destroot}${prefix}/share/doc \
+        ${destroot}${prefix}/var/state/saslauthd \
+	    ${destroot}${prefix}/var/pwcheck
+
+    file copy ${worksrcpath}/doc ${destroot}${prefix}/share/doc/${name}
+}
+
+variant kerberos description "Enable Kerberos support" {
+    configure.args-append   --enable-keep-db-open
+
+	if {${os.platform} == "darwin"} {
+		configure.args-append --with-gss_impl=mit \
+			--enable-gssapi=${prefix}
+	}
+	if {${os.platform} == "freebsd"} {
+		configure.args-append --with-gss_impl=heimdal \
+			--enable-gssapi=${prefix}/libexec/heimdal
+	}
+}
+
+# TODO: Uhm... dependencies?
+variant sql description "Enable SQL support" { configure.args-append --enable-sql }
+
+# doesn't work, ticket #22093
+#variant static description "Build static library" { configure.args-append --enable-static }
+
+livecheck.type  regex
+livecheck.url   http://ftp.andrew.cmu.edu/pub/cyrus-mail/
+livecheck.regex {cyrus-sasl-(\d+(?:\.\d+)*)\.tar\.gz}

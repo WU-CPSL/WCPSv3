@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:p="http://primefaces.prime.com.tr/ui" xmlns:h="http://java.sun.com/jsf/html">
+<ui:composition>
+  <ol id="sub-toc">
+    <li><h:outputLink
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/repository/repositoryProfile.jsf?repoId=#{repositoryProfileManagedBean.repo.id}"
+        title="#{msg.repoProfileTabAltText}">
+        <span>#{msg.repoProfileTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/repository/repositoryGraph.jsf"
+        title="#{msg.repoGraphTabAltText}">
+        <span>#{msg.repoGraphTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/repository/repositoryBrowser.jsf"
+        title="#{msg.repoBrowserTabAltText}">
+        <span>#{msg.repoBrowserTabText}</span>
+      </h:outputLink></li>
+    <li class="current"><h:outputLink
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/repository/repositoryAdministrationVerify.jsf"
+        title="#{msg.repoAdministrationTabAltText}"
+        rendered="#{basePage.systemAdmin or basePage.globalRepoAdmin or repositoryProfileManagedBean.repo.delegatedRepoAdmin}">
+        <span>#{msg.repoAdministrationTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/repository/repositoryPermissions.jsf"
+        title="#{msg.repoPermissionsTabAltText}"
+        rendered="#{basePage.systemAdmin or basePage.globalRepoAdmin or repositoryProfileManagedBean.repo.delegatedRepoAdmin}">
+        <span>#{msg.repoPermissionsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/repository/repositoryAuthentication.jsf"
+        title="#{msg.repoAuthenticationTabAltText}"
+        rendered="#{basePage.systemAdmin or basePage.globalRepoAdmin or repositoryProfileManagedBean.repo.delegatedRepoAdmin}">
+        <span>#{msg.repoAuthenticationTabText}</span>
+      </h:outputLink></li>
+      <li><h:outputLink rendered="#{basePage.jenkinsInstalled and basePage.jenkinsVisible}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/repository/repositoryJenkins.jsf"
+        title="#{msg.repoJenkinsTabTitle}">
+        <span>#{msg.repoJenkinsTabText}</span>
+      </h:outputLink></li>
+
+  </ol>
+  <p:panel id="repoProfilePanel" styleClass="tabbed-panel">
+    <h:panelGrid rendered="#{basePage.systemAdmin or basePage.globalRepoAdmin or repositoryProfileManagedBean.repo.delegatedRepoAdmin}">
+      <ui:include src="/sections/platform/repository/repositoryAdministrationPanel.xhtml"></ui:include>
+      <h:panelGroup>
+        <p:spacer height="1" width="12" />
+        <h:graphicImage style="border: none;" library="img/platform" name="svn_admin_tab.png" />
+      </h:panelGroup>
+      <p:panel id="verifyPanel" styleClass="repoAdminOptionsPanel"
+        rendered="#{!repositoryAdministrationManagedBean.verifyInProgress and !repositoryAdministrationManagedBean.verifyComplete}">
+        <h:panelGroup id="revisionSelectionPanel">
+          <h:panelGrid columns="2" columnClasses="repoAdminOptionsLabelColumn, repoAdminOptionsFieldColumn">
+            <h:outputText value="#{msg.repositorySelectRevisionsLabel}: " />
+            <h:selectOneRadio id="revisionEntryType" value="#{repositoryAdministrationManagedBean.revisionEntryType}"
+              onclick="remoteUpdate()" immediate="true">
+              <f:selectItems value="#{repositoryAdministrationManagedBean.revisionEntryTypeValue}" var="c" itemLabel="#{c}" itemValue="#{c}" />
+            </h:selectOneRadio>
+          </h:panelGrid>
+        </h:panelGroup>
+        <h:panelGroup id="lowerPanel">
+          <h:panelGrid id="repo-revisions" columnClasses="repoAdminOptionsLabelColumn, repoAdminOptionsFieldColumn" columns="2"
+            rendered="#{repositoryAdministrationManagedBean.revisionDisplayed}">
+            <h:panelGroup>
+              <h:outputText value="#{msg.repositoryStartRevisionLabel}" />
+              <p:spacer width="10" />
+            </h:panelGroup>
+            <h:panelGroup>
+              <h:inputText id="startRevisionNumber" styleClass="wizardFormField" size="25"
+                value="#{repositoryAdministrationManagedBean.startRevisionNumber}" required="true"
+                requiredMessage="#{msg.repoAdminVerifyRevisiionRequired}" validatorMessage="#{msg.repoAdminVerifyRevisionNotNumber}">
+                <f:validateRegex pattern="^[0-9]*$" for="startRevisionNumber" />
+              </h:inputText>
+              <h:message style="color: red; font-size: 9px; height: 11px;" for="startRevisionNumber" />
+            </h:panelGroup>
+            <h:panelGroup>
+              <h:outputText value="#{msg.repositoryEndRevisionLabel}" />
+              <p:spacer width="10" />
+            </h:panelGroup>
+            <h:panelGroup>
+              <h:inputText id="selectRepo_EndRevision" styleClass="wizardFormField" size="25"
+                value="#{repositoryAdministrationManagedBean.endRevisionNumber}" required="true"
+                requiredMessage="#{msg.repoAdminVerifyRevisiionRequired}" validatorMessage="#{msg.repoAdminVerifyRevisionNotNumber}">
+                <f:validateRegex pattern="^[0-9]*$" for="selectRepo_EndRevision" />
+              </h:inputText>
+              <h:message style="color: red; font-size: 9px; height: 11px;" for="selectRepo_EndRevision" />
+            </h:panelGroup>
+          </h:panelGrid>
+        </h:panelGroup>
+        <p:commandButton id="repoAdministrationVerifyRepository" value="#{msg.verifyRepositoryButtonText}" styleClass="roundedButtonExtraSmall"
+          action="#{repositoryAdministrationManagedBean.verifyRepository}" ajax="false" immediate="false" onclick="panelUpdate()"
+          oncomplete="panelComplete()" />
+        <p:remoteCommand name="remoteUpdate" update="lowerPanel" />
+      </p:panel>
+      <p:panel id="verifyProgressPanel" styleClass="repoAdminOptionsPanel"
+        rendered="#{repositoryAdministrationManagedBean.verifyInProgress}">
+        <h:panelGroup id="inProgressPanel">
+          <h:outputText value="Verify In Progress, wait for results or see Administration tab." />
+          <h:graphicImage style="border: none;display: block;margin-left: auto;margin-right: auto; margin-top:50px;" library="img/platform"
+            name="progress.gif" />
+        </h:panelGroup>
+      </p:panel>
+      <p:panel id="verifyCompletePanel" styleClass="repoAdminOptionsPanel" rendered="#{repositoryAdministrationManagedBean.verifyComplete}">
+        <h:panelGrid columns="1" id="completePanel">
+          <h:outputText value="Verify Complete." />
+          <p:panel rendered="#{repositoryAdministrationManagedBean.verifyError}">
+            <h:outputText value="An error occured, see below for details." />
+            <br />
+            <h:outputText value="Error message: #{repositoryAdministrationManagedBean.verifyErrorMessage}" />
+          </p:panel>
+          <p:panel rendered="#{!repositoryAdministrationManagedBean.verifyError}">
+            <h:outputText escape="false" value="#{repositoryAdministrationManagedBean.verifyResultMessage}" />
+          </p:panel>
+        </h:panelGrid>
+      </p:panel>
+      <p:remoteCommand action="#{repositoryAdministrationManagedBean.startVerify}" oncomplete="panelRedraw()" async="true"
+        name="panelUpdate" update="mainPortalForm">
+      </p:remoteCommand>
+      <p:remoteCommand async="true" name="panelRedraw" update="mainPortalForm">
+      </p:remoteCommand>
+      <p:remoteCommand name="panelComplete" update="verifyPanel, verifyProgressPanel, verifyCompletePanel">
+      </p:remoteCommand>
+    </h:panelGrid>
+  </p:panel>
+</ui:composition>
+</html>

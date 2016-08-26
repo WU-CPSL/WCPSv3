@@ -1,0 +1,23 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:p="http://primefaces.prime.com.tr/ui" xmlns:h="http://java.sun.com/jsf/html">
+<ui:composition>
+  <p:dialog id="deletionDialog" header="#{msg.confirmRepoDeleteHeader}" severity="alert" widgetVar="confirmation" resizable="false"
+    width="450">
+    <p>
+      <span class="ui-icon ui-icon-alert" style="float: left; margin: 0pt 7px 20px 0pt;"></span>#{msg.confirmRepoDeleteMessage}
+    </p>
+    <p>
+      <input name="DELETE_FROM_DISK" value="true" type="checkbox" />
+      <h:outputText value="#{msg.confirmRepoDeleteCheckbox}" />
+    </p>
+    <p:panel>
+      <p:commandButton value="#{msg.deleteButton}" update="repoTableId" oncomplete="confirmation.hide()"
+        action="#{deleteRepoManagedBean.deleteRepos}" />
+      <p:spacer width="5" />
+      <p:commandButton value="#{msg.cancelButton}" onclick="confirmation.hide()" type="button" />
+    </p:panel>
+  </p:dialog>
+</ui:composition>
+</html>

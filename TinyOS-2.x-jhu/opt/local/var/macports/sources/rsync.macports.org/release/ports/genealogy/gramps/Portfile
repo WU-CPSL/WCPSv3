@@ -1,0 +1,77 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 85146 2011-10-10 13:24:59Z devans@macports.org $
+
+PortSystem                      1.0
+
+name                            gramps
+version                         3.3.1
+license                         GPL-2
+categories                      genealogy python
+platforms                       darwin
+maintainers                     devans openmaintainer
+
+description                     GRAMPS is a genealogy program
+
+long_description                GRAMPS is a genealogy program to store, edit, \
+                                and research genealogical data.  It provides \
+                                advanced capabilities for research, analysis, and \
+                                correlation to potentially fill relationship gaps.
+
+homepage                        http://www.gramps-project.org/
+master_sites                    sourceforge:gramps
+
+checksums                       sha1    76d062268bf48d90fc3d8003dffd7947af393147 \
+                                rmd160  52bf70fa49de5fcec8d6c917312eaa8bca9cb264
+
+patchfiles                      patch-configure.diff
+
+configure.args                  --disable-mime-install
+
+depends_build                   port:pkgconfig \
+                                port:intltool \
+                                port:gnome-doc-utils \
+                                port:shared-mime-info
+
+# librsvg is required at least for icons in dialogs
+
+depends_lib                     port:librsvg \
+                                port:aspell-dict-en
+
+#
+# aspell-dict-en is not universal
+#
+
+universal_variant               no
+
+variant python25 conflicts python26 python27 description {Use python 2.5} {
+    depends_lib-append        port:py25-gtkspell \
+                              port:py25-enchant \
+                              port:py25-webkitgtk
+    configure.python          ${prefix}/bin/python2.5
+}
+
+variant python26 conflicts python25 python27 description {Use python 2.6} {
+    depends_lib-append        port:py26-gtkspell \
+                              port:py26-enchant \
+                              port:py26-webkitgtk
+    configure.python          ${prefix}/bin/python2.6
+}
+
+variant python27 conflicts python25 python26 description {Use python 2.7} {
+    depends_lib-append        port:py27-gtkspell \
+                              port:py27-enchant \
+                              port:py27-webkitgtk
+    configure.python          ${prefix}/bin/python2.7
+}
+
+if {![variant_isset python25] && ![variant_isset python26]} {
+    default_variants +python27
+}
+
+post-activate {
+    system "${prefix}/bin/update-mime-database ${prefix}/share/mime"
+}
+
+livecheck.type                  regex
+livecheck.url                   ${homepage}/category/releases/
+livecheck.regex                 (?i)${name} (\[0-9.\]+)

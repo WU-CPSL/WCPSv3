@@ -1,0 +1,48 @@
+# $Id: Portfile 86098 2011-10-19 11:41:37Z snc@macports.org $
+
+PortSystem 1.0
+
+name		dos2unix
+version		5.1.1
+license     BSD
+categories	textproc
+platforms	darwin
+maintainers	waqar openmaintainer
+description	Convert text between dos, unix, and mac formats
+long_description ${description}
+master_sites	http://www.xs4all.nl/~waterlan/dos2unix/ sourceforge
+homepage	http://www.xs4all.nl/~waterlan/dos2unix.html
+
+checksums       sha1    c8b2121cbdf74900b9ae5fd7a0319195f6053b05 \
+                rmd160  7a50cf347cb2c716693718ae3b1b08de18bdedb3
+
+depends_lib     port:gettext
+
+use_configure	no
+
+build.args      prefix=${prefix} \
+                CC=${configure.cc}
+
+set CFLAGS_OS "${configure.cflags} ${configure.cppflags}"
+set LDFLAGS_EXTRA "${configure.ldflags} -lintl"
+
+pre-build {
+    if {![variant_isset universal]} {
+        append CFLAGS_OS " ${configure.cc_archflags}"
+        append LDFLAGS_EXTRA " ${configure.cc_archflags}"
+    }
+    build.args-append \
+        CFLAGS_OS="${CFLAGS_OS}" \
+        LDFLAGS_EXTRA="${LDFLAGS_EXTRA}"
+}
+
+destroot.args   prefix=${prefix} \
+                DOCDIR=${destroot}${prefix}/share/doc/${name}
+
+variant universal {
+    append CFLAGS_OS " ${configure.universal_cflags}"
+    append LDFLAGS_EXTRA " ${configure.universal_ldflags}"
+}
+
+livecheck.type  regex
+livecheck.regex {Stable version: (\d+(?:\.\d+)*)}

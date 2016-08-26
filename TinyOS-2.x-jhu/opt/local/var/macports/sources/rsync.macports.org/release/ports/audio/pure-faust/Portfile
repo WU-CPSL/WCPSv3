@@ -1,0 +1,22 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 88416 2012-01-01 01:00:11Z ryandesign@macports.org $
+
+PortSystem                      1.0
+PortGroup                       pure 1.0
+
+pure.setup                      faust 0.8
+categories                      audio lang
+platforms                       darwin
+maintainers                     ryandesign
+license                         LGPL-3
+
+description                     a module which lets you load and run \
+                                Faust-generated signal processing modules \
+                                in Pure
+
+long_description                ${name} provides ${description}.
+
+checksums                       rmd160  606b0566f3fda1d7a334c9e2e787fdd751e705d2 \
+                                sha256  80e67726e8f3591126ba89ce6445780c00d4c86dcd84155506211551f72a1234
+
+depends_run-append              port:faust

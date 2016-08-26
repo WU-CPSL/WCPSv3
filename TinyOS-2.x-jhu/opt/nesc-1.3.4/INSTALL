@@ -1,0 +1,25 @@
+To build nesC: in this directory
+./configure [--prefix=<where you want to install nesc]
+make
+
+To install:
+make install
+
+To install a nesC editor mode (currently, emacs, vim, kde):
+Read <installdir>/lib/ncc/editor-modes/<your-editor-name>/readme.txt
+
+To use nesC with TinyOS, you need to install the ncc, mig, etc TinyOS
+frontends for nesC. These are found in tinyos-1.x/tools/src/ncc (for TinyOS
+1.x) and in tinyos-2.x/tools (for TinyOS 2.x). Please follow the
+installation directions you find there.
+
+To use nesC with the Atmel AVR processors or the TI MSP processors you
+need the avr-gcc and msp430-gcc packages, and the corresponding GNU
+binutils (avr-binutils and msp430-binutils respectively). 
+
+You can use the patched versions of these binutils that allow $ in
+symbol names, available from http://www.tinyos.net/dist-2.0.0 (check
+http://www.tinyos.net/download.html to see if newer versions are
+available), or you can pass the -fnesc-separator=__ option to nescc (ncc
+if using TinyOS) to use __ rather than $ in generated code. See the
+nescc man page for details.

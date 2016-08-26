@@ -1,0 +1,43 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 88953 2012-01-15 08:13:58Z ryandesign@macports.org $
+
+PortSystem      1.0
+PortGroup       github 1.0
+
+github.setup    mochi mochiweb 2.3.0 v
+epoch           20111014
+categories      erlang www
+platforms       darwin
+maintainers     nomaintainer
+supported_archs noarch
+
+description     MochiWeb is an Erlang library for building lightweight HTTP servers.
+
+long_description \
+    ${description}
+
+depends_lib     port:erlang
+
+checksums       rmd160  e32301af433948d0752e515187d56b3f6fed67b3 \
+                sha256  7bde6ab0fb9e202b3f55dda12409c2f300b87f8ded424853dd362bd925802a89
+
+use_configure no
+build.target-append edoc
+
+set libdir ${prefix}/lib/erlang/lib/${name}
+
+destroot {
+    xinstall -d ${destroot}${libdir}
+    copy ${worksrcpath}/ebin ${destroot}${libdir}/ebin
+    copy ${worksrcpath}/scripts ${destroot}${libdir}/scripts
+    copy ${worksrcpath}/src ${destroot}${libdir}/src
+
+    set docdir ${prefix}/share/doc/${name}
+    xinstall -d ${destroot}${docdir}
+    xinstall -m 644 -W ${worksrcpath} LICENSE README ${destroot}${docdir}
+    copy ${worksrcpath}/doc ${destroot}${docdir}/html
+    xinstall -m 644 ${filespath}/README.MacPorts ${destroot}${docdir}
+    reinplace s:@PREFIX@:${prefix}: ${destroot}${docdir}/README.MacPorts
+}
+
+test.run yes

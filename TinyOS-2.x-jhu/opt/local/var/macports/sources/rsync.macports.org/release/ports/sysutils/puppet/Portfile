@@ -1,0 +1,45 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 74012 2010-12-02 00:31:09Z jmr@macports.org $
+
+PortSystem          1.0
+
+name                puppet
+conflicts           cln
+version             2.6.4
+categories          sysutils
+platforms           darwin
+maintainers         explanatorygap.net:nigel puppetlabs.com:nigel openmaintainer
+supported_archs     noarch
+
+description         Puppet is a configuration management solution.
+
+long_description    Puppet is a configuration management solution. \
+                    The Puppet framework provides a means to describe IT \
+                    infrastructure as policy, execute that policy to build \
+                    services then audit and enforce ongoing changes to the \
+                    policy.
+
+homepage            http://projects.puppetlabs.com/projects/puppet
+master_sites        http://puppetlabs.com/downloads/puppet/
+
+checksums           md5     c0b86f40c8000dae2f0f7f2f91579c2a \
+                    sha1    b574246b7b067d9fd59e4629830ab4f02b67125f \
+                    rmd160  790218d8c23a15c4db1539b2fde335ecad926d9d
+
+depends_lib         port:ruby \
+                    port:facter
+
+use_configure       no
+build               {}
+test.run            no
+destroot.cmd        ${prefix}/bin/ruby ${worksrcpath}/install.rb \
+                    --destdir=${destroot}
+
+set puppetuser      puppet
+set puppetgroup     puppet
+
+pre-destroot        {
+                        addgroup ${puppetgroup}
+                        set gid [existsgroup ${puppetgroup}]
+                        adduser ${puppetuser} gid=${gid} realname=Puppet\ User
+                    }

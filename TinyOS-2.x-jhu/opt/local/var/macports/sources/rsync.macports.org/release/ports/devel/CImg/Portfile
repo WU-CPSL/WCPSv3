@@ -1,0 +1,44 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 73571 2010-11-18 19:21:43Z ryandesign@macports.org $
+
+PortSystem          1.0
+
+name                CImg
+version             1.4.6
+categories          devel
+platforms           darwin
+maintainers         workisfun.ru:ivan
+supported_archs     noarch
+license             CeCILL-C CeCILL
+
+description         C++ Template Image Processing Toolkit
+
+long_description    Open source, C++ toolkit for image processing
+
+homepage            http://cimg.sourceforge.net/
+master_sites        sourceforge:cimg
+use_zip             yes
+
+checksums           sha1    ad2f78ef58ba3da598c7306874d8789cb1b38ef1 \
+                    rmd160  80095128849c7ef7032844f922d1e5782f816150
+
+use_configure       no
+
+build {}
+
+destroot {
+    xinstall -m 644 ${worksrcpath}/CImg.h ${destroot}${prefix}/include
+    
+    set docdir ${destroot}${prefix}/share/doc/${name}
+    xinstall -d ${docdir}
+    xinstall -m 644 -W ${worksrcpath} \
+        CHANGES.txt \
+        Licence_CeCILL-C_V1-en.txt \
+        Licence_CeCILL_V2-en.txt \
+        README.txt \
+        ${docdir}
+}
+
+livecheck.type      regex
+livecheck.url       http://sourceforge.net/projects/cimg/files/
+livecheck.regex     /CImg-(\[0-9.\]+)${extract.suffix}

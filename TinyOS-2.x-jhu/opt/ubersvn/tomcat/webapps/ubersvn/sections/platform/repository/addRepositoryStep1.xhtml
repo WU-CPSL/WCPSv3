@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:p="http://primefaces.prime.com.tr/ui" xmlns:h="http://java.sun.com/jsf/html" xmlns:wd="http://www.wansdisco.com/jsf">
+<ui:composition>
+  <p:panel style="border-radius: 4px 4px 4px 4px;" styleClass="wizard-panel" rendered="#{basePage.repoAdmin}">
+    <p:panel style="border: none; background: transparent; width: 70%; height: 300px; margin:120px auto;">
+      <h:panelGrid cellspacing="10px" style="width:100%" columns="2" columnClasses="wizardLabelColumn, wizardFieldColumn">
+        <p:spacer />
+        <h:outputText styleClass="wizardStepTitle" value="#{msg.addRepoStep1Title}" />
+        <h:panelGroup>
+          <h:outputLabel for="addRepoRepositoryName" value="#{msg.addRepoRepositoryNameLabel}" />
+          <br />
+          <p:spacer height="14px;" />
+        </h:panelGroup>
+        <h:panelGroup>
+          <p:focus for="addRepoRepositoryName" />
+          <h:inputText value="#{addRepositoryWizardManagedBean.repo.name}" styleClass="wizardFormField" size="50" id="addRepoRepositoryName"
+            onkeyup="updateRepositoryLocation(this,'addRepoRepositoryDavLocation', 'repoURL' ,'#{addRepositoryWizardManagedBean.repo.repoURL}');"
+            onchange="updateRepositoryLocation(this,'addRepoRepositoryDavLocation', 'repoURL' ,'#{addRepositoryWizardManagedBean.repo.repoURL}');"
+            required="true" requiredMessage="#{msg.repoNameRequired}">
+            <wd:validateRepoName />
+          </h:inputText>
+          <br />
+          <h:outputLabel style="font-size: 14px; color: #7F7F7F;" for="addRepoRepositoryName"
+            value="#{msg.addRepoRepositoryNameHelpMessage}" />
+          <br />
+          <h:message style="color: red; font-size: 14px; height: 11px;" for="addRepoRepositoryName" />
+        </h:panelGroup>
+        <h:panelGroup>
+          <h:outputLabel for="addRepoRepositoryDavLocation" value="#{msg.addRepoRepositoryDavLocationPathLabel}" />
+          <br />
+          <p:spacer height="14px;" />
+          <br />
+          <p:spacer height="14px;" />
+        </h:panelGroup>
+        <h:panelGroup>
+          <h:inputText value="#{addRepositoryWizardManagedBean.repo.davLocation}" styleClass="wizardFormField" size="50"
+            id="addRepoRepositoryDavLocation" required="true"
+            onkeyup="updateRepositoryLocation(this,'addRepoRepositoryDavLocation', 'repoURL' ,'#{addRepositoryWizardManagedBean.repo.repoURL}');"
+            onchange="updateRepositoryLocation(this,'addRepoRepositoryDavLocation', 'repoURL' ,'#{addRepositoryWizardManagedBean.repo.repoURL}');"
+            requiredMessage="#{msg.repoLocationRequired}">
+            <wd:maxLengthValidator field="#{msg.addRepoRepositoryDavLocationLabel}" maxLength="256" />
+            <f:validator validatorId="com.wandisco.ubersvn.isValidRepo" />
+            <wd:validateRepoDavLoc />
+          </h:inputText>
+          <br />
+          <h:outputLabel style="font-size: 14px; color: #7F7F7F;" for="addRepoRepositoryDavLocation"
+            value="#{msg.addRepoRepositoryDavLocationHelpMessage1}" />
+          <br />
+          <h:message style="color: red; font-size: 14px; height: 11px;" for="addRepoRepositoryDavLocation" />
+        </h:panelGroup>
+        <p:spacer />
+        <h:outputLabel id="repoURL" size="50" value="#{addRepositoryWizardManagedBean.repo.repoURL}" />
+      </h:panelGrid>
+    </p:panel>
+    <h:panelGroup styleClass="bottomCenter">
+      <h:panelGroup>
+        <h:graphicImage library="img/platform" name="step1of2.png" />
+      </h:panelGroup>
+    </h:panelGroup>
+    <h:panelGroup styleClass="bottomLeft">
+      <h:outputLink styleClass="cancelLink"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/repository/viewRepositories.jsf"
+        title="#{msg.addRepositoryCancelLinkAltText}">
+        <span><u>#{msg.addUserCancelLinkText}</u> </span>
+      </h:outputLink>
+    </h:panelGroup>
+    <h:panelGroup styleClass="bottomRight">
+      <p:commandButton action="#{addRepositoryWizardManagedBean.addRepositoryStep1Next}" styleClass="roundedButtonSmall"
+        value="#{msg.nextButtonText}" ajax="false" />
+    </h:panelGroup>
+  </p:panel>
+
+</ui:composition>
+</html>

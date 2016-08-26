@@ -1,0 +1,65 @@
+# $Id: Portfile 75360 2011-01-23 11:35:44Z breskeby@macports.org $
+
+PortSystem 1.0
+
+name				gradle
+version				0.9.2
+categories			devel java groovy
+maintainers			breskeby
+description			An open-source build system that is based on the Groovy language
+long_description	Gradle is a build system which offers you ease, power and freedom. \
+					You can choose the balance for yourself. It has powerful multi-project build \
+					support. It has a layer on top of Ivy that provides a build-by-convention \
+					integration for Ivy. It gives you always the choice between the flexibility \
+					of Ant and the convenience of a build-by-convention behavior.
+					
+homepage			http://www.gradle.org/
+conflicts			gradle-devel
+platforms			darwin
+distname			${name}-${version}-bin
+master_sites		http://gradle.artifactoryonline.com/gradle/distributions
+checksums 			md5	d4ab7746053b37635302c817ac532b89 \
+					sha1 cc02c633e4ecff7c6fa8ba43a9ab4e4a396c16ea \
+					rmd160 ac86ce959fbb974e3a2fee679d7a8afea35aae50
+						
+worksrcdir			${name}-${version}
+set workTarget		""
+
+use_zip				yes
+use_configure 		no
+
+build.cmd			true
+
+platform darwin {
+    extract.post_args	| gnutar -x
+    build.env		JAVA_HOME=/Library/Java/Home
+}
+
+pre-destroot {
+	# Remove extraneous bat files
+	foreach f [glob -directory ${worksrcpath}${workTarget}/bin *.bat] {
+		file delete $f
+	}
+}
+
+destroot	{
+	# Create the target java directory
+	xinstall -m 755 -d ${destroot}${prefix}/share/java/${name}
+
+	# Copy over the needed elements of our directory tree
+	file copy ${worksrcpath}/bin				\
+			  ${worksrcpath}/lib 				\
+			  ${worksrcpath}/LICENSE		 	\
+			  ${worksrcpath}/NOTICE		 		\
+			  ${destroot}${prefix}/share/java/${name}
+
+	# Symlink gradle into the bin directory
+	system "cd ${destroot}${prefix}/bin && ln -s ${prefix}/share/java/${name}/bin/gradle"
+}
+
+post-activate {
+ 	        ui_msg "****************************************************************************"
+ 	        ui_msg "* Remember to set the environment variable GRADLE_HOME to the path to"
+ 	        ui_msg "* the gradle distribution: ${prefix}/share/java/${name}"
+ 	        ui_msg "****************************************************************************"
+ }

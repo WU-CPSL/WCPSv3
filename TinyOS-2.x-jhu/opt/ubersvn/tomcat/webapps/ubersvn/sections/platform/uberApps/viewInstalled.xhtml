@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:p="http://primefaces.prime.com.tr/ui" xmlns:h="http://java.sun.com/jsf/html">
+<ui:composition>
+  <ol id="sub-toc">
+    <li><h:outputLink title="#{msg.uberAppsStoreTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/uberApps/viewStore.jsf">
+        <span>#{msg.uberAppsStoreTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.uberAppsAccountTabAltText}" rendered="#{basePage.purchaser and storeAccountManagedBean.registered}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/uberApps/viewAccount.jsf">
+        <span>#{msg.uberAppsAccountTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink title="#{msg.uberAppsAccountTabAltText}" rendered="#{basePage.purchaser and !storeAccountManagedBean.registered}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/uberApps/storeRegistration.jsf">
+        <span>#{msg.uberAppsAccountTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink title="#{msg.uberAppsRequestedTabAltText}" rendered="#{basePage.purchaser or basePage.systemAdmin}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/uberApps/viewRequested.jsf">
+        <span>#{msg.uberAppsRequestedTabText}</span>
+      </h:outputLink>
+    </li>
+    <li class="current"><h:outputLink title="#{msg.uberAppsInstalledTabAltText}" rendered="#{basePage.systemAdmin}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/uberApps/viewInstalled.jsf">
+        <span>#{msg.uberAppsInstalledTabText}</span>
+      </h:outputLink>
+    </li>
+  </ol>
+  <p:panel id="subscriptionsStatusPanel" styleClass="tabbed-panel">
+    <p:dataTable id="availableSubscriptionsTable" widgetVar="subsTable" var="sub" value="#{storeInstalledAppsManagedBean.subscriptions}" emptyMessage="">
+      <p:column sortBy="#{sub.productName}">
+        <f:facet name="header">
+          <h:outputText value="#{msg.uberAppsInstalledName}" />
+        </f:facet>
+        <h:outputText value="#{sub.productName}" />
+      </p:column>
+      <p:column sortBy="#{sub.state}">
+        <f:facet name="header">
+          <h:outputText value="#{msg.uberAppsInstalledStatus}" />
+        </f:facet>
+        <h:outputText value="#{sub.state}" />
+      </p:column>
+      <p:column style="width: 320px;">
+        <f:facet name="header">
+          <h:outputText value="#{msg.uberAppsInstalledAction}" />
+        </f:facet>
+
+        <p:commandButton styleClass="roundedButtonLarge" rendered="#{sub.created}" value="#{msg.uberAppsDownloadButton}" action="#{storeInstalledAppsManagedBean.downloadNow}"
+          onclick="downloadDialog.show()" oncomplete="downloadDialog.hide()" update="growl">
+          <f:setPropertyActionListener target="#{storeInstalledAppsManagedBean.subscription}" value="#{sub}" />
+        </p:commandButton>
+
+        <p:commandButton styleClass="roundedButtonMedium" rendered="#{sub.pendingActive}" value="#{msg.uberAppsActivateButton}" action="#{storeInstalledAppsManagedBean.installNow}"
+          onclick="installDialog.show()" oncomplete="installDialog.hide()" update="growl">
+          <f:setPropertyActionListener target="#{storeInstalledAppsManagedBean.subscription}" value="#{sub}" />
+        </p:commandButton>
+
+        <p:commandButton  styleClass="roundedButtonSmall" rendered="#{sub.active}" value="#{msg.uberAppsConfigureButton}" action="/views/platform/uberApps/viewConfigure.jsf?faces-redirect=true">
+          <f:setPropertyActionListener target="#{storeInstalledAppsManagedBean.subscription}" value="#{sub}" />
+        </p:commandButton>
+        
+        <p:commandButton styleClass="roundedButtonLarge" rendered="#{sub.active}" value="#{msg.uberAppsCancelSubscriptionButton}"
+          immediate="true" onclick="cancelDialog.show()">
+        </p:commandButton>
+
+      </p:column>
+    </p:dataTable>
+  </p:panel>
+  <p:dialog header="Cancellation Information" widgetVar="cancelDialog" modal="true" height="140">
+    <h:outputText value="Please contact WANdisco customer support to cancel this product." />
+    <br />
+    <br />
+    <h:outputLink value="http://www.wandisco.com/contact-us" target="_blank">http://www.wandisco.com/contact-us</h:outputLink>
+  </p:dialog>
+  <p:dialog header="Downloading application." widgetVar="downloadDialog" modal="true" height="140" draggable="false" closable="false">
+    <h:graphicImage id="updatingImage" style="border:0; margin-left: auto; margin-right: auto; display: block;" library="img/platform"
+      name="progress.gif" />
+  </p:dialog>
+  <p:dialog header="Installing application." widgetVar="installDialog" modal="true" height="140" draggable="false" closable="false">
+    <h:graphicImage id="updatingImage2" style="border:0; margin-left: auto; margin-right: auto; display: block;" library="img/platform"
+      name="progress.gif" />
+  </p:dialog>
+</ui:composition>
+</html>

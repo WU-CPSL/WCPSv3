@@ -1,0 +1,33 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 88821 2012-01-12 23:02:19Z dports@macports.org $
+
+PortSystem          1.0
+PortGroup           texlive 1.0
+
+name                texlive-lang-portuguese
+version             23092
+revision            0
+
+categories          tex
+maintainers         dports
+license             Copyleft Permissive
+description         TeX Live: Portuguese
+long_description    Support for typesetting Portuguese.
+
+checksums           texlive-lang-portuguese-23092-run.tar.xz \
+                    rmd160  a006e36df90ad1311bbdd7ca5a4410d0b1701036 \
+                    sha256  211487aa839102a81caea4ecf8b47595afd9b4d7bb14f00643390be51e9854de \
+                    texlive-lang-portuguese-23092-doc.tar.xz \
+                    rmd160  53c7fbce4864af6cfa3335c3ae24b577cee522c7 \
+                    sha256  50f03d4531297c66ba062108aace57953fb2afe580e3ee2c0adc6d2af9731459 \
+                    texlive-lang-portuguese-23092-src.tar.xz \
+                    rmd160  304298a1ecadb4aa59aeb409a7ac4fbb4f6392c5 \
+                    sha256  58c33b0f9608bae454c3f3599297ec756accfa946bf770faa7d447bdfa722e9f
+
+depends_lib         port:texlive-basic
+
+texlive.languages      \
+    {portuguese loadhyph-pt.tex 2 3 {portuges} {hyph-pt.pat.txt} {hyph-pt.hyp.txt} {} }
+
+
+texlive.texmfport

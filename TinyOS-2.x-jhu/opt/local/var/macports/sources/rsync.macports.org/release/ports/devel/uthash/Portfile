@@ -1,0 +1,39 @@
+# $Id: Portfile 87350 2011-11-17 22:12:30Z mww@macports.org $
+
+PortSystem 1.0
+
+name                uthash
+version             1.9.5
+categories          devel
+platforms           darwin
+maintainers         mww
+license             BSD
+description         easy-to-use hash implementation for C programmers.
+long_description    ${description}
+
+homepage            http://uthash.sourceforge.net/
+master_sites        sourceforge
+checksums           md5     56067ad0b776ffe51823164c92a5a5bd \
+                    sha1    3e4f6637dd4ce616a3773c97c7c8329813b3f374 \
+                    rmd160  63e2e68abad9dd1597c8cdf1702f3d27fddbbbce
+use_bzip2           yes
+
+use_configure       no
+
+supported_archs     noarch
+
+build               {}
+
+destroot {
+    xinstall -d ${destroot}${prefix}/include/uthash/
+    xinstall -m 0444 -W ${worksrcpath}/src uthash.h utlist.h utarray.h utstring.h \
+        ${destroot}${prefix}/include/uthash/
+    xinstall -d ${destroot}${prefix}/share/doc/
+    copy ${worksrcpath}/doc ${destroot}${prefix}/share/doc/${name}
+    delete ${destroot}${prefix}/share/doc/${name}/Makefile
+}
+
+livecheck.type      regex
+livecheck.url       ${homepage}
+livecheck.regex     ${name}-(\[0-9\\.\]+)\\${extract.suffix}
+

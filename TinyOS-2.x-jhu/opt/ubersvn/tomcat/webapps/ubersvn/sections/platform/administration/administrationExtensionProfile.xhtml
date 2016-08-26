@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:p="http://primefaces.prime.com.tr/ui" xmlns:h="http://java.sun.com/jsf/html">
+<ui:composition>
+  <ol id="sub-toc">
+    <li><h:outputLink title="#{msg.adminStatusTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationStatus.jsf">
+        <span>#{msg.adminStatusTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminApacheServerSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationApacheServerSettings.jsf">
+        <span>#{msg.adminSubversionServerSettingsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminUberServerSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUberServerSettings.jsf">
+        <span>#{msg.adminUberServerSettingsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminUberPreferenceSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUberPreferenceSettings.jsf">
+        <span>#{msg.adminUberPreferenceSettingsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminEmailServerSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationEmailServerSettings.jsf">
+        <span>#{msg.adminEmailServerSettingsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminLogsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationLogs.jsf">
+        <span>#{msg.adminLogsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminUpdatesTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUpdates.jsf">
+        <span>#{msg.adminUpdatesTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminLDAPTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUberLDAPSettings.jsf">
+        <span>#{msg.adminLDAPTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink title="#{msg.backup}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationBackup.jsf">
+        <span>#{msg.backup}</span>
+      </h:outputLink>
+    </li>
+    <li class="current"><h:outputLink title="#{msg.adminExtensionsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationViewExtensions.jsf">
+        <span>#{msg.adminExtensionsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminSubversionReleaseLinkText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationSubversionRelease.jsf">
+        <span>#{msg.adminSubversionReleaseLinkText}</span>
+      </h:outputLink></li>
+  </ol>
+  <p:panel id="adminViewExtensionsPanel" styleClass="tabbed-panel">
+    <ol id="innerTab">
+      <li id="extensionsInnerTab"><h:outputLink
+          value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationExtensionProfile.jsf"
+          title="#{msg.addExtensionTabAltText}">
+          <span>#{msg.addExtensionTabText}</span>
+        </h:outputLink></li>
+    </ol>
+    <p:panel styleClass="base-tab-panel">
+      <p:panel styleClass="base-tab-inner-panel" id="viewExtensionsPanel">
+        <h:panelGrid columns="1" columnClasses="repoNameColumnFull">
+          <h:panelGroup>
+            <h:outputText id="extensionNameHeader" styleClass="formOutputText" style="font-size: 24px;"
+              value="#{extensionsManagedBean.extension.name}" />
+            <br />
+            <hr />
+          </h:panelGroup>
+        </h:panelGrid>
+        <h:panelGrid id="mainPanelGrid" columns="2" width="100%" columnClasses="col50, col50">
+          <h:panelGrid columns="2">
+            <h:panelGroup>
+              <h:outputLabel for="extensionName" value="#{msg.extensionNameLabel}" />
+              <p:spacer width="10" />
+              <br />
+              <br />
+            </h:panelGroup>
+            <h:panelGroup>
+              <p:focus for="extensionName" />
+              <h:inputText id="extensionName" styleClass="wizardFormField" size="50" required="true"
+                value="#{extensionsManagedBean.extension.name}" requiredMessage="#{msg.extensionNameRequired}" />
+              <p:spacer width="10" />
+              <h:message style="color: red; font-size: 14px; height: 11px;" for="extensionName" />
+              <br />
+              <br />
+            </h:panelGroup>
+            <h:panelGroup>
+              <h:outputLabel for="extensionLink" value="#{msg.extensionLinkLabel}" />
+              <p:spacer width="10" />
+              <br />
+              <br />
+            </h:panelGroup>
+            <h:panelGroup>
+              <h:inputText id="extensionLink" styleClass="wizardFormField" size="50" required="true"
+                value="#{extensionsManagedBean.extension.link}" requiredMessage="#{msg.extensionLinkRequired}" />
+              <p:spacer width="10" />
+              <h:message style="color: red; font-size: 14px; height: 11px;" for="extensionLink" />
+              <br />
+              <br />
+            </h:panelGroup>
+            <h:panelGroup>
+              <h:outputLabel for="extensionUseNewTab" value="#{msg.openLinkInANewBrowserTab}" />
+              <p:spacer width="10" />
+              <br />
+              <br />
+            </h:panelGroup>
+            <h:panelGroup>
+              <h:selectBooleanCheckbox id="extensionUseNewTab" value="#{extensionsManagedBean.extension.useNewTab}" />
+              <br />
+              <br />
+            </h:panelGroup>
+
+          </h:panelGrid>
+          <p:spacer/>
+          <h:panelGroup>
+            <p:commandButton id="administrationSaveExtension" value="#{msg.saveButtonText}" styleClass="roundedButtonSmall"
+              action="#{extensionsManagedBean.saveExtension}" ajax="false" />
+            <p:spacer width="15" />
+            <p:commandButton id="administrationDeleteExtension" value="#{msg.extensionDeleteButtonText}" styleClass="roundedButtonMedium"
+              onclick="confirmation.show()" rendered="#{!extensionsManagedBean.extension.appExtension}" />
+          </h:panelGroup>
+          <p:spacer/>
+        </h:panelGrid>
+      </p:panel>
+    </p:panel>
+  </p:panel>
+  <p:confirmDialog message="#{msg.confirmExtensionDeleteMessage}" header="#{msg.confirmExtensionDeleteHeader}" severity="alert"
+    widgetVar="confirmation">
+    <p:commandButton value="#{msg.deleteButton}" oncomplete="confirmation.hide()" action="#{extensionsManagedBean.deleteExtension}"
+      ajax="false" />
+    <p:commandButton value="#{msg.cancelButton}" onclick="confirmation.hide()" type="button">
+      <f:setPropertyActionListener target="#{extensionsManagedBean.extensionToDelete}" value="#{extensionManagedBean.extension}" />
+    </p:commandButton>
+  </p:confirmDialog>
+  <script type="text/javascript">
+			function reloadPage() {
+				setTimeout("location.reload(true);", 1);
+			}
+			jQuery(document).ready(function() {
+				var tabElement = '#extensionsInnerTab';
+				jQuery(tabElement).addClass('current');
+			});
+		</script>
+</ui:composition>
+</html>

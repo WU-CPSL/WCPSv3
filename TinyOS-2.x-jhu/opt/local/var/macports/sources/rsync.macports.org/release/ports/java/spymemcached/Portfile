@@ -1,0 +1,51 @@
+# $Id: Portfile 72976 2010-10-31 03:52:46Z blair@macports.org $
+
+PortSystem 1.0
+
+name                    spymemcached
+version                 2.5
+categories              java
+platforms               darwin
+maintainers             blair
+description             A high performance, distributed object caching system.
+
+long_description        Memcached is a high-performance, distributed \
+                        memory object caching system, generic in nature, \
+                        but intended for use in speeding up dynamic web \
+                        applications by alleviating database load.  This \
+                        Port provides a native Java client written by \
+                        Dustin Sallings.
+
+homepage                http://code.google.com/p/spymemcached/
+
+master_sites            googlecode
+distfiles               memcached-${version}.jar \
+                        memcached-${version}-javadoc.zip
+extract.only
+
+checksums               memcached-${version}.jar \
+                                md5 a45f87972022d329dd1172d0b20a70b2 \
+                                sha1 c2f032518175925ecda7485265910db0bf45b81c \
+                                rmd160 d1a744322b01e8d7ba26f24dae0b63e8fafa560b \
+                        memcached-${version}-javadoc.zip \
+                                md5 8bbc2f89d0806129300f1d4ccd9b1da7 \
+                                sha1 46cd42267bc77a3e44b051a11717c5c2e1430aeb \
+                                rmd160 17ab43b7b45894e4c73be1949d40577022d841ef
+
+depends_lib             bin:java:kaffe
+
+use_configure           no
+
+build { }
+
+destroot {
+        set javadir ${destroot}${prefix}/share/java
+        set docdir ${destroot}${prefix}/share/doc/${name}
+
+        xinstall -d -m 755 ${javadir}
+        xinstall -d -m 755 ${docdir}/api
+
+        file copy ${distpath}/memcached-${version}.jar \
+                ${javadir}/spymemcached.jar
+        system "unzip -q ${distpath}/memcached-${version}-javadoc.zip -d ${docdir}/api"
+}

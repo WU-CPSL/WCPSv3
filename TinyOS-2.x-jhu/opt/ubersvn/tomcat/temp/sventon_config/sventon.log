@@ -1,0 +1,612 @@
+2013-03-08 09:16:43,860 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/export/(**/*:path)*] onto handler 'exportController'>
+2013-03-08 09:16:43,882 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/diff/(**/*:path)*] onto handler 'diffController'>
+2013-03-08 09:16:43,904 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/showthumbnails/(**/*:path)*] onto handler 'showThumbnailsController'>
+2013-03-08 09:16:43,920 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/xml/(*:name)/rss/(**/*:path)*] onto handler 'rssController'>
+2013-03-08 18:11:54,713 INFO [org.sventon.appl.ConfigDirectory] - <Config root directory for current servlet context set to: /opt/ubersvn/tomcat/temp/sventon_config/RepositoryBrowser>
+2013-03-08 18:11:54,989 INFO [org.sventon.repository.RepositoryChangeMonitorImpl] - <Starting repository monitor>
+2013-03-08 18:11:55,241 INFO [org.sventon.service.SVNProvider] - <Found SVNProvider: class org.sventon.service.javahl.JavaHLSVNProvider>
+2013-03-08 18:11:55,321 INFO [org.sventon.cache.direntrycache.DirEntryCacheUpdater] - <Starting>
+2013-03-08 18:11:55,337 INFO [org.sventon.cache.logmessagecache.LogMessageCacheUpdater] - <Starting>
+2013-03-08 18:11:55,513 INFO [org.sventon.appl.Application] - <Initializing sventon version 0.1 beta>
+2013-03-08 18:11:55,514 INFO [org.sventon.appl.Application] - <No repository has been configured yet. Access sventon web application to start the setup>
+2013-03-08 18:11:58,172 INFO [org.sventon.appl.Application] - <Starting Application reinitialization.>
+2013-03-08 18:11:58,172 WARN [org.sventon.appl.Application] - <Configuration property file did exist but did not contain any configuration values>
+2013-03-08 18:11:58,183 INFO [org.sventon.appl.Application] - <New config same as old. Configuration unchanged.>
+2013-03-08 18:11:58,183 INFO [org.sventon.appl.Application] - <Application reinitialization completed.>
+2013-03-08 18:11:58,499 INFO [org.hibernate.validator.util.Version] - <Hibernate Validator 4.1.0.Final>
+2013-03-08 18:11:59,415 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/show/(**/*:path)*] onto handler 'showFileController'>
+2013-03-08 18:11:59,427 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/deleteconfig] onto handler 'deleteConfigurationController'>
+2013-03-08 18:11:59,457 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/searchlogs/(**/*:path)*] onto handler 'searchLogsController'>
+2013-03-08 18:11:59,487 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/get/(**/*:path)*] onto handler 'getFileController'>
+2013-03-08 18:11:59,511 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/searchentries/(**/*:path)*] onto handler 'searchEntriesController'>
+2013-03-08 18:11:59,538 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/info] onto handler 'revisionInfoController'>
+2013-03-08 18:11:59,562 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/flatten/(**/*:path)*] onto handler 'flattenController'>
+2013-03-08 18:11:59,606 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/configlogin] onto handler 'configurationLoginController'>
+2013-03-08 18:11:59,632 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/static] onto handler 'getStaticContentController'>
+2013-03-08 18:11:59,680 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/blame/(**/*:path)*] onto handler 'blameController'>
+2013-03-08 18:11:59,712 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/listfiles/(**/*:path)*] onto handler 'listFilesController'>
+2013-03-08 18:11:59,741 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/exportprogress] onto handler 'exportProgressController'>
+2013-03-08 18:11:59,762 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/latestrevisions] onto handler 'latestRevisionsController'>
+2013-03-08 18:11:59,792 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/getmessage] onto handler 'logMessageController'>
+2013-03-08 18:11:59,826 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/list/(**/*:path)*] onto handler 'repoBrowserController'>
+2013-03-08 18:11:59,845 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/filehistory/(**/*:path)*] onto handler 'fileHistoryController'>
+2013-03-08 18:11:59,864 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/entrytray/(**/*:path)*] onto handler 'entryTrayController'>
+2013-03-08 18:11:59,891 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/showlocks/(**/*:path)*] onto handler 'showLocksController'>
+2013-03-08 18:11:59,916 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/goto/(**/*:path)*] onto handler 'goToController'>
+2013-03-08 18:11:59,933 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/listconfigs] onto handler 'listConfigurationsController'>
+2013-03-08 18:11:59,944 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/submitconfig] onto handler 'submitConfigurationsController'>
+2013-03-08 18:11:59,965 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/log/(**/*:path)*] onto handler 'showLogsController'>
+2013-03-08 18:11:59,984 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/export/(**/*:path)*] onto handler 'exportController'>
+2013-03-08 18:12:00,007 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/diff/(**/*:path)*] onto handler 'diffController'>
+2013-03-08 18:12:00,030 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/showthumbnails/(**/*:path)*] onto handler 'showThumbnailsController'>
+2013-03-08 18:12:00,047 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/xml/(*:name)/rss/(**/*:path)*] onto handler 'rssController'>
+2013-03-10 16:54:19,017 INFO [org.sventon.appl.ConfigDirectory] - <Config root directory for current servlet context set to: /opt/ubersvn/tomcat/temp/sventon_config/RepositoryBrowser>
+2013-03-10 16:54:19,327 INFO [org.sventon.repository.RepositoryChangeMonitorImpl] - <Starting repository monitor>
+2013-03-10 16:54:19,390 INFO [org.sventon.service.SVNProvider] - <Found SVNProvider: class org.sventon.service.javahl.JavaHLSVNProvider>
+2013-03-10 16:54:19,921 INFO [org.sventon.cache.direntrycache.DirEntryCacheUpdater] - <Starting>
+2013-03-10 16:54:19,929 INFO [org.sventon.cache.logmessagecache.LogMessageCacheUpdater] - <Starting>
+2013-03-10 16:54:20,176 INFO [org.sventon.appl.Application] - <Initializing sventon version 0.1 beta>
+2013-03-10 16:54:20,202 INFO [org.sventon.appl.Application] - <No repository has been configured yet. Access sventon web application to start the setup>
+2013-03-10 16:54:35,835 INFO [org.sventon.appl.Application] - <Starting Application reinitialization.>
+2013-03-10 16:54:35,835 WARN [org.sventon.appl.Application] - <Configuration property file did exist but did not contain any configuration values>
+2013-03-10 16:54:36,124 INFO [org.sventon.appl.Application] - <New config same as old. Configuration unchanged.>
+2013-03-10 16:54:36,124 INFO [org.sventon.appl.Application] - <Application reinitialization completed.>
+2013-03-10 16:54:36,717 INFO [org.hibernate.validator.util.Version] - <Hibernate Validator 4.1.0.Final>
+2013-03-10 16:54:38,064 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/show/(**/*:path)*] onto handler 'showFileController'>
+2013-03-10 16:54:38,071 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/deleteconfig] onto handler 'deleteConfigurationController'>
+2013-03-10 16:54:38,084 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/searchlogs/(**/*:path)*] onto handler 'searchLogsController'>
+2013-03-10 16:54:38,097 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/get/(**/*:path)*] onto handler 'getFileController'>
+2013-03-10 16:54:38,114 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/searchentries/(**/*:path)*] onto handler 'searchEntriesController'>
+2013-03-10 16:54:38,126 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/info] onto handler 'revisionInfoController'>
+2013-03-10 16:54:38,144 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/flatten/(**/*:path)*] onto handler 'flattenController'>
+2013-03-10 16:54:38,157 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/configlogin] onto handler 'configurationLoginController'>
+2013-03-10 16:54:38,164 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/static] onto handler 'getStaticContentController'>
+2013-03-10 16:54:38,185 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/blame/(**/*:path)*] onto handler 'blameController'>
+2013-03-10 16:54:38,201 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/listfiles/(**/*:path)*] onto handler 'listFilesController'>
+2013-03-10 16:54:38,221 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/exportprogress] onto handler 'exportProgressController'>
+2013-03-10 16:54:38,240 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/latestrevisions] onto handler 'latestRevisionsController'>
+2013-03-10 16:54:38,257 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/getmessage] onto handler 'logMessageController'>
+2013-03-10 16:54:38,272 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/list/(**/*:path)*] onto handler 'repoBrowserController'>
+2013-03-10 16:54:38,288 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/filehistory/(**/*:path)*] onto handler 'fileHistoryController'>
+2013-03-10 16:54:38,304 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/entrytray/(**/*:path)*] onto handler 'entryTrayController'>
+2013-03-10 16:54:38,319 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/showlocks/(**/*:path)*] onto handler 'showLocksController'>
+2013-03-10 16:54:38,338 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/goto/(**/*:path)*] onto handler 'goToController'>
+2013-03-10 16:54:38,345 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/listconfigs] onto handler 'listConfigurationsController'>
+2013-03-10 16:54:38,366 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/submitconfig] onto handler 'submitConfigurationsController'>
+2013-03-10 16:54:38,383 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/log/(**/*:path)*] onto handler 'showLogsController'>
+2013-03-10 16:54:38,401 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/export/(**/*:path)*] onto handler 'exportController'>
+2013-03-10 16:54:38,418 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/diff/(**/*:path)*] onto handler 'diffController'>
+2013-03-10 16:54:38,433 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/showthumbnails/(**/*:path)*] onto handler 'showThumbnailsController'>
+2013-03-10 16:54:38,445 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/xml/(*:name)/rss/(**/*:path)*] onto handler 'rssController'>
+2013-03-11 09:31:38,845 INFO [org.sventon.appl.ConfigDirectory] - <Config root directory for current servlet context set to: /opt/ubersvn/tomcat/temp/sventon_config/RepositoryBrowser>
+2013-03-11 09:31:39,370 INFO [org.sventon.repository.RepositoryChangeMonitorImpl] - <Starting repository monitor>
+2013-03-11 09:31:39,528 INFO [org.sventon.service.SVNProvider] - <Found SVNProvider: class org.sventon.service.javahl.JavaHLSVNProvider>
+2013-03-11 09:31:40,610 INFO [org.sventon.cache.direntrycache.DirEntryCacheUpdater] - <Starting>
+2013-03-11 09:31:40,620 INFO [org.sventon.cache.logmessagecache.LogMessageCacheUpdater] - <Starting>
+2013-03-11 09:31:41,447 INFO [org.sventon.appl.Application] - <Initializing sventon version 0.1 beta>
+2013-03-11 09:31:41,489 INFO [org.sventon.appl.Application] - <No repository has been configured yet. Access sventon web application to start the setup>
+2013-03-11 09:31:53,425 INFO [org.sventon.appl.Application] - <Starting Application reinitialization.>
+2013-03-11 09:31:53,425 WARN [org.sventon.appl.Application] - <Configuration property file did exist but did not contain any configuration values>
+2013-03-11 09:31:53,482 INFO [org.sventon.appl.Application] - <New config same as old. Configuration unchanged.>
+2013-03-11 09:31:53,482 INFO [org.sventon.appl.Application] - <Application reinitialization completed.>
+2013-03-11 09:31:53,888 INFO [org.hibernate.validator.util.Version] - <Hibernate Validator 4.1.0.Final>
+2013-03-11 09:31:55,844 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/show/(**/*:path)*] onto handler 'showFileController'>
+2013-03-11 09:31:55,849 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/deleteconfig] onto handler 'deleteConfigurationController'>
+2013-03-11 09:31:55,860 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/searchlogs/(**/*:path)*] onto handler 'searchLogsController'>
+2013-03-11 09:31:55,872 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/get/(**/*:path)*] onto handler 'getFileController'>
+2013-03-11 09:31:55,883 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/searchentries/(**/*:path)*] onto handler 'searchEntriesController'>
+2013-03-11 09:31:55,896 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/info] onto handler 'revisionInfoController'>
+2013-03-11 09:31:55,910 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/flatten/(**/*:path)*] onto handler 'flattenController'>
+2013-03-11 09:31:55,922 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/configlogin] onto handler 'configurationLoginController'>
+2013-03-11 09:31:55,947 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/static] onto handler 'getStaticContentController'>
+2013-03-11 09:31:55,970 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/blame/(**/*:path)*] onto handler 'blameController'>
+2013-03-11 09:31:55,983 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/listfiles/(**/*:path)*] onto handler 'listFilesController'>
+2013-03-11 09:31:55,996 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/exportprogress] onto handler 'exportProgressController'>
+2013-03-11 09:31:56,009 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/latestrevisions] onto handler 'latestRevisionsController'>
+2013-03-11 09:31:56,026 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/getmessage] onto handler 'logMessageController'>
+2013-03-11 09:31:56,044 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/list/(**/*:path)*] onto handler 'repoBrowserController'>
+2013-03-11 09:31:56,057 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/filehistory/(**/*:path)*] onto handler 'fileHistoryController'>
+2013-03-11 09:31:56,072 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/entrytray/(**/*:path)*] onto handler 'entryTrayController'>
+2013-03-11 09:31:56,088 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/showlocks/(**/*:path)*] onto handler 'showLocksController'>
+2013-03-11 09:31:56,107 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/goto/(**/*:path)*] onto handler 'goToController'>
+2013-03-11 09:31:56,116 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/listconfigs] onto handler 'listConfigurationsController'>
+2013-03-11 09:31:56,125 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/submitconfig] onto handler 'submitConfigurationsController'>
+2013-03-11 09:31:56,143 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/log/(**/*:path)*] onto handler 'showLogsController'>
+2013-03-11 09:31:56,160 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/export/(**/*:path)*] onto handler 'exportController'>
+2013-03-11 09:31:56,173 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/diff/(**/*:path)*] onto handler 'diffController'>
+2013-03-11 09:31:56,188 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/showthumbnails/(**/*:path)*] onto handler 'showThumbnailsController'>
+2013-03-11 09:31:56,200 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/xml/(*:name)/rss/(**/*:path)*] onto handler 'rssController'>
+2013-03-11 18:14:05,760 INFO [org.sventon.appl.ConfigDirectory] - <Config root directory for current servlet context set to: /opt/ubersvn/tomcat/temp/sventon_config/RepositoryBrowser>
+2013-03-11 18:14:06,648 INFO [org.sventon.repository.RepositoryChangeMonitorImpl] - <Starting repository monitor>
+2013-03-11 18:14:06,906 INFO [org.sventon.service.SVNProvider] - <Found SVNProvider: class org.sventon.service.javahl.JavaHLSVNProvider>
+2013-03-11 18:14:09,498 INFO [org.sventon.cache.direntrycache.DirEntryCacheUpdater] - <Starting>
+2013-03-11 18:14:09,506 INFO [org.sventon.cache.logmessagecache.LogMessageCacheUpdater] - <Starting>
+2013-03-11 18:14:10,624 INFO [org.sventon.appl.Application] - <Initializing sventon version 0.1 beta>
+2013-03-11 18:14:10,841 INFO [org.sventon.appl.Application] - <No repository has been configured yet. Access sventon web application to start the setup>
+2013-03-11 18:14:22,641 INFO [org.sventon.appl.Application] - <Starting Application reinitialization.>
+2013-03-11 18:14:22,641 WARN [org.sventon.appl.Application] - <Configuration property file did exist but did not contain any configuration values>
+2013-03-11 18:14:22,711 INFO [org.sventon.appl.Application] - <New config same as old. Configuration unchanged.>
+2013-03-11 18:14:22,711 INFO [org.sventon.appl.Application] - <Application reinitialization completed.>
+2013-03-11 18:14:23,183 INFO [org.hibernate.validator.util.Version] - <Hibernate Validator 4.1.0.Final>
+2013-03-11 18:14:24,729 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/show/(**/*:path)*] onto handler 'showFileController'>
+2013-03-11 18:14:24,735 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/deleteconfig] onto handler 'deleteConfigurationController'>
+2013-03-11 18:14:24,746 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/searchlogs/(**/*:path)*] onto handler 'searchLogsController'>
+2013-03-11 18:14:24,757 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/get/(**/*:path)*] onto handler 'getFileController'>
+2013-03-11 18:14:24,771 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/searchentries/(**/*:path)*] onto handler 'searchEntriesController'>
+2013-03-11 18:14:24,784 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/info] onto handler 'revisionInfoController'>
+2013-03-11 18:14:24,797 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/flatten/(**/*:path)*] onto handler 'flattenController'>
+2013-03-11 18:14:24,810 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/configlogin] onto handler 'configurationLoginController'>
+2013-03-11 18:14:24,818 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/static] onto handler 'getStaticContentController'>
+2013-03-11 18:14:24,845 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/blame/(**/*:path)*] onto handler 'blameController'>
+2013-03-11 18:14:24,856 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/listfiles/(**/*:path)*] onto handler 'listFilesController'>
+2013-03-11 18:14:24,871 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/exportprogress] onto handler 'exportProgressController'>
+2013-03-11 18:14:24,883 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/latestrevisions] onto handler 'latestRevisionsController'>
+2013-03-11 18:14:24,899 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/getmessage] onto handler 'logMessageController'>
+2013-03-11 18:14:24,914 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/list/(**/*:path)*] onto handler 'repoBrowserController'>
+2013-03-11 18:14:24,931 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/filehistory/(**/*:path)*] onto handler 'fileHistoryController'>
+2013-03-11 18:14:24,948 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/entrytray/(**/*:path)*] onto handler 'entryTrayController'>
+2013-03-11 18:14:24,965 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/showlocks/(**/*:path)*] onto handler 'showLocksController'>
+2013-03-11 18:14:25,011 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/goto/(**/*:path)*] onto handler 'goToController'>
+2013-03-11 18:14:25,018 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/listconfigs] onto handler 'listConfigurationsController'>
+2013-03-11 18:14:25,025 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/submitconfig] onto handler 'submitConfigurationsController'>
+2013-03-11 18:14:25,042 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/log/(**/*:path)*] onto handler 'showLogsController'>
+2013-03-11 18:14:25,058 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/export/(**/*:path)*] onto handler 'exportController'>
+2013-03-11 18:14:25,077 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/diff/(**/*:path)*] onto handler 'diffController'>
+2013-03-11 18:14:25,118 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/showthumbnails/(**/*:path)*] onto handler 'showThumbnailsController'>
+2013-03-11 18:14:25,134 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/xml/(*:name)/rss/(**/*:path)*] onto handler 'rssController'>
+2013-03-12 01:46:23,072 INFO [org.sventon.appl.ConfigDirectory] - <Config root directory for current servlet context set to: /opt/ubersvn/tomcat/temp/sventon_config/RepositoryBrowser>
+2013-03-12 01:46:23,437 INFO [org.sventon.repository.RepositoryChangeMonitorImpl] - <Starting repository monitor>
+2013-03-12 01:46:23,456 INFO [org.sventon.service.SVNProvider] - <Found SVNProvider: class org.sventon.service.javahl.JavaHLSVNProvider>
+2013-03-12 01:46:23,559 INFO [org.sventon.cache.direntrycache.DirEntryCacheUpdater] - <Starting>
+2013-03-12 01:46:23,580 INFO [org.sventon.cache.logmessagecache.LogMessageCacheUpdater] - <Starting>
+2013-03-12 01:46:23,747 INFO [org.sventon.appl.Application] - <Initializing sventon version 0.1 beta>
+2013-03-12 01:46:23,749 INFO [org.sventon.appl.Application] - <No repository has been configured yet. Access sventon web application to start the setup>
+2013-03-12 01:46:30,109 INFO [org.sventon.appl.Application] - <Starting Application reinitialization.>
+2013-03-12 01:46:30,109 WARN [org.sventon.appl.Application] - <Configuration property file did exist but did not contain any configuration values>
+2013-03-12 01:46:30,143 INFO [org.sventon.appl.Application] - <New config same as old. Configuration unchanged.>
+2013-03-12 01:46:30,143 INFO [org.sventon.appl.Application] - <Application reinitialization completed.>
+2013-03-12 01:46:30,393 INFO [org.hibernate.validator.util.Version] - <Hibernate Validator 4.1.0.Final>
+2013-03-12 01:46:31,224 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/show/(**/*:path)*] onto handler 'showFileController'>
+2013-03-12 01:46:31,230 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/deleteconfig] onto handler 'deleteConfigurationController'>
+2013-03-12 01:46:31,243 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/searchlogs/(**/*:path)*] onto handler 'searchLogsController'>
+2013-03-12 01:46:31,262 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/get/(**/*:path)*] onto handler 'getFileController'>
+2013-03-12 01:46:31,279 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/searchentries/(**/*:path)*] onto handler 'searchEntriesController'>
+2013-03-12 01:46:31,298 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/info] onto handler 'revisionInfoController'>
+2013-03-12 01:46:31,332 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/flatten/(**/*:path)*] onto handler 'flattenController'>
+2013-03-12 01:46:31,352 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/configlogin] onto handler 'configurationLoginController'>
+2013-03-12 01:46:31,366 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/static] onto handler 'getStaticContentController'>
+2013-03-12 01:46:31,382 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/blame/(**/*:path)*] onto handler 'blameController'>
+2013-03-12 01:46:31,398 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/listfiles/(**/*:path)*] onto handler 'listFilesController'>
+2013-03-12 01:46:31,414 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/exportprogress] onto handler 'exportProgressController'>
+2013-03-12 01:46:31,432 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/latestrevisions] onto handler 'latestRevisionsController'>
+2013-03-12 01:46:31,447 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/getmessage] onto handler 'logMessageController'>
+2013-03-12 01:46:31,465 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/list/(**/*:path)*] onto handler 'repoBrowserController'>
+2013-03-12 01:46:31,479 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/filehistory/(**/*:path)*] onto handler 'fileHistoryController'>
+2013-03-12 01:46:31,495 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/entrytray/(**/*:path)*] onto handler 'entryTrayController'>
+2013-03-12 01:46:31,507 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/showlocks/(**/*:path)*] onto handler 'showLocksController'>
+2013-03-12 01:46:31,526 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/goto/(**/*:path)*] onto handler 'goToController'>
+2013-03-12 01:46:31,536 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/listconfigs] onto handler 'listConfigurationsController'>
+2013-03-12 01:46:31,551 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/submitconfig] onto handler 'submitConfigurationsController'>
+2013-03-12 01:46:31,568 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/log/(**/*:path)*] onto handler 'showLogsController'>
+2013-03-12 01:46:31,586 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/export/(**/*:path)*] onto handler 'exportController'>
+2013-03-12 01:46:31,610 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/diff/(**/*:path)*] onto handler 'diffController'>
+2013-03-12 01:46:31,627 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/showthumbnails/(**/*:path)*] onto handler 'showThumbnailsController'>
+2013-03-12 01:46:31,643 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/xml/(*:name)/rss/(**/*:path)*] onto handler 'rssController'>
+2013-03-12 09:18:57,580 INFO [org.sventon.appl.ConfigDirectory] - <Config root directory for current servlet context set to: /opt/ubersvn/tomcat/temp/sventon_config/RepositoryBrowser>
+2013-03-12 09:18:59,162 INFO [org.sventon.repository.RepositoryChangeMonitorImpl] - <Starting repository monitor>
+2013-03-12 09:18:59,713 INFO [org.sventon.service.SVNProvider] - <Found SVNProvider: class org.sventon.service.javahl.JavaHLSVNProvider>
+2013-03-12 09:19:00,374 INFO [org.sventon.cache.direntrycache.DirEntryCacheUpdater] - <Starting>
+2013-03-12 09:19:00,390 INFO [org.sventon.cache.logmessagecache.LogMessageCacheUpdater] - <Starting>
+2013-03-12 09:19:00,679 INFO [org.sventon.appl.Application] - <Initializing sventon version 0.1 beta>
+2013-03-12 09:19:00,693 INFO [org.sventon.appl.Application] - <No repository has been configured yet. Access sventon web application to start the setup>
+2013-03-12 09:19:02,071 INFO [org.sventon.appl.Application] - <Starting Application reinitialization.>
+2013-03-12 09:19:02,071 WARN [org.sventon.appl.Application] - <Configuration property file did exist but did not contain any configuration values>
+2013-03-12 09:19:02,081 INFO [org.sventon.appl.Application] - <New config same as old. Configuration unchanged.>
+2013-03-12 09:19:02,081 INFO [org.sventon.appl.Application] - <Application reinitialization completed.>
+2013-03-12 09:19:02,239 INFO [org.hibernate.validator.util.Version] - <Hibernate Validator 4.1.0.Final>
+2013-03-12 09:19:03,072 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/show/(**/*:path)*] onto handler 'showFileController'>
+2013-03-12 09:19:03,081 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/deleteconfig] onto handler 'deleteConfigurationController'>
+2013-03-12 09:19:03,101 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/searchlogs/(**/*:path)*] onto handler 'searchLogsController'>
+2013-03-12 09:19:03,121 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/get/(**/*:path)*] onto handler 'getFileController'>
+2013-03-12 09:19:03,157 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/searchentries/(**/*:path)*] onto handler 'searchEntriesController'>
+2013-03-12 09:19:03,187 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/info] onto handler 'revisionInfoController'>
+2013-03-12 09:19:03,211 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/flatten/(**/*:path)*] onto handler 'flattenController'>
+2013-03-12 09:19:03,251 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/configlogin] onto handler 'configurationLoginController'>
+2013-03-12 09:19:03,278 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/static] onto handler 'getStaticContentController'>
+2013-03-12 09:19:03,298 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/blame/(**/*:path)*] onto handler 'blameController'>
+2013-03-12 09:19:03,334 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/listfiles/(**/*:path)*] onto handler 'listFilesController'>
+2013-03-12 09:19:03,365 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/exportprogress] onto handler 'exportProgressController'>
+2013-03-12 09:19:03,394 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/latestrevisions] onto handler 'latestRevisionsController'>
+2013-03-12 09:19:03,423 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/getmessage] onto handler 'logMessageController'>
+2013-03-12 09:19:03,450 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/list/(**/*:path)*] onto handler 'repoBrowserController'>
+2013-03-12 09:19:03,482 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/filehistory/(**/*:path)*] onto handler 'fileHistoryController'>
+2013-03-12 09:19:03,506 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/entrytray/(**/*:path)*] onto handler 'entryTrayController'>
+2013-03-12 09:19:03,531 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/showlocks/(**/*:path)*] onto handler 'showLocksController'>
+2013-03-12 09:19:03,564 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/goto/(**/*:path)*] onto handler 'goToController'>
+2013-03-12 09:19:03,580 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/listconfigs] onto handler 'listConfigurationsController'>
+2013-03-12 09:19:03,596 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/submitconfig] onto handler 'submitConfigurationsController'>
+2013-03-12 09:19:03,621 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/log/(**/*:path)*] onto handler 'showLogsController'>
+2013-03-12 09:19:03,644 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/export/(**/*:path)*] onto handler 'exportController'>
+2013-03-12 09:19:03,675 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/diff/(**/*:path)*] onto handler 'diffController'>
+2013-03-12 09:19:03,708 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/showthumbnails/(**/*:path)*] onto handler 'showThumbnailsController'>
+2013-03-12 09:19:03,745 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/xml/(*:name)/rss/(**/*:path)*] onto handler 'rssController'>
+2013-03-12 18:22:56,721 INFO [org.sventon.appl.ConfigDirectory] - <Config root directory for current servlet context set to: /opt/ubersvn/tomcat/temp/sventon_config/RepositoryBrowser>
+2013-03-12 18:22:57,004 INFO [org.sventon.repository.RepositoryChangeMonitorImpl] - <Starting repository monitor>
+2013-03-12 18:22:57,024 INFO [org.sventon.service.SVNProvider] - <Found SVNProvider: class org.sventon.service.javahl.JavaHLSVNProvider>
+2013-03-12 18:22:57,131 INFO [org.sventon.cache.direntrycache.DirEntryCacheUpdater] - <Starting>
+2013-03-12 18:22:57,147 INFO [org.sventon.cache.logmessagecache.LogMessageCacheUpdater] - <Starting>
+2013-03-12 18:22:57,289 INFO [org.sventon.appl.Application] - <Initializing sventon version 0.1 beta>
+2013-03-12 18:22:57,290 INFO [org.sventon.appl.Application] - <No repository has been configured yet. Access sventon web application to start the setup>
+2013-03-12 18:22:58,620 INFO [org.sventon.appl.Application] - <Starting Application reinitialization.>
+2013-03-12 18:22:58,621 WARN [org.sventon.appl.Application] - <Configuration property file did exist but did not contain any configuration values>
+2013-03-12 18:22:58,631 INFO [org.sventon.appl.Application] - <New config same as old. Configuration unchanged.>
+2013-03-12 18:22:58,631 INFO [org.sventon.appl.Application] - <Application reinitialization completed.>
+2013-03-12 18:22:58,866 INFO [org.hibernate.validator.util.Version] - <Hibernate Validator 4.1.0.Final>
+2013-03-12 18:22:59,636 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/show/(**/*:path)*] onto handler 'showFileController'>
+2013-03-12 18:22:59,647 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/deleteconfig] onto handler 'deleteConfigurationController'>
+2013-03-12 18:22:59,675 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/searchlogs/(**/*:path)*] onto handler 'searchLogsController'>
+2013-03-12 18:22:59,705 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/get/(**/*:path)*] onto handler 'getFileController'>
+2013-03-12 18:22:59,726 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/searchentries/(**/*:path)*] onto handler 'searchEntriesController'>
+2013-03-12 18:22:59,745 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/info] onto handler 'revisionInfoController'>
+2013-03-12 18:22:59,763 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/flatten/(**/*:path)*] onto handler 'flattenController'>
+2013-03-12 18:22:59,800 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/configlogin] onto handler 'configurationLoginController'>
+2013-03-12 18:22:59,821 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/static] onto handler 'getStaticContentController'>
+2013-03-12 18:22:59,856 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/blame/(**/*:path)*] onto handler 'blameController'>
+2013-03-12 18:22:59,887 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/listfiles/(**/*:path)*] onto handler 'listFilesController'>
+2013-03-12 18:22:59,908 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/exportprogress] onto handler 'exportProgressController'>
+2013-03-12 18:22:59,927 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/latestrevisions] onto handler 'latestRevisionsController'>
+2013-03-12 18:22:59,943 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/getmessage] onto handler 'logMessageController'>
+2013-03-12 18:22:59,960 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/list/(**/*:path)*] onto handler 'repoBrowserController'>
+2013-03-12 18:22:59,976 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/filehistory/(**/*:path)*] onto handler 'fileHistoryController'>
+2013-03-12 18:22:59,990 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/entrytray/(**/*:path)*] onto handler 'entryTrayController'>
+2013-03-12 18:23:00,007 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/showlocks/(**/*:path)*] onto handler 'showLocksController'>
+2013-03-12 18:23:00,027 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/goto/(**/*:path)*] onto handler 'goToController'>
+2013-03-12 18:23:00,038 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/listconfigs] onto handler 'listConfigurationsController'>
+2013-03-12 18:23:00,048 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/submitconfig] onto handler 'submitConfigurationsController'>
+2013-03-12 18:23:00,068 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/log/(**/*:path)*] onto handler 'showLogsController'>
+2013-03-12 18:23:00,093 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/export/(**/*:path)*] onto handler 'exportController'>
+2013-03-12 18:23:00,117 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/diff/(**/*:path)*] onto handler 'diffController'>
+2013-03-12 18:23:00,141 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/showthumbnails/(**/*:path)*] onto handler 'showThumbnailsController'>
+2013-03-12 18:23:00,160 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/xml/(*:name)/rss/(**/*:path)*] onto handler 'rssController'>
+2013-03-13 09:07:47,108 INFO [org.sventon.appl.ConfigDirectory] - <Config root directory for current servlet context set to: /opt/ubersvn/tomcat/temp/sventon_config/RepositoryBrowser>
+2013-03-13 09:07:47,447 INFO [org.sventon.repository.RepositoryChangeMonitorImpl] - <Starting repository monitor>
+2013-03-13 09:07:48,356 INFO [org.sventon.service.SVNProvider] - <Found SVNProvider: class org.sventon.service.javahl.JavaHLSVNProvider>
+2013-03-13 09:07:48,535 INFO [org.sventon.cache.direntrycache.DirEntryCacheUpdater] - <Starting>
+2013-03-13 09:07:48,602 INFO [org.sventon.cache.logmessagecache.LogMessageCacheUpdater] - <Starting>
+2013-03-13 09:07:48,813 INFO [org.sventon.appl.Application] - <Initializing sventon version 0.1 beta>
+2013-03-13 09:07:48,815 INFO [org.sventon.appl.Application] - <No repository has been configured yet. Access sventon web application to start the setup>
+2013-03-13 09:07:50,370 INFO [org.sventon.appl.Application] - <Starting Application reinitialization.>
+2013-03-13 09:07:50,371 WARN [org.sventon.appl.Application] - <Configuration property file did exist but did not contain any configuration values>
+2013-03-13 09:07:50,379 INFO [org.sventon.appl.Application] - <New config same as old. Configuration unchanged.>
+2013-03-13 09:07:50,379 INFO [org.sventon.appl.Application] - <Application reinitialization completed.>
+2013-03-13 09:07:50,658 INFO [org.hibernate.validator.util.Version] - <Hibernate Validator 4.1.0.Final>
+2013-03-13 09:07:51,310 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/show/(**/*:path)*] onto handler 'showFileController'>
+2013-03-13 09:07:51,321 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/deleteconfig] onto handler 'deleteConfigurationController'>
+2013-03-13 09:07:51,338 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/searchlogs/(**/*:path)*] onto handler 'searchLogsController'>
+2013-03-13 09:07:51,358 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/get/(**/*:path)*] onto handler 'getFileController'>
+2013-03-13 09:07:51,376 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/searchentries/(**/*:path)*] onto handler 'searchEntriesController'>
+2013-03-13 09:07:51,398 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/info] onto handler 'revisionInfoController'>
+2013-03-13 09:07:51,439 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/flatten/(**/*:path)*] onto handler 'flattenController'>
+2013-03-13 09:07:51,461 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/configlogin] onto handler 'configurationLoginController'>
+2013-03-13 09:07:51,492 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/static] onto handler 'getStaticContentController'>
+2013-03-13 09:07:51,516 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/blame/(**/*:path)*] onto handler 'blameController'>
+2013-03-13 09:07:51,539 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/listfiles/(**/*:path)*] onto handler 'listFilesController'>
+2013-03-13 09:07:51,558 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/exportprogress] onto handler 'exportProgressController'>
+2013-03-13 09:07:51,578 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/latestrevisions] onto handler 'latestRevisionsController'>
+2013-03-13 09:07:51,603 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/getmessage] onto handler 'logMessageController'>
+2013-03-13 09:07:51,623 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/list/(**/*:path)*] onto handler 'repoBrowserController'>
+2013-03-13 09:07:51,641 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/filehistory/(**/*:path)*] onto handler 'fileHistoryController'>
+2013-03-13 09:07:51,661 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/entrytray/(**/*:path)*] onto handler 'entryTrayController'>
+2013-03-13 09:07:51,679 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/showlocks/(**/*:path)*] onto handler 'showLocksController'>
+2013-03-13 09:07:51,712 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/goto/(**/*:path)*] onto handler 'goToController'>
+2013-03-13 09:07:51,725 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/listconfigs] onto handler 'listConfigurationsController'>
+2013-03-13 09:07:51,759 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/submitconfig] onto handler 'submitConfigurationsController'>
+2013-03-13 09:07:51,778 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/log/(**/*:path)*] onto handler 'showLogsController'>
+2013-03-13 09:07:51,805 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/export/(**/*:path)*] onto handler 'exportController'>
+2013-03-13 09:07:51,837 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/diff/(**/*:path)*] onto handler 'diffController'>
+2013-03-13 09:07:51,874 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/showthumbnails/(**/*:path)*] onto handler 'showThumbnailsController'>
+2013-03-13 09:07:51,910 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/xml/(*:name)/rss/(**/*:path)*] onto handler 'rssController'>
+2013-03-13 20:21:28,440 INFO [org.sventon.appl.ConfigDirectory] - <Config root directory for current servlet context set to: /opt/ubersvn/tomcat/temp/sventon_config/RepositoryBrowser>
+2013-03-13 20:21:28,615 INFO [org.sventon.repository.RepositoryChangeMonitorImpl] - <Starting repository monitor>
+2013-03-13 20:21:28,630 INFO [org.sventon.service.SVNProvider] - <Found SVNProvider: class org.sventon.service.javahl.JavaHLSVNProvider>
+2013-03-13 20:21:28,718 INFO [org.sventon.cache.direntrycache.DirEntryCacheUpdater] - <Starting>
+2013-03-13 20:21:28,730 INFO [org.sventon.cache.logmessagecache.LogMessageCacheUpdater] - <Starting>
+2013-03-13 20:21:29,058 INFO [org.sventon.appl.Application] - <Initializing sventon version 0.1 beta>
+2013-03-13 20:21:29,060 INFO [org.sventon.appl.Application] - <No repository has been configured yet. Access sventon web application to start the setup>
+2013-03-13 20:21:30,668 INFO [org.sventon.appl.Application] - <Starting Application reinitialization.>
+2013-03-13 20:21:30,668 WARN [org.sventon.appl.Application] - <Configuration property file did exist but did not contain any configuration values>
+2013-03-13 20:21:30,676 INFO [org.sventon.appl.Application] - <New config same as old. Configuration unchanged.>
+2013-03-13 20:21:30,676 INFO [org.sventon.appl.Application] - <Application reinitialization completed.>
+2013-03-13 20:21:30,813 INFO [org.hibernate.validator.util.Version] - <Hibernate Validator 4.1.0.Final>
+2013-03-13 20:21:32,625 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/show/(**/*:path)*] onto handler 'showFileController'>
+2013-03-13 20:21:33,138 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/deleteconfig] onto handler 'deleteConfigurationController'>
+2013-03-13 20:21:33,185 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/searchlogs/(**/*:path)*] onto handler 'searchLogsController'>
+2013-03-13 20:21:33,297 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/get/(**/*:path)*] onto handler 'getFileController'>
+2013-03-13 20:21:33,412 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/searchentries/(**/*:path)*] onto handler 'searchEntriesController'>
+2013-03-13 20:21:33,463 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/info] onto handler 'revisionInfoController'>
+2013-03-13 20:21:33,512 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/flatten/(**/*:path)*] onto handler 'flattenController'>
+2013-03-13 20:21:33,543 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/configlogin] onto handler 'configurationLoginController'>
+2013-03-13 20:21:33,565 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/static] onto handler 'getStaticContentController'>
+2013-03-13 20:21:33,584 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/blame/(**/*:path)*] onto handler 'blameController'>
+2013-03-13 20:21:33,603 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/listfiles/(**/*:path)*] onto handler 'listFilesController'>
+2013-03-13 20:21:33,621 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/exportprogress] onto handler 'exportProgressController'>
+2013-03-13 20:21:33,639 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/latestrevisions] onto handler 'latestRevisionsController'>
+2013-03-13 20:21:33,656 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/getmessage] onto handler 'logMessageController'>
+2013-03-13 20:21:33,674 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/list/(**/*:path)*] onto handler 'repoBrowserController'>
+2013-03-13 20:21:33,693 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/filehistory/(**/*:path)*] onto handler 'fileHistoryController'>
+2013-03-13 20:21:33,712 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/entrytray/(**/*:path)*] onto handler 'entryTrayController'>
+2013-03-13 20:21:33,732 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/showlocks/(**/*:path)*] onto handler 'showLocksController'>
+2013-03-13 20:21:33,758 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/goto/(**/*:path)*] onto handler 'goToController'>
+2013-03-13 20:21:33,767 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/listconfigs] onto handler 'listConfigurationsController'>
+2013-03-13 20:21:33,777 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/submitconfig] onto handler 'submitConfigurationsController'>
+2013-03-13 20:21:33,794 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/log/(**/*:path)*] onto handler 'showLogsController'>
+2013-03-13 20:21:33,812 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/export/(**/*:path)*] onto handler 'exportController'>
+2013-03-13 20:21:34,072 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/diff/(**/*:path)*] onto handler 'diffController'>
+2013-03-13 20:21:34,146 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/showthumbnails/(**/*:path)*] onto handler 'showThumbnailsController'>
+2013-03-13 20:21:34,177 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/xml/(*:name)/rss/(**/*:path)*] onto handler 'rssController'>
+2013-03-14 08:46:48,708 INFO [org.sventon.appl.ConfigDirectory] - <Config root directory for current servlet context set to: /opt/ubersvn/tomcat/temp/sventon_config/RepositoryBrowser>
+2013-03-14 08:46:48,901 INFO [org.sventon.repository.RepositoryChangeMonitorImpl] - <Starting repository monitor>
+2013-03-14 08:46:48,940 INFO [org.sventon.service.SVNProvider] - <Found SVNProvider: class org.sventon.service.javahl.JavaHLSVNProvider>
+2013-03-14 08:46:49,072 INFO [org.sventon.cache.direntrycache.DirEntryCacheUpdater] - <Starting>
+2013-03-14 08:46:49,082 INFO [org.sventon.cache.logmessagecache.LogMessageCacheUpdater] - <Starting>
+2013-03-14 08:46:49,165 INFO [org.sventon.appl.Application] - <Initializing sventon version 0.1 beta>
+2013-03-14 08:46:49,166 INFO [org.sventon.appl.Application] - <No repository has been configured yet. Access sventon web application to start the setup>
+2013-03-14 08:46:54,199 INFO [org.sventon.appl.Application] - <Starting Application reinitialization.>
+2013-03-14 08:46:54,199 WARN [org.sventon.appl.Application] - <Configuration property file did exist but did not contain any configuration values>
+2013-03-14 08:46:54,217 INFO [org.sventon.appl.Application] - <New config same as old. Configuration unchanged.>
+2013-03-14 08:46:54,217 INFO [org.sventon.appl.Application] - <Application reinitialization completed.>
+2013-03-14 08:46:54,489 INFO [org.hibernate.validator.util.Version] - <Hibernate Validator 4.1.0.Final>
+2013-03-14 08:46:55,441 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/show/(**/*:path)*] onto handler 'showFileController'>
+2013-03-14 08:46:55,451 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/deleteconfig] onto handler 'deleteConfigurationController'>
+2013-03-14 08:46:55,479 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/searchlogs/(**/*:path)*] onto handler 'searchLogsController'>
+2013-03-14 08:46:55,523 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/get/(**/*:path)*] onto handler 'getFileController'>
+2013-03-14 08:46:55,546 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/searchentries/(**/*:path)*] onto handler 'searchEntriesController'>
+2013-03-14 08:46:55,563 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/info] onto handler 'revisionInfoController'>
+2013-03-14 08:46:55,590 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/flatten/(**/*:path)*] onto handler 'flattenController'>
+2013-03-14 08:46:55,620 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/configlogin] onto handler 'configurationLoginController'>
+2013-03-14 08:46:55,642 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/static] onto handler 'getStaticContentController'>
+2013-03-14 08:46:55,679 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/blame/(**/*:path)*] onto handler 'blameController'>
+2013-03-14 08:46:55,717 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/listfiles/(**/*:path)*] onto handler 'listFilesController'>
+2013-03-14 08:46:55,743 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/exportprogress] onto handler 'exportProgressController'>
+2013-03-14 08:46:55,762 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/latestrevisions] onto handler 'latestRevisionsController'>
+2013-03-14 08:46:55,781 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/getmessage] onto handler 'logMessageController'>
+2013-03-14 08:46:55,800 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/list/(**/*:path)*] onto handler 'repoBrowserController'>
+2013-03-14 08:46:55,820 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/filehistory/(**/*:path)*] onto handler 'fileHistoryController'>
+2013-03-14 08:46:55,838 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/entrytray/(**/*:path)*] onto handler 'entryTrayController'>
+2013-03-14 08:46:55,857 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/showlocks/(**/*:path)*] onto handler 'showLocksController'>
+2013-03-14 08:46:55,878 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/goto/(**/*:path)*] onto handler 'goToController'>
+2013-03-14 08:46:55,886 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/listconfigs] onto handler 'listConfigurationsController'>
+2013-03-14 08:46:55,895 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/submitconfig] onto handler 'submitConfigurationsController'>
+2013-03-14 08:46:55,916 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/log/(**/*:path)*] onto handler 'showLogsController'>
+2013-03-14 08:46:55,936 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/export/(**/*:path)*] onto handler 'exportController'>
+2013-03-14 08:46:55,956 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/diff/(**/*:path)*] onto handler 'diffController'>
+2013-03-14 08:46:55,976 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/showthumbnails/(**/*:path)*] onto handler 'showThumbnailsController'>
+2013-03-14 08:46:55,992 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/xml/(*:name)/rss/(**/*:path)*] onto handler 'rssController'>
+2013-03-14 17:56:36,233 INFO [org.sventon.appl.ConfigDirectory] - <Config root directory for current servlet context set to: /opt/ubersvn/tomcat/temp/sventon_config/RepositoryBrowser>
+2013-03-14 17:56:36,628 INFO [org.sventon.repository.RepositoryChangeMonitorImpl] - <Starting repository monitor>
+2013-03-14 17:56:36,709 INFO [org.sventon.service.SVNProvider] - <Found SVNProvider: class org.sventon.service.javahl.JavaHLSVNProvider>
+2013-03-14 17:56:36,946 INFO [org.sventon.cache.direntrycache.DirEntryCacheUpdater] - <Starting>
+2013-03-14 17:56:36,978 INFO [org.sventon.cache.logmessagecache.LogMessageCacheUpdater] - <Starting>
+2013-03-14 17:56:37,524 INFO [org.sventon.appl.Application] - <Initializing sventon version 0.1 beta>
+2013-03-14 17:56:37,534 INFO [org.sventon.appl.Application] - <No repository has been configured yet. Access sventon web application to start the setup>
+2013-03-14 17:56:40,229 INFO [org.sventon.appl.Application] - <Starting Application reinitialization.>
+2013-03-14 17:56:40,230 WARN [org.sventon.appl.Application] - <Configuration property file did exist but did not contain any configuration values>
+2013-03-14 17:56:40,242 INFO [org.sventon.appl.Application] - <New config same as old. Configuration unchanged.>
+2013-03-14 17:56:40,242 INFO [org.sventon.appl.Application] - <Application reinitialization completed.>
+2013-03-14 17:56:40,463 INFO [org.hibernate.validator.util.Version] - <Hibernate Validator 4.1.0.Final>
+2013-03-14 17:56:41,162 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/show/(**/*:path)*] onto handler 'showFileController'>
+2013-03-14 17:56:41,171 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/deleteconfig] onto handler 'deleteConfigurationController'>
+2013-03-14 17:56:41,190 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/searchlogs/(**/*:path)*] onto handler 'searchLogsController'>
+2013-03-14 17:56:41,212 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/get/(**/*:path)*] onto handler 'getFileController'>
+2013-03-14 17:56:41,244 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/searchentries/(**/*:path)*] onto handler 'searchEntriesController'>
+2013-03-14 17:56:41,274 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/info] onto handler 'revisionInfoController'>
+2013-03-14 17:56:41,293 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/flatten/(**/*:path)*] onto handler 'flattenController'>
+2013-03-14 17:56:41,325 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/configlogin] onto handler 'configurationLoginController'>
+2013-03-14 17:56:41,345 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/static] onto handler 'getStaticContentController'>
+2013-03-14 17:56:41,361 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/blame/(**/*:path)*] onto handler 'blameController'>
+2013-03-14 17:56:41,382 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/listfiles/(**/*:path)*] onto handler 'listFilesController'>
+2013-03-14 17:56:41,399 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/exportprogress] onto handler 'exportProgressController'>
+2013-03-14 17:56:41,415 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/latestrevisions] onto handler 'latestRevisionsController'>
+2013-03-14 17:56:41,437 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/getmessage] onto handler 'logMessageController'>
+2013-03-14 17:56:41,455 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/list/(**/*:path)*] onto handler 'repoBrowserController'>
+2013-03-14 17:56:41,473 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/filehistory/(**/*:path)*] onto handler 'fileHistoryController'>
+2013-03-14 17:56:41,490 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/entrytray/(**/*:path)*] onto handler 'entryTrayController'>
+2013-03-14 17:56:41,507 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/showlocks/(**/*:path)*] onto handler 'showLocksController'>
+2013-03-14 17:56:41,530 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/goto/(**/*:path)*] onto handler 'goToController'>
+2013-03-14 17:56:41,540 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/listconfigs] onto handler 'listConfigurationsController'>
+2013-03-14 17:56:41,549 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/submitconfig] onto handler 'submitConfigurationsController'>
+2013-03-14 17:56:41,564 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/log/(**/*:path)*] onto handler 'showLogsController'>
+2013-03-14 17:56:41,579 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/export/(**/*:path)*] onto handler 'exportController'>
+2013-03-14 17:56:41,596 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/diff/(**/*:path)*] onto handler 'diffController'>
+2013-03-14 17:56:41,612 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/showthumbnails/(**/*:path)*] onto handler 'showThumbnailsController'>
+2013-03-14 17:56:41,627 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/xml/(*:name)/rss/(**/*:path)*] onto handler 'rssController'>
+2013-03-15 08:57:16,150 INFO [org.sventon.appl.ConfigDirectory] - <Config root directory for current servlet context set to: /opt/ubersvn/tomcat/temp/sventon_config/RepositoryBrowser>
+2013-03-15 08:57:16,510 INFO [org.sventon.repository.RepositoryChangeMonitorImpl] - <Starting repository monitor>
+2013-03-15 08:57:17,083 INFO [org.sventon.service.SVNProvider] - <Found SVNProvider: class org.sventon.service.javahl.JavaHLSVNProvider>
+2013-03-15 08:57:17,822 INFO [org.sventon.cache.direntrycache.DirEntryCacheUpdater] - <Starting>
+2013-03-15 08:57:17,841 INFO [org.sventon.cache.logmessagecache.LogMessageCacheUpdater] - <Starting>
+2013-03-15 08:57:18,346 INFO [org.sventon.appl.Application] - <Initializing sventon version 0.1 beta>
+2013-03-15 08:57:18,348 INFO [org.sventon.appl.Application] - <No repository has been configured yet. Access sventon web application to start the setup>
+2013-03-15 08:57:20,002 INFO [org.sventon.appl.Application] - <Starting Application reinitialization.>
+2013-03-15 08:57:20,013 WARN [org.sventon.appl.Application] - <Configuration property file did exist but did not contain any configuration values>
+2013-03-15 08:57:20,021 INFO [org.sventon.appl.Application] - <New config same as old. Configuration unchanged.>
+2013-03-15 08:57:20,021 INFO [org.sventon.appl.Application] - <Application reinitialization completed.>
+2013-03-15 08:57:20,287 INFO [org.hibernate.validator.util.Version] - <Hibernate Validator 4.1.0.Final>
+2013-03-15 08:57:21,185 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/show/(**/*:path)*] onto handler 'showFileController'>
+2013-03-15 08:57:21,196 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/deleteconfig] onto handler 'deleteConfigurationController'>
+2013-03-15 08:57:21,234 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/searchlogs/(**/*:path)*] onto handler 'searchLogsController'>
+2013-03-15 08:57:21,257 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/get/(**/*:path)*] onto handler 'getFileController'>
+2013-03-15 08:57:21,339 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/searchentries/(**/*:path)*] onto handler 'searchEntriesController'>
+2013-03-15 08:57:21,374 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/info] onto handler 'revisionInfoController'>
+2013-03-15 08:57:21,406 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/flatten/(**/*:path)*] onto handler 'flattenController'>
+2013-03-15 08:57:21,424 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/configlogin] onto handler 'configurationLoginController'>
+2013-03-15 08:57:21,449 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/static] onto handler 'getStaticContentController'>
+2013-03-15 08:57:21,485 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/blame/(**/*:path)*] onto handler 'blameController'>
+2013-03-15 08:57:21,504 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/listfiles/(**/*:path)*] onto handler 'listFilesController'>
+2013-03-15 08:57:21,537 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/exportprogress] onto handler 'exportProgressController'>
+2013-03-15 08:57:21,562 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/latestrevisions] onto handler 'latestRevisionsController'>
+2013-03-15 08:57:21,583 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/getmessage] onto handler 'logMessageController'>
+2013-03-15 08:57:21,605 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/list/(**/*:path)*] onto handler 'repoBrowserController'>
+2013-03-15 08:57:21,622 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/filehistory/(**/*:path)*] onto handler 'fileHistoryController'>
+2013-03-15 08:57:21,639 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/entrytray/(**/*:path)*] onto handler 'entryTrayController'>
+2013-03-15 08:57:21,658 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/showlocks/(**/*:path)*] onto handler 'showLocksController'>
+2013-03-15 08:57:21,688 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/goto/(**/*:path)*] onto handler 'goToController'>
+2013-03-15 08:57:21,700 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/listconfigs] onto handler 'listConfigurationsController'>
+2013-03-15 08:57:21,711 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/submitconfig] onto handler 'submitConfigurationsController'>
+2013-03-15 08:57:21,735 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/log/(**/*:path)*] onto handler 'showLogsController'>
+2013-03-15 08:57:21,796 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/export/(**/*:path)*] onto handler 'exportController'>
+2013-03-15 08:57:21,830 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/diff/(**/*:path)*] onto handler 'diffController'>
+2013-03-15 08:57:21,860 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/showthumbnails/(**/*:path)*] onto handler 'showThumbnailsController'>
+2013-03-15 08:57:21,887 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/xml/(*:name)/rss/(**/*:path)*] onto handler 'rssController'>
+2013-03-15 19:49:22,146 INFO [org.sventon.appl.ConfigDirectory] - <Config root directory for current servlet context set to: /opt/ubersvn/tomcat/temp/sventon_config/RepositoryBrowser>
+2013-03-15 19:49:22,341 INFO [org.sventon.repository.RepositoryChangeMonitorImpl] - <Starting repository monitor>
+2013-03-15 19:49:22,363 INFO [org.sventon.service.SVNProvider] - <Found SVNProvider: class org.sventon.service.javahl.JavaHLSVNProvider>
+2013-03-15 19:49:22,485 INFO [org.sventon.cache.direntrycache.DirEntryCacheUpdater] - <Starting>
+2013-03-15 19:49:22,509 INFO [org.sventon.cache.logmessagecache.LogMessageCacheUpdater] - <Starting>
+2013-03-15 19:49:22,847 INFO [org.sventon.appl.Application] - <Initializing sventon version 0.1 beta>
+2013-03-15 19:49:22,895 INFO [org.sventon.appl.Application] - <No repository has been configured yet. Access sventon web application to start the setup>
+2013-03-15 19:49:25,794 INFO [org.sventon.appl.Application] - <Starting Application reinitialization.>
+2013-03-15 19:49:25,795 WARN [org.sventon.appl.Application] - <Configuration property file did exist but did not contain any configuration values>
+2013-03-15 19:49:25,805 INFO [org.sventon.appl.Application] - <New config same as old. Configuration unchanged.>
+2013-03-15 19:49:25,805 INFO [org.sventon.appl.Application] - <Application reinitialization completed.>
+2013-03-15 19:49:26,074 INFO [org.hibernate.validator.util.Version] - <Hibernate Validator 4.1.0.Final>
+2013-03-15 19:49:26,921 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/show/(**/*:path)*] onto handler 'showFileController'>
+2013-03-15 19:49:26,935 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/deleteconfig] onto handler 'deleteConfigurationController'>
+2013-03-15 19:49:26,958 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/searchlogs/(**/*:path)*] onto handler 'searchLogsController'>
+2013-03-15 19:49:26,985 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/get/(**/*:path)*] onto handler 'getFileController'>
+2013-03-15 19:49:27,006 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/searchentries/(**/*:path)*] onto handler 'searchEntriesController'>
+2013-03-15 19:49:27,029 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/info] onto handler 'revisionInfoController'>
+2013-03-15 19:49:27,050 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/flatten/(**/*:path)*] onto handler 'flattenController'>
+2013-03-15 19:49:27,083 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/configlogin] onto handler 'configurationLoginController'>
+2013-03-15 19:49:27,115 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/static] onto handler 'getStaticContentController'>
+2013-03-15 19:49:27,142 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/blame/(**/*:path)*] onto handler 'blameController'>
+2013-03-15 19:49:27,189 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/listfiles/(**/*:path)*] onto handler 'listFilesController'>
+2013-03-15 19:49:27,218 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/exportprogress] onto handler 'exportProgressController'>
+2013-03-15 19:49:27,240 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/latestrevisions] onto handler 'latestRevisionsController'>
+2013-03-15 19:49:27,270 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/getmessage] onto handler 'logMessageController'>
+2013-03-15 19:49:27,294 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/list/(**/*:path)*] onto handler 'repoBrowserController'>
+2013-03-15 19:49:27,316 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/filehistory/(**/*:path)*] onto handler 'fileHistoryController'>
+2013-03-15 19:49:27,340 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/entrytray/(**/*:path)*] onto handler 'entryTrayController'>
+2013-03-15 19:49:27,364 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/showlocks/(**/*:path)*] onto handler 'showLocksController'>
+2013-03-15 19:49:27,400 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/goto/(**/*:path)*] onto handler 'goToController'>
+2013-03-15 19:49:27,411 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/listconfigs] onto handler 'listConfigurationsController'>
+2013-03-15 19:49:27,428 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/submitconfig] onto handler 'submitConfigurationsController'>
+2013-03-15 19:49:27,459 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/log/(**/*:path)*] onto handler 'showLogsController'>
+2013-03-15 19:49:27,480 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/export/(**/*:path)*] onto handler 'exportController'>
+2013-03-15 19:49:27,515 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/diff/(**/*:path)*] onto handler 'diffController'>
+2013-03-15 19:49:27,538 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/showthumbnails/(**/*:path)*] onto handler 'showThumbnailsController'>
+2013-03-15 19:49:27,571 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/xml/(*:name)/rss/(**/*:path)*] onto handler 'rssController'>
+2013-03-18 08:42:28,698 INFO [org.sventon.appl.ConfigDirectory] - <Config root directory for current servlet context set to: /opt/ubersvn/tomcat/temp/sventon_config/RepositoryBrowser>
+2013-03-18 08:42:29,154 INFO [org.sventon.repository.RepositoryChangeMonitorImpl] - <Starting repository monitor>
+2013-03-18 08:42:29,175 INFO [org.sventon.service.SVNProvider] - <Found SVNProvider: class org.sventon.service.javahl.JavaHLSVNProvider>
+2013-03-18 08:42:29,268 INFO [org.sventon.cache.direntrycache.DirEntryCacheUpdater] - <Starting>
+2013-03-18 08:42:29,281 INFO [org.sventon.cache.logmessagecache.LogMessageCacheUpdater] - <Starting>
+2013-03-18 08:42:29,807 INFO [org.sventon.appl.Application] - <Initializing sventon version 0.1 beta>
+2013-03-18 08:42:29,808 INFO [org.sventon.appl.Application] - <No repository has been configured yet. Access sventon web application to start the setup>
+2013-03-18 08:42:33,167 INFO [org.sventon.appl.Application] - <Starting Application reinitialization.>
+2013-03-18 08:42:33,168 WARN [org.sventon.appl.Application] - <Configuration property file did exist but did not contain any configuration values>
+2013-03-18 08:42:33,176 INFO [org.sventon.appl.Application] - <New config same as old. Configuration unchanged.>
+2013-03-18 08:42:33,176 INFO [org.sventon.appl.Application] - <Application reinitialization completed.>
+2013-03-18 08:42:33,396 INFO [org.hibernate.validator.util.Version] - <Hibernate Validator 4.1.0.Final>
+2013-03-18 08:42:34,390 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/show/(**/*:path)*] onto handler 'showFileController'>
+2013-03-18 08:42:34,399 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/deleteconfig] onto handler 'deleteConfigurationController'>
+2013-03-18 08:42:34,416 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/searchlogs/(**/*:path)*] onto handler 'searchLogsController'>
+2013-03-18 08:42:34,434 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/get/(**/*:path)*] onto handler 'getFileController'>
+2013-03-18 08:42:34,458 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/searchentries/(**/*:path)*] onto handler 'searchEntriesController'>
+2013-03-18 08:42:34,490 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/info] onto handler 'revisionInfoController'>
+2013-03-18 08:42:34,537 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/flatten/(**/*:path)*] onto handler 'flattenController'>
+2013-03-18 08:42:34,563 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/configlogin] onto handler 'configurationLoginController'>
+2013-03-18 08:42:34,583 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/static] onto handler 'getStaticContentController'>
+2013-03-18 08:42:34,603 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/blame/(**/*:path)*] onto handler 'blameController'>
+2013-03-18 08:42:34,622 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/listfiles/(**/*:path)*] onto handler 'listFilesController'>
+2013-03-18 08:42:34,639 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/exportprogress] onto handler 'exportProgressController'>
+2013-03-18 08:42:34,657 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/latestrevisions] onto handler 'latestRevisionsController'>
+2013-03-18 08:42:34,682 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/getmessage] onto handler 'logMessageController'>
+2013-03-18 08:42:34,710 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/list/(**/*:path)*] onto handler 'repoBrowserController'>
+2013-03-18 08:42:34,730 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/filehistory/(**/*:path)*] onto handler 'fileHistoryController'>
+2013-03-18 08:42:34,751 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/entrytray/(**/*:path)*] onto handler 'entryTrayController'>
+2013-03-18 08:42:34,785 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/showlocks/(**/*:path)*] onto handler 'showLocksController'>
+2013-03-18 08:42:34,808 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/goto/(**/*:path)*] onto handler 'goToController'>
+2013-03-18 08:42:34,818 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/listconfigs] onto handler 'listConfigurationsController'>
+2013-03-18 08:42:34,833 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/submitconfig] onto handler 'submitConfigurationsController'>
+2013-03-18 08:42:34,855 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/log/(**/*:path)*] onto handler 'showLogsController'>
+2013-03-18 08:42:34,884 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/export/(**/*:path)*] onto handler 'exportController'>
+2013-03-18 08:42:34,916 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/diff/(**/*:path)*] onto handler 'diffController'>
+2013-03-18 08:42:34,939 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/showthumbnails/(**/*:path)*] onto handler 'showThumbnailsController'>
+2013-03-18 08:42:34,963 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/xml/(*:name)/rss/(**/*:path)*] onto handler 'rssController'>
+2013-03-18 18:49:23,142 INFO [org.sventon.appl.ConfigDirectory] - <Config root directory for current servlet context set to: /opt/ubersvn/tomcat/temp/sventon_config/RepositoryBrowser>
+2013-03-18 18:49:23,309 INFO [org.sventon.repository.RepositoryChangeMonitorImpl] - <Starting repository monitor>
+2013-03-18 18:49:23,330 INFO [org.sventon.service.SVNProvider] - <Found SVNProvider: class org.sventon.service.javahl.JavaHLSVNProvider>
+2013-03-18 18:49:23,433 INFO [org.sventon.cache.direntrycache.DirEntryCacheUpdater] - <Starting>
+2013-03-18 18:49:23,446 INFO [org.sventon.cache.logmessagecache.LogMessageCacheUpdater] - <Starting>
+2013-03-18 18:49:23,544 INFO [org.sventon.appl.Application] - <Initializing sventon version 0.1 beta>
+2013-03-18 18:49:23,561 INFO [org.sventon.appl.Application] - <No repository has been configured yet. Access sventon web application to start the setup>
+2013-03-18 18:49:24,746 INFO [org.sventon.appl.Application] - <Starting Application reinitialization.>
+2013-03-18 18:49:24,746 WARN [org.sventon.appl.Application] - <Configuration property file did exist but did not contain any configuration values>
+2013-03-18 18:49:24,754 INFO [org.sventon.appl.Application] - <New config same as old. Configuration unchanged.>
+2013-03-18 18:49:24,754 INFO [org.sventon.appl.Application] - <Application reinitialization completed.>
+2013-03-18 18:49:24,970 INFO [org.hibernate.validator.util.Version] - <Hibernate Validator 4.1.0.Final>
+2013-03-18 18:49:26,495 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/show/(**/*:path)*] onto handler 'showFileController'>
+2013-03-18 18:49:26,501 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/deleteconfig] onto handler 'deleteConfigurationController'>
+2013-03-18 18:49:26,516 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/searchlogs/(**/*:path)*] onto handler 'searchLogsController'>
+2013-03-18 18:49:26,534 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/get/(**/*:path)*] onto handler 'getFileController'>
+2013-03-18 18:49:26,555 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/searchentries/(**/*:path)*] onto handler 'searchEntriesController'>
+2013-03-18 18:49:26,578 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/info] onto handler 'revisionInfoController'>
+2013-03-18 18:49:26,598 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/flatten/(**/*:path)*] onto handler 'flattenController'>
+2013-03-18 18:49:26,620 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/configlogin] onto handler 'configurationLoginController'>
+2013-03-18 18:49:26,642 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/static] onto handler 'getStaticContentController'>
+2013-03-18 18:49:26,664 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/blame/(**/*:path)*] onto handler 'blameController'>
+2013-03-18 18:49:26,684 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/listfiles/(**/*:path)*] onto handler 'listFilesController'>
+2013-03-18 18:49:26,701 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/exportprogress] onto handler 'exportProgressController'>
+2013-03-18 18:49:26,719 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/latestrevisions] onto handler 'latestRevisionsController'>
+2013-03-18 18:49:26,739 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/getmessage] onto handler 'logMessageController'>
+2013-03-18 18:49:26,758 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/list/(**/*:path)*] onto handler 'repoBrowserController'>
+2013-03-18 18:49:26,780 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/filehistory/(**/*:path)*] onto handler 'fileHistoryController'>
+2013-03-18 18:49:26,922 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/entrytray/(**/*:path)*] onto handler 'entryTrayController'>
+2013-03-18 18:49:26,980 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/showlocks/(**/*:path)*] onto handler 'showLocksController'>
+2013-03-18 18:49:27,116 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/goto/(**/*:path)*] onto handler 'goToController'>
+2013-03-18 18:49:27,125 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/listconfigs] onto handler 'listConfigurationsController'>
+2013-03-18 18:49:27,135 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/submitconfig] onto handler 'submitConfigurationsController'>
+2013-03-18 18:49:27,150 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/log/(**/*:path)*] onto handler 'showLogsController'>
+2013-03-18 18:49:27,163 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/export/(**/*:path)*] onto handler 'exportController'>
+2013-03-18 18:49:27,183 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/diff/(**/*:path)*] onto handler 'diffController'>
+2013-03-18 18:49:27,199 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/showthumbnails/(**/*:path)*] onto handler 'showThumbnailsController'>
+2013-03-18 18:49:27,212 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/xml/(*:name)/rss/(**/*:path)*] onto handler 'rssController'>
+2013-03-19 09:21:33,040 INFO [org.sventon.appl.ConfigDirectory] - <Config root directory for current servlet context set to: /opt/ubersvn/tomcat/temp/sventon_config/RepositoryBrowser>
+2013-03-19 09:21:33,528 INFO [org.sventon.repository.RepositoryChangeMonitorImpl] - <Starting repository monitor>
+2013-03-19 09:21:34,589 INFO [org.sventon.service.SVNProvider] - <Found SVNProvider: class org.sventon.service.javahl.JavaHLSVNProvider>
+2013-03-19 09:21:35,270 INFO [org.sventon.cache.direntrycache.DirEntryCacheUpdater] - <Starting>
+2013-03-19 09:21:35,285 INFO [org.sventon.cache.logmessagecache.LogMessageCacheUpdater] - <Starting>
+2013-03-19 09:21:36,267 INFO [org.sventon.appl.Application] - <Initializing sventon version 0.1 beta>
+2013-03-19 09:21:36,269 INFO [org.sventon.appl.Application] - <No repository has been configured yet. Access sventon web application to start the setup>
+2013-03-19 09:21:38,214 INFO [org.sventon.appl.Application] - <Starting Application reinitialization.>
+2013-03-19 09:21:38,215 WARN [org.sventon.appl.Application] - <Configuration property file did exist but did not contain any configuration values>
+2013-03-19 09:21:38,243 INFO [org.sventon.appl.Application] - <New config same as old. Configuration unchanged.>
+2013-03-19 09:21:38,243 INFO [org.sventon.appl.Application] - <Application reinitialization completed.>
+2013-03-19 09:21:38,575 INFO [org.hibernate.validator.util.Version] - <Hibernate Validator 4.1.0.Final>
+2013-03-19 09:21:39,120 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/show/(**/*:path)*] onto handler 'showFileController'>
+2013-03-19 09:21:39,129 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/deleteconfig] onto handler 'deleteConfigurationController'>
+2013-03-19 09:21:39,145 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/searchlogs/(**/*:path)*] onto handler 'searchLogsController'>
+2013-03-19 09:21:39,162 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/get/(**/*:path)*] onto handler 'getFileController'>
+2013-03-19 09:21:39,181 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/searchentries/(**/*:path)*] onto handler 'searchEntriesController'>
+2013-03-19 09:21:39,199 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/info] onto handler 'revisionInfoController'>
+2013-03-19 09:21:39,217 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/flatten/(**/*:path)*] onto handler 'flattenController'>
+2013-03-19 09:21:39,236 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/configlogin] onto handler 'configurationLoginController'>
+2013-03-19 09:21:39,262 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/static] onto handler 'getStaticContentController'>
+2013-03-19 09:21:39,288 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/blame/(**/*:path)*] onto handler 'blameController'>
+2013-03-19 09:21:39,327 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/listfiles/(**/*:path)*] onto handler 'listFilesController'>
+2013-03-19 09:21:39,398 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/exportprogress] onto handler 'exportProgressController'>
+2013-03-19 09:21:39,428 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/latestrevisions] onto handler 'latestRevisionsController'>
+2013-03-19 09:21:39,456 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/getmessage] onto handler 'logMessageController'>
+2013-03-19 09:21:39,488 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/list/(**/*:path)*] onto handler 'repoBrowserController'>
+2013-03-19 09:21:39,516 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/filehistory/(**/*:path)*] onto handler 'fileHistoryController'>
+2013-03-19 09:21:39,560 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/ajax/(*:name)/entrytray/(**/*:path)*] onto handler 'entryTrayController'>
+2013-03-19 09:21:39,605 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/showlocks/(**/*:path)*] onto handler 'showLocksController'>
+2013-03-19 09:21:39,635 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/goto/(**/*:path)*] onto handler 'goToController'>
+2013-03-19 09:21:39,659 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/listconfigs] onto handler 'listConfigurationsController'>
+2013-03-19 09:21:39,681 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/submitconfig] onto handler 'submitConfigurationsController'>
+2013-03-19 09:21:39,701 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/log/(**/*:path)*] onto handler 'showLogsController'>
+2013-03-19 09:21:39,726 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/export/(**/*:path)*] onto handler 'exportController'>
+2013-03-19 09:21:39,770 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/diff/(**/*:path)*] onto handler 'diffController'>
+2013-03-19 09:21:39,797 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/repos/(*:name)/showthumbnails/(**/*:path)*] onto handler 'showThumbnailsController'>
+2013-03-19 09:21:39,815 INFO [carbonfive.spring.web.pathparameter.ParameterizedUrlHandlerMapping] - <Mapped URL path [/xml/(*:name)/rss/(**/*:path)*] onto handler 'rssController'>

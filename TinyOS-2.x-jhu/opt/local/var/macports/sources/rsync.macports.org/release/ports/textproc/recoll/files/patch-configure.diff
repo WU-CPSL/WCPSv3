@@ -1,0 +1,11 @@
+--- configure.orig	2011-10-11 06:25:31.000000000 -0500
++++ configure	2011-11-27 20:02:11.000000000 -0600
+@@ -4366,7 +4366,7 @@
+ LIBICONV=""
+ S_LDFLAGS=$LDFLAGS
+ S_CPPFLAGS=$CPPFLAGS
+-for dir in ${libdir} /opt/local/lib /usr/local/lib ;do
++for dir in ${libdir} ;do
+   CPPFLAGS="$S_CPPFLAGS -I$dir/../include"
+ 
+   LDFLAGS="$S_LDFLAGS -L$dir"

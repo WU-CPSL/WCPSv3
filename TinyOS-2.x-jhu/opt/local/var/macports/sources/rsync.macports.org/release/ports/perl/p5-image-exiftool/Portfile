@@ -1,0 +1,29 @@
+# $Id: Portfile 85554 2011-10-14 08:51:21Z jmr@macports.org $
+
+PortSystem          1.0
+PortGroup           perl5 1.0
+
+perl5.setup         Image-ExifTool 8.59
+revision            1
+license             {Artistic-1 GPL}
+maintainers         nomaintainer
+description         Perl interface to EXIF metadata
+long_description    ${description}
+
+platforms           darwin
+
+checksums           sha1    d258785479161192bb166a29789b46c4eb6d564f \
+                    rmd160  0fa11eecc00439729d9848c805c5b640eb11bc0e
+
+homepage            http://www.sno.phy.queensu.ca/~phil/exiftool/
+master_sites        ${homepage}
+
+if {${perl5.major} != ""} {
+depends_lib-append  port:p${perl5.major}-digest-md5 \
+                    port:p${perl5.major}-io-compress
+
+supported_archs noarch
+}
+livecheck.type      regex
+livecheck.url       ${homepage}
+livecheck.regex     Image-ExifTool-(\[0-9.\]+)${extract.suffix}

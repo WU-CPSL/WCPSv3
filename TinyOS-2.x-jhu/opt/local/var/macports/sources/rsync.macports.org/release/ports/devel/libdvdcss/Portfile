@@ -1,0 +1,31 @@
+# $Id: Portfile 87649 2011-11-30 05:06:31Z ryandesign@macports.org $
+
+PortSystem	1.0
+
+name		libdvdcss
+version		1.2.11
+categories	devel multimedia
+license		GPL-2+
+platforms	darwin freebsd
+maintainers	nomaintainer
+description	portable abstraction library for DVD decryption
+
+long_description	libdvdcss is a simple library designed for accessing \
+					DVDs like a block device without having to bother \
+					about the decryption.
+
+homepage		http://www.videolan.org/developers/libdvdcss.html
+master_sites    http://download.videolan.org/pub/${name}/${version}/
+use_bzip2		yes
+
+checksums		rmd160  d58db620732fb3e9b0aee549115e2624e5a8e50c \
+				sha256  b6bc18816cfe17d53c32c040f69a055d263eab9328888556f6be3cda8f03916e
+
+configure.args	--disable-doc
+
+post-destroot {
+	set docdir ${prefix}/share/doc/${name}-${version}
+	xinstall -d ${destroot}${docdir}
+	xinstall -m 0644 -W ${worksrcpath} AUTHORS COPYING ChangeLog NEWS README \
+		${destroot}${docdir}
+}

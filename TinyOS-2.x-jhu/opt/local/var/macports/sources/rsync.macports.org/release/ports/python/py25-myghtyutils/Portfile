@@ -1,0 +1,25 @@
+# $Id: Portfile 71751 2010-09-22 04:57:56Z ryandesign@macports.org $
+
+PortSystem			1.0
+PortGroup			python25 1.0
+name				py25-myghtyutils
+version				0.52
+revision			1
+categories-append		www
+maintainers			nomaintainer
+supported_archs			noarch
+
+description			Container and Utility Functions from the \
+				Myghty Template Framework.
+long_description		${description}
+
+platforms			darwin
+
+homepage			http://www.myghty.org
+master_sites			http://cheeseshop.python.org/packages/source/M/MyghtyUtils/
+distname			MyghtyUtils-${version}
+use_zip				yes
+
+depends_lib			port:py25-distribute
+
+checksums			md5 a15cda5919509024245802f4028b1560

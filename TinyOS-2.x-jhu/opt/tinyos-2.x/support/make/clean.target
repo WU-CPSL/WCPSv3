@@ -1,0 +1,8 @@
+#-*-Makefile-*- vim:syntax=make
+#$Id$
+
+clean: FORCE
+	rm -rf build $(CLEAN_EXTRA) pp
+	rm -rf _TOSSIMmodule.so TOSSIM.pyc TOSSIM.py app.xml simbuild
+	rm -rf VolumeMapC.nc
+	rm -f $(COMPONENT).cmap $(COMPONENT).dot $(COMPONENT).html $(COMPONENT).png

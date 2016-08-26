@@ -1,0 +1,52 @@
+# $Id: Portfile 88158 2011-12-21 00:33:31Z vinc17@macports.org $
+
+PortSystem          1.0
+
+name                latexmk
+version             4.27a
+categories          tex print
+platforms           darwin
+maintainers         nomaintainer
+supported_archs     noarch
+license             GPL-2+
+
+description         Automates the process of generating a LaTeX document
+long_description \
+    Latexmk completely automates the process of generating a LaTeX document. \
+    Essentially, it is a highly specialized cousin of the general make       \
+    utility.  Given the source files for a document, latexmk issues the      \
+    appropriate sequence of commands to generate a .dvi, .ps, .pdf or        \
+    hardcopy version of the document.  It can also be set to run             \
+    continuously with a previewer\; the latex program, etc, are rerun        \
+    whenever one of the source files is modified.
+
+homepage            http://www.phys.psu.edu/~collins/software/latexmk-jcc/
+master_sites        ${homepage}
+distname            ${name}-[string map {. ""} $version]
+extract.mkdir       yes
+use_zip             yes
+
+checksums           md5     7c52a8e5d0d638390bc671793e4bed3e \
+                    sha1    2b18eb23ae9add9c57c8e1cfffc6b165035cf9ab \
+                    rmd160  b8355033493b62d235b597f83e974b9b35ef2664
+
+depends_run         bin:latex:texlive-latex
+
+use_configure       no
+build               {}
+
+destroot {
+    set bindir ${destroot}${prefix}/bin
+    file mkdir ${bindir}
+    xinstall -m 755 -v ${worksrcpath}/${name}.pl ${bindir}/${name}
+    set mandir ${destroot}${prefix}/share/man/man1
+    file mkdir ${mandir}
+    xinstall -m 644 -v ${worksrcpath}/${name}.1 ${mandir}
+    set docdir ${destroot}${prefix}/share/doc/${name}
+    file mkdir ${docdir}
+    xinstall -m 644 -v -W ${worksrcpath} \
+        CHANGES COPYING README ${name}.pdf ${name}.txt ${docdir}
+}
+
+livecheck.type      regex
+livecheck.regex     "(\[0-9a-z.\]+) dated"

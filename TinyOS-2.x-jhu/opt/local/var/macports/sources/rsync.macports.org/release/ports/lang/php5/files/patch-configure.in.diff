@@ -1,0 +1,12 @@
+# Revert change to configure.in made between php 5.3.3 and 5.3.4 that disabled time_nanosleep on OS X.
+--- a/configure.in.orig	2012-02-02 11:29:58.000000000 -0600
++++ b/configure.in	2012-02-03 12:51:12.000000000 -0600
+@@ -612,7 +612,7 @@
+ )
+ 
+ dnl Some systems (like OpenSolaris) do not have nanosleep in libc
+-PHP_CHECK_FUNC_LIB(nanosleep, rt)
++PHP_CHECK_FUNC(nanosleep, rt)
+ 
+ dnl Check for getaddrinfo, should be a better way, but...
+ dnl Also check for working getaddrinfo

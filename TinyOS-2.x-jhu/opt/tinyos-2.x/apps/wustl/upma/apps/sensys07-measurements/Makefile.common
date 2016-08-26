@@ -1,0 +1,21 @@
+CFLAGS += -I../.. \
+	-I$(TOSDIR)/lib/printf \
+	-DPREAMBLE_LENGTH=3000
+PFLAGS = -DCC2420_DEF_CHANNEL=25
+ifeq ($(UPMA),1)
+	include $(UPMA_DIR)/Makefile.include
+	CFLAGS += -DUPMA=1
+	
+	ifeq ($(NEWCCA),0)
+		CFLAGS += -DOLDCCA \
+			-DMAX_LPL_CCA_CHECKS=$(MAX_LPL_CCA_CHECKS)
+	endif
+else
+	ifeq ($(NEWCCA),1)
+		CFLAGS += -DNEWCCA \
+			-I$(UPMA_DIR)/system \
+			-I$(UPMA_DIR)/types
+	endif
+endif
+
+include $(MAKERULES)

@@ -1,0 +1,20 @@
+# $Id: Portfile 85577 2011-10-14 18:03:29Z mww@macports.org $
+
+PortSystem 1.0
+
+name			libartnet
+version			1.0.7
+categories		multimedia net
+platforms		darwin
+maintainers		mww
+license			LGPL-2.1
+description		implementation of the ArtNet protocol designed for POSIX systems
+long_description	${description}
+
+homepage		http://www.nomis52.net/data/artnet/libartnet/
+master_sites	http://www.nomis52.net/data/artnet/libartnet/
+checksums		sha1 aa99fbc4a4e0dd05b9ac15c6f9aaa9712f275bac
+
+livecheck.type	regex
+livecheck.url	http://www.nomis52.net/data/artnet/libartnet/?C=N\;O=D
+livecheck.regex	libartnet-(\[0-9\.\]+).tar.gz

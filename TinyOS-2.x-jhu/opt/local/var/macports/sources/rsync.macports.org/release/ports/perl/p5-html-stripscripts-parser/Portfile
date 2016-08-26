@@ -1,0 +1,22 @@
+# $Id: Portfile 87828 2011-12-07 12:06:11Z jmr@macports.org $
+
+PortSystem		1.0
+PortGroup		perl5 1.0
+
+perl5.setup		HTML-StripScripts-Parser 1.02
+revision        2
+license			{Artistic-1 GPL}
+maintainers		nomaintainer
+description		XSS filter using HTML::Parser
+
+long_description	${description}
+
+checksums		md5 0fb38dc2c632844883f3e716b056a88a
+platforms		darwin
+
+if {${perl5.major} != ""} {
+depends_lib-append	port:p${perl5.major}-html-stripscripts \
+			port:p${perl5.major}-html-parser
+
+supported_archs noarch
+}

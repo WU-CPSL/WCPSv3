@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:p="http://primefaces.prime.com.tr/ui" xmlns:h="http://java.sun.com/jsf/html">
+<ui:composition>
+  <ol id="sub-toc">
+    <li><h:outputLink
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/repository/repositoryProfile.jsf?repoId=#{repositoryProfileManagedBean.repo.id}"
+        title="#{msg.repoProfileTabAltText}">
+        <span>#{msg.repoProfileTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/repository/repositoryGraph.jsf"
+        title="#{msg.repoGraphTabAltText}">
+        <span>#{msg.repoGraphTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/repository/repositoryBrowser.jsf"
+        title="#{msg.repoBrowserTabAltText}">
+        <span>#{msg.repoBrowserTabText}</span>
+      </h:outputLink></li>
+    <li class="current"><h:outputLink
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/repository/repositoryAdministrationVerify.jsf"
+        title="#{msg.repoAdministrationTabAltText}"
+        rendered="#{basePage.systemAdmin or basePage.globalRepoAdmin or repositoryProfileManagedBean.repo.delegatedRepoAdmin}">
+        <span>#{msg.repoAdministrationTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/repository/repositoryPermissions.jsf"
+        title="#{msg.repoPermissionsTabAltText}"
+        rendered="#{basePage.systemAdmin or basePage.globalRepoAdmin or repositoryProfileManagedBean.repo.delegatedRepoAdmin}">
+        <span>#{msg.repoPermissionsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/repository/repositoryAuthentication.jsf"
+        title="#{msg.repoAuthenticationTabAltText}"
+        rendered="#{basePage.systemAdmin or basePage.globalRepoAdmin or repositoryProfileManagedBean.repo.delegatedRepoAdmin}">
+        <span>#{msg.repoAuthenticationTabText}</span>
+      </h:outputLink></li>
+      <li><h:outputLink rendered="#{basePage.jenkinsInstalled and basePage.jenkinsVisible}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/repository/repositoryJenkins.jsf"
+        title="#{msg.repoJenkinsTabTitle}">
+        <span>#{msg.repoJenkinsTabText}</span>
+      </h:outputLink></li>
+
+  </ol>
+  <p:panel id="repoProfilePanel" styleClass="tabbed-panel">
+    <h:panelGrid>
+      <ui:include src="/sections/platform/repository/repositoryAdministrationPanel.xhtml"></ui:include>
+      <h:panelGroup>
+        <p:spacer height="1" width="325" />
+        <h:graphicImage style="border: none;" library="img/platform" name="svn_admin_tab.png" />
+      </h:panelGroup>
+      <p:panel styleClass="repoAdminOptionsPanel">
+        <h:panelGrid columns="2" columnClasses="repoAdminOptionsLabelColumn, repoAdminOptionsFieldColumn">
+          <h:outputText value="#{msg.tasksTableStatusFilterLabel}: " />
+          <h:selectOneMenu id="taskFilterEntryType" value="#{repositoryAdministrationManagedBean.selectedTaskFilter}"
+            onchange="remoteUpdate()" immediate="true">
+            <f:selectItems value="#{repositoryAdministrationManagedBean.taskFilterValue}" var="c" itemLabel="#{c}" itemValue="#{c}" />
+          </h:selectOneMenu>
+        </h:panelGrid>
+        <p:remoteCommand name="remoteUpdate" update="tasksDataTable" />
+        <h:panelGroup id="tasksDataTable">
+          <p:dataTable id="viewTasksDataTable" widgetVar="tasksTable" var="task" value="#{repositoryAdministrationManagedBean.tasks}"
+            paginator="true" rows="6"
+            paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+            paginatorPosition="bottom" paginatorAlwaysVisible="false">
+            <p:column sortBy="#{task.taskType}">
+              <f:facet name="header">
+                <h:outputText value="#{msg.tasksTableTypeColumnHeader}" />
+              </f:facet>
+              <h:outputText value="#{task.taskType}" />
+            </p:column>
+            <p:column>
+              <f:facet name="header">
+                <h:outputText value="#{msg.tasksTableUserColumnHeader}" />
+              </f:facet>
+              <h:outputText value="#{task.userName}" />
+            </p:column>
+            <p:column>
+              <f:facet name="header">
+                <h:outputText value="#{msg.tasksTableExecutedColumnHeader}" />
+              </f:facet>
+              <h:outputText value="#{task.executed}" />
+            </p:column>
+            <p:column>
+              <f:facet name="header">
+                <h:outputText value="#{msg.tasksTableStatusColumnHeader}" />
+              </f:facet>
+              <h:outputText value="#{task.status}" />
+            </p:column>
+            <p:column>
+              <f:facet name="header">
+                <h:outputText value="#{msg.tasksTableExecutionTimeColumnHeader}" />
+              </f:facet>
+              <h:outputText value="#{task.executionTime}" />
+            </p:column>
+            <p:column>
+              <f:facet name="header">
+                <h:outputText value="#{msg.tasksTableExecutedTimeColumnHeader}" />
+              </f:facet>
+              <h:outputText value="#{task.executedTime}" />
+            </p:column>
+          </p:dataTable>
+        </h:panelGroup>
+      </p:panel>
+    </h:panelGrid>
+  </p:panel>
+</ui:composition>
+</html>

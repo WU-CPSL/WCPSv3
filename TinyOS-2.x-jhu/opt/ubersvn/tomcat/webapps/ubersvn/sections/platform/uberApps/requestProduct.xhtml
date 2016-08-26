@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:p="http://primefaces.prime.com.tr/ui" xmlns:h="http://java.sun.com/jsf/html">
+<ui:composition>
+  <ol id="sub-toc">
+    <li class="current"><h:outputLink title="#{msg.uberAppsStoreTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/uberApps/viewStore.jsf">
+        <span>#{msg.uberAppsStoreTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.uberAppsAccountTabAltText}" rendered="#{basePage.purchaser and storeAccountManagedBean.registered}"
+      value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/uberApps/viewAccount.jsf">
+      <span>#{msg.uberAppsAccountTabText}</span>
+    </h:outputLink></li>
+    <li><h:outputLink title="#{msg.uberAppsAccountTabAltText}"
+      rendered="#{basePage.purchaser and !storeAccountManagedBean.registered}"
+      value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/uberApps/storeRegistration.jsf">
+      <span>#{msg.uberAppsAccountTabText}</span>
+    </h:outputLink></li>
+    <li><h:outputLink title="#{msg.uberAppsRequestedTabAltText}" rendered="#{basePage.purchaser or basePage.systemAdmin}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/uberApps/viewRequested.jsf">
+        <span>#{msg.uberAppsRequestedTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.uberAppsInstalledTabAltText}" rendered="#{basePage.systemAdmin}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/uberApps/viewInstalled.jsf">
+        <span>#{msg.uberAppsInstalledTabText}</span>
+      </h:outputLink></li>
+  </ol>
+  <p:panel id="uberAppsProductPurchasePanel" styleClass="storeFront tabbed-panel">
+    <h:panelGrid columns="1" styleClass="left-right-table">
+      <h:outputText styleClass="storeFrontTitle" value="Request Application"></h:outputText>
+      <h:panelGrid columns="2">
+        <!-- product image -->
+        <h:panelGroup>
+          <h:panelGrid columns="1">
+            <!-- Product name and description -->
+            <h:outputText styleClass="storeFrontHeading" value="#{storeRequestManagedBean.product.name}"></h:outputText>
+          </h:panelGrid>
+        </h:panelGroup>
+      </h:panelGrid>
+      <!-- Request  options -->
+      <h:outputText value="#{msg.uberAppsRequestFor}"></h:outputText>
+      <h:inputTextarea id="requestForId" value="#{storeRequestManagedBean.requestFor}"></h:inputTextarea>
+      <p:watermark value="#{msg.uberAppsRequestForWatermark}" for="requestForId" ></p:watermark>
+      <h:outputText value="#{msg.uberAppsRequestNotes}"></h:outputText>
+      <h:inputTextarea id="notesId" value="#{storeRequestManagedBean.notes}"></h:inputTextarea>
+      <p:watermark value="#{msg.uberAppsNotesWatermark}" for="notesId" ></p:watermark>
+      <!-- Buy/Cancel -->
+      <h:panelGroup>
+        <h:panelGroup styleClass="bottomLeft">
+          <h:outputLink styleClass="cancelLink"
+            value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/uberApps/viewStore.jsf"
+            title="#{msg.uberAppsCancelLinkAltText}">
+            <span><u>#{msg.addUserCancelLinkText}</u> </span>
+          </h:outputLink>
+        </h:panelGroup>
+        <h:panelGroup styleClass="bottomRight">
+          <p:commandButton action="#{storeRequestManagedBean.request}" styleClass="roundedButtonLarge" value="#{msg.requestButtonText}" ajax="false" />
+        </h:panelGroup>
+      </h:panelGroup>
+    </h:panelGrid>
+  </p:panel>
+  <script type="text/javascript">
+			jQuery(document).ready(function() {
+				jQuery('input:radio').click(function() {
+					// Submit the new radio button selection
+					var id = jQuery(this).attr('id');
+					jQuery('#' + id + 'Link').click();
+				});
+			});
+		</script>
+</ui:composition>
+</html>

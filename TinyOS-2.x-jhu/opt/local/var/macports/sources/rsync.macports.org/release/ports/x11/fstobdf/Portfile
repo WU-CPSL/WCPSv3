@@ -1,0 +1,32 @@
+# $Id: Portfile 80076 2011-07-03 23:46:28Z jmr@macports.org $
+
+PortSystem          1.0
+
+name                fstobdf
+version             1.0.4
+categories          x11 graphics
+maintainers         jeremyhu openmaintainer
+description         Convert font from X11 server to BDF
+long_description \
+   The fstobdf program reads a font from a font server and prints a BDF \
+   file on the standard output that may be used to recreate the font. \
+   This is useful in testing servers, debugging font metrics, and \
+   reproducing lost BDF files.
+
+platforms           darwin
+
+homepage            http://www.x.org/
+master_sites        xorg:individual/app/
+use_bzip2           yes
+
+checksums           md5     fc1f42aac16d6b76c79a1a3a0fb6a53b \
+                    sha1    5310493f53277fd196f93bbb7f2a204cad8997b7 \
+                    rmd160  a4434bb2f1e5ab2bbde96ac7f43ed023b3e8327d
+
+depends_build       port:pkgconfig
+
+depends_lib         port:xorg-libX11 port:xorg-libFS
+
+livecheck.type      regex
+livecheck.regex     ${name}-(\[\\d.\]+)${extract.suffix}
+livecheck.url       http://xorg.freedesktop.org/archive/individual/app/?C=M&O=D

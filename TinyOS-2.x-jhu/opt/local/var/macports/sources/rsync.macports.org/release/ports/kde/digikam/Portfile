@@ -1,0 +1,73 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89400 2012-01-28 08:55:56Z nicos@macports.org $
+
+PortSystem          1.0
+PortGroup           kde4 1.1
+
+name                digikam
+version             2.5.0
+categories          kde kde4
+license             GPL-2+
+maintainers         hyper-world.de:jan openmaintainer
+platforms           darwin
+
+description         Photo Management Program
+long_description    Digital photo management program to import, organize, enhance, search and export your digital images.
+
+homepage            http://www.digikam.org/
+master_sites        sourceforge:project/digikam/digikam/${version}
+
+checksums           rmd160  4ff1b5fbc2cc4a8cb9994f7c7796086418dd43fb \
+                    sha256  55292c79b41fd2c20ce0a821f388645436acb18b3b06b486747e17129114851a
+
+use_bzip2           yes
+
+# Dependencies of Digikam and kipi-plugins.
+depends_lib-append  port:kdelibs4 \
+                    port:libkdcraw \
+                    port:libkexiv2 \
+                    port:libkipi \
+                    port:libpng \
+                    port:qt4-mac \
+                    port:kdepimlibs4 \
+                    port:tiff
+
+# Dependencies of kipi-plugins.
+depends_lib-append  port:expat\
+                    port:gdk-pixbuf2 \
+                    port:jpeg \
+                    port:libgpod \
+                    port:libksane \
+                    port:libxml2 \
+                    port:libxslt \
+                    port:marble \
+                    port:opencv \
+                    port:qca \
+                    port:qjson
+
+# opencv is not universal
+universal_variant   no
+
+# Dependencies of Digikam.
+depends_lib-append  port:boost \
+                    port:gettext \
+                    path:lib/pkgconfig/glib-2.0.pc:glib2 \
+                    port:lcms \
+                    port:lensfun \
+                    port:libgphoto2 \
+                    port:liblqr \
+                    port:libusb \
+                    port:jasper \
+                    path:bin/mysql_config5:mysql5 \
+                    port:shared-desktop-ontologies
+
+depends_run-append  port:oxygen-icons
+
+patchfiles          patch-core-libs-database-imagehistory-imagehistorygraph_boost.h.diff \
+                    patch-core-utilities-setup-setupplugins.cpp.diff
+
+if {${configure.compiler} == "clang"} {
+    configure.compiler llvm-gcc-4.2
+}
+
+configure.args-append ../${distname}

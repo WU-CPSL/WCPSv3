@@ -1,0 +1,94 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 85159 2011-10-10 17:04:02Z snc@macports.org $
+
+PortSystem          1.0
+
+name                ZendFramework
+version             1.11.11
+categories          www lang
+license             BSD
+maintainers         snc openmaintainer
+description         A framework for developing PHP web applications
+long_description    This is a port of the Zend Framework. The Zend Framework \
+                    aims to provide an architecture for developing entire \
+                    applications with no other library dependencies. This code \
+                    will always be actively developed, tested, and supported \
+                    by Zend and the PHP Collaboration Project.
+                  
+homepage            http://framework.zend.com/
+
+platforms           darwin freebsd
+depends_run         path:bin/php:php5 \
+                    port:php5-apc \
+                    port:php5-calendar \
+                    port:php5-curl \
+                    port:php5-dba \
+                    port:php5-exif \
+                    port:php5-ftp \
+                    port:php5-gd \
+                    port:php5-gettext \
+                    port:php5-gmp \
+                    port:php5-iconv \
+                    port:php5-imap \
+                    port:php5-mbstring \
+                    port:php5-mcrypt \
+                    port:php5-memcache \
+                    port:php5-mssql \
+                    port:php5-mysql \
+                    port:php5-odbc \
+                    port:php5-openssl \
+                    port:php5-pcntl \
+                    port:php5-posix \
+                    port:php5-postgresql \
+                    port:php5-soap \
+                    port:php5-sockets \
+                    port:php5-SPL_Types \
+                    port:php5-sqlite \
+                    port:php5-tidy \
+                    port:php5-wddx \
+                    port:php5-xmlrpc \
+                    port:php5-xsl \
+                    port:php5-zip
+
+variant manual_extensions description {Let me pick my own php extensions} {
+    depends_run         path:bin/php:php5
+}
+
+master_sites        http://framework.zend.com/releases/${name}-${version}/
+
+checksums           rmd160  844d5b941b7a6c78b868148f6590cd3dc209a418 \
+                    sha256  ad94bec230e2826ea9e93810215cf0cb7974e0f314c1e495b83bdbd0d345f79f
+
+set zf_main_dir     ${prefix}/www/${name}
+set zf_doc_dir      ${prefix}/share/doc/${name}
+
+use_configure       no
+
+build               {}
+
+destroot {
+    # Copy everything to www.
+    copy ${worksrcpath} ${destroot}${zf_main_dir}
+
+    # Link the CLI Zend Tool into bin.
+    ln -s ${zf_main_dir}/bin/zf.sh ${destroot}${prefix}/bin
+    ln -s ${zf_main_dir}/bin/zf.sh ${destroot}${prefix}/bin/zf
+
+    # Link the documentation into share/doc.
+    xinstall -d ${destroot}${zf_doc_dir}
+    foreach f [glob ${worksrcpath}/*.txt] {
+        ln -s ${zf_main_dir}/[file tail ${f}] ${destroot}${zf_doc_dir}
+    }
+}
+
+notes               "If this is your first install, you might want to add \
+                    ${zf_main_dir}/library to the include_path in your php.ini \
+                    (e.g. include_path = \".:${zf_main_dir}/library\"). \
+                    \n\nIf you want to use the extra ZendX components \
+                    you might want to add ${zf_main_dir}/extras/library too \
+                    (e.g. include_path = \".:${zf_main_dir}/library:${zf_main_dir}/extra/library\")."
+
+livecheck.type      regex
+livecheck.url       http://framework.zend.com/download/latest
+livecheck.regex     {releases/ZendFramework-(\d+\.\d+\.\d+[^ab\/]*)\/}
+livecheck.regex     {Zend Framework (\d+\.\d+\.\d+) Full}

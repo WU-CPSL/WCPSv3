@@ -1,0 +1,15 @@
+# $Id: Portfile 51021 2009-05-15 15:55:30Z and.damore@macports.org $
+
+PortSystem        1.0
+name              gensig
+version           2.3
+categories        mail
+description       A random .signature generator
+maintainers       andrea+darwinports@webcom.it
+long_description  Gensig is a random signature generator.
+homepage          http://www.geekthing.com/~robf/ware/gensig/
+platforms         darwin
+master_sites      ${homepage} http://www.ooblick.com/software/gensig/
+checksums         md5 1b4a0b3713b8e377baeef606f584d539
+configure.args    --mandir=${prefix}/share/man
+

@@ -1,0 +1,311 @@
+This is version 1.3.4 of the nesC compiler.
+
+Installation instructions are in INSTALL. 
+
+Changes in nesC 1.3.4
+=====================
+- support gcc 4.7.x (issue 3381025)
+- fix issues 3519555, 3473487, 3468269
+
+Changes in nesC 1.3.3
+=====================
+- fixed mig when used with perl 5.12 (sourceforge bugs 3122329, 3066006)
+- work around potential gcc 4.6 behavior change (sourceforge bug 3153727)
+- support gcc's -H option (print #included file names)
+
+Changes in nesC 1.3.2
+=====================
+- changed Intel Open Source License files to dual BSD/GPL license
+- improved support for non-gcc targets: -fnesc-gccize flag, 
+  optionally identify "async" function in nescc output
+- bug fixes (sourceforge bugs 3013497, 3017203, 3019357 and others)
+- disable use of Apple-specific "blocks" C extension 
+
+Changes in nesC 1.3.1
+=====================
+- updated reference manual for language changes since version 1.2.0
+- support gcc's -include option when compiling a nesC application
+- bug fixes
+
+Changes in nesC 1.3.0
+=====================
+- C preprocessor is integrated into nesC, which should significantly speed
+  up compilation (esp. on Windows)
+
+- support for the Deputy type-safety-for-C system (see
+  deputy.cs.berkeley.edu). To use Deputy, you add type annotations to
+  your nesC code, then compile with the -fnesc-deputy flag. A bunch of
+  small changes to nesC support the use of deputy. 
+
+  Flags to nescc:
+  -fnesc-deputy: use Deputy in this compilation. You need to have
+   a version of Deputy customized for use with nesC installed for
+   this to work.
+  -fnesc-deputy-args: extra arguments to pass to Deputy.
+  -fnesc-default-safe/-fnesc-default-unsafe: the default safety for
+   C functions and nesC modules (with no option specified, 
+   -fnesc-default-unsafe is assumed)
+
+  Type annotations: NONULL, COUNT(...), etc (see the Deputy-for-nesC
+  documentation for full details), which are actually macros which
+  expand to nesC attributes (@nonnull(), @count(...), etc. Using macros
+  allows Deputy-annotated code to be used with earlier versions of nesC.
+
+  Type annotations in nesdoc comments: to reduce clutter for non-Deputy
+  users, Deputy's annotations can be placed within a nesdoc comment
+  rather than in a function signature (which then looks like a regular
+  C signature):
+    /** ... @param 'int *@count(n) x' x is an array of n ints ... */
+    void f(int *x, int n);
+  is the same as
+    void f(int *@count(n) x, int n);
+  Macros can be used in the comment, so the above could also be
+    /** ... @param 'int *COUNT(n) x' x is an array of n ints ... */
+    void f(int *x, int n);
+  where COUNT(expr) expands to @count(expr).
+
+- internal support (in nesc1) for Deputy based on @deputy_scope() and
+  @macro("NAME") attributes, and a -fnesc-genprefix=<line> option.
+
+- @macro() and -fnesc-genprerix= may be useful in other contexts too:
+  if a nesC attribute declaration has an @macro() attribute:
+    struct @myattr @macro("MYMACRO") { int x; char *y; };
+  then uses of @myattr in nesC source are output as calls to MYMACRO in
+  nesC's intermediate C output. For instance
+    int x @myattr(23, "fun");
+  becomes
+    int x MYMACRO(23, "fun");
+  The -fnesc-genprefix=<line> adds <line> to the start of the generated C
+  output, e.g., it could be a #define definition for MYMACRO, or a 
+  #include of a file with appropriate definitions.
+
+- wide strings in XML output now show up as arrays of bytes (and follow
+  the target's byte-level representation of wide strings)
+
+- ability to process a C file through nesC (this provides support in C for
+  external types, atomic statements and unique), as follows:
+    nescc <options> -x nesc <filename>.c
+  This forces nescc to pass the C file <filename>.c through the nesC compiler
+  (normally it would be sent to the regular C compiler), which will process
+  the nesC extensions and then compile the generated C code with the regular
+  C compiler (or whatever compiler was specified with -fnesc-gcc=...)
+
+- inside a module, you can now write void f(void) or void f() interchangeably
+  
+
+Changes in nesC 1.2.9
+=====================
+- added uniqueN constant function to allocated N consecutive numbers
+- fix -fnesc-separator
+- bug fixes
+
+Changes in nesC 1.2.8a
+======================
+- bug fixes
+
+Changes in nesC 1.2.8
+=====================
+- -fnesc-cppdir option to save preprocessed output
+- -fnesc-separator option to change symbol separator from $ in generated code
+- little-endian bitfields now supported in network types (thanks to
+  Matti Juhani Å√ñhman <mohman@cc.hut.fi> for the approach and some of the code)
+- internal errors try to report current source location (can be helpful in
+  tracking down problems, but only works for errors that occur during parsing)
+- updated vim mode from Cory Sharp (cory@moteiv.com)
+- bug fixes
+
+Changes in nesC 1.2.7a
+======================
+- nescc-diff removed (it was unsupported, ran only on AVR, and depends on guile 
+  being installed to work)
+
+Changes in nesC 1.2.7
+=====================
+- gcc's mode attribute support (this requires a new word_size specification
+  in the env target)
+- bug fixes
+
+Changes in nesC 1.2.6
+=====================
+- external types now support bitfields (big-endian only - mixing bit-field
+  endianness within a struct would be extremely confusing and/or tricky)
+- -conly option to just compile to C
+- better struct/union layout code, which requires a slightly more detailed
+  target machine description (see src/machine.h)
+- #pragma statements are saved and dumped at the end of the generated C code
+  (if you or your compiler uses #pragma, you'll probably have to move these
+  somewhere else; however, this cannot be done without understanding of
+  the pragma itself; hence the nesC compiler leaves this process to a 
+  user-supplied tool)
+- bug fixes
+
+Changes in nesC 1.2.5
+=====================
+- nescc-mig now generates C (ncg has supported C since 1.1.2)
+- add __builtin_offsetof keyword to make recent gcc's happy,
+  and update the gcc-specific asm syntax to reflect recent
+  gcc changes
+- allow types defined in interface files to be used immediately in generic 
+  interface arguments (e.g., interface Timer<TMilli>, where TMilli is 
+  defined in Timer.nc)
+- updates to automatic inlining - code should be slightly smaller
+- @spontaneous() attribute is automatically added to the __nesc_XXX 
+  functions used by the compiler
+- atomic optimisation (experimental): if you specify -fnesc-optimize-atomic,
+  two optimisations are performed:
+  o outermost atomics call __nesc_disable/enable_interrupt, which can assume
+    that interrupts are initially enabled
+  o "simple" atomic statements have no overhead (interrupts are not disabled)
+    simple atomic statements are those:
+    - with no accesses to shared state
+    - or, at most one access to one byte of shared state
+- bug fixes
+
+Changes in nesC 1.2.4
+=====================
+- bug fixes
+
+Changes in nesC 1.2.3
+=====================
+- provide network type information in nesC dump output
+- bug fixes
+
+Changes in nesC 1.2.2
+=====================
+- nescc-wiring tool to check wiring constraints - see man page for details
+- python mig, ncg support
+- XML schema update (should now match nesC dump output)
+- Java code now made available in compiled form as nesc.jar (rather than
+  in source form)
+- bug fixes
+
+Changes in nesC 1.2.1
+=====================
+- external types (nx_...) can now be passed as parameters and returned as
+  results
+- updates to XML dump information to support nesdoc
+  in particular, remember typedef names
+- bug fixes
+
+Changes in nesC 1.2
+===================
+- generic components and interfaces. See doc/user/generics-1.2.txt. 
+  nesdoc does not support generic components and interfaces (this should be 
+  supported in the next release).
+- configuration implementations and component specifications can now 
+  include type and constant declarations; configuration implementations
+  can refer to these types and constants. These changes are described
+  alongside the generic component changes, in doc/user/generics-1.2.txt. 
+- attributes (Java 1.5-style). See doc/user/attributes.txt.
+- binary components. See doc/user/binary-components.txt.
+- external types, a revamp of nesC 1.1.3's network types. See 
+  doc/user/network-types.txt.
+- "includes" is deprecated - use #include instead; note that you
+  must use #ifndef/#define/#endif for #include'd files in the usual
+  C style.
+- macros in included files now work in ways that are similar to C
+  (as long as you use #include instead of includes).
+- support for compiling task/post into an interface + wiring: this
+  allows the scheduler to be implemented as a component.
+- return can be used in atomic statements (implicitly terminating
+  the atomic statement).
+- the patched AVR assembler has been unbundled from nesC.
+- the ncc, mig and nesdoc scripts have been unbundled from nesC (they
+  are now distributed with the other TinyOS tools).
+
+Changes in nesC 1.1.3
+=====================
+- network types: platform-independent types to support heterogeneous
+  networking. See doc/network-types.txt.
+- support passing assembler options for nesC programs with -Wa, as usual w/ gcc
+- support -I- correctly (see gcc manual)
+- initialiser bug fix (some initialisers crashed nesC)
+
+Changes in nesC 1.1.2
+=====================
+- Misc bug fixes (in particular, work around latest-cygwin weirdness which
+  causes file corruption)
+- Recognise the gcc noinline attribute and don't automatically inline such
+  functions (patch contributed by Klaus Madsen, nesc@hjernemadsen.org)
+- Mac OS X support; avr-gcc not needed when compiling nesC
+- Support gcc's -I- idiom to prevent searching current dir for components,
+  interfaces, etc.
+- 64-bit platform support: compile with -DLARGE_ADDRESSES, and 
+  edit the MEMSLICE1 constant in src/libcompat.regions.c to be the number
+  of unused high-order bits on your platform
+- ncg supports C (note that there's no C mig support yet)
+
+Changes in nesC 1.1.1
+=====================
+- Support for platforms and sensorboards in directories other than 
+  tos/platforms and tos/sensorboards: a platform or sensorboard 
+  can be used if its directory is specified with an explicit -I directive
+  (see doc/ncc.html for details).
+- support for Tython
+- support -Wparentheses (warnings on statements like 'if (var = value) ...',
+  and other similar C pitfalls)
+- nesC editing modes for emacs, vim and kde (kate, kwrite, kdevelop):
+  these are in tools/editor-modes, and get installed to 
+  <installdir>/lib/ncc/editor-modes. Read the appropriate readme.txt file
+  for installation directions
+- msp430 and env targets (env gets the machine specification from an
+  environment variable and is intended to ease implementation of new
+  platforms, see doc/envtarget.html for details)
+- new hwevent, atomic_hwevent attributes to tell nesC which functions
+  are interrupt entry points (hwevent: interrupt entry point, invoked
+  with interrupts enabled; atomic_hwevent: interrupt entry point, invoked
+  with interrupts disabled) - these should ease porting to new platforms
+- new keywords (future use): abstract, component, extends, generic, new
+- A few small bug fixes
+
+Changes in nesC 1.1
+===================
+- Support for new language features:
+  o atomic sections
+  o compile-time data race detection
+  o explicit marking of asynchronous (aka interrupt) code (async keyword on
+    commands and events)
+  o automatic combining of results of multiply-wired functions
+  o initialisers now supported on module variables
+  o uniqueCount(<string>) function to complement unique(<string>), returning
+    the number of uses of the latter (useful for dimensioning arrays...)
+
+- new nesC warning flags/changes:
+  o -W[no-]unexpected-docstring is now -Wnesc-docstring, and defaults to off
+  o -W[no-]nesc-fnptr: warn for uses of function pointers
+  o -W[no-]nesc-data-race: turn on[off] compile-time data race detection
+  o -W[no-]nesc-async: warn [bug in alpha: error] if asynchronous code calls
+    synchronous code
+  o -W[no-]nesc-combine: warn when multiply wired functions do not have
+    a combining function defined on the result type. See tos.h for the
+    the combining function definition for result_t
+  o -Wnesc-all: same as -Wnesc-data-race -Wnesc-async -Wnesc-fnptr and
+                -Wnesc-combine
+
+- The NESC preprocessor symbol is defined to XYZ, where X is the major
+  version, Y the minor and Z the patchlevel. So nesc 1.1 defines NESC as 110
+
+- Tool chain changes:
+  o ncc has been split into two files: ncc and nescc
+    TinyOS-specific code is in ncc, nescc is a "generic" nesC compiler
+    (nescc does not automatically include tos.h, and does not automatically
+     add the TinyOS directory structure to the search path)
+  o the -fnesc-include=<filename> option includes a C file before compiling
+    the requested component (used by ncc to include tos.h...)
+    You can specify several -fnesc-include=... options
+  o A hardware platform X can now more easily be added:
+    - create directory .../tos/platforms/X
+    - place a .platform file in .../tos/platforms/X. Look at existing
+      .platform files for inspiration.
+  o A sensor board Y can add directories to the search path if there is
+    a .sensor file in the .../tos/sensorboards/Y directory
+    (as with .platform, .sensor is just perl code so can modify the
+    variables used by ncc to achieve whatever effect is necessary)
+  o set-mote-id works for programs greater than 64K
+
+- New tool to extract (enum) constants from C code: ncg. Usage is similar
+  to mig.
+- Debugging on mica supports with the Atmel JTAG ICE and the AvarICE
+  project (at http://sourceforge.net/projects/avarice)
+
+- Some improved error messages, miscellaneous bug fixes

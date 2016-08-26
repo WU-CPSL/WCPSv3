@@ -1,0 +1,51 @@
+# $Id: Portfile 82624 2011-08-17 00:58:29Z ryandesign@macports.org $
+
+PortSystem          1.0
+
+name                fizmo
+version             0.6.10
+revision            1
+categories          games
+maintainers         spellbreaker.org:Christoph.Ender
+description         Console-based Z-Machine interpreter for Infocom games.
+long_description    Fizmo is a Z-Machine interpreter (Fizmo Interprets \
+                    Z-Machine Opcodes) which allows you to run Infocom- and \
+                    most other Z-Machine based games -- except version 6 -- on \
+                    POSIX-like systems which provide a ncursesw (note the 'w') \
+                    library. It has been successfully compiled on Debian based \
+                    Linux, Mac OS X (with MacPorts providing ncursesw) and \
+                    Windows (using Cygwin and a self-compiled ncursesw \
+                    library). This is a console-style application, meaning \
+                    that it runs in textmode and does not provide any GUI \
+                    whatsoever. For more information about Infocom and \
+                    interactive fiction, see the 'New to IF' section at \
+                    http://www.ifarchive.org. Games are available from \
+                    http://www.ifarchive.org/indexes/if-archiveXgamesXzcode.html
+homepage            http://spellbreaker.org/~chrender/fizmo/
+platforms           darwin linux
+master_sites        http://spellbreaker.org/~chrender/fizmo/source/
+
+checksums           sha1 858a8e1f7f2fcc01b5bc9a42459f6ae4ce166b6b \
+                    rmd160 78c96833c95621831e871f4a36b3c1c0f3f198ff
+
+depends_lib         port:ncurses \
+                    port:libsdl_sound \
+                    port:libsndfile \
+                    port:libxml2
+
+patchfiles          patch-src-fizmo-Makefile.diff
+
+post-patch {
+   reinplace "s|/opt/local|${prefix}|g" ${worksrcpath}/config.macports.mk
+   reinplace "s|NCURSESW_INC_DIR = /usr/include|NCURSESW_INC_DIR = \$(DEFAULT_PREFIX)/include|g" ${worksrcpath}/config.macports.mk
+   reinplace "s|NCURSESW_LIB_DIR = /usr/lib|NCURSESW_LIB_DIR = \$(DEFAULT_PREFIX)/lib|g" ${worksrcpath}/config.macports.mk
+   reinplace "s|LIBXML2_INC_DIR = /usr/include/libxml2|LIBXML2_INC_DIR = \$(DEFAULT_PREFIX)/include/libxml2|g" ${worksrcpath}/config.macports.mk
+   reinplace "s|LIBXML2_LIB_DIR = /usr/lib|LIBXML2_LIB_DIR = \$(DEFAULT_PREFIX)/lib|g" ${worksrcpath}/config.macports.mk
+}
+
+use_configure       no
+
+build.args          CONFIG_FILE=config.macports.mk \
+                    CC="${configure.cc} [get_canonical_archflags]"
+
+destroot.args       CC="${configure.cc} [get_canonical_archflags]"

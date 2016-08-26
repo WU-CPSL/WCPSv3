@@ -1,0 +1,57 @@
+# $Id: Portfile 86446 2011-10-26 00:03:43Z ryandesign@macports.org $
+
+PortSystem 1.0
+
+name            enblend
+version         4.0
+revision        3
+categories      graphics
+maintainers     gmail.com:hvdwolf
+description     a tool to composite images
+long_description    Enblend is a tool to composite overlapping images \
+                with invisible (or very difficult to see) seams. Enfuse is a \
+                tool for automatic exposure and contrast blending.
+homepage        http://enblend.sourceforge.net/
+platforms       darwin
+master_sites    sourceforge:${name}
+distname        enblend-enfuse-${version}
+worksrcdir      ${distname}-753b534c819d
+checksums       md5     2e7c950061e0085fd75d94576130250f \
+                sha1    34c3a5ce11c6ef0ef520d8a15a3cb6a94a567033 \
+                rmd160  9e531b5bf6f7258ef8778c01b456979e0bc04338
+
+depends_lib     port:boost \
+                port:lcms \
+                port:libpng \
+                port:libxmi \
+                port:mesa \
+                port:openexr \
+                port:freefont-ttf
+
+patchfiles      libpng14.diff
+
+configure.args  --mandir=${prefix}/share/man \
+                --enable-image-cache=yes \
+                --enable-split-doc=no
+
+if {${configure.compiler} == "clang"} {
+    configure.compiler llvm-gcc-4.2
+}
+
+# The build uses vast amounts of memory per job.
+use_parallel_build  no
+
+post-destroot {
+    xinstall -d -m 755 ${destroot}${prefix}/share/doc/${name}
+    xinstall -m 644 -W ${worksrcpath} AUTHORS ChangeLog COPYING \
+        NEWS README VIGRA_LICENSE \
+        ${destroot}${prefix}/share/doc/${name}
+}
+
+platform macosx {
+    depends_lib-delete port:mesa
+    depends_lib-append port:glew
+    configure.args-append --with-apple-opengl-framework --with-glew
+}
+
+livecheck.regex   {(?i)<title>enblend-enfuse enblend-enfuse-(.*) released.*</title>}

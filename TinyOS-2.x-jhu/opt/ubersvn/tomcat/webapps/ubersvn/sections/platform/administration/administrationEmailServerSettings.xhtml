@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:p="http://primefaces.prime.com.tr/ui" xmlns:h="http://java.sun.com/jsf/html">
+<ui:composition>
+  <ol id="sub-toc">
+    <li><h:outputLink title="#{msg.adminStatusTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationStatus.jsf">
+        <span>#{msg.adminStatusTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminApacheServerSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationApacheServerSettings.jsf">
+        <span>#{msg.adminSubversionServerSettingsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminUberServerSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUberServerSettings.jsf">
+        <span>#{msg.adminUberServerSettingsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminUberPreferenceSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUberPreferenceSettings.jsf">
+        <span>#{msg.adminUberPreferenceSettingsTabText}</span>
+      </h:outputLink></li>
+    <li class="current"><h:outputLink title="#{msg.adminEmailServerSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationEmailServerSettings.jsf">
+        <span>#{msg.adminEmailServerSettingsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminLogsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationLogs.jsf">
+        <span>#{msg.adminLogsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminUpdatesTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUpdates.jsf">
+        <span>#{msg.adminUpdatesTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminLDAPTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUberLDAPSettings.jsf">
+        <span>#{msg.adminLDAPTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink title="#{msg.backup}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationBackup.jsf">
+        <span>#{msg.backup}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminExtensionsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationViewExtensions.jsf">
+        <span>#{msg.adminExtensionsTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink title="#{msg.adminSubversionReleaseLinkText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationSubversionRelease.jsf">
+        <span>#{msg.adminSubversionReleaseLinkText}</span>
+      </h:outputLink>
+    </li>
+  </ol>
+  <p:panel id="adminEmailServerPanel" styleClass="tabbed-panel">
+
+    <p:panel style="border: none; background: transparent; width: 70%; height: 300px; margin:100px auto;">
+      <div style="text-align: center;">
+        <h:outputText styleClass="configurationTitle" value="#{msg.emailSetupTitle}" />
+      </div>
+      <h:panelGrid cellspacing="10px" style="width:100%" columns="2" columnClasses="wizardLabelColumn, wizardFieldColumn">
+        <h:outputLabel value="#{msg.enableEmailNotifications}" id="enableEmailLabel" />
+        <h:selectOneRadio id="enableEmail" layout="lineDirection" value="#{adminEmailServerManagedBean.emailEnabled}">
+          <f:selectItem itemLabel="#{msg.yes}" itemValue="true" />
+          <f:selectItem itemLabel="#{msg.no}" itemValue="false" />
+          <p:ajax event="click"
+            update="enableEmail useSSLLabelContainer useSSLContainer hostIPLabelContainer hostIpContainer emailPortLabelContainer emailPortContainer
+          fromEmailLabelContainer fromEmailContainer emailPrefixLabelContainer emailPrefixContainer smtpEnabledLabelContainer smtpEnabledContainer
+          configurationEmailUsernameLabelContainer configurationEmailUsernameContainer emailPasswordLabelContainer emailPasswordContainer emailBottomRight"></p:ajax>
+        </h:selectOneRadio>
+
+        <h:panelGroup id="useSSLLabelContainer">
+          <h:outputLabel value="#{msg.useSSL}" id="useSSLLabel" rendered="#{adminEmailServerManagedBean.emailEnabled}" />
+        </h:panelGroup>
+        <h:panelGroup id="useSSLContainer">
+          <h:selectOneRadio id="useSSL" layout="lineDirection" value="#{adminEmailServerManagedBean.SSLEnabled}"
+            rendered="#{adminEmailServerManagedBean.emailEnabled}">
+            <f:selectItem itemLabel="#{msg.yes}" itemValue="true" />
+            <f:selectItem itemLabel="#{msg.no}" itemValue="false" />
+          </h:selectOneRadio>
+        </h:panelGroup>
+
+        <h:panelGroup id="hostIPLabelContainer">
+          <h:outputLabel for="hostIP" value="#{msg.host}" id="hostIPLabel" rendered="#{adminEmailServerManagedBean.emailEnabled}" />
+        </h:panelGroup>
+        <h:panelGroup id="hostIpContainer">
+          <h:inputText styleClass="wizardFormField" id="hostIP" value="#{adminEmailServerManagedBean.SMTPHost}" required="true"
+            rendered="#{adminEmailServerManagedBean.emailEnabled}" requiredMessage="#{msg.emailHostIPRequired}" size="50">
+            <f:validator validatorId="com.wandisco.ubersvn.hostnameValidator" />
+          </h:inputText>
+          <h:message style="color: red; font-size: 10px; height: 11px;    margin-left: 10px;" for="hostIP" />
+        </h:panelGroup>
+
+
+        <h:panelGroup id="emailPortLabelContainer">
+          <h:outputLabel for="emailPort" value="#{msg.emailPort}" rendered="#{adminEmailServerManagedBean.emailEnabled}" />
+        </h:panelGroup>
+        <h:panelGroup id="emailPortContainer">
+          <h:inputText styleClass="wizardFormField" required="true" requiredMessage="#{msg.emailPortRequired}"
+            rendered="#{adminEmailServerManagedBean.emailEnabled}" validatorMessage="#{msg.inValidPort}"
+            value="#{adminEmailServerManagedBean.SMTPPort}" id="emailPort" size="50">
+            <f:validateLongRange maximum="65535" minimum="0" />
+          </h:inputText>
+          <h:message style="color: red; font-size: 10px; height: 11px;    margin-left: 10px;" for="emailPort" />
+        </h:panelGroup>
+
+        <h:panelGroup id="fromEmailLabelContainer">
+          <h:outputLabel for="fromEmail" value="#{msg.fromAddress}" rendered="#{adminEmailServerManagedBean.emailEnabled}" />
+        </h:panelGroup>
+        <h:panelGroup id="fromEmailContainer">
+          <h:inputText styleClass="wizardFormField" id="fromEmail" value="#{adminEmailServerManagedBean.SMTPFromAddress}" size="50"
+            rendered="#{adminEmailServerManagedBean.emailEnabled}" required="true" requiredMessage="#{msg.userEmailAddressRequired}">
+            <f:validator validatorId="com.wandisco.ubersvn.isValidEmail" />
+          </h:inputText>
+          <h:message style="color: red; font-size: 10px; height: 11px;     margin-left: 10px;" for="fromEmail" />
+        </h:panelGroup>
+
+        <h:panelGroup id="emailPrefixLabelContainer">
+          <h:outputLabel for="emailPrefix" value="#{msg.emailPrefix}" rendered="#{adminEmailServerManagedBean.emailEnabled}" />
+        </h:panelGroup>
+        <h:panelGroup id="emailPrefixContainer">
+          <h:inputText styleClass="wizardFormField" id="emailPrefix" value="#{adminEmailServerManagedBean.SMTPEmailPrefix}" size="50"
+            rendered="#{adminEmailServerManagedBean.emailEnabled}" />
+        </h:panelGroup>
+
+        <h:panelGroup id="smtpEnabledLabelContainer">
+
+          <h:outputLabel for="smtpEnabled" value="#{msg.smtp}" rendered="#{adminEmailServerManagedBean.emailEnabled}" />
+
+        </h:panelGroup>
+        <h:panelGroup id="smtpEnabledContainer">
+          <h:selectOneRadio id="smtpEnabled" layout="pageDirection" value="#{adminEmailServerManagedBean.SMTPAuthenticationEnabled}"
+            rendered="#{adminEmailServerManagedBean.emailEnabled}">
+            <f:selectItem itemLabel="#{msg.enableSMTP}" itemValue="#{true}" />
+            <f:selectItem itemLabel="#{msg.disableSMTP}" itemValue="#{false}" />
+            <p:ajax event="click"
+              update="smtpEnabled configurationEmailUsernameLabelContainer configurationEmailUsernameContainer configurationEmailUsernameErrorContainer emailPasswordLabelContainer emailPasswordContainer emailPasswordErrorContainer" />
+          </h:selectOneRadio>
+        </h:panelGroup>
+
+
+        <h:panelGroup id="configurationEmailUsernameLabelContainer">
+          <h:outputLabel for="configurationEmailUsername" id="configurationEmailUsernameLabel" value="#{msg.emailUsername}"
+            rendered="#{adminEmailServerManagedBean.showSMTP}" />
+        </h:panelGroup>
+        <h:panelGroup id="configurationEmailUsernameContainer">
+          <h:inputText value="#{adminEmailServerManagedBean.SMTPUsername}" required="true" requiredMessage="#{msg.emailUsernameRequired}"
+            styleClass="wizardFormField" rendered="#{adminEmailServerManagedBean.showSMTP}" id="configurationEmailUsername"
+            size="50" />
+          <h:message style="color: red; font-size: 10px; height: 11px;    margin-left: 10px;" for="configurationEmailUsername"
+            rendered="#{adminEmailServerManagedBean.showSMTP}" />
+        </h:panelGroup>
+
+        <h:panelGroup id="emailPasswordLabelContainer">
+          <h:outputLabel for="emailPassword" value="#{msg.emailPassword}"
+            rendered="#{adminEmailServerManagedBean.showSMTP}" id="emailPasswordLabel" />
+        </h:panelGroup>
+        <h:panelGroup id="emailPasswordContainer">
+          <h:inputSecret redisplay="true" value="#{adminEmailServerManagedBean.SMTPPassword}"
+            rendered="#{adminEmailServerManagedBean.showSMTP}" required="true"
+            requiredMessage="#{msg.emailPasswordRequired}" styleClass="wizardFormField" id="emailPassword" size="50" />
+          <h:message style="color: red; font-size: 10px; height: 11px;    margin-left: 10px;" for="emailPassword"
+            rendered="#{adminEmailServerManagedBean.showSMTP}" />
+        </h:panelGroup>
+
+
+      </h:panelGrid>
+      <h:panelGroup id="emailBottomRight" style="margin-bottom: 10px; margin-right: 10px;" styleClass="bottomRight">
+        <p:commandButton id="administrationEmailTest" value="#{msg.adminEmailTestServerButtonText}" styleClass="roundedButtonSmall"
+          actionListener="#{adminEmailServerManagedBean.sendEmail}" ajax="false" rendered="#{adminEmailServerManagedBean.emailEnabled}" />
+        <p:spacer width="10" />
+        <p:commandButton id="administrationEmailSaveChanges" value="#{msg.saveButtonText}" styleClass="roundedButtonSmall"
+          action="#{adminEmailServerManagedBean.saveEmailServerSettings}" ajax="false" />
+
+
+      </h:panelGroup>
+    </p:panel>
+  </p:panel>
+</ui:composition>
+</html>

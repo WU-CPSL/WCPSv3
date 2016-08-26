@@ -1,0 +1,28 @@
+# $Id: Portfile 87583 2011-11-26 22:50:44Z blb@macports.org $
+
+PortSystem          1.0
+PortGroup           python27 1.0
+name                py27-mx-base
+version             3.2.1
+license             Permissive
+#http://www.egenix.com/products/python/mxBase/eGenix.com-Public-License-1.1.0.pdf
+maintainers         nomaintainer
+description         eGenix.com mx Extensions for Python - base package
+long_description \
+   Collection of Python software tools which enhance Python's usability in \
+   many important areas such as ODBC database connectivity, fast text \
+   processing, date/time processing and web site programming.
+
+platforms           darwin
+
+homepage            http://www.egenix.com/products/python/mxBase/
+master_sites        http://www.egenix.com/files/python/
+distname            egenix-mx-base-${version}
+
+checksums           sha1    a82f7f155ea92f26f40a6a3bf9160bfac7c52a00 \
+                    rmd160  d9ca3ac5748a1feec038f8e2f7b4f639cdd3b363
+
+livecheck.type      regex
+livecheck.url       ${homepage}
+livecheck.regex     Version: (\[0-9\\.\]+)
+

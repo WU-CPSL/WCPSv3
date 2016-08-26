@@ -1,0 +1,63 @@
+# $Id: Portfile 84787 2011-10-01 23:09:13Z ryandesign@macports.org $
+
+PortSystem 1.0
+
+name			expect
+conflicts		whois
+version			5.45
+revision		1
+platforms		darwin
+categories		devel
+maintainers		markd openmaintainer
+description		An automating and testing tool
+long_description	Expect is a tool for automating interactive applications \
+			such as telnet, ftp, passwd, fsck, rlogin, tip, etc. \
+			Expect is also useful for testing these same applications. \
+			And by adding Tk, you can also wrap interactive \
+			applications in X11 GUIs.
+homepage		http://expect.sourceforge.net/
+
+# Set tclv and md5 checksum to the current MacPorts Tcl port version, though port doesn't
+# break if they aren't in sync.
+
+set tclv		8.5.10
+
+master_sites		sourceforge:project/expect/Expect/${version}:exp \
+			sourceforge:project/tcl/Tcl/${tclv}:tcl
+
+dist_subdir		tcltk
+distname		${name}${version}
+
+distfiles		${distname}.tar.gz:exp \
+			tcl${tclv}-src.tar.gz:tcl
+
+checksums		${distname}.tar.gz \
+			md5     44e1a4f4c877e9ddc5a542dfa7ecc92b \
+			sha1    e634992cab35b7c6931e1f21fbb8f74d464bd496 \
+			rmd160  edffe881ee45abe6e9aa150ea5958a04d0ffeab0 \
+			tcl${tclv}-src.tar.gz \
+			md5     a08eaf8467c0631937067c1948dd326b \
+			sha1    e6c894d3b8cbcbfb7293a2e0c5e2cd15e178be2e \
+			rmd160  9b192388e74e46a4972d18c24b70b1a3d70ceba4
+
+depends_lib		port:tcl
+
+configure.cflags	"-I${workpath}/tcl${tclv}/generic -I${workpath}/tcl${tclv}/unix"
+configure.args		--disable-shared \
+			--mandir=${prefix}/share/man \
+			--with-tcl=${prefix}/lib \
+			--with-tclinclude=${workpath}/tcl${tclv}/generic/
+
+test.run		yes
+test.target		test
+
+post-destroot		{ ln -s libexpect${version}.a ${destroot}${prefix}/lib/libexpect.a
+
+			file mkdir ${destroot}${prefix}/share/doc/${name}/examples
+			eval xinstall -m 644 [glob ${worksrcpath}/example/*] \
+				${destroot}${prefix}/share/doc/${name}/examples
+
+			xinstall -m 644 -W ${worksrcpath} ChangeLog FAQ INSTALL NEWS README \
+				${destroot}${prefix}/share/doc/${name}
+			}
+

@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:p="http://primefaces.prime.com.tr/ui" xmlns:h="http://java.sun.com/jsf/html" xmlns:wd="http://www.wansdisco.com/jsf">
+<ui:composition>
+  <p:panel style="border-radius: 4px 4px 4px 4px;" styleClass="wizard-panel" rendered="#{basePage.repoAdmin}">
+    <p:panel style="border: none; background: transparent; width: 70%; height: 300px; margin:120px auto;">
+      <div style="text-align: center;">
+        <h:outputText styleClass="configurationTitle" value="#{msg.addUserUserCreation}" />
+      </div>
+      <p:accordionPanel tabChangeListener="#{userManagedBean.onTabChange}" autoHeight="false"
+        onTabChangeUpdate="createButtonsPanel importButtonsPanel">
+        <p:tab title="Create new user" id="createNewUser">
+          <h:panelGrid columns="2" columnClasses="wizardLabelColumn, wizardFieldColumn" cellspacing="10px;" style="width:100%">
+            <h:outputLabel for="addUserFullName" value="#{msg.addUserFullNameLabel}" />
+            <h:panelGroup>
+              <p:focus for="addUserFullName" />
+              <h:inputText value="#{userManagedBean.user.realName}" styleClass="wizardFormField" size="50" id="addUserFullName"
+                required="true" requiredMessage="#{msg.userRealNameRequired}" onkeyup="updateUserName(this, 'addUserUsername');" />
+              <br />
+              <h:message style="color: red; font-size: 9px; height: 11px;" for="addUserFullName" />
+            </h:panelGroup>
+            <h:outputLabel for="addUserUsername" value="#{msg.addUserUsernameLabel}" />
+            <h:panelGroup>
+              <h:inputText value="#{userManagedBean.user.userName}" styleClass="wizardFormField" size="50" id="addUserUsername"
+                required="true" requiredMessage="#{msg.userUsernameRequired}">
+                <f:validator validatorId="com.wandisco.ubersvn.isValidUsername" />
+              </h:inputText>
+              <br />
+              <h:message style="color: red; font-size: 9px;" for="addUserUsername" />
+            </h:panelGroup>
+            <h:outputLabel for="addUserPassword" value="#{msg.addUserPasswordLabel}" />
+            <h:panelGroup>
+              <p:password value="#{userManagedBean.user.password}" styleClass="wizardFormField" size="50" id="addUserPassword"
+                required="true" requiredMessage="#{msg.PasswordFieldRequired}" style="background:#ffffff;"
+                promptLabel="#{msg.EnterPassword}" autocomplete="off" weakLabel="#{msg.PasswordIsWeak}" goodLabel="#{msg.PasswordIsGood}"
+                strongLabel="#{msg.PasswordIsStrong}" />
+              <br />
+              <h:message style="color: red; font-size: 9px;" for="addUserPassword" />
+            </h:panelGroup>
+            <h:panelGroup>
+              <h:outputLabel for="addUserEmail" value="#{msg.addUserEmailLabel}" />
+              <br />
+              <p:spacer height="14px;" />
+            </h:panelGroup>
+            <h:panelGroup>
+              <h:inputText value="#{userManagedBean.user.emailAddress}" styleClass="wizardFormField" size="50" id="addUserEmail"
+                required="true" requiredMessage="#{msg.userEmailAddressRequired}">
+                <f:validator validatorId="com.wandisco.ubersvn.isValidEmail" />
+              </h:inputText>
+              <br />
+              <h:selectBooleanCheckbox value="#{userManagedBean.sendEmail}" styleClass="wizardFormCheckbox" id="addUserEmailUserCheckbox" />
+              <h:outputLabel for="addUserEmailUserCheckbox" style="color: #7F7F7F;font-size: 14px;"
+                value="#{msg.addUserEmailUserCheckboxLabel}" />
+              <br />
+              <h:message style="color: red; font-size: 9px;" for="addUserEmail" />
+            </h:panelGroup>
+          </h:panelGrid>
+        </p:tab>
+        <p:tab title="Import user" id="importUser">
+          <h:panelGrid columns="2" columnClasses="wizardLabelColumn, wizardFieldColumn" cellspacing="10px;" style="width:100%">
+            <h:outputLabel for="importUsers" value="#{msg.importUsersLabel}" />
+            <h:panelGroup>
+              <p:fileUpload id="importUsers" fileUploadListener="#{userManagedBean.handleFileUpload}" />
+            </h:panelGroup>
+          </h:panelGrid>
+        </p:tab>
+      </p:accordionPanel>
+    </p:panel>
+    <h:panelGroup styleClass="bottomLeft">
+      <h:outputLink styleClass="cancelLink"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/users/viewUsers.jsf"
+        title="#{msg.addUserCancelLinkAltText}">
+        <span><u>#{msg.addUserCancelLinkText}</u> </span>
+      </h:outputLink>
+    </h:panelGroup>
+    <h:panelGroup id="createButtonsPanel" styleClass="bottomRight">
+      <p:commandButton action="#{userManagedBean.createUser}" styleClass="roundedButtonMedium" value="#{msg.addUserCreateButtonText}"
+        rendered="#{userManagedBean.createNewUser}" image="greenCrossMedium" ajax="false"
+        process="addUserFullName,addUserUsername,addUserPassword,addUserEmail" />
+      <p:spacer width="15" rendered="#{userManagedBean.createNewUser}" />
+      <p:commandButton action="#{userManagedBean.createAndAddUser}" styleClass="roundedButtonLarge"
+        rendered="#{userManagedBean.createNewUser}" value="#{msg.addUserCreateAddButtonText}" image="greenCrossLarge" ajax="false" />
+    </h:panelGroup>
+    <h:panelGroup id="importButtonsPanel" styleClass="bottomRight">
+      <p:commandButton action="#{userManagedBean.uploadRedirect}" ajax="false" value="Import" rendered="#{!userManagedBean.createNewUser}"
+        process="@this, importUsers" styleClass="roundedButtonSmall ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+        onclick="statusDialog.show()" oncomplete="statusDialog.hide()" />
+    </h:panelGroup>
+  </p:panel>
+  <p:dialog modal="true" widgetVar="statusDialog" header="Importing Users" draggable="false" closable="false" resizable="false" width="200"
+    height="150">
+    <h:graphicImage id="progressImage" style="border:0; margin-left: auto; margin-right: auto; display: block;" library="img/platform"
+      name="progress.gif" />
+  </p:dialog>
+</ui:composition>
+</html>

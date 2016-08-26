@@ -1,0 +1,65 @@
+# $Id: Portfile 50262 2009-04-28 17:46:57Z jmr@macports.org $
+
+PortSystem 1.0
+
+name			dhcp
+version			3.1.2
+categories		net
+description		ISC dhcpd server
+long_description	ISC's Dynamic Host Configuration Protocol Distribution \
+			reference implementation of all aspects of the DHCP \
+			protocol, through a suite of DHCP tools: A DHCP \
+			server, client, and relay agent.  These tools all \
+			use a modular API which is designed to be sufficently \
+			general that can easily be made to work on POSIX- \
+			compliant operating systems and also non-POSIX \
+			systems like Windows NT and Mac OS.\
+			The DHCP server, client and relay agent are provided \
+			both as reference implementations of the protocol \
+			and as working, fully-features sample implementations.\
+			Both the client and the server provide functionality \
+			that, while not strictly required by the protocol, \
+			is very useful in practice.  The DHCP server also \
+			makes allowance for non-compliant clients which \
+			one might still like to support.
+homepage		http://www.isc.org/products/DHCP/
+platforms		darwin
+maintainers		nomaintainer
+master_sites		http://ftp.isc.org/isc/dhcp/ \
+			http://ftp.isc.org/isc/dhcp/dhcp-3.1-history/
+checksums		md5 85901a9554650030df7d1ef3e5959fdf
+
+post-patch {
+	file copy -force ${filespath}/site.conf ${worksrcpath}
+	reinplace "s|__PREFIX__|${prefix}|g" ${worksrcpath}/site.conf
+	reinplace "s|CC = gcc|CC = ${configure.cc}|g" ${worksrcpath}/site.conf
+}
+
+configure.pre_args
+
+startupitem.create	yes
+startupitem.name	dhcpd
+startupitem.executable	${prefix}/sbin/dhcpd -f
+startupitem.netchange	yes
+
+destroot.keepdirs	${destroot}${prefix}/var/db/dhcpd
+post-destroot {
+	set etc ${destroot}${prefix}/etc/dhcp
+	xinstall -m 755 -d ${etc}
+	xinstall -m 644 ${worksrcpath}/server/dhcpd.conf ${etc}/dhcpd.conf.sample
+	xinstall -m 644 ${worksrcpath}/client/dhclient.conf \
+		${etc}/dhclient.conf.sample
+}
+
+post-activate {
+                ui_msg "\n
+
+NOTE:
+
+-The dhcpd .conf and .leases files must be named and located as shown for dhcpd to find them:
+	${prefix}/etc/dhcp/dhcpd.conf (there is a sample file)
+	${prefix}/var/db/dhcpd/dhcpd.leases (use the touch command to create a blank one)
+
+\n"
+}
+

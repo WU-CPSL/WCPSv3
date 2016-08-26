@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:p="http://primefaces.prime.com.tr/ui" xmlns:h="http://java.sun.com/jsf/html">
+<ui:composition>
+  <h:panelGroup styleClass="bottomRight" style="width: 27%; padding-right: 20px; padding-bottom: 15px;">
+    <ol id="innerTab">
+      <li id="teamUsersInnerTab"><h:commandLink title="#{msg.teamPlayersTabTitle}"
+          action="#{teamProfileManagedBean.selectTeamPlayersTab}">
+          <span>#{msg.teamProfilePlayersTabText}</span>
+        </h:commandLink>
+      </li>
+      <li id="teamReposInnerTab"><h:commandLink title="#{msg.teamReposTabTitle}" action="#{teamProfileManagedBean.selectTeamReposTab}">
+          <span>#{msg.repositoriesTabText}</span>
+        </h:commandLink>
+      </li>
+    </ol>
+    <p:panel styleClass="base-tab-panel" style="width: 315px;">
+      <p:panel id="teamMemberPanel" styleClass="base-tab-inner-panel" style="width: 305px; min-height: 558px;"
+        rendered="#{teamProfileManagedBean.teamPlayerPanel}">
+        <h:panelGroup rendered="#{basePage.teamAdmin or teamProfileManagedBean.team.delegatedTeamAdmin}">
+          <p:autoComplete forceSelection="true" id="addTeamUsers" value="#{teamProfileManagedBean.profileAddUserName}"
+            completeMethod="#{teamProfileManagedBean.autoCompleteUserName}" styleClass="autoCompleteInputText"
+            style="border: 1px solid #006DFD; background: white;" />
+          <p:spacer width="10" />
+          <p:commandButton action="#{teamProfileManagedBean.addTeamUser}" styleClass="roundedButtonExtraSmall"
+            value="#{msg.addTeamaddRepoButtonText}" style="vertical-align: top; margin-top: 1px;" image="greenCross"
+            update="teamMemberPanel" />
+        </h:panelGroup>
+        <p:dataTable id="teamUsersTableId" var="user" value="#{teamProfileManagedBean.team.users}"
+          rows="#{teamProfileManagedBean.maxUsersToDisplay}" lazy="false" paginator="#{teamProfileManagedBean.paginateMembers}"
+          paginatorPosition="bottom"
+          paginatorTemplate="{FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}" emptyMessage="">
+          <p:column width="255" style="background: transparent; padding: none; border: none;">
+            <h:commandLink action="#{userManagedBean.viewUserProfile}">
+              <f:setPropertyActionListener target="#{userManagedBean.selectedUser}" value="#{user}" />
+              <h:outputText value="#{user.userName}" />
+            </h:commandLink>
+          </p:column>
+          <p:column width="100" style="background: transparent;padding: none; border: none; text-align: right;">
+            <h:commandLink action="#{teamProfileManagedBean.promoteToTeamAdmin}"
+              rendered="#{(basePage.teamAdmin or teamProfileManagedBean.team.delegatedTeamAdmin) and !user.teamAdmin}">
+              <f:setPropertyActionListener target="#{teamProfileManagedBean.userToMote}" value="#{user}" />
+              <h:graphicImage library="img/platform/icons" name="makeadmin_uns.png" style="border: none;" />
+            </h:commandLink>
+          </p:column>
+          <p:column width="100" style="background: transparent;padding: none; border: none; text-align: right;">
+            <h:commandLink action="#{teamProfileManagedBean.demoteFromTeamAdmin}"
+              rendered="#{(basePage.teamAdmin or teamProfileManagedBean.team.delegatedTeamAdmin) and user.teamAdmin}">
+              <f:setPropertyActionListener target="#{teamProfileManagedBean.userToMote}" value="#{user}" />
+              <h:graphicImage library="img/platform/icons" name="makeadmin_sel.png" style="border: none;" />
+            </h:commandLink>
+            <h:graphicImage library="img/platform/icons" name="makeadmin_sel.png" style="border: none;"
+              rendered="#{!basePage.teamAdmin and !teamProfileManagedBean.team.delegatedTeamAdmin and user.teamAdmin}" />
+          </p:column>
+          <p:column width="100" style="background: transparent;padding: none; border: none; text-align: right;">
+            <h:commandLink action="#{teamProfileManagedBean.removeUserFromTeam}"
+              rendered="#{basePage.teamAdmin or teamProfileManagedBean.team.delegatedTeamAdmin}">
+              <f:setPropertyActionListener target="#{teamProfileManagedBean.userToRemove}" value="#{user}" />
+              <h:graphicImage library="img/platform/icons" name="cross.png" style="border: none;" />
+            </h:commandLink>
+          </p:column>
+        </p:dataTable>
+      </p:panel>
+      <p:panel id="teamRepoPanel" styleClass="base-tab-inner-panel" style="width: 305px; min-height: 558px;"
+        rendered="#{teamProfileManagedBean.teamRepoPanel}">
+        <h:panelGroup rendered="#{basePage.teamAdmin or teamProfileManagedBean.team.delegatedTeamAdmin}">
+          <p:autoComplete forceSelection="true" id="addTeamRepos" value="#{teamProfileManagedBean.profileAddRepoName}"
+            completeMethod="#{teamProfileManagedBean.autoCompleteRepoName}" styleClass="autoCompleteInputText"
+            style="border: 1px solid #006DFD; background: white;" />
+          <p:spacer width="10" />
+          <p:commandButton action="#{teamProfileManagedBean.addTeamRepo}" styleClass="roundedButtonExtraSmall"
+            value="#{msg.addTeamaddRepoButtonText}" style="vertical-align: top; margin-top: 1px;" image="greenCross" update="teamRepoPanel" />
+        </h:panelGroup>
+        <p:dataTable id="reposTableId" var="repo" value="#{teamProfileManagedBean.team.repos}"
+          rows="#{teamProfileManagedBean.maxReposToDisplay}" lazy="false" paginator="#{teamProfileManagedBean.paginateRepos}"
+          paginatorPosition="top"
+          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+          emptyMessage="">
+          <p:column width="255" style="background: transparent; padding: none; border: none;">
+            <h:commandLink action="#{repositoryManagedBean.viewRepository}">
+              <f:setPropertyActionListener target="#{repositoryManagedBean.selectedRepo}" value="#{repo}" />
+              <h:outputText value="#{repo.name}" />
+            </h:commandLink>
+          </p:column>
+          <p:column width="100" style="background: transparent;padding: none; border: none; text-align: right;">
+            <h:commandLink action="#{teamProfileManagedBean.removeTeamAccessToRepository}"
+              rendered="#{basePage.teamAdmin or teamProfileManagedBean.team.delegatedTeamAdmin}">
+              <f:setPropertyActionListener target="#{teamProfileManagedBean.repoToRemove}" value="#{repo}" />
+              <h:graphicImage library="img/platform/icons" name="cross.png" style="border: none;" />
+            </h:commandLink>
+          </p:column>
+        </p:dataTable>
+      </p:panel>
+    </p:panel>
+  </h:panelGroup>
+  <script type="text/javascript">
+    jQuery(document).ready(function(){
+      var tabElement = '#' + '#{teamProfileManagedBean.teamTabToDisplay}';
+      jQuery(tabElement).addClass('current');
+    });
+  </script>
+</ui:composition>
+</html>

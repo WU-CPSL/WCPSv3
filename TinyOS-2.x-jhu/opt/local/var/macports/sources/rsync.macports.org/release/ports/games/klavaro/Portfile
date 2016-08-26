@@ -1,0 +1,32 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 82029 2011-08-06 20:56:57Z jmr@macports.org $
+
+PortSystem 1.0
+
+name            klavaro
+version         1.1.7
+categories      games
+platforms       darwin
+maintainers     nomaintainer
+
+description     A clean, full-featured typing tutor.
+long_description \
+    Designed to be keyboard and language independent, \
+    with built-in custom keyboard editor. \
+    Includes exercises for adaptability, velocity, \
+    and fluidity, as well as progress charts and the \
+    ability to import text of your choice for practise.
+
+homepage        http://klavaro.sourceforge.net/
+master_sites    sourceforge
+
+checksums       md5 facee40f2771f6d017ec118213a7a560 \
+                sha1 789d918af9da9be75995928bf0bca3ef335a3b1e \
+                rmd160 6b40d35eaba5d222614764b1349e26f4a69a9d7a
+
+use_bzip2       yes
+
+depends_build   port:pkgconfig
+depends_lib     port:gtk2
+
+livecheck.regex  "<title>klavaro klavaro-(.*) released.*</title>"

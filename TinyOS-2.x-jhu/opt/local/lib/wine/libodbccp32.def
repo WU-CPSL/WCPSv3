@@ -1,0 +1,57 @@
+; File generated automatically from ./odbccp32.spec; do not edit!
+
+LIBRARY odbccp32.dll
+
+EXPORTS
+  ODBCCPlApplet@16 @1
+  SQLConfigDataSource@16 @2
+  SQLConfigDataSourceW@16 @3
+  SQLConfigDriver@28 @4
+  SQLConfigDriverW@28 @5
+  SQLCreateDataSource@8 @6
+  SQLCreateDataSourceW@8 @9
+  SQLGetAvailableDrivers@16 @10
+  SQLGetAvailableDriversW@16 @11
+  SQLGetConfigMode@4 @12
+  SQLGetInstalledDrivers@12 @13
+  SQLGetInstalledDriversW@12 @14
+  SQLGetPrivateProfileString@24 @15
+  SQLGetPrivateProfileStringW@24 @16
+  SQLGetTranslator@32 @17
+  SQLGetTranslatorW@32 @18
+  SQLInstallDriver@20 @19
+  SQLInstallDriverEx@28 @20
+  SQLInstallDriverExW@28 @21
+  SQLInstallDriverManager@12 @22
+  SQLInstallDriverManagerW@12 @23
+  SQLInstallDriverW@20 @24
+  SQLInstallODBC@16 @25
+  SQLInstallODBCW@16 @26
+  SQLInstallTranslator@32 @27
+  SQLInstallTranslatorEx@28 @28
+  SQLInstallTranslatorExW@28 @29
+  SQLInstallTranslatorW@32 @30
+  SQLInstallerError@20 @31
+  SQLInstallerErrorW@20 @32
+  SQLManageDataSources@4 @35
+  SQLPostInstallerError@8 @36
+  SQLPostInstallerErrorW@8 @37
+  SQLReadFileDSN@24 @38
+  SQLReadFileDSNW@24 @39
+  SQLRemoveDSNFromIni@4 @40
+  SQLRemoveDSNFromIniW@4 @41
+  SQLRemoveDefaultDataSource@0 @42
+  SQLRemoveDriver@12 @43
+  SQLRemoveDriverManager@4 @44
+  SQLRemoveDriverW@12 @45
+  SQLRemoveTranslator@8 @46
+  SQLRemoveTranslatorW@8 @47
+  SQLSetConfigMode@4 @48
+  SQLValidDSN@4 @49
+  SQLValidDSNW@4 @50
+  SQLWriteDSNToIni@8 @51
+  SQLWriteDSNToIniW@8 @52
+  SQLWriteFileDSN@16 @53
+  SQLWriteFileDSNW@16 @54
+  SQLWritePrivateProfileString@16 @55
+  SQLWritePrivateProfileStringW@16 @56

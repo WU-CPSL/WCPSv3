@@ -1,0 +1,12 @@
+prefix=/opt/local
+exec_prefix=${prefix}
+libdir=/opt/local/lib
+includedir=/opt/local/include
+
+Name: osmesa
+Description: Mesa Off-screen Rendering library
+Requires: 
+Version: 7.11.0
+Libs: -L${libdir} -lOSMesa
+Libs.private: 
+Cflags: -I${includedir}

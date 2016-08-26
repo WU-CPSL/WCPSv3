@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:p="http://primefaces.prime.com.tr/ui" xmlns:h="http://java.sun.com/jsf/html" xmlns:wd="http://www.wansdisco.com/jsf">
+<ui:composition>
+  <h:panelGrid columns="1" columnClasses="repoNameColumnFull">
+    <h:panelGroup>
+      <h:outputText id="repoName" styleClass="formOutputText" style="font-size: 24px;" value="#{repositoryProfileManagedBean.repo.name}" />
+      <br />
+      <hr />
+    </h:panelGroup>
+  </h:panelGrid>
+  <h:panelGrid id="mainPanelGrid" columns="2" width="100%" columnClasses="col50, col50">
+    <h:panelGrid columns="2" style="border-collapse: collapse;">
+      <h:panelGroup>
+        <h:outputLabel for="repoAdminRepositoryName" value="#{msg.repoAdminRepositoryNameLabel}" />
+        <p:spacer width="10" />
+        <br />
+        <br />
+      </h:panelGroup>
+      <h:panelGroup>
+        <p:focus for="repoAdminRepositoryName" />
+        <h:inputText id="repoAdminRepositoryName" styleClass="wizardFormField" size="50" required="true"
+          value="#{repositoryAdministrationManagedBean.repo.name}" requiredMessage="#{msg.repoNameRequired}">
+          <wd:validateRepoName previousName="#{repositoryAdministrationManagedBean.repo.name}" />
+        </h:inputText>
+        <p:spacer width="10" />
+        <h:message style="color: red; font-size: 14px; height: 11px;" for="repoAdminRepositoryName" />
+        <br />
+        <br />
+      </h:panelGroup>
+      <h:panelGroup>
+        <h:outputLabel for="repoAdminRepositoryLocation" value="#{msg.repoAdminRepositoryLocationLabel}" />
+        <p:spacer width="10" />
+        <br />
+        <br />
+      </h:panelGroup>
+      <h:panelGroup>
+        <h:inputText id="repoAdminRepositoryLocation" styleClass="wizardFormField" size="50" required="true"
+          value="#{repositoryAdministrationManagedBean.repo.davLocation}" requiredMessage="#{msg.repoLocationRequired}">
+          <wd:validateRepoDavLoc previousName="#{repositoryAdministrationManagedBean.repo.davLocation}" />
+        </h:inputText>
+        <p:spacer width="10" />
+        <h:message style="color: red; font-size: 14px; height: 11px;" for="repoAdminRepositoryLocation" />
+        <br />
+        <br />
+      </h:panelGroup>
+      <h:panelGroup>
+        <h:outputLabel for="repoAdminRepositoryURL" value="#{msg.repoAdminRepositoryURLLabel}" />
+        <p:spacer width="10" />
+        <br />
+        <br />
+      </h:panelGroup>
+      <h:panelGroup>
+        <h:outputText id="repoAdminRepositoryURL" size="50" />
+        <br />
+        <br />
+      </h:panelGroup>
+      <h:panelGroup>
+        <h:outputLabel for="repoAdminRepositoryPath" value="#{msg.repoAdminRepositoryPathLabel}" />
+        <p:spacer width="10" />
+        <br />
+        <br />
+      </h:panelGroup>
+      <h:panelGroup>
+        <h:outputText id="repoAdminRepositoryPath" size="50" value="#{repositoryAdministrationManagedBean.repo.locationOnDisk}"
+          title="#{repositoryAdministrationManagedBean.repo.locationOnDisk}" />
+        <br />
+        <br />
+      </h:panelGroup>
+      <h:panelGroup>
+        <p:commandButton id="repoAdministrationDeleteRepository" value="#{msg.deleteRepositoryButtonText}" styleClass="roundedButtonLarge"
+          onclick="confirmation.show()">
+          <f:setPropertyActionListener target="#{deleteRepoManagedBean.repoToDelete}" value="#{repositoryAdministrationManagedBean.repo}" />
+        </p:commandButton>
+      </h:panelGroup>
+      <h:panelGroup>
+        <p:spacer width="15" />
+        <p:commandButton id="repoAdministrationSaveRepository" value="#{msg.saveButtonText}" styleClass="roundedButtonSmall"
+          action="#{repositoryAdministrationManagedBean.saveRepository}" ajax="false" />
+      </h:panelGroup>
+    </h:panelGrid>
+  </h:panelGrid>
+  <script>
+		jQuery(document)
+				.ready(
+						function() {
+							jQuery('#repoAdminRepositoryLocation')
+									.keyup(
+											function() {
+												updateRepositoryLocation(
+														this,
+														'repoAdminRepositoryLocation',
+														'repoAdminRepositoryURL',
+														'#{repositoryAdministrationManagedBean.repo.repoURLPrefix}',
+														50);
+											}).keyup();
+						});
+	</script>
+
+  <h:panelGroup>
+    <h:outputText style="font-size: 20px;" value="#{msg.repoAdminSVNAdminOptionsLabel}" />
+  </h:panelGroup>
+  <h:panelGrid style="border-collapse: collapse;" columns="5">
+    <h:outputLink styleClass="adminOptions" 
+      value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/repository/repositoryAdministrationVerify.jsf">
+      <span>#{msg.repoAdminVerifyLinkText}</span>
+    </h:outputLink>
+    <h:outputLink styleClass="adminOptions" 
+      value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/repository/repositoryAdministrationHotCopy.jsf">
+      <span>#{msg.repoAdminHotCopyLinkText}</span>
+    </h:outputLink>
+    <h:outputLink styleClass="adminOptions"
+      value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/repository/repositoryAdministrationDumpExport.jsf">
+      <span>#{msg.repoAdminDumpExportLinkText}</span>
+    </h:outputLink>
+    <h:outputLink styleClass="adminOptions" rendered="#{!multisiteManagedBean.multisiteModeEnabled}"
+      value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/repository/repositoryAdministrationLoad.jsf">
+      <span>#{msg.repoAdminLoadLinkText}</span>
+    </h:outputLink>
+    <h:outputLink rendered="false" styleClass="adminOptions"
+      value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/repository/repositoryAdministrationTasks.jsf">
+      <span>#{msg.repoAdminTasksLinkText}</span>
+    </h:outputLink>
+  </h:panelGrid>
+  <ui:include id="deletionDialog" src="/sections/platform/repository/deletionDialog.xhtml" />
+</ui:composition>
+</html>

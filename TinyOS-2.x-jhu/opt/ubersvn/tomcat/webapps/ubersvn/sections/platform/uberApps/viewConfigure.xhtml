@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:p="http://primefaces.prime.com.tr/ui" xmlns:h="http://java.sun.com/jsf/html">
+<ui:composition>
+  <ol id="sub-toc">
+    <li><h:outputLink title="#{msg.uberAppsStoreTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/uberApps/viewStore.jsf">
+        <span>#{msg.uberAppsStoreTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.uberAppsAccountTabAltText}" rendered="#{basePage.purchaser and storeAccountManagedBean.registered}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/uberApps/viewAccount.jsf">
+        <span>#{msg.uberAppsAccountTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.uberAppsAccountTabAltText}" rendered="#{basePage.purchaser and !storeAccountManagedBean.registered}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/uberApps/storeRegistration.jsf">
+        <span>#{msg.uberAppsAccountTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.uberAppsRequestedTabAltText}" rendered="#{basePage.purchaser or basePage.systemAdmin}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/uberApps/viewRequested.jsf">
+        <span>#{msg.uberAppsRequestedTabText}</span>
+      </h:outputLink></li>
+    <li class="current"><h:outputLink title="#{msg.uberAppsInstalledTabAltText}" rendered="#{basePage.systemAdmin}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/uberApps/viewInstalled.jsf">
+        <span>#{msg.uberAppsInstalledTabText}</span>
+      </h:outputLink></li>
+  </ol>
+  <p:panel id="postConfigurePanel" styleClass="tabbed-panel">
+    <ui:include id="viewStoreFront2" src="#{storeInstalledAppsManagedBean.productConfigurationPage}" />
+  </p:panel>
+ 
+
+
+</ui:composition>
+</html>

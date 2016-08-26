@@ -1,0 +1,65 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 85990 2011-10-18 04:48:45Z devans@macports.org $
+
+PortSystem 1.0
+PortGroup  xcode 1.0
+
+name            gimp-app
+version         2.6.11
+revision        1
+license         GPL-2
+maintainers     nomaintainer
+description     GIMP.app application bundle
+long_description ${description}
+
+categories      aqua graphics
+homepage        http://gimp-app.sourceforge.net
+
+depends_run     path:bin/gimp:gimp2
+
+master_sites    ${homepage}
+
+distfiles       GIMPskel.zip
+use_zip         yes
+
+checksums           sha1    e923c2b145814db35a747ef947ba1ce7da32edbc \
+                    rmd160  c61d0e566d87c772b98cf7d8d8338994c4ce23d9
+
+worksrcdir      GIMPskel/ScriptExecCocoa
+
+set gimpapp     ${workpath}/GIMPskel/GIMP.app
+
+post-extract {
+    delete ${gimpapp}/Contents/Resources/script
+}
+
+patchfiles      patch-ScriptExec.xcodeproj-project.pbxproj.diff
+
+pre-build {
+    # clean up old precompiled headers just in case
+    system "cd ${worksrcpath} && ${xcodebuildcmd} clean"
+}
+
+post-destroot {
+    xinstall -m 755 \
+        ${destroot}${applications_dir}/ScriptExec.app/Contents/MacOS/ScriptExec \
+        ${gimpapp}/Contents/MacOS/GIMP
+
+    ln -s ${prefix}/bin/gimp ${gimpapp}/Contents/Resources/script
+
+    xinstall -d ${destroot}${applications_dir}
+    copy ${gimpapp} ${destroot}${applications_dir}
+
+    delete ${destroot}${applications_dir}/ScriptExec.app
+}
+
+notes "
+If you are having problems viewing the help files when using Gimp.app,
+    1- Make sure you have the user manual installed (port gimp-user-manual)
+    2- Add the following line to ~/.gimp-2.6/gimprc :
+        (help-locales \"LANG\")
+       where LANG is your two-letter locale (fr, en, ja, ...)
+"
+
+# gimp2 is not universal
+universal_variant no

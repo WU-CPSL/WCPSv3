@@ -1,0 +1,55 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:filetype=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 79067 2011-06-01 00:15:05Z jmr@macports.org $
+
+PortSystem 1.0
+
+name            odcctools
+version         20090808
+categories      devel
+maintainers     nomaintainer
+homepage        http://odcctools.macosforge.org/
+master_sites    http://svn.macosforge.org/repository/odcctools/release/
+platforms       darwin
+license         apsl-2.0
+
+description     Darwin cctools build system.
+long_description \
+    The odcctools project is geared towards improving the \
+    Darwin cctools build system and code base to support \
+    Darwin development. Darwin cctools has several \
+    components, including the assembler odas(1), the \
+    static linker odld(1), various tools for manipulating \
+    and analyzing Mach-O and fat files, and support \
+    libraries.
+
+use_bzip2       yes
+
+checksums       md5     cb8ce536e204fc2399fc27079012c37b \
+                sha1    8099a75396d5ac1621f04c977212067d97e3c540 \
+                rmd160  8c672b3f1d9fd75ad25ddbe7287e099693f7e742
+
+depends_lib     port:llvm
+
+configure.cppflags-delete -I${prefix}/include
+configure.ldflags-delete -L${prefix}/lib
+configure.args  --program-prefix=od
+
+build.target    default
+
+use_parallel_build  yes
+
+post-destroot {
+    set mandir ${destroot}${prefix}/share/man/man1
+    foreach manpage [glob -d ${mandir} *.1] {
+        file rename ${manpage} [strsed ${manpage} "s%${mandir}/%${mandir}/od%"]
+    }
+}
+
+platform darwin 8 {
+    # llvm doesn't build on tiger
+    depends_lib-delete port:llvm
+}
+
+livecheck.type  regex
+livecheck.url   [lindex ${master_sites} 0]
+livecheck.regex ${name}-(\\d+)${extract.suffix}

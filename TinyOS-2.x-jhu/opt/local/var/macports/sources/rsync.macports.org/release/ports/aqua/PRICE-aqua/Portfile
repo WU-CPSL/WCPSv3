@@ -1,0 +1,25 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 77978 2011-04-18 09:32:20Z phw@macports.org $
+
+PortSystem      1.0
+PortGroup xcode 1.0
+name			PRICE-aqua
+version			1.0.0
+maintainers		phw openmaintainer
+description		Image filtering, enhancing and manipulation application
+long_description	PRICE, which stands for Precision Raster Image \
+				Convolution Engine, aims to be a high quality Image \
+				filtering, enhancing and manipulation application. It \
+				is written in Objective-C and AppKit.
+
+categories		aqua graphics
+homepage		http://price.sourceforge.net/
+
+distname		PRICE-${version}
+master_sites	sourceforge:price
+checksums           md5     df11445b425629f3691edcc676211292 \
+                    sha1    f9a50492266291be0e1f1e50ebce970354190198 \
+                    rmd160  51d5a296a5eee5a0fabe459fb4267b1c24a1ef95
+
+livecheck.type	sourceforge
+livecheck.regex	PRICE-((\\d+(\\.)*)+)\\.tar\\.gz

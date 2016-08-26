@@ -1,0 +1,17 @@
+mkdeps.o: mkdeps.c config.h system.h ../include/filenames.h \
+  ../include/libiberty.h ../include/ansidecl.h ../include/safe-ctype.h \
+  include/mkdeps.h
+
+config.h:
+
+system.h:
+
+../include/filenames.h:
+
+../include/libiberty.h:
+
+../include/ansidecl.h:
+
+../include/safe-ctype.h:
+
+include/mkdeps.h:

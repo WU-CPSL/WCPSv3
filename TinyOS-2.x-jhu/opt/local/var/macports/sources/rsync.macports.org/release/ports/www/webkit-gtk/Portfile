@@ -1,0 +1,118 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:filetype=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 85597 2011-10-15 00:56:45Z dports@macports.org $
+
+PortSystem	1.0
+
+name		webkit-gtk
+epoch           1
+version		1.2.7
+revision        1
+description	Apple's WebKit HTML rendering library for GTK+
+long_description ${description}
+maintainers	gmail.com:myschizobuddy devans
+categories	www gnome
+platforms	darwin freebsd
+license     LGPL-2+ BSD
+homepage	http://webkitgtk.org/
+master_sites    ${homepage}
+
+distname        webkit-${version}
+
+checksums       md5     25c7e548b65aeb6d83c0182c32ef0927 \
+                sha1    e9afc573d2459794c3749ba404f2187f9dcc9ed3 \
+                rmd160  f36b3ae05693e0eeb4d1936ceee52b6fe1517e57
+
+patchfiles      patch-WebKitTools-DumpRenderTree-gtk-TestNetscapePlugin-TestNetscapePlugin.cpp.diff \
+                patch-TextBreakIterator.diff\
+                patch-WebCore-config-h.diff \
+                patch-GNUmakefile.in.diff
+
+depends_lib	\
+	port:gtk2 \
+	port:libsoup \
+        port:icu \
+	port:libxslt \
+	port:sqlite3 \
+        port:enchant \
+        port:gst-plugins-base \
+        port:xorg-libXt
+        
+depends_build	\
+	port:pkgconfig \
+        port:gtk-doc
+
+# TODO: Use muniversal, so this is detected per arch
+configure.args	\
+        --enable-jit=no \
+        --enable-introspection=no
+
+# BUILD FIX TODO: clang C++
+# clang has trouble with webkit-1.2.7's C++ as of 2011.06.28
+if {${configure.compiler} == "clang"} {
+    configure.compiler llvm-gcc-4.2 
+}
+
+post-patch {
+    reinplace "s|-licucore|-licui18n -licuuc|" ${worksrcpath}/configure
+    reinplace "s|@@CPP@@|${configure.cpp}|" ${worksrcpath}/GNUmakefile.in
+
+    # For some reason, this isn't getting created for some people... ? /shrug
+    file mkdir ${worksrcpath}/DerivedSources
+}
+
+# keep it for debug
+post-destroot {
+    file copy ${worksrcpath}/Programs/.libs/GtkLauncher ${destroot}${prefix}/bin
+}
+
+# see bug #24622
+variant quartz {
+    configure.args-append    --with-font-backend=pango --with-target=quartz
+    depends_lib-delete port:xorg-libXt
+    patchfiles-append  patch-quartz-WebCore-plugins-gtk-gtkxtbin.c.diff \
+                       patch-quartz-WebCore-plugins-gtk-PluginViewGtk.cpp.diff
+}
+
+#
+# video is now enabled by default so make the variant no_video
+#
+
+variant no_video description {Disable HTML5 video support using gstreamer} {
+	depends_lib-delete      port:gst-plugins-base
+	configure.args-append	--disable-video
+}
+
+#
+# add new variant to support gnome_keyring
+#
+
+variant gnome_keyring description {Enable support for gnomekeyring} {
+        depends_lib-append      port:libgnome-keyring
+        configure.args-append   --enable-gnomekeyring
+}
+
+#
+# variant to enable filter support which is disabled by default
+#
+
+variant filters description {Enable support for SVG filters (experimental)} {
+	configure.args-append	--enable-filters
+}
+
+#
+# all svg support (except filters) is enabled by default
+#
+
+variant no_svg description {Disable all SVG support} {
+	configure.args-append	--disable-svg
+}
+
+# compile bug when building 1.2.1 on Tiger,
+# see https://bugs.webkit.org/show_bug.cgi?id=39847
+platform darwin 8 {
+	patchfiles-append patch-JavascriptCore-wtf-FastMalloc.cpp.diff
+}
+
+livecheck.type  regex
+livecheck.url   http://webkitgtk.org/?page=download
+livecheck.regex webkit-(\[0-9\]+\\.\[0-9\]*\[02468\]\\.\[0-9\]+)

@@ -1,0 +1,62 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 88049 2011-12-17 07:16:20Z jmr@macports.org $
+
+PortSystem       1.0
+
+name             iozone
+version          3_398
+categories       benchmarks
+platforms        darwin
+license          Restrictive/Distributable GPL-2+
+maintainers      jmr openmaintainer
+description      Performance Test of File I/O
+long_description \
+    Iozone tests the speed of I/O to actual files. \
+    Therefore, this measurement factors in the efficiency of \
+    your machine's file system, operating system, C compiler, \
+    and C runtime library.  It produces a measurement which \
+    is the number of bytes per second that your system can \
+    read or write to a file.
+homepage         http://www.iozone.org/
+
+master_sites     ${homepage}src/current/
+distname         ${name}${version}
+checksums        rmd160 4efde3c51c94d889fafa15d4c7a520fcce0f6ad1 \
+                 sha256 638175a50bcdb6c80f60db12832e898a30006a1b3a394c7257e8589a237db9da
+
+extract.suffix   .tar
+extract.cmd      cat
+extract.pre_args
+worksrcdir       ${distname}/src/current
+
+use_configure    no
+build.target     macosx
+build.args       CC=${configure.cc} \
+                 CFLAGS="${configure.cflags} ${configure.cc_archflags}" \
+                 LDFLAGS="${configure.ld_archflags}"
+
+destroot {
+    xinstall -m 555 ${worksrcpath}/iozone ${worksrcpath}/fileop \
+                    ${destroot}${prefix}/bin
+    xinstall -m 444 ${worksrcpath}/../../docs/iozone.1 ${destroot}${prefix}/share/man/man1
+    xinstall -m 755 -d ${destroot}${prefix}/share/doc/${name}
+    xinstall -m 444 ${worksrcpath}/../../docs/IOzone_msword_98.pdf \
+                    ${worksrcpath}/../../docs/Run_rules.doc \
+                    ${worksrcpath}/Changes.txt \
+                    ${worksrcpath}/Gnuplot.txt \
+                    ${destroot}${prefix}/share/doc/${name}
+    xinstall -m 755 -d ${destroot}${prefix}/share/${name}
+    xinstall -m 444 ${worksrcpath}/Generate_Graphs \
+                    ${worksrcpath}/client_list \
+                    ${worksrcpath}/gengnuplot.sh \
+                    ${worksrcpath}/gnu3d.dem \
+                    ${worksrcpath}/gnuplot.dem \
+                    ${worksrcpath}/gnuplotps.dem \
+                    ${worksrcpath}/iozone_visualizer.pl \
+                    ${worksrcpath}/report.pl \
+                    ${destroot}${prefix}/share/${name}
+}
+
+livecheck.type          regex
+livecheck.url           ${homepage}
+livecheck.regex         "${name}(\[0-9\]+_\[0-9\]+)${extract.suffix}"

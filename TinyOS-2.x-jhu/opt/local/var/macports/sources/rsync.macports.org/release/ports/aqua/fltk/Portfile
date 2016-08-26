@@ -1,0 +1,70 @@
+# -*- Mode: Tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:filetype=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 85915 2011-10-17 13:37:10Z jmr@macports.org $
+
+PortSystem      1.0
+
+name            fltk
+conflicts       fltk-devel
+version         1.1.10
+revision        3
+categories      aqua devel
+license         LGPL
+platforms       macosx
+maintainers     nomaintainer
+description     Fast Light Tool Kit
+
+long_description \
+    FLTK (pronounced fulltick) \
+    is a cross-platform C++ GUI toolkit for UNIX/Linux (X11), \
+    Microsoft Windows, and Mac OS X. \
+    FLTK provides modern GUI functionality without the bloat \
+    and supports 3D graphics via OpenGL and \
+    its built-in GLUT emulation. \
+    \
+    FLTK is designed to be small and modular enough to be \
+    statically linked, but works fine as a shared library. \
+    FLTK also includes an excellent UI builder called FLUID \
+    that can be used to create applications in minutes.
+
+homepage        http://www.fltk.org/
+master_sites    http://ftp.easysw.com/pub/fltk/${version}/
+worksrcdir      ${name}-${version}
+distname        ${worksrcdir}-source
+use_bzip2       yes
+
+checksums       md5     a1765594bc427ff892e36089fe1fa672 \
+                sha1    0d2b34fede91fa78eeaefb893dd70282f73908a8 \
+                rmd160  f8fc4371811efcc0d6fc73edd0525d8ff87a4faa
+
+depends_lib     port:jpeg \
+                port:libpng \
+                port:zlib
+
+use_parallel_build  yes
+
+# Force 32-bit (#21054)
+supported_archs i386 ppc
+universal_variant no
+
+post-patch {
+    reinplace "s|/Applications|${applications_dir}/${name}|g" \
+        ${worksrcpath}/fluid/Makefile \
+        ${worksrcpath}/test/Makefile
+}
+
+configure.cflags
+configure.cppflags
+configure.cxxflags
+configure.ldflags
+configure.env         DSOFLAGS=\"${configure.ld_archflags}\"
+configure.args  --enable-threads \
+                --enable-shared \
+                --mandir=${prefix}/share/man \
+                --with-archflags=\"${configure.cc_archflags}\"
+
+destroot.target install \
+                install-desktop
+
+livecheck.type  regexm
+livecheck.url   ${homepage}
+livecheck.regex "Stable Release.*?\n.*?VERSION=(\\d+(\\.\\d+)*)'"

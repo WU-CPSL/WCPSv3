@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:p="http://primefaces.prime.com.tr/ui" xmlns:h="http://java.sun.com/jsf/html">
+<ui:composition>
+  <ol id="sub-toc">
+    <li><h:outputLink styleClass="unselectedTabbedPanelTab" title="#{msg.userProfileTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/users/userProfile.jsf?userId=#{userProfileManagedBean.user.id}">
+        <span>#{msg.userProfileTabText}</span>
+      </h:outputLink></li>
+    <li class="current"><h:outputLink style="left: 75px;" styleClass="selectedTabbedPanelTab" title="#{msg.userPreferencesTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/users/userPreferences.jsf"
+        rendered="#{basePage.systemAdmin or userProfileManagedBean.myPage}">
+        <span>#{msg.userPreferencesTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink style="left: 180px;" styleClass="unselectedTabbedPanelTab" title="#{msg.userPermissionsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/users/userPermissions.jsf"
+        rendered="#{basePage.systemAdmin or userProfileManagedBean.myPage}">
+        <span>#{msg.userPermissionsTabText}</span>
+      </h:outputLink></li>
+  </ol>
+  <p:panel styleClass="tabbed-panel">
+  <p:focus for="currentPassword"/>
+    <h:panelGrid>
+      <h:panelGroup>
+        <h:panelGrid columns="1" columnClasses="repoNameColumnFull">
+          <h:panelGroup>
+            <h:outputText id="userRealName" styleClass="formOutputText" style="font-size: 24px;"
+              value="#{userProfileManagedBean.user.realName}" />
+            <br />
+            <hr />
+          </h:panelGroup>
+        </h:panelGrid>
+      </h:panelGroup>
+      <h:panelGrid style="border-collapse: collapse;" columns="2">
+        <p:commandLink styleClass="adminOptions" action="#{userProfileManagedBean.editPassword}" ajax="false">
+          <span>#{msg.userPreferencesChangePasswordLabel}</span>
+        </p:commandLink>
+        <p:commandLink styleClass="adminOptions" action="#{userProfileManagedBean.editIgnoreList}" ajax="false">
+          <span>#{msg.userPreferencesIgnoreListLabel}</span>
+        </p:commandLink>
+      </h:panelGrid>
+      <h:panelGroup rendered="#{userProfileManagedBean.editingPassword}">
+        <p:spacer height="1" width="50" />
+        <h:graphicImage library="img/platform" name="svn_admin_tab.png" />
+      </h:panelGroup>
+      <h:panelGroup rendered="#{userProfileManagedBean.editingIgnoreList}">
+        <p:spacer height="1" width="180" />
+        <h:graphicImage library="img/platform" name="svn_admin_tab.png" />
+      </h:panelGroup>
+      <p:panel styleClass="userAdminOptionsPanel" rendered="#{userProfileManagedBean.editingPassword}">
+        <h:panelGrid columnClasses="repoAdminOptionsLabelColumn, repoAdminOptionsFieldColumn" columns="2">
+          <h:panelGroup>
+            <h:outputLabel value="#{msg.changePasswordCurrentPasswordLabel}" />
+            <p:spacer width="10" />
+          </h:panelGroup>
+          <h:inputSecret id="currentPassword" styleClass="changePasswordFormInputText" autocomplete="off"
+            value="#{userProfileManagedBean.currentPassword}" />
+          <h:panelGroup>
+            <h:outputLabel for="newPassword" value="#{msg.changePasswordNewPasswordLabel}" />
+            <p:spacer width="10" />
+          </h:panelGroup>
+          <p:password id="newPassword" styleClass="changePasswordFormInputText" promptLabel="#{msg.EnterPassword}" autocomplete="off"
+            weakLabel="#{msg.PasswordIsWeak}" goodLabel="#{msg.PasswordIsGood}" strongLabel="#{msg.PasswordIsStrong}"
+            value="#{userProfileManagedBean.newPassword}" />
+          <h:panelGroup>
+            <h:outputLabel for="confirmPassword" value="#{msg.changePasswordConfirmPasswordLabel}" />
+            <p:spacer width="10" />
+          </h:panelGroup>
+          <h:inputSecret id="confirmPassword" styleClass="changePasswordFormInputText" autocomplete="off"
+            value="#{userProfileManagedBean.confirmPassword}" />
+          <h:panelGroup>
+            <br />
+            <p:commandButton styleClass="roundedButtonLarge" value="Update Password" update="growl" ajax="false"
+              action="#{userProfileManagedBean.updatePassword}" />
+          </h:panelGroup>
+        </h:panelGrid>
+      </p:panel>
+      <p:panel styleClass="userAdminOptionsPanel" rendered="#{userProfileManagedBean.editingIgnoreList}">
+        <h:panelGrid>
+          <p:dataTable id="ignoredUserTableId" var="user" value="#{userProfileManagedBean.user.ignoredUsers}" paginator="true"
+            paginatorPosition="bottom" rows="10"
+            paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+            <p:column width="255" sortBy="#{user.userName}">
+              <f:facet name="header">
+                <h:outputText value="User" />
+              </f:facet>
+              <h:outputText value="#{user.userName}" />
+            </p:column>
+            <p:column width="255">
+              <f:facet name="header">
+                <h:outputText value="Ignored" />
+              </f:facet>
+              <h:selectBooleanCheckbox value="#{user.ignored}">
+              </h:selectBooleanCheckbox>
+            </p:column>
+          </p:dataTable>
+          <br />
+          <h:panelGroup>
+            <p:commandButton styleClass="roundedButtonLarge" value="Update Ignore List" update="growl" ajax="false"
+              action="#{userProfileManagedBean.updateIgnoreList}" />
+          </h:panelGroup>
+        </h:panelGrid>
+      </p:panel>
+    </h:panelGrid>
+  </p:panel>
+</ui:composition>
+</html>

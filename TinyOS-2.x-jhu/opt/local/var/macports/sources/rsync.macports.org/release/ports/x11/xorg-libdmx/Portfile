@@ -1,0 +1,30 @@
+# $Id: Portfile 80073 2011-07-03 23:34:53Z jmr@macports.org $
+
+PortSystem 1.0
+
+name            xorg-libdmx
+version         1.1.1
+categories      x11 devel
+maintainers     jeremyhu openmaintainer
+description     X.org libdmx
+homepage        http://www.x.org
+platforms       darwin macosx
+long_description X.org libdmx library.
+master_sites     xorg:individual/lib/
+
+distname    libdmx-${version}
+checksums           md5     75fd328fab3bd4a55cccaa6d5dfff749 \
+                    sha1    49aeab743cb8b667829efda140487b69a7148676 \
+                    rmd160  3ccaa59e5e1c9f92501b95f8126a876b8589f80f
+
+use_bzip2   yes
+use_parallel_build      yes
+
+depends_build   port:pkgconfig
+
+depends_lib     port:xorg-libXext \
+                port:xorg-dmxproto
+
+livecheck.type  regex
+livecheck.url   http://xorg.freedesktop.org/archive/individual/lib/?C=M&O=D
+livecheck.regex libdmx-(\\d+(?:\\.\\d+)*)

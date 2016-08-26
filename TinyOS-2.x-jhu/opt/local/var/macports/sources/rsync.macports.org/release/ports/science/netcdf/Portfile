@@ -1,0 +1,161 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89987 2012-02-18 15:28:00Z takeshi@macports.org $
+
+PortSystem                  1.0
+
+name                        netcdf
+epoch                       1
+version                     4.1.3
+revision                    4
+maintainers                 takeshi openmaintainer
+platforms                   darwin
+categories                  science
+license                     Permissive
+
+description                 libraries for array-oriented scientific data
+long_description \
+    NetCDF (network Common Data Form) is a set of software libraries \
+    and machine-independent data formats that support the creation,  \
+    access, and sharing of array-oriented scientific data.
+
+homepage                    http://www.unidata.ucar.edu/packages/netcdf/
+
+master_sites                ftp://ftp.unidata.ucar.edu/pub/netcdf/ \
+                            http://www.gfd-dennou.org/arch/netcdf/unidata-mirror/ \
+                            ftp://www.gfd-dennou.org/arch/netcdf/unidata-mirror/
+checksums           md5     ead16cb3b671f767396387dcb3c1a814 \
+                    sha1    e600322478276f51612e17cca3cda38489003f81 \
+                    rmd160  ac07f570873bba89a49cb2eb2275a40cbc8e502b
+
+post-patch {
+    if {[variant_isset g95]} {
+        reinplace "s|lt_cv_ld_force_load=yes|lt_cv_ld_force_load=no|" ${worksrcpath}/configure
+    }
+    reinplace "s|szip|sz|" ${worksrcpath}/configure
+    foreach f {configure libcf/configure udunits/configure} {
+        foreach c {g77 g95 gfortran ifort xlf xlf90} {
+            reinplace "s|$c||" $worksrcpath/$f
+        }
+    }
+}
+
+pre-configure {
+    if {[variant_isset openmpi]} {
+        set hdf5cc [exec grep "C Compiler" ${prefix}/lib/libhdf5.settings | awk {BEGIN{FS="/"}{print $NF}}]
+        if {${hdf5cc}!="openmpicc"} {
+            ui_error "Install hdf5-18 +openmpi"
+            return -code error "hdf5-18 +openmpi not installed"
+        }
+    }
+}
+
+configure.cppflags-append   -DNDEBUG
+configure.cxxflags-append   -fno-common
+configure.cflags-append     -fno-common
+configure.args              --enable-shared \
+                            --disable-fortran-compiler-check \
+                            --disable-f77 --disable-f90 \
+                            --disable-netcdf-4 \
+                            --disable-dap \
+                            --without-udunits \
+                            --without-libcf \
+                            --disable-cxx-4
+
+test.run                    yes
+test.target                 check
+
+destroot.destdir            prefix=${destroot}${prefix} \
+                            MANDIR=\\\${prefix}/share/man
+
+post-build {
+    system "cd ${worksrcpath}/man4; touch *.dvi *.ps *.pdf"
+}
+post-destroot {
+    file delete -force ${destroot}${prefix}/share/man/whatis.db
+}
+
+default_variants +netcdf4 +dap
+
+variant gcc43 conflicts g95 gcc44 gcc45 gcc46 description {Enable Fortran support with gfortran 4.3} {
+    depends_lib-append      port:gcc43
+    configure.args-delete   --disable-fortran-compiler-check --disable-f77 --disable-f90
+    configure.cppflags-append -DpgiFortran
+    configure.compiler      macports-gcc-4.3
+}
+
+variant gcc44 conflicts g95 gcc43 gcc45 gcc46 description {Enable Fortran support with gfortran 4.4} {
+    depends_lib-append      port:gcc44
+    configure.args-delete   --disable-fortran-compiler-check --disable-f77 --disable-f90
+    configure.cppflags-append -DpgiFortran
+    configure.compiler      macports-gcc-4.4
+}
+
+variant gcc45 conflicts g95 gcc43 gcc44 gcc46 description {Enable Fortran support with gfortran 4.5} {
+    depends_lib-append      port:gcc45
+    configure.args-delete   --disable-fortran-compiler-check --disable-f77 --disable-f90
+    configure.cppflags-append -DpgiFortran
+    configure.compiler      macports-gcc-4.5
+}
+
+variant gcc46 conflicts g95 gcc43 gcc44 gcc45 description {Enable Fortran support with gfortran 4.6} {
+    depends_lib-append      port:gcc46
+    configure.args-delete   --disable-fortran-compiler-check --disable-f77 --disable-f90
+    configure.cppflags-append -DpgiFortran
+    configure.compiler      macports-gcc-4.6
+}
+
+variant g95 conflicts gcc43 gcc44 gcc45 gcc46 description {Enable Fortran support with g95} {
+    depends_lib-append      port:g95
+    configure.args-delete   --disable-fortran-compiler-check --disable-f77 --disable-f90
+    #-lfg95 required or the tests fail
+    configure.cppflags-append -DpgiFortran
+    configure.fflags-append -fno-second-underscore
+    configure.fcflags-append    -fno-second-underscore
+    configure.ldflags-append    -lf95
+    configure.fc            ${prefix}/bin/g95
+    configure.f77           ${configure.fc}
+}
+
+variant openmpi conflicts mpich2 description {compile with openmpi} {
+    depends_lib-append      port:openmpi
+    configure.fc            openmpif77
+    configure.cc            openmpicc
+    configure.cxx           openmpicxx
+}
+
+variant mpich2 conflicts openmpi description {compile with mpich2} {
+    depends_lib-append      port:mpich2
+    configure.fc            mpif90
+    configure.cc            mpicc
+    configure.cxx           mpicxx
+}
+
+variant netcdf4 description {enable support for netcdf-4 API} {
+    depends_lib-append      port:hdf5-18 port:szip
+    configure.args-delete   --disable-netcdf-4 \
+                            --without-libcf \
+                            --disable-cxx-4
+    configure.args-append   --enable-netcdf-4 \
+                            --with-hdf5=${prefix} \
+                            --with-libcf \
+                            --with-szlib=${prefix} \
+                            --enable-cxx-4
+}
+
+variant hdf4 description {enable support for hdf4} {
+    depends_lib-append    port:hdf4
+    configure.args-append --enable-hdf4 \
+                          --with-hdf4=${prefix} \
+                          --disable-hdf4-file-tests \
+                          --with-szlib=${prefix}
+}
+ 
+variant dap description {enable dap} {
+    depends_lib-append      port:curl
+    configure.args-delete   --disable-dap
+    configure.args-append   --enable-dap
+}
+
+variant static description {build static libraries} {
+    configure.args-delete  --enable-shared
+}

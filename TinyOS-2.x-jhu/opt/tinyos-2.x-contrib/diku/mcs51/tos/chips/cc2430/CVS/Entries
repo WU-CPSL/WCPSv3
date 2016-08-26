@@ -1,0 +1,15 @@
+/CC2430_CSP.h/1.2/Sun Oct 26 20:12:57 2008//
+/HplCC2430ClockControlP.nc/1.2/Sun Oct 26 20:12:57 2008//
+/McuSleepC.nc/1.2/Sun Oct 26 20:12:57 2008//
+/RandomMlcgP.nc/1.2/Thu Oct 11 11:50:50 2007//
+/ioCC2430.h/1.2/Sun Oct 26 20:12:57 2008//
+D/adc////
+D/cc2420////
+D/dma////
+D/flash////
+D/interfaces////
+D/pins////
+D/radio////
+D/timer////
+D/timer_hpl////
+D/usart////

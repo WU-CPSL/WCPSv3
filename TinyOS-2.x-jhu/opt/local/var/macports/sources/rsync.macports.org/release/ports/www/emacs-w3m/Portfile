@@ -1,0 +1,31 @@
+# $Id: Portfile 64020 2010-02-20 10:16:45Z ryandesign@macports.org $
+
+PortSystem 1.0
+name		emacs-w3m
+version		1.4.4
+categories	www
+maintainers	gwright
+description	Use the w3m web browser inside emacs.
+long_description	\
+		w3m is a pager with WWW capability, developed by	\
+		Akinori ITO. Although it is a pager, it can be used	\
+		as a text-mode WWW browser. emacs-w3m is a simple Emacs	\
+		interface to w3m.
+
+platforms	darwin
+master_sites	http://emacs-w3m.namazu.org
+checksums	md5 6e592a9c0ab22fb532ebc3bcb21a45b1
+depends_lib	port:w3m	\
+		port:emacs
+
+configure.args	--prefix=${destroot}${prefix}		\
+		--mandir=${destroot}${prefix}/share/man	\
+		--infodir=${destroot}${prefix}/share/info
+
+post-activate	{ ui_msg "To use emacs-w3m, put the following in your ~/.emacs:"
+		  ui_msg "(require 'w3m-load)"
+		  ui_msg ""
+		  ui_msg "Then you can use w3m by typing M-x w3m"
+		  ui_msg ""
+		}
+

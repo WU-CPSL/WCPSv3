@@ -1,0 +1,26 @@
+# $Id: Portfile 32256 2007-12-23 09:18:47Z ryandesign@macports.org $
+
+PortSystem			1.0
+PortGroup			python24 1.0
+name				py-repl
+version				0.8.1
+revision			1
+categories-append	devel
+maintainers			nomaintainer
+description			readline-like module for python
+long_description	${description}
+
+platforms			darwin
+
+homepage			http://codespeak.net/pyrepl/
+master_sites		${homepage}
+distname			pyrepl-${version}
+
+checksums			md5 f285e5c0b8d43b86e52fdd1b25e467eb
+
+post-destroot {
+	xinstall -m 755 -d ${destroot}${prefix}/share/doc/${name}
+	xinstall -m 644 -W ${worksrcpath} CHANGES CREDITS README TODO \
+		${destroot}${prefix}/share/doc/${name}
+}
+

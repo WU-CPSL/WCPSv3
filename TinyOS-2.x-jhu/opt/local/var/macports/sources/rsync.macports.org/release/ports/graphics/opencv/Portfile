@@ -1,0 +1,155 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 90067 2012-02-20 17:55:54Z macsforever2000@macports.org $
+
+PortSystem                      1.0
+PortGroup                       cmake 1.0
+
+name                            opencv
+version                         2.3.1a
+revision                        2
+set short_version               [strsed ${version} {g/[^0-9.].*$//}]
+categories                      graphics science
+license                         BSD
+platforms                       darwin
+maintainers                     nomaintainer
+
+description                     Intel(R) Open Source Computer Vision Library
+
+long_description                opencv is a library that is mainly aimed at real time \
+                                computer vision. Some example areas would be \
+                                Human-Computer Interaction (HCI), Object Identification, \
+                                Segmentation and Recognition, Face Recognition, Gesture \
+                                Recognition, Motion Tracking, Ego Motion, Motion \
+                                Understanding, Structure From Motion (SFM), and Mobile \
+                                Robotics.
+
+homepage                        http://opencv.willowgarage.com/wiki/
+master_sites                    sourceforge:project/opencvlibrary/opencv-unix/${short_version}
+use_bzip2                       yes
+distname                        OpenCV-${version}
+worksrcdir                      OpenCV-${short_version}
+
+checksums                       rmd160  f2f459bf7c163acb90427db2b0b425ab8008cde5 \
+                                sha256  a9a2f529101c04eb2b606eee8c80f3ad93190b36f91ac09ee0ec5aa1eed1450c
+
+depends_build-append            port:pkgconfig
+
+depends_lib-append              port:zlib \
+                                path:lib/libavcodec.dylib:ffmpeg \
+                                port:libpng \
+                                port:tiff \
+                                port:jasper \
+                                port:jpeg \
+                                port:bzip2 \
+                                port:dirac \
+                                port:faac \
+                                port:faad2 \
+                                port:lame \
+                                port:schroedinger \
+                                port:liboil \
+                                port:libtheora \
+                                port:libvorbis \
+                                port:libogg \
+                                port:x264 \
+                                port:orc
+
+# liboil is not universal
+universal_variant               no
+
+patchfiles                      patch-CMakeLists.txt.diff \
+                                patch-install_name.diff
+
+if {[variant_isset universal] && [variant_exists universal]} {
+    patchfiles-append           patch-pch-CMakeLists.txt.diff
+}
+
+configure.args-append           -DBUILD_NEW_PYTHON_SUPPORT=OFF \
+                                -DBUILD_EXAMPLES=ON \
+                                -DINSTALL_C_EXAMPLES=ON \
+                                -DBZIP2_LIBRARIES=${prefix}/lib/libbz2.dylib \
+                                -DZLIB_LIBRARY=${prefix}/lib/libz.dylib \
+                                -DWITH_OPENEXR=OFF \
+                                -DWITH_1394=OFF
+
+if {${configure.compiler} == "clang"} {
+    configure.compiler llvm-gcc-4.2
+}
+
+platform darwin {
+    # Use macros in /usr/include/stdint.h with C++ compiler
+    # http://roundup.libav.org/issue2093
+    # Do not build tests
+    # http://comments.gmane.org/gmane.comp.lib.opencv/50383
+    if {${os.major} <= 9} {
+        configure.args-append   -DCMAKE_CXX_FLAGS=-D__STDC_CONSTANT_MACROS \
+                                -DBUILD_TESTS=OFF
+    }
+}
+
+pre-build {
+    # When building 2.3.1 with 2.2.0 active:
+    # error: 'InputArray' was not declared in this scope
+    # http://tech.groups.yahoo.com/group/OpenCV/message/82355
+    # http://stackoverflow.com/questions/7410012/unable-to-make-opencv#answer-7461541
+    if {[file exists ${prefix}/lib/pkgconfig/opencv.pc]} {
+        set installed_version [exec ${prefix}/bin/pkg-config ${name} --modversion]
+        if {${short_version} != ${installed_version}} {
+            ui_error "${name} ${version} cannot be built while ${name} ${installed_version} is installed and active."
+            ui_error "Please deactivate ${name} ${installed_version} first."
+            return -code error "incompatible ${name} version active"
+        }
+    }
+}
+
+variant dc1394 description {Use libdc1394 for FireWire camera. Breaks compatibility with Apple iSight FireWire camera.} {
+    depends_lib-append          port:libdc1394
+    configure.args-delete       -DWITH_1394=OFF
+    configure.args-append       -DWITH_1394=ON
+    configure.args-append       -DHAVE_1394=ON
+}
+
+variant qt4 description {Use experimental qt4 backend for graphical interface.} {
+    depends_lib-append          port:qt4-mac
+    configure.args-append       -DWITH_QT=ON
+}
+
+variant python26 conflicts python27 description {Add Python 2.6 bindings} {
+    depends_lib-append          port:python26 \
+                                port:py26-numpy
+    configure.args-delete       -DBUILD_NEW_PYTHON_SUPPORT=OFF
+    configure.args-append       -DINSTALL_PYTHON_EXAMPLES=ON \
+                                -DBUILD_NEW_PYTHON_SUPPORT=ON \
+                                -DPYTHON_EXECUTABLE=${prefix}/bin/python2.6 \
+                                -DPYTHON_LIBRARY=${prefix}/lib/libpython2.6.dylib \
+                                -DPYTHON_INCLUDE_DIR=${frameworks_dir}/Python.framework/Versions/2.6/Headers
+    post-patch {
+        reinplace "s|@@PYTHON_PKGD@@|${frameworks_dir}/Python.framework/Versions/2.6/lib/python2.6/site-packages|g" ${worksrcpath}/CMakeLists.txt
+    }
+}
+
+variant python27 conflicts python26 description {Add Python 2.7 bindings} {
+    depends_lib-append          port:python27 \
+                                port:py27-numpy
+    configure.args-delete       -DBUILD_NEW_PYTHON_SUPPORT=OFF
+    configure.args-append       -DINSTALL_PYTHON_EXAMPLES=ON \
+                                -DBUILD_NEW_PYTHON_SUPPORT=ON \
+                                -DPYTHON_EXECUTABLE=${prefix}/bin/python2.7 \
+                                -DPYTHON_LIBRARY=${prefix}/lib/libpython2.7.dylib \
+                                -DPYTHON_INCLUDE_DIR=${frameworks_dir}/Python.framework/Versions/2.7/Headers
+    post-patch {
+        reinplace "s|@@PYTHON_PKGD@@|${frameworks_dir}/Python.framework/Versions/2.7/lib/python2.7/site-packages|g" ${worksrcpath}/CMakeLists.txt
+    }
+}
+
+variant tbb description {Use Intel TBB} {
+    depends_lib-append          port:tbb
+    configure.args-append       -DWITH_TBB=ON \
+                                -DHAVE_TBB=ON \
+                                -DTBB_INCLUDE_DIRS=${prefix}/include \
+                                -DTBB_LIBRARY_DIRS=${prefix}/lib \
+                                -DOPENCV_LINKER_LIBS="-ltbb -ltbbmalloc"
+}
+
+livecheck.type                  sourceforge
+livecheck.name                  opencvlibrary
+livecheck.regex                 /OpenCV-(\[0-9a-z.\]+)${extract.suffix}

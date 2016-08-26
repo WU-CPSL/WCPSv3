@@ -1,0 +1,40 @@
+# $Id: Portfile 87276 2011-11-16 03:11:32Z ryandesign@macports.org $
+
+PortSystem	1.0
+
+name			nfdump
+version			1.6.4
+categories		net
+maintainers		markd openmaintainer
+license			BSD
+platforms		darwin
+
+description		Part of the NfSen project, the nfdump tools are command-line programs to \
+			collect and process netflow data.
+long_description	${description}
+
+homepage		http://nfdump.sourceforge.net/
+master_sites		sourceforge:project/nfdump/stable/nfdump-${version}
+
+checksums		rmd160  8f0c471d469eef1201dce709d33bfd5c08f4f487 \
+			sha256  4ff129dad6957f2fc0b5fdf53aec10f56e05671a85f18abb2ec9a1380c68fda9
+
+depends_lib	port:rrdtool
+
+configure.args	--enable-sflow \
+		--enable-nfprofile \
+		--with-rrdpath=${prefix}
+
+post-destroot {
+        xinstall -d ${destroot}${prefix}/share/doc/${name}
+        xinstall -m 644 -W ${worksrcpath} BSD-license.txt ChangeLog README ToDo \
+                ${destroot}${prefix}/share/doc/${name}
+}
+
+variant flowtools {
+	depends_lib-append	port:flow-tools
+	configure.args-append	--enable-ftconv \
+				--with-ftpath=${prefix}
+}
+
+livecheck.regex		/${name}-(\[0-9.\]+)${extract.suffix}

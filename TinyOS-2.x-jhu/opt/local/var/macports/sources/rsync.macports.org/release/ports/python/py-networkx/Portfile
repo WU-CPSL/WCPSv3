@@ -1,0 +1,33 @@
+# $Id: Portfile 87196 2011-11-14 00:31:51Z singingwolfboy@macports.org $
+
+PortSystem              1.0
+PortGroup               python 1.0
+
+name                    py-networkx
+version                 1.5
+python.versions         26 27 31 32
+python.default_version  27
+categories-append       science
+maintainers             singingwolfboy openmaintainer
+description             NetworkX in a Python package for graph manpulation.
+long_description        NetworkX is a Python package for the creation, \
+                        manipulation, and study of the structure, dynamics, \
+                        and functions of complex networks.
+
+platforms               darwin
+
+homepage                http://networkx.lanl.gov/
+master_sites            http://pypi.python.org/packages/source/n/networkx/ \
+                        https://networkx.lanl.gov/download/networkx/
+distname                networkx-${version}
+
+checksums               rmd160  bd9b7fe662fab529560ac27e406e60d7b9529749 \
+                        sha256  3985f25e0bb830f5e3ab088bfd28ee46ed549105d845ee55fffc40d41940cedd
+
+if {$subport != $name} {
+    depends_lib-append  port:py${python.version}-distribute
+}
+
+livecheck.type          regex
+livecheck.url           ${master_sites}
+livecheck.regex         "networkx-(\\d+(?:\\.\\d+)*)${extract.suffix}"

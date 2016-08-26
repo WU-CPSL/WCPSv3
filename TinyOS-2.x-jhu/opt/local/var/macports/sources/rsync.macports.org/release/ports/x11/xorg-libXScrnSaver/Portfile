@@ -1,0 +1,31 @@
+# $Id: Portfile 80456 2011-07-13 14:17:19Z jmr@macports.org $
+
+PortSystem 1.0
+
+name            xorg-libXScrnSaver
+version         1.2.1
+categories      x11 devel
+license         X11
+maintainers     jeremyhu openmaintainer
+description     X.org libXScrnSaver
+homepage        http://www.x.org
+platforms       darwin macosx
+long_description MIT_SCREEN_SAVER extension
+master_sites     xorg:individual/lib/
+
+distname    libXScrnSaver-${version}
+checksums           md5     898794bf6812fc9be9bf1bb7aa4d2b08 \
+                    sha1    3c29e2222fd68e26e408234c51c6d8b2edf6ab19 \
+                    rmd160  85d7bf43e6260cc0670b81a5c2154919421d41fa
+
+use_bzip2   yes
+use_parallel_build      yes
+
+depends_build   port:pkgconfig
+
+depends_lib     port:xorg-libXext \
+                port:xorg-scrnsaverproto
+
+livecheck.type  regex
+livecheck.url   http://xorg.freedesktop.org/archive/individual/lib/?C=M&O=D
+livecheck.regex libXScrnSaver-(\\d+(?:\\.\\d+)*)

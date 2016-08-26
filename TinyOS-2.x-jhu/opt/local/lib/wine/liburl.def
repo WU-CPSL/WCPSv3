@@ -1,0 +1,11 @@
+; File generated automatically from ./url.spec; do not edit!
+
+LIBRARY url.dll
+
+EXPORTS
+  AddMIMEFileTypesPS@8 @1
+  FileProtocolHandler@16=FileProtocolHandlerA@16 @7
+  FileProtocolHandlerA@16 @8
+  InetIsOffline@4 @9
+  TelnetProtocolHandler@8=TelnetProtocolHandlerA@8 @18
+  TelnetProtocolHandlerA@8 @19

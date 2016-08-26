@@ -1,0 +1,64 @@
+; File generated automatically from ./netapi32.spec; do not edit!
+
+LIBRARY netapi32.dll
+
+EXPORTS
+  DsGetDcNameA@24 @6
+  DsGetDcNameW@24 @7
+  DsGetSiteNameW@8 @13
+  DsRoleFreeMemory@4 @15
+  DsRoleGetPrimaryDomainInformation@12 @16
+  I_BrowserQueryEmulatedDomains@12 @20
+  I_BrowserSetNetlogonState@16 @26
+  I_NetNameCompare@20 @53
+  I_NetNameValidate@16 @54
+  NetApiBufferAllocate@8 @66
+  NetApiBufferFree@4 @67
+  NetApiBufferReallocate@12 @68
+  NetApiBufferSize@8 @69
+  NetFileEnum@36 @91
+  NetGetDCName@12 @94
+  NetGetJoinInformation@12 @96
+  NetGroupEnum@28 @101
+  NetGroupGetInfo@16 @102
+  NetLocalGroupAdd@16 @106
+  NetLocalGroupAddMember@12 @107
+  NetLocalGroupAddMembers@20 @108
+  NetLocalGroupDel@8 @109
+  NetLocalGroupDelMember@12 @110
+  NetLocalGroupDelMembers@20 @111
+  NetLocalGroupEnum@28 @112
+  NetLocalGroupGetInfo@16 @113
+  NetLocalGroupGetMembers@32 @114
+  NetLocalGroupSetInfo@20 @115
+  NetLocalGroupSetMembers@20 @116
+  NetQueryDisplayInformation@28 @122
+  NetServerEnum@36 @176
+  NetServerEnumEx@36 @177
+  NetServerGetInfo@12 @178
+  NetSessionEnum@36 @189
+  NetShareAdd@16 @191
+  NetShareDel@12 @193
+  NetShareEnum@28 @195
+  NetShareGetInfo@16 @197
+  NetStatisticsGet@20 @199
+  NetUseAdd@16 @200
+  NetUseEnum@28 @202
+  NetUserAdd@16 @204
+  NetUserChangePassword@16 @205
+  NetUserDel@8 @206
+  NetUserEnum@32 @207
+  NetUserGetGroups@28 @208
+  NetUserGetInfo@16 @209
+  NetUserGetLocalGroups@32 @210
+  NetUserModalsGet@12 @211
+  NetWkstaGetInfo@12 @215
+  NetWkstaTransportEnum@28 @219
+  NetWkstaUserEnum@28 @220
+  NetWkstaUserGetInfo@12 @221
+  NetapipBufferAllocate@8=NetApiBufferAllocate@8 @223
+  Netbios@4 @224
+  NetpDeleteSecurityObject@4=ntdll.RtlDeleteSecurityObject @240
+  NetpGetComputerName@4 @241
+  NetpInitOemString@8=ntdll.RtlInitAnsiString @250
+  NetpNetBiosStatusToApiStatus@4 @263

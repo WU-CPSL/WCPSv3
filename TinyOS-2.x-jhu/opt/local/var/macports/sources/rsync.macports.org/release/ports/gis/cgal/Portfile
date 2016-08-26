@@ -1,0 +1,89 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 87615 2011-11-28 21:12:21Z ryandesign@macports.org $
+
+PortSystem			1.0
+PortGroup			cmake 1.0
+
+name				cgal
+version				3.9
+license				LGPL-2.1 QPL Commercial
+categories			gis science
+maintainers			vince
+description			Computational Geometry Algorithm Library
+long_description	\
+					The goal of the CGAL is to provide easy access to\
+					efficient and reliable geometric algorithms in the\
+					form of a C++ library. CGAL is used in various areas\
+					needing geometric computation, such as: computer\
+					graphics, scientific visualization, computer aided\
+					design and modeling, geographic information systems,\
+					molecular biology, medical imaging, robotics and\
+					motion planning, mesh generation, numerical methods...
+
+platforms			darwin
+homepage			http://www.cgal.org/
+
+fetch.ignore_sslcert 	yes
+master_sites		https://gforge.inria.fr/frs/download.php/29125/
+
+distname			CGAL-${version}
+checksums           rmd160  0a5a929ecedeeac3833ec90f802b7f5ac069ad47 \
+                    sha256  241194ad9487d62d1287f863eab3adbbfd0836e2bebcd50c9fc21d473f947ba4
+
+depends_lib-append	port:boost \
+					port:mpfr \
+					port:zlib \
+					port:gmp
+
+configure.args-append   -DCGAL_INSTALL_CMAKE_DIR="${prefix}/lib/cmake"
+
+# gcc 4.0 is too old to compile CGAL properly; see <http://www.cgal.org/FAQ.html#mac_optimization_bug>
+# And the demos don't compile with llvm-gcc-4.2 or clang
+if {${configure.compiler} == "gcc-4.0" || [variant_isset demos]} {
+    configure.compiler gcc-4.2
+    if {![file executable ${configure.cc}]} {
+        depends_build-append port:apple-gcc42
+        configure.compiler apple-gcc-4.2
+        # base (as of 2.0.3) doesn't set cxx for apple-gcc-4.2
+        configure.cxx ${prefix}/bin/g++-apple-4.2
+    }
+}
+
+pre-build {
+    # When building 3.9 with 3.8 active:
+    # error: 'CGAL_CORE_finite' was not declared in this scope
+    if {[file exists ${prefix}/include/CGAL/version.h]} {
+        set installed_version [exec awk {/^#define +CGAL_VERSION +/ {print $3}} ${prefix}/include/CGAL/version.h]
+        if {${version} != ${installed_version}} {
+            ui_error "${name} ${version} cannot be built while ${name} ${installed_version} is installed and active."
+            ui_error "Please deactivate ${name} ${installed_version} first."
+            return -code error "incompatible ${name} version active"
+        }
+    }
+}
+
+variant demos description {Create demos} {
+	PortGroup				qt4 1.0
+
+	depends_lib-append		port:libQGLViewer \
+							port:ipe
+
+	patchfiles				patch-CMakeLists.txt.diff
+
+	configure.args-append	-DWITH_examples=TRUE
+	configure.args-append	-DWITH_demos=TRUE
+
+  # MacPorts installs IPE version 7; make sure to use it.
+	configure.args-append	-DWITH_IPE_7=TRUE
+
+  # include Qt's CMake defines, just in case
+	configure.args-append	${qt_cmake_defines}
+
+	build.target-append		examples demos
+	use_parallel_build		no
+
+	post-destroot {			xinstall -d ${destroot}${prefix}/share/${name}
+							copy ${worksrcpath}/demo ${destroot}${prefix}/share/${name}
+							copy ${worksrcpath}/examples ${destroot}${prefix}/share/${name}
+	}
+}

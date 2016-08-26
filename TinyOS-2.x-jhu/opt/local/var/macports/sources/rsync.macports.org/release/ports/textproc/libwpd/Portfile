@@ -1,0 +1,38 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 85794 2011-10-16 06:05:24Z dports@macports.org $
+
+PortSystem 1.0
+
+name		libwpd
+version		0.8.14
+description	A general purpose library for reading WordPerfect files.
+long_description	${description}
+maintainers	devans openmaintainer
+categories	textproc
+license		LGPL-2+
+platforms	darwin
+homepage	http://libwpd.sourceforge.net/
+master_sites	sourceforge
+
+checksums       md5     64d66018897d759358f454010b6e75d2 \
+                sha1    9d316c055f6f9e93896a1d8e8d81c6ea4a8a8a44 \
+                rmd160  e20b7e262bff3266cb6570d302c01c9e153960d4
+
+depends_build   port:pkgconfig
+
+depends_lib	path:lib/pkgconfig/glib-2.0.pc:glib2 \
+		port:libgsf \
+		port:libxml2
+
+patch {
+		reinplace "s|need_relink=yes|need_relink=no|g" ${worksrcpath}/ltmain.sh
+}
+configure.args	--mandir=${prefix}/share/man --without-docs
+
+variant doxygen description {Build documentation with doxygen} {
+	depends_build-append	port:doxygen
+	configure.args-delete	--without-docs
+}
+
+livecheck.url   http://sourceforge.net/projects/${name}/files/${name}/
+livecheck.regex "${name}-(0.8(?:\\.\\d+)*)"

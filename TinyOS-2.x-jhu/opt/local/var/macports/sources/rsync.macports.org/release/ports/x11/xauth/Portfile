@@ -1,0 +1,33 @@
+# $Id: Portfile 87010 2011-11-08 01:42:31Z dports@macports.org $
+
+PortSystem          1.0
+
+name                xauth
+version             1.0.6
+categories          x11
+license             X11
+platforms           darwin
+maintainers         jeremyhu openmaintainer
+description         X11 authority file utility
+long_description    ${description}
+
+homepage            http://www.x.org/
+master_sites        xorg:individual/app/
+
+checksums           md5     105f5b00bb9293b3db36f7e500d4f950 \
+                    sha1    10a68367ecc60a641b9aa89e6f24f7ca71f23874 \
+                    rmd160  c408d9fd03e609186558da1a19ef19c8674ef7f4
+
+use_bzip2	    yes
+use_parallel_build  yes
+
+depends_build \
+	port:pkgconfig
+
+depends_lib \
+	port:xorg-libXext \
+	port:xorg-libXmu
+
+livecheck.type  regex
+livecheck.url   http://xorg.freedesktop.org/archive/individual/app/?C=M&O=D
+livecheck.regex ${name}-(\\d+(?:\\.\\d+)*)

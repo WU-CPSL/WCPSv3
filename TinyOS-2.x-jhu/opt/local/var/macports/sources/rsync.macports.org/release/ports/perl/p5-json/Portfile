@@ -1,0 +1,27 @@
+# $Id: Portfile 84995 2011-10-07 00:30:10Z jmr@macports.org $
+
+PortSystem          1.0
+PortGroup           perl5 1.0
+
+perl5.setup         JSON 2.53 ../by-authors/id/M/MA/MAKAMAKA
+revision            1
+license             {Artistic-1 GPL}
+maintainers         nomaintainer
+description         parse and convert to JSON (JavaScript Object Notation).
+long_description    This module converts between JSON \
+                    (JavaScript Object Notation) and Perl data structure \
+                    into each other. For JSON, See to \
+                    http://www.crockford.com/JSON/.
+
+platforms           darwin
+
+checksums           sha1    a56cd4155ddad0e55bbef588207c3fd85e13c271 \
+                    rmd160  d330285f25e75ce63dbea73e23713ab3a7e226f9
+
+supported_archs     noarch
+
+if {${perl5.major} != ""} {
+variant xs description {Depend on JSON::XS for improved performance} {
+    depends_run-append    port:p${perl5.major}-json-xs
+}
+}

@@ -1,0 +1,54 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 70576 2010-08-14 06:36:35Z raphael@macports.org $
+
+PortSystem 1.0
+
+name		    libcryptopp
+version             5.6.1
+categories          devel security
+platforms           darwin
+maintainers         raphael openmaintainer
+description         C++ class library of cryptographic schemes
+long_description    Crypto++ Library is a free C++ class library of \
+                    cryptographic schemes.
+
+homepage            http://www.cryptopp.com/
+master_sites        sourceforge:cryptopp \
+                    ${homepage}
+distname            cryptopp[strsed ${version} {g/\.//}]
+
+checksums           md5 96cbeba0907562b077e26bcffb483828 \
+                    sha1 31dbb456c21f50865218c57b7eaf4c955a222ba1 \
+                    rmd160 a8a5b80c995c5d4ddafba228caf8866425212fbf
+
+use_zip             yes
+extract.mkdir	    yes
+
+patchfiles          patch-GNUmakefile.diff
+
+use_configure       no
+
+build.type          gnu
+build.env-append    CXXFLAGS="${configure.cxx_archflags}"
+
+test.run            yes
+test.cmd            ./cryptest.exe
+test.target         v
+
+destroot {
+    xinstall -m 755 -d ${destroot}${prefix}/include/cryptopp \
+        ${destroot}${prefix}/share/doc/${name}
+    xinstall -m 644 ${worksrcpath}/libcryptopp.a ${destroot}${prefix}/lib
+    eval xinstall -m 644 [glob ${worksrcpath}/*.h] \
+        ${destroot}${prefix}/include/cryptopp/
+    xinstall -m 644 -W ${worksrcpath} Readme.txt License.txt \
+        ${destroot}${prefix}/share/doc/${name}/
+}
+
+variant universal {
+    build.env-delete    CXXFLAGS="${configure.cxx_archflags}"
+    build.env-append    CXXFLAGS="${configure.universal_cxxflags}"
+}
+
+livecheck.type                  regex
+livecheck.regex                 "Crypto\\+\\+ (\\d+(?:\\.\\d+)*)"

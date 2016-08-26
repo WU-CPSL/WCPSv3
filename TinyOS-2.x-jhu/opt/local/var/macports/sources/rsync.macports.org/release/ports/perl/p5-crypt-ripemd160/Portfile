@@ -1,0 +1,14 @@
+# $Id: Portfile 88609 2012-01-05 21:23:38Z jmr@macports.org $
+
+PortSystem	1.0
+PortGroup	perl5 1.0
+
+perl5.setup	Crypt-RIPEMD160 0.04
+revision    2
+license		{Artistic-1 GPL}
+maintainers	nomaintainer
+description	perl implementation of RIPEMD-160
+long_description	This is a Perl5 extension interface to the RIPEMD-160 \
+			Message Digest algorithm.
+platforms	darwin
+checksums	md5 132c1b74deabd6511726945373308699

@@ -1,0 +1,18 @@
+# $Id: Portfile 88622 2012-01-05 21:40:53Z jmr@macports.org $
+
+PortSystem 1.0
+PortGroup perl5 1.0
+
+perl5.setup		Cache-Simple-TimedExpiry 0.27
+revision        2
+license			{Artistic-1 GPL}
+maintainers		nomaintainer
+description		A lightweight cache with timed expiration
+long_description	${description}
+
+checksums               md5     4ef124ab7776f3c257b9ffbed917e67a \
+                        sha1    c9d36521b64749ee52fdb0fd0060302152902cb0 \
+                        rmd160  1393f81653dc7b016ad52c47c03978d47eddbd81
+platforms		darwin
+
+supported_archs noarch

@@ -1,0 +1,31 @@
+# $Id: Portfile 85761 2011-10-16 05:06:24Z dports@macports.org $
+
+PortSystem 1.0
+
+name            xorg-libXxf86vm
+version         1.1.1
+categories      x11 devel
+license         X11
+maintainers     jeremyhu openmaintainer
+description     X.org libXxf86vm
+homepage        http://www.x.org
+platforms       darwin macosx
+long_description ${description}
+master_sites     xorg:individual/lib/
+
+distname    libXxf86vm-${version}
+checksums           md5     34dc3df888c164378da89a7deeb245a0 \
+                    sha1    2ff2d2b3c60a5c5c0cc4e0a18492d3b7168a03af \
+                    rmd160  e4d28d2e4462bd76416eb9c7e0395c242572a313
+
+use_bzip2   yes
+use_parallel_build      yes
+
+depends_build   port:pkgconfig
+
+depends_lib     port:xorg-libXext \
+                port:xorg-xf86vidmodeproto
+
+livecheck.type  regex
+livecheck.url   http://xorg.freedesktop.org/archive/individual/lib/?C=M&O=D
+livecheck.regex libXxf86vm-(\\d+(?:\\.\\d+)*)

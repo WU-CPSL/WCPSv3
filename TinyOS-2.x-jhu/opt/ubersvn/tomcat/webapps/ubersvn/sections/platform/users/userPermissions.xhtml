@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:p="http://primefaces.prime.com.tr/ui" xmlns:h="http://java.sun.com/jsf/html">
+<ui:composition>
+  <ol id="sub-toc">
+    <li><h:outputLink styleClass="unselectedTabbedPanelTab" title="#{msg.userProfileTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/users/userProfile.jsf?userId=#{userProfileManagedBean.user.id}">
+        <span>#{msg.userProfileTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink style="left: 75px;" styleClass="selectedTabbedPanelTab" title="#{msg.userPreferencesTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/users/userPreferences.jsf"
+        rendered="#{basePage.systemAdmin or userProfileManagedBean.myPage}">
+        <span>#{msg.userPreferencesTabText}</span>
+      </h:outputLink></li>
+    <li class="current"><h:outputLink style="left: 180px;" styleClass="unselectedTabbedPanelTab"
+        title="#{msg.userPermissionsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/users/userPermissions.jsf"
+        rendered="#{basePage.systemAdmin or userProfileManagedBean.myPage}">
+        <span>#{msg.userPermissionsTabText}</span>
+      </h:outputLink></li>
+  </ol>
+  <p:panel styleClass="tabbed-panel">
+    <h:panelGrid>
+      <h:panelGroup>
+        <h:panelGrid columns="1" columnClasses="repoNameColumnFull">
+          <h:panelGroup>
+            <h:outputText id="userRealName" styleClass="formOutputText" style="font-size: 24px;"
+              value="#{userProfileManagedBean.user.realName}" />
+            <br />
+            <hr />
+          </h:panelGroup>
+        </h:panelGrid>
+      </h:panelGroup>
+    </h:panelGrid>
+    <h:panelGrid id="permsPanel" columns="3" columnClasses="userPermissionsColumns, userPermissionsColumns, userPermissionsColumns"
+      rendered="#{basePage.systemAdmin or userProfileManagedBean.myPage}">
+      <h:panelGrid>
+        <h:panelGroup>
+          <h:selectBooleanCheckbox disabled="#{userProfileManagedBean.myPage}" id="sysAdminCheckboxRO"
+            value="#{userProfileManagedBean.user.systemAdmin}" rendered="#{!basePage.systemAdmin}" />
+          <h:selectBooleanCheckbox id="sysAdminCheckbox" value="#{userProfileManagedBean.user.systemAdmin}"
+            rendered="#{basePage.systemAdmin}" />
+          <h:outputLabel styleClass="formOutputLabel" for="sysAdminCheckbox" value="#{msg.userPermissionSystemAdmin}" />
+        </h:panelGroup>
+        <h:panelGroup>
+          <h:selectBooleanCheckbox disabled="#{userProfileManagedBean.myPage}" id="globalTeamCheckboxRO"
+            value="#{userProfileManagedBean.user.globalTeamAdmin}" rendered="#{!basePage.systemAdmin}" />
+          <h:selectBooleanCheckbox id="globalTeamCheckbox" value="#{userProfileManagedBean.user.globalTeamAdmin}"
+            rendered="#{basePage.systemAdmin}" />
+          <h:outputLabel styleClass="formOutputLabel" for="globalTeamCheckbox" value="#{msg.userPermissionGlobalTeamAdmin}" />
+        </h:panelGroup>
+        <h:panelGroup>
+          <h:selectBooleanCheckbox disabled="#{userProfileManagedBean.myPage}" id="globalRepoCheckboxRO"
+            value="#{userProfileManagedBean.user.globalRepoAdmin}" rendered="#{!basePage.systemAdmin}" />
+          <h:selectBooleanCheckbox id="globalRepoCheckbox" value="#{userProfileManagedBean.user.globalRepoAdmin}"
+            rendered="#{basePage.systemAdmin}" />
+          <h:outputLabel styleClass="formOutputLabel" for="globalRepoCheckbox" value="#{msg.userPermissionGlobalRepoAdmin}" />
+        </h:panelGroup>
+        <h:panelGroup>
+          <h:selectBooleanCheckbox disabled="#{userProfileManagedBean.myPage}" id="purchaserCheckboxRO"
+            value="#{userProfileManagedBean.user.purchaser}" rendered="#{!basePage.systemAdmin}" />
+          <h:selectBooleanCheckbox id="purchaserCheckbox" value="#{userProfileManagedBean.user.purchaser}"
+            rendered="#{basePage.systemAdmin}" />
+          <h:outputLabel styleClass="formOutputLabel" for="purchaserCheckbox" value="#{msg.userPermissionPurchaser}" />
+        </h:panelGroup>
+      </h:panelGrid>
+      <h:panelGrid>
+        <h:panelGroup>
+          <h:outputLabel styleClass="formOutputLabel" value="#{msg.userPermissionDelegatedTeamAdmin}" />
+          <p:dataTable id="delegatedTeamTableId" var="team" value="#{userProfileManagedBean.user.delegatedTeams}" paginator="true"
+            paginatorPosition="bottom" rows="20"
+            paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+            <p:column style="width: 200px;" sortBy="#{team.name}">
+              <f:facet name="header">
+                <h:outputText value="Team" />
+              </f:facet>
+              <h:outputText value="#{team.name}" />
+            </p:column>
+            <p:column style="width: 100px;">
+              <f:facet name="header">
+                <h:outputText value="Admin" />
+              </f:facet>
+              <h:selectBooleanCheckbox disabled="true" value="#{team.delegatedAdmin}" rendered="#{!basePage.systemAdmin}">
+              </h:selectBooleanCheckbox>
+              <h:selectBooleanCheckbox value="#{team.delegatedAdmin}" rendered="#{basePage.systemAdmin}">
+              </h:selectBooleanCheckbox>
+            </p:column>
+          </p:dataTable>
+        </h:panelGroup>
+      </h:panelGrid>
+      <h:panelGrid>
+        <h:panelGroup>
+          <h:outputLabel styleClass="formOutputLabel" value="#{msg.userPermissionDelegatedRepoAdmin}" />
+          <p:dataTable id="delegatedRepoTableId" var="repo" value="#{userProfileManagedBean.user.delegatedRepos}" paginator="true"
+            paginatorPosition="bottom" rows="20"
+            paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+            <p:column style="width: 200px;" sortBy="#{repo.name}">
+              <f:facet name="header">
+                <h:outputText value="Repository" />
+              </f:facet>
+              <h:outputText value="#{repo.name}" />
+            </p:column>
+            <p:column style="width: 100px;">
+              <f:facet name="header">
+                <h:outputText value="Admin" />
+              </f:facet>
+              <h:selectBooleanCheckbox disabled="true" value="#{repo.delegatedAdmin}" rendered="#{!basePage.systemAdmin}">
+              </h:selectBooleanCheckbox>
+              <h:selectBooleanCheckbox value="#{repo.delegatedAdmin}" rendered="#{basePage.systemAdmin}">
+              </h:selectBooleanCheckbox>
+
+            </p:column>
+          </p:dataTable>
+        </h:panelGroup>
+      </h:panelGrid>
+      <h:panelGroup>
+        <p:commandButton styleClass="roundedButtonLarge" value="#{msg.updatePermissionsText}" update="permsPanel, growl"
+          action="#{userProfileManagedBean.updatePermissions}" rendered="#{basePage.systemAdmin}" />
+      </h:panelGroup>
+    </h:panelGrid>
+  </p:panel>
+</ui:composition>
+</html>

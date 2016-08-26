@@ -1,0 +1,14 @@
+# $Id: Portfile 84991 2011-10-06 23:21:05Z jmr@macports.org $
+
+PortSystem              1.0
+PortGroup               perl5 1.0
+
+perl5.setup             Socket6 0.19
+revision                2
+license                 BSD
+maintainers             nomaintainer
+description             IPv6 related part of the C socket.h defines and structure manipulators
+long_description        ${description}
+
+checksums               md5 35e4bb7e09ca3154a44bcaa8959780a2
+platforms               darwin

@@ -1,0 +1,55 @@
+# $Id: Portfile 71869 2010-09-25 08:08:55Z jmr@macports.org $
+
+PortSystem 1.0
+
+name	    	cdrtools
+version		3.00
+revision	1
+categories  	sysutils
+platforms		darwin
+description     ISO 9660 filesystem and CD creation tools
+long_description	The cdrtools software includes programs to create \
+		 	and/or extract ISO 9660 filesystems, verify their \
+			integrity, and write them to a disc. \
+			Note, this port conflicts with the dvdrtools port.
+homepage	http://cdrecord.berlios.de/old/private/cdrecord.html
+maintainers	gmail.com:bytestorm openmaintainer
+master_sites    ftp://ftp.berlios.de/pub/cdrecord/ \
+		ftp://ftp.cs.tu-berlin.de/pub/misc/cdrecord/alpha/
+
+checksums	md5     f9fbab08fbd458b0d2312976d8c5f558 \
+		sha1    6464844d6b936d4f43ee98a04d637cd91131de4e \
+		rmd160  210684ab5e286ef59b788b49bd0b74d88f6435f4
+
+use_bzip2	yes
+
+depends_build	port:smake
+
+depends_lib	port:gettext
+
+post-patch {
+	reinplace "s|/opt/schily|${prefix}|g" \
+		${worksrcpath}/DEFAULTS/Defaults.darwin \
+		${worksrcpath}/DEFAULTS/Defaults.mac-os10 \
+		${worksrcpath}/DEFAULTS_ENG/Defaults.darwin \
+		${worksrcpath}/DEFAULTS_ENG/Defaults.mac-os10 \
+		${worksrcpath}/libfind/find.c \
+		${worksrcpath}/libfind/find_main.c \
+		${worksrcpath}/librscg/scsi-remote.c \
+		${worksrcpath}/TEMPLATES/Defaults.gcc
+}
+
+use_configure	no
+
+build.cmd	smake
+
+use_parallel_build no
+
+destroot.args   DEFINSUSR=root DEFINSGRP=wheel INS_BASE=${prefix}
+
+post-destroot {
+    move ${destroot}/etc/default ${destroot}${prefix}/etc/
+}
+
+livecheck.url	[lindex ${master_sites} 0]
+livecheck.regex	${name}-(\[0-9.\]+)\\.tar

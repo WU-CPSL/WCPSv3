@@ -1,0 +1,66 @@
+# $Id: Portfile 88275 2011-12-25 07:48:43Z ciserlohn@macports.org $
+
+PortSystem          1.0
+
+name                ejabberd
+version             2.1.10
+categories          net
+platforms           darwin
+license             GPL-2
+maintainers         ciserlohn
+description         ejabberd is an XMPP application server.
+long_description    ${description} ejabberd stands for "Erlang Jabber Daemon"
+
+homepage            http://www.process-one.net/en/ejabberd/
+master_sites        http://www.process-one.net/downloads/ejabberd/${version}/
+
+checksums           rmd160  7069aeeb87fd074988bc62cb4e898f7b920ab3c0 \
+                    sha256  9dc2e5889e919a7d51f2b95b83da835116631db81550a115c02e71909ad932be
+
+worksrcdir          ${worksrcdir}/src
+
+depends_lib         port:erlang \
+                    port:expat \
+                    port:openssl \
+                    port:libiconv \
+                    port:zlib
+
+# erlang is not universal
+universal_variant   no
+
+configure.args      --with-expat=${prefix} \
+                    --with-zlib=${prefix} \
+                    --with-openssl=${prefix}
+
+# All ejabberd configuration files.
+set conf_files      {ejabberd.cfg ejabberdctl.cfg inetrc}
+
+destroot.keepdirs   ${destroot}${prefix}/var/log/ejabberd/
+
+set etc ${prefix}/etc/ejabberd
+post-destroot {
+    # Create sample configuration files so they don't get overwritten by an
+    # update.
+    foreach file ${conf_files} {
+        file rename ${destroot}${etc}/${file} ${destroot}${etc}/${file}.sample
+    }
+
+    # Install documentation.
+    set doc ${destroot}${prefix}/share/doc
+    xinstall -d ${doc}
+    file copy ${worksrcpath}/../doc ${doc}/${name}-${version}
+}
+
+notes "
+Before running ${name} for the first time, you must copy the sample\
+configuration files:
+
+cd ${etc}/
+"
+foreach file ${conf_files} {
+    notes-append "cp ${file}.sample ${file}"
+}
+
+livecheck.type      regex
+livecheck.url       ${homepage}release_notes
+livecheck.regex     "${name} (\\d+(?:\\.\\d+)*)"

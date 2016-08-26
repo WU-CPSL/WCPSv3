@@ -1,0 +1,61 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 86443 2011-10-25 23:27:50Z ryandesign@macports.org $
+
+PortSystem      1.0
+
+name            flac
+version         1.2.1
+categories      audio
+platforms       darwin
+license         GPL-2+ BSD
+maintainers     nomaintainer
+description     Free Lossless Audio Codec
+
+long_description \
+    FLAC stands for Free Lossless Audio Codec. Grossly oversimplified,FLAC is similar to MP3, but lossless, \
+    meaning that audio iscompressed in FLAC without throwing away any information. This issimilar to how Zip \
+    works, except with FLAC you will get much better compression because it is designed specifically for \
+    audio, and you canplay back compressed FLAC files in your favorite player (or your car or home stereo) \
+    just like you would an MP3 file.
+
+homepage        http://flac.sourceforge.net/
+master_sites    sourceforge:project/flac/flac-src/flac-${version}-src/
+
+checksums       md5 153c8b15a54da428d1f0fadc756c22c7
+
+depends_lib     port:libogg port:libiconv
+
+patchfiles      patch-ltmain.sh.diff \
+                patch-nasm.h.diff \
+                patch-build_lib.mk.diff
+
+configure.args  --mandir=${prefix}/share/man \
+                --disable-xmms-plugin
+
+if {${configure.compiler} == "clang"} {
+    configure.compiler llvm-gcc-4.2
+}
+
+post-configure {
+    if {[variant_isset universal]} {
+        system "cd ${worksrcpath} && ed - ${worksrcpath}/config.h < ${filespath}/config.h.ed && touch stamp-h1"
+    }
+    reinplace "s|CC -dynamiclib|CC -dynamiclib [get_canonical_archflags]|g" ${worksrcpath}/libtool
+}
+
+build.args      OBJ_FORMAT=macho
+
+test.run        yes
+test.target     check
+
+variant xmms_plugin description "Build xmms plugin" {
+    configure.args-delete   --disable-xmms-plugin
+    depends_lib-append      port:xmms
+}
+
+platform darwin i386 {
+    configure.args-append   --disable-asm-optimizations
+}
+
+livecheck.url   http://sourceforge.net/projects/${name}/files/${name}-src
+livecheck.regex "${name}-(\\d+(?:\\.\\d+)*)"

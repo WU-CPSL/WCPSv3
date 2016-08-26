@@ -1,0 +1,15 @@
+[ req ]
+default_bits           = 1024
+default_keyfile        = ubersvn.key
+distinguished_name     = req_distinguished_name
+prompt                 = no
+output_password        = 
+ 
+[ req_distinguished_name ]
+C                      = GB
+ST                     = State of uberSVN
+L                      = uberSVN
+O                      = uberSVN
+OU                     = uberSVN
+CN                     = ubersvn
+emailAddress           = ubersvn@ubersvn

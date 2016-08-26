@@ -1,0 +1,53 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 87058 2011-11-08 23:18:28Z devans@macports.org $
+
+PortSystem      1.0
+
+name            telepathy-mission-control
+version         5.10.1
+license         LGPL-2.1
+categories      comms
+maintainers     devans openmaintainer
+platforms       darwin
+homepage        http://telepathy.freedesktop.org/wiki
+master_sites    http://telepathy.freedesktop.org/releases/${name}
+
+description     The ${name} component of Telepathy - a Flexible Communications Framework.
+
+long_description \
+                Telepathy Mission Control is a telepathy (chat and voip framework) component \
+                providing a way for "end-user" applications to abstract some details of low \
+                level telepathy components such as connection managers.
+
+checksums       sha1    55498cb6e9cd04454b5685c6caa75580cba908cd \
+                rmd160  487ae73c9ef965f7696c44bdfdd6bf4ca762090d
+
+depends_build   port:pkgconfig \
+                port:libxslt \
+                port:gtk-doc
+
+depends_lib     port:telepathy-glib \
+                port:libgnome-keyring
+
+patchfiles      patch-configure.diff
+
+configure.args  --enable-gnome-keyring \
+                --disable-upower
+
+variant python26 conflicts python27 description {Use python 2.6} {
+    configure.python          ${prefix}/bin/python2.6
+    depends_lib-append        port:python26
+}
+
+variant python27 conflicts python26 description {Use python 2.7} {
+    configure.python          ${prefix}/bin/python2.7
+    depends_lib-append        port:python27
+}
+
+if {![variant_isset python26]} {
+    default_variants +python27
+}
+
+livecheck.type  regex
+livecheck.url   ${master_sites}
+livecheck.regex "${name}-(\[0-9\]+\\.\[0-9\]*\[02468\]\\.\[0-9\]+)"

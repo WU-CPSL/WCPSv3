@@ -1,0 +1,12 @@
+/M16c62pClockCtrl.nc/1.1/Tue Apr  7 11:10:49 2009/-ko/
+/M16c62pClockCtrlC.nc/1.1/Tue Apr  7 11:10:49 2009/-ko/
+/McuSleepC.nc/1.1/Tue Apr  7 11:10:49 2009/-ko/
+/McuSleepP.nc/1.2/Fri Apr 17 14:22:40 2009/-ko/
+/bits.h/1.1/Tue Apr  7 11:10:49 2009/-ko/
+/interrupts.h/1.1/Tue Apr  7 11:10:49 2009/-ko/
+/iom16c62p.h/1.2/Fri Apr 17 14:22:40 2009/-ko/
+/m16c62phardware.h/1.2/Fri Apr 17 14:22:40 2009/-ko/
+D/adc////
+D/pins////
+D/timer////
+D/uart////

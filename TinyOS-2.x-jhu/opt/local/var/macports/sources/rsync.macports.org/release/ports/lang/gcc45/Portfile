@@ -1,0 +1,173 @@
+# $Id: Portfile 89719 2012-02-08 00:06:40Z jmr@macports.org $
+
+PortSystem 1.0
+PortGroup select 1.0
+
+name			gcc45
+epoch			1
+version			4.5.3
+revision		1
+platforms		darwin
+categories		lang
+maintainers		mww openmaintainer
+# an exception in the license allows dependents to not be GPL
+license			{GPL-3+ Permissive}
+description		The GNU compiler collection
+long_description	The GNU compiler collection, including front ends for \
+			C, C++, Objective-C, Objective-C++, Fortran and Java.
+
+homepage		http://gcc.gnu.org/
+master_sites		ftp://ftp.funet.fi/pub/mirrors/sources.redhat.com/pub/gcc/releases/gcc-${version}/:gcc \
+			ftp://ftp.gwdg.de/pub/linux/gcc/releases/gcc-${version}/:gcc \
+			ftp://gcc.ftp.nluug.nl/mirror/languages/gcc/releases/gcc-${version}/:gcc \
+			ftp://gcc.gnu.org/pub/gcc/releases/gcc-${version}/:gcc \
+			gnu:gcc/gcc-${version}:gcc \
+			ftp://sourceware.org/pub/java/:ecj \
+			http://mirrors.kernel.org/sources.redhat.com/java/:ecj \
+			http://www.mirrorservice.org/sites/sources.redhat.com/pub/java/:ecj \
+			http://ftp-stud.fht-esslingen.de/pub/Mirrors/sourceware.org/java/:ecj
+
+set dcore		gcc-core-${version}.tar.bz2
+set dfort		gcc-fortran-${version}.tar.bz2
+set dcxx		gcc-g++-${version}.tar.bz2
+set djava		gcc-java-${version}.tar.bz2
+set dobjc		gcc-objc-${version}.tar.bz2
+set ecj			ecj-4.5.jar
+distfiles		${dcore}:gcc ${dfort}:gcc ${dcxx}:gcc ${djava}:gcc ${dobjc}:gcc ${ecj}:ecj
+extract.only		${dcore} ${dfort} ${dcxx} ${djava} ${dobjc}
+
+checksums           gcc-core-${version}.tar.bz2 \
+                    md5     98be5094b5b5a7b9087494291bc7f522 \
+                    sha1    5edd2a4ae5a265df716550079995c0a0bc7be564 \
+                    rmd160  ef6b9cddc3bcd9884766645659d03f460aab443d \
+                    gcc-fortran-${version}.tar.bz2 \
+                    md5     351fda9e20552357bb8f64e74d2f19f1 \
+                    sha1    f7a411e33f5a4e1e837c675fbc70f11f16e78d35 \
+                    rmd160  8ffd4c70e2eb93c151bfbba1da7a4fcf4e22f6ed \
+                    gcc-g++-${version}.tar.bz2 \
+                    md5     2c78bf1d5f08a0b116f280de88d3ffe7 \
+                    sha1    fde6d16c2d4a2ab21abeaa7dc8e73e22557e8a2d \
+                    rmd160  5ef37a35671b475c1f86962dfa796133c80e6549 \
+                    gcc-java-${version}.tar.bz2 \
+                    md5     08e045fdbdc22ac9af3aec3b8d16dbab \
+                    sha1    b71c66e4291944e35e6f6ed300ab62f09bdf2219 \
+                    rmd160  ea26f35b8dd821585e2c9081730ac72c860def8b \
+                    gcc-objc-${version}.tar.bz2 \
+                    md5     9bb53e37e589515ba55979a19be9c036 \
+                    sha1    ef3cb3d8b6d5cecf3adceeae7c6bb1426b74bf8a \
+                    rmd160  09a877e43e35b9b886cd2b41d3002954f6f2ff9f \
+                    ecj-4.5.jar \
+                    md5     d7cd6a27c8801e66cbaa964a039ecfdb \
+                    sha1    58c1d79c64c8cd718550f32a932ccfde8d1e6449 \
+                    rmd160  d3f4da657f086b6423f74e93f001132f4855368a
+
+use_bzip2		yes
+
+depends_lib		port:gmp port:mpfr port:libiconv port:libmpc
+depends_run		port:gcc_select
+
+set major		4.5
+
+worksrcdir		build
+
+platform darwin {
+    configure.pre_args-append --build=${build_arch}-apple-darwin${os.major}
+}
+
+post-extract {
+	copy ${distpath}/${ecj} ${workpath}/gcc-${version}/ecj.jar
+}
+
+pre-configure {
+	file mkdir ${worksrcpath}
+}
+
+configure.cmd	../gcc-${version}/configure
+configure.args	--enable-languages=c,c++,objc,obj-c++,fortran,java \
+		--libdir=${prefix}/lib/${name} \
+		--includedir=${prefix}/include/${name} \
+		--infodir=${prefix}/share/info \
+		--mandir=${prefix}/share/man \
+                --datarootdir=${prefix}/share/gcc-${major} \
+		--with-local-prefix=${prefix} \
+		--with-system-zlib \
+		--disable-nls \
+		--program-suffix=-mp-${major} \
+		--with-gxx-include-dir=${prefix}/include/${name}/c++/ \
+		--with-gmp=${prefix} \
+		--with-mpfr=${prefix} \
+		--with-mpc=${prefix} \
+		--enable-stage1-checking \
+		--disable-multilib \
+		--enable-lto
+# do NOT use MacPorts binutils -- they do not work
+configure.env-append    AR_FOR_TARGET=/usr/bin/ar \
+			AS_FOR_TARGET=/usr/bin/as \
+			LD_FOR_TARGET=/usr/bin/ld \
+			NM_FOR_TARGET=/usr/bin/nm \
+			OBJDUMP_FOR_TARGET=/usr/bin/objdump \
+			RANLIB_FOR_TARGET=/usr/bin/ranlib \
+			STRIP_FOR_TARGET=/usr/bin/strip
+
+# http://trac.macports.org/ticket/29104
+if {${configure.compiler} == "llvm-gcc-4.2"} {
+    configure.compiler clang
+}
+
+build.target	bootstrap
+use_parallel_build	yes
+
+destroot.target	install install-info-host
+
+post-destroot {
+	file delete -force ${destroot}${prefix}/share/man/man7 \
+		${destroot}${prefix}/share/info
+	# install/copy ffitarget.h only if we have it
+	if {![catch {set ffitarget.h [glob ${destroot}${prefix}/lib/${name}/gcc/*/${version}/include/ffitarget.h]} result]} {
+		file copy ${ffitarget.h} ${destroot}${prefix}/include/${name}/
+	}
+	file rename ${destroot}${prefix}/share/python/aotcompile.py \
+		${destroot}${prefix}/share/python/aotcompile-45.py
+	file rename ${destroot}${prefix}/share/python/classfile.py \
+		${destroot}${prefix}/share/python/classfile-45.py
+}
+
+select.group    gcc
+select.file     ${filespath}/mp-${name}
+
+platform darwin 8 {
+	# http://gcc.gnu.org/bugzilla/show_bug.cgi?id=45248
+	configure.args-append --with-dwarf2
+}
+platform darwin 10 {
+	configure.args-append --enable-fully-dynamic-string
+}
+
+platform darwin 11 {
+	configure.args-append --enable-fully-dynamic-string
+}
+
+platform powerpc {
+    configure.universal_archs ppc ppc64
+}
+platform i386 {
+    configure.universal_archs i386 x86_64
+}
+variant universal {
+    configure.args-delete --disable-multilib
+}
+# the generated compiler doesn't accept -arch
+build.env-append CPP="${configure.cc} -E"
+configure.cc-append [get_canonical_archflags]
+configure.cc_archflags
+configure.cxx_archflags
+configure.objc_archflags
+configure.ld_archflags
+configure.universal_cflags
+configure.universal_cxxflags
+configure.universal_ldflags
+configure.universal_args
+
+livecheck.type  regex
+livecheck.url   http://gcc.gnu.org/gcc-4.5/
+livecheck.regex GCC (4\\.5\\.\[0-9\])

@@ -1,0 +1,32 @@
+# $Id: Portfile 89904 2012-02-14 16:31:53Z ryandesign@macports.org $
+
+PortSystem          1.0
+
+name                md5deep
+version             4.1
+categories          security sysutils
+license             public-domain
+maintainers         gmail.com:jessekornblum
+description         Recursively compute digests on files/directories
+long_description \
+   md5deep and hashdeep are a cross-platform set of programs to recursively \
+   compute MD5, SHA-1, or SHA-256 message digests on an arbitrary number of \
+   files.
+
+platforms           darwin
+
+homepage            http://md5deep.sourceforge.net/
+master_sites        sourceforge:project/md5deep/md5deep/md5deep-${version}
+
+checksums           rmd160  9ab1934dee53f9225f7cf47a599f94b539cfa081 \
+                    sha256  07ad289f587c1be5f3403408bb03c1891ce29e5d607ec3b973282661f422966b
+
+post-destroot {
+   xinstall -m 755 -d ${destroot}${prefix}/share/doc/${name}
+   xinstall -m 644 -W ${worksrcpath} AUTHORS COPYING ChangeLog FILEFORMAT \
+      NEWS README TODO ${destroot}${prefix}/share/doc/${name}
+}
+
+livecheck.type      regex
+livecheck.regex     ${name}-(\[.\\d\]+)\.tar\.gz
+livecheck.url       http://sourceforge.net/projects/${name}/files/${name}

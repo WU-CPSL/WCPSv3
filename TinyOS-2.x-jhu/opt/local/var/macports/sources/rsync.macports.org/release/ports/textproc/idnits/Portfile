@@ -1,0 +1,27 @@
+# $Id: Portfile 56061 2009-08-24 00:33:19Z ryandesign@macports.org $
+
+PortSystem 1.0
+name		idnits
+version		2.08.04
+categories	textproc
+platforms	darwin
+maintainers	fenner
+description	Looks for problems in internet draft formatting
+long_description	\
+	'idnits' looks for violations of Section 2.1 and 2.2 of the \
+	requirements listed on http://www.ietf.org/ID-Checklist.html \
+	and some of http://www.ietf.org/ietf/1id-guidelines.html
+homepage	http://tools.ietf.org/tools/idnits/
+master_sites	http://tools.ietf.org/tools/idnits/
+extract.suffix	.tgz
+checksums	md5 a68f89e730f9cf74427406048944ea1c \
+		sha1 176b178d286e1cd297e4300913ea03d68fcea106
+
+# Since it's just a shell script, there's no configure or build.
+# Just destroot directly from the distpath.
+configure	{}
+build		{}
+destroot	{
+	xinstall -m 755 ${worksrcpath}/idnits \
+		${destroot}${prefix}/bin/
+}

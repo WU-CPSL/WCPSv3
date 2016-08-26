@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:p="http://primefaces.prime.com.tr/ui" xmlns:h="http://java.sun.com/jsf/html">
+<ui:composition>
+  <ol id="sub-toc">
+    <li><h:outputLink title="#{msg.uberAppsStoreTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/uberApps/viewStore.jsf">
+        <span>#{msg.uberAppsStoreTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink title="#{msg.uberAppsAccountTabAltText}" rendered="#{basePage.purchaser and storeAccountManagedBean.registered}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/uberApps/viewAccount.jsf">
+        <span>#{msg.uberAppsAccountTabText}</span>
+      </h:outputLink> 
+    </li>
+    <li><h:outputLink title="#{msg.uberAppsAccountTabAltText}" rendered="#{basePage.purchaser and !storeAccountManagedBean.registered}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/uberApps/storeRegistration.jsf">
+        <span>#{msg.uberAppsAccountTabText}</span>
+      </h:outputLink>
+    </li>
+    <li class="current"><h:outputLink title="#{msg.uberAppsRequestedTabAltText}"
+        rendered="#{basePage.purchaser or basePage.systemAdmin}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/uberApps/viewRequested.jsf">
+        <span>#{msg.uberAppsRequestedTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink title="#{msg.uberAppsInstalledTabAltText}" rendered="#{basePage.systemAdmin}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/uberApps/viewInstalled.jsf">
+        <span>#{msg.uberAppsInstalledTabText}</span>
+      </h:outputLink>
+    </li>
+  </ol>
+  <p:panel id="adminStatusPanel" styleClass="tabbed-panel">
+    <p:dataTable id="requestedAppsTable" widgetVar="appsTable" var="req" value="#{storeRequestedAppsManagedBean.requestedProducts}"
+      paginator="true" rows="12"
+      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" emptyMessage="">
+      <p:column sortBy="#{req.type}">
+        <f:facet name="header">
+          <h:outputText value="#{msg.uberAppsRequestType}" />
+        </f:facet>
+        <h:outputText value="#{req.type}" />
+      </p:column>
+      <p:column sortBy="#{req.product.name}">
+        <f:facet name="header">
+          <h:outputText value="#{msg.uberAppsRequestApplication}" />
+        </f:facet>
+        <h:outputText value="#{req.product.name}" />
+      </p:column>
+      <p:column>
+        <f:facet name="header">
+          <h:outputText value="#{msg.uberAppsRequestRequestedBy}" />
+        </f:facet>
+        <h:outputText value="#{req.user.realName}" />
+      </p:column>
+      <p:column>
+        <f:facet name="header">
+          <h:outputText value="#{msg.uberAppsRequestRequestedFor}" />
+        </f:facet>
+        <h:outputText value="#{req.requestFor}" title="#{req.shortRequestFor}" />
+      </p:column>
+      <p:column>
+        <f:facet name="header">
+          <h:outputText value="#{msg.uberAppsRequestNotes}" />
+        </f:facet>
+        <h:outputText id="notesId" value="#{req.shortNotes}" title="#{req.notes}" />
+      </p:column>
+      <p:column style="width: 350px;">
+        <f:facet name="header">
+          <h:outputText value="#{msg.uberAppsRequestAction}" />
+        </f:facet>
+        <p:commandButton styleClass="roundedButtonMedium"  rendered="#{!req.postPurchase}" action="/views/platform/uberApps/viewStore.jsf?faces-redirect=true" value="View">
+          <f:setPropertyActionListener target="#{cacheManagerManagedBean.nextPage}" value="#{req.productZid}" />
+          <f:setPropertyActionListener target="#{cacheManagerManagedBean.productZid}" value="#{req.productZid}" />
+        </p:commandButton>
+
+
+        <p:commandButton styleClass="roundedButtonMedium"  rendered="#{req.postPurchase}" value="Configure" action="/views/platform/uberApps/viewInstalled.jsf?faces-redirect=true" >
+        </p:commandButton>
+
+        <p:commandButton rendered="#{basePage.systemAdmin or basePage.purchaser}" action="#{storeRequestedAppsManagedBean.removeRequest}"
+          styleClass="roundedButtonLarge" value="#{msg.uberAppsRemoveRequest}" immediate="true" update="adminStatusPanel">
+          <f:setPropertyActionListener target="#{storeRequestedAppsManagedBean.productRequest}" value="#{req}"></f:setPropertyActionListener>
+        </p:commandButton>
+
+      </p:column>
+    </p:dataTable>
+  </p:panel>
+  <p:dialog header="#{msg.uberAppsRequestNotesHeader}" widgetVar="notesDialog">
+    <p:panel>
+      <h:outputText value="#{storeRequestedAppsManagedBean.productRequest.notes}" />
+    </p:panel>
+  </p:dialog>
+</ui:composition>
+</html>

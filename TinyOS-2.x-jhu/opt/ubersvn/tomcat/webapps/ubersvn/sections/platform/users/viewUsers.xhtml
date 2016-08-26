@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:p="http://primefaces.prime.com.tr/ui" xmlns:h="http://java.sun.com/jsf/html">
+<ui:composition>
+  <p:focus for="addUserButton"/>
+  <h:panelGrid styleClass="left-right-table" columns="2" columnClasses="left-aligned-stuff, right-aligned-stuff">
+    <p:button id="addUserButton" styleClass="roundedButtonExtraSmall" value="#{msg.addButtonText}" outcome="addUser.jsf" image="greenCross"
+      rendered="#{userManagedBean.systemAdmin}" />
+    <p:spacer width="10" rendered="#{!userManagedBean.systemAdmin}" />
+    <p:inputText id="globalFilter" value="#{userManagedBean.filterValue}" immediate="true" onkeyup="updateTableData(), usersTable.filter()"
+      style="background: #D9E5F1; width:150px">
+      <p:watermark for="globalFilter" value="FILTER" style="font-weight: bold;" />
+    </p:inputText>
+  </h:panelGrid>
+  <ol id="innerTab">
+    <li id="usersInnerTab" class="current"><h:outputLink
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/users/viewUsers.jsf"
+        title="#{msg.headerUsersTabAltText}">
+        <span>#{msg.usersTabText}</span>
+      </h:outputLink></li>
+  </ol>
+  <p:panel styleClass="base-tab-panel">
+    <p:panel styleClass="base-tab-inner-panel">
+      <p:dataTable id="userTableId" widgetVar="usersTable" var="user" value="#{userManagedBean.lazyUsersModel}" lazy="true"
+        paginator="#{userManagedBean.showPaginator}" paginatorPosition="bottom" rows="#{userManagedBean.tablePageSize}"
+        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+        emptyMessage="#{msg.emptyUsersTableMessage}">
+        <p:column styleClass="multiselecttablestyle">
+          <input type="checkbox" name="del" value="#{user.userName}" />
+        </p:column>
+        <p:column width="255" sortBy="#{user.userName}">
+          <f:facet name="header">
+            <h:outputText value="User" />
+          </f:facet>
+          <h:commandLink action="#{userManagedBean.viewUserProfile}" title="#{msg.userProfileLinkTitle}">
+            <f:setPropertyActionListener target="#{userManagedBean.selectedUser}" value="#{user}" />
+            <h:outputText value="#{user.userName}" />
+          </h:commandLink>
+
+        </p:column>
+        <p:column width="255" sortBy="#{user.realName}">
+          <f:facet name="header">
+            <h:outputText value="Name" />
+          </f:facet>
+          <h:commandLink action="#{userManagedBean.viewUserProfile}" title="#{msg.userProfileLinkTitle}">
+            <f:setPropertyActionListener target="#{userManagedBean.selectedUser}" value="#{user}" />
+            <h:outputText value="#{user.realName}" />
+          </h:commandLink>
+        </p:column>
+        <p:column width="255" sortBy="#{user.emailAddress}">
+          <f:facet name="header">
+            <h:outputText value="Email" />
+          </f:facet>
+          <h:outputLink id="userEmail" value="mailto:#{user.emailAddress}" title="#{msg.userEmailLinkTitle}">
+						#{user.emailAddress}
+					</h:outputLink>
+        </p:column>
+        <p:column width="100" style="text-align: right;">
+          <f:facet name="header">
+            <h:outputText value="" />
+          </f:facet>
+          <h:commandLink action="#{userManagedBean.viewUserProfile}" title="#{msg.userProfileLinkTitle}">
+            <f:setPropertyActionListener target="#{userManagedBean.selectedUser}" value="#{user}" />
+            <h:graphicImage library="img/platform/icons" name="cog.png" />
+          </h:commandLink>
+          <p:spacer width="5" />
+          <h:commandLink action="#{userManagedBean.viewUserPreferences}" title="#{msg.userPreferencesLinkTitle}"
+            rendered="#{userManagedBean.systemAdmin}">
+            <f:setPropertyActionListener target="#{userManagedBean.selectedUser}" value="#{user}" />
+            <h:graphicImage library="img/platform/icons" name="pass_reset.png" />
+          </h:commandLink>
+        </p:column>
+      </p:dataTable>
+      <p:remoteCommand name="updateTableData" actionListener="#{userManagedBean.updateFilter}" />
+      <p:commandButton action="#{userManagedBean.setUsersToDelete}" styleClass="roundedButtonLarge"
+        rendered="#{userManagedBean.systemAdmin}" value="#{msg.confirmUserDeleteButton}" onclick="confirmation.show()" />
+      <p:panel styleClass="base-tab-inner-panel-key">
+        <h:graphicImage library="img/platform/icons" name="cog.png" />
+        <h:outputText value=" = #{msg.configureKeyText} " />
+        <h:graphicImage library="img/platform/icons" name="pass_reset.png" />
+        <h:outputText value=" = #{msg.resetPasswordKeyText} " />
+      </p:panel>
+    </p:panel>
+    <p:confirmDialog message="#{msg.confirmUserDeleteMessage}" header="#{msg.confirmUserDeleteHeader}" severity="alert"
+      widgetVar="confirmation">
+      <p:commandButton value="#{msg.deleteButton}" update="userTableId" oncomplete="confirmation.hide()"
+        action="#{userManagedBean.deleteUsers}" />
+      <p:commandButton value="#{msg.cancelButton}" onclick="confirmation.hide()" type="button" />
+    </p:confirmDialog>
+  </p:panel>
+</ui:composition>
+</html>

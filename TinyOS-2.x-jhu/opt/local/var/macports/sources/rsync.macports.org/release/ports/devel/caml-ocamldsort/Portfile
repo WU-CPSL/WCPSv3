@@ -1,0 +1,10 @@
+# $Id: Portfile 88578 2012-01-04 17:06:38Z mww@macports.org $
+
+PortSystem          1.0
+replaced_by ocaml-ocamldsort
+PortGroup obsolete 1.0
+
+name                caml-ocamldsort
+version             0.14.4
+revision            1
+categories          devel ml

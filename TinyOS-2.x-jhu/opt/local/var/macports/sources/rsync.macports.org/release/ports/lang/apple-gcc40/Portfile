@@ -1,0 +1,64 @@
+# $Id: Portfile 87124 2011-11-11 01:49:48Z royliu@macports.org $
+
+PortSystem 1.0
+
+name			apple-gcc40
+version			5493
+revision		1
+categories		lang
+platforms		darwin
+maintainers		nomaintainer
+description		Apple's version of gcc 4.0
+long_description	Apple's version of the GNU compiler collection, \
+			version 4.0. Supports C and Objective-C only.
+
+homepage		http://opensource.apple.com/
+master_sites		http://opensource.apple.com/tarballs/gcc
+distname		gcc-${version}
+checksums               md5     66651c04639a222434f21e62f4cf0419 \
+                        sha1    e3b1f67ff250730f5b4ee9674a1970aa7d9db399 \
+                        rmd160  3566d6e5c74bdb442cfb6b20450c2b2137ef0627
+
+post-extract { file mkdir ${workpath}/build }
+
+set nprefix ${prefix}/lib/${name}
+
+# try to avoid non-Apple programs at all costs (rather volatile build)
+configure.dir		${workpath}/build
+configure.cmd		${worksrcpath}/configure
+configure.pre_args	--prefix=${nprefix}
+# C++ breaks!
+configure.args		--enable-languages=c,objc \
+			--program-suffix=-apple-4.0
+configure.cflags
+configure.ldflags
+configure.cppflags
+configure.env		PATH="/bin:/usr/bin:/sbin:/usr/sbin"
+
+patchfiles			patch-c-incpath.c.diff
+
+platform darwin 8 {
+	patchfiles		patch-config-darwin.h
+}
+
+build.dir		${configure.dir}
+
+destroot.dir		${build.dir}
+
+# STAGE1_CFLAGS="-O2 -fkeep-inline-functions" : from configure.ac
+# BOOT_CFLAGS="-O2 -g" : from Makefile.tpl
+# -std=gnu89 : for building with compilers that default to c99 (clang)
+# -D_FORTIFY_SOURCE=0 : The built compiler might not understand newer builtins
+#                       exposed in libc headers for fortified string functions.
+#                       Yes, we need to set both BOOT_CFLAGS and STAGE1_CFLAGS
+#                       because STAGE1_CFLAGS is used with xgcc for libgcc
+build.args-append BOOT_CFLAGS="-O2 -g -D_FORTIFY_SOURCE=0" STAGE1_CFLAGS="-O2 -fkeep-inline-functions -D_FORTIFY_SOURCE=0 -std=gnu89"
+
+post-destroot {
+	file delete -force \
+		${destroot}${nprefix}/man ${destroot}${nprefix}/info
+	system "cd ${destroot}${prefix}/bin && ln -sf ${nprefix}/bin/gcc-apple-4.0 && ln -sf ${nprefix}/bin/cpp-apple-4.0"
+}
+
+# It's difficult to distinguish between Apple's gcc-4.0 and gcc-4.2 releases
+livecheck.type  none

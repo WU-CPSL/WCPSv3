@@ -1,0 +1,25 @@
+# $Id: Portfile 23968 2007-04-14 03:34:33Z pguyot@kallisys.net $
+
+PortSystem 1.0
+name		universal-2
+version		1
+categories	test
+maintainers	pguyot@kallisys.net
+description	Test port for universal variant
+homepage	http://www.macports.org/
+platforms	darwin
+
+long_description ${description}
+
+fetch		{}
+checksum	{}
+extract		{}
+configure	{}
+build		{}
+destroot	{
+	system "touch ${destroot}${prefix}/lib/${name}"
+}
+
+test		{}
+
+universal_variant	no

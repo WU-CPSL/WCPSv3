@@ -1,0 +1,19 @@
+# $Id: Portfile 87210 2011-11-14 06:18:51Z jmr@macports.org $
+
+PortSystem	1.0
+PortGroup	perl5 1.0
+
+perl5.setup	Math-GMP 2.06
+revision    2
+license		LGPL
+maintainers	nomaintainer
+description	high speed arbitrary size integer math
+long_description	${description} 	
+platforms	darwin
+
+checksums       sha1    fb2f49eed88c7f4760cb663ff8b6bcca53fe7445 \
+                rmd160  4ef2e5104d5e48133506fbd1e1efd84af23bcdab
+
+if {${perl5.major} != ""} {
+depends_build port:gmp
+}

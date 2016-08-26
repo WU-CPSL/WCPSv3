@@ -1,0 +1,25 @@
+# $Id: Portfile 84447 2011-09-26 12:28:46Z jmr@macports.org $
+
+PortSystem            1.0
+PortGroup             perl5 1.0
+
+perl5.setup           IO-Compress 2.035 IO/PMQS
+revision              1
+license               {Artistic-1 GPL}
+maintainers           nomaintainer
+description           Perl interface to allow reading and writing of \
+                      compressed data created with the zlib and bzip2 \
+                      libraries.
+long_description      ${description}
+
+platforms             darwin
+
+checksums             sha1    73a26d191a664e9672d8f01dfd34ffe664f37b71 \
+                      rmd160  6581fabe54827c6e8ac46c071f9a46dc4b472413
+
+if {${perl5.major} != ""} {
+depends_lib-append    port:p${perl5.major}-compress-raw-bzip2 \
+                      port:p${perl5.major}-compress-raw-zlib
+
+supported_archs noarch
+}

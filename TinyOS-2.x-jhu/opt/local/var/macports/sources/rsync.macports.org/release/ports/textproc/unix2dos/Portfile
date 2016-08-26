@@ -1,0 +1,19 @@
+# $Id: Portfile 86098 2011-10-19 11:41:37Z snc@macports.org $
+
+PortSystem 1.0
+name            unix2dos
+replaced_by     dos2unix
+version         5.0
+license         BSD
+categories      textproc
+platforms       darwin
+homepage        http://www.xs4all.nl/~waterlan/dos2unix.html
+description     Convert text from unix to dos format
+long_description ${description}
+maintainers     fernandes.org:andrew
+distfiles
+
+pre-configure {
+    ui_error "${name} has been renamed to ${replaced_by}. Please install ${replaced_by} instead."
+    return -code error "obsolete port"
+}

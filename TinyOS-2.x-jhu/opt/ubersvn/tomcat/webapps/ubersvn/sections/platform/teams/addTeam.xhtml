@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:p="http://primefaces.prime.com.tr/ui" xmlns:h="http://java.sun.com/jsf/html" xmlns:wd="http://www.wansdisco.com/jsf">
+<ui:composition>
+  <h:outputLink styleClass="selectedWizardTab"
+    value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/teams/addTeam.jsf">
+    <span>#{msg.teamsTabText}</span>
+  </h:outputLink>
+  <p:panel styleClass="wizard-tab-panel" id="addTeamPanel" rendered="#{basePage.teamAdmin}">
+    <p:panel style="border: none; background: transparent; width: 60%; height: 300px; margin: 160px auto;">
+      <div style="text-align: center;">
+        <h:outputText styleClass="configurationTitle" value="#{msg.addTeamTeamCreation}" />
+      </div>
+      <h:panelGrid cellspacing="10px" style="width:100%" columns="2" columnClasses="wizardLabelColumn, wizardFieldColumn">
+        <h:outputLabel for="addTeamName" value="#{msg.addTeamTeamNameLabel}" />
+        <h:panelGroup>
+          <p:focus for="addTeamName" />
+          <h:inputText value="#{teamManagedBean.team.name}" styleClass="wizardFormField" size="50" id="addTeamName" required="true"
+            requiredMessage="#{msg.teamNameRequired}">
+            <wd:validateUserTeam />
+          </h:inputText>
+          <br />
+          <h:message style="color: red; font-size: 12px; height: 11px;" for="addTeamName" />
+        </h:panelGroup>
+        <h:outputLabel for="addTeamDescription" value="#{msg.addTeamDescriptionLabel}" />
+        <h:inputText value="#{teamManagedBean.team.description}" styleClass="wizardFormField" size="50" id="addTeamDescription" />
+        <h:outputLabel for="addTeamRepos" value="#{msg.addTeamReposLabel}" />
+        <h:panelGroup>
+          <p:autoComplete forceSelection="true" id="addTeamRepos" value="#{teamManagedBean.wizardRepoName}"
+            completeMethod="#{teamManagedBean.autoCompleteRepoName}" styleClass="autoCompleteInputText"
+            style="border: 1px solid #006DFD; background: white; width: 60%;" />
+          <p:spacer width="10" />
+          <p:commandButton action="#{teamManagedBean.addWizardRepo}" styleClass="roundedButtonExtraSmall"
+            style="vertical-align: top; margin-top: 1px;" value="#{msg.addTeamaddRepoButtonText}" image="greenCross" update="addTeamPanel" />
+          <br />
+          <ui:repeat var="repo" value="#{teamManagedBean.lastVisibleReposToAdd}">
+            <h:outputLabel value="#{repo}" style="font-size: 16px; padding: 5px;" />
+            <p:commandLink id="lastVisibleRepos" action="#{teamManagedBean.removeWizardRepo}" update="addTeamPanel">
+              <h:graphicImage library="img/platform/icons" name="cross.png" />
+              <f:setPropertyActionListener target="#{teamManagedBean.repoToRemove}" value="#{repo}" />
+            </p:commandLink>
+          </ui:repeat>
+          <h:outputLabel value=" ... (#{teamManagedBean.reposToAddCount} total)" rendered="#{teamManagedBean.moreThanVisibleRepos}"
+            style="font-size: 16px; padding: 5px;" />
+        </h:panelGroup>
+        <h:outputLabel for="addTeamUsers" value="#{msg.addTeamUsersLabel}" />
+        <h:panelGroup>
+          <p:autoComplete forceSelection="true" id="addTeamUsers" value="#{teamManagedBean.wizardUserName}"
+            completeMethod="#{teamManagedBean.autoCompleteUserName}" styleClass="autoCompleteInputText"
+            style="border: 1px solid #006DFD; background: white; width: 60%;" />
+          <p:spacer width="10" />
+          <p:commandButton action="#{teamManagedBean.addWizardUser}" styleClass="roundedButtonExtraSmall"
+            style="vertical-align: top; margin-top: 1px;" value="#{msg.addTeamaddRepoButtonText}" image="greenCross" update="addTeamPanel" />
+          <br />
+          <ui:repeat var="user" value="#{teamManagedBean.lastVisibleUsersToAdd}">
+            <h:outputLabel value="#{user}" style="font-size: 16px; padding: 5px;" />
+            <p:commandLink id="lastVisibleUsers" action="#{teamManagedBean.removeWizardUser}" update="addTeamPanel">
+              <h:graphicImage library="img/platform/icons" name="cross.png" />
+              <f:setPropertyActionListener target="#{teamManagedBean.userToRemove}" value="#{user}" />
+            </p:commandLink>
+          </ui:repeat>
+          <h:outputLabel value=" ... (#{teamManagedBean.usersToAddCount} total)" rendered="#{teamManagedBean.moreThanVisibleUsers}"
+            style="font-size: 16px; padding: 5px;" />
+        </h:panelGroup>
+      </h:panelGrid>
+    </p:panel>
+    <h:panelGroup styleClass="bottomLeft">
+      <h:outputLink styleClass="cancelLink"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/teams/viewTeams.jsf"
+        title="#{msg.addTeamCancelLinkAltText}">
+        <span><u>#{msg.addUserCancelLinkText}</u> </span>
+      </h:outputLink>
+    </h:panelGroup>
+    <h:panelGroup styleClass="bottomRight">
+      <p:commandButton action="#{teamManagedBean.createTeam}" styleClass="roundedButtonSmall" value="#{msg.addUserCreateButtonText}"
+        image="greenCrossSmall" ajax="false" />
+    </h:panelGroup>
+  </p:panel>
+</ui:composition>
+</html>

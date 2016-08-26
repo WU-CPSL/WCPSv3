@@ -1,0 +1,48 @@
+# $Id: Portfile 89846 2012-02-13 05:55:47Z mww@macports.org $
+
+PortSystem          1.0
+
+name                ocaml-ocamlmakefile
+version             6.36.0
+categories          devel ml
+maintainers         mww openmaintainer
+license             LGPL-2.1
+platforms           darwin
+supported_archs     noarch
+description         Automated compilation of complex OCaml-projects
+long_description    ${description}
+
+homepage            http://ocaml.info/home/ocaml_sources.html
+master_sites        http://hg.ocaml.info/release/ocaml-make/archive/
+
+distname            release-${version}
+use_bzip2           yes
+
+checksums           md5     cd48b506f50953b6a34e0a0c46091dd9 \
+                    sha1    0345788dae06b390bef5eefba6e1508579fbb3fb \
+                    rmd160  98f3a5ee01ce6ee82f7eae88cc76d9d67e2ea70a
+
+depends_lib         port:ocaml \
+                    port:ocaml-findlib
+
+worksrcdir          ocaml-make-${distname}
+
+use_configure       no
+
+build               {}
+
+destroot {
+    xinstall -m 755 -d ${destroot}${prefix}/share/${name}/ \
+        ${destroot}${prefix}/share/doc/${name} \
+        ${destroot}${prefix}/share/examples/${name}
+    xinstall -m 644 -W ${worksrcpath} OCamlMakefile \
+        ${destroot}${prefix}/share/${name}
+    foreach d {calc camlp4 gtk idl threads} {
+        file copy ${worksrcpath}/${d} ${destroot}${prefix}/share/examples/${name}
+    }
+    xinstall -m 644 -W ${worksrcpath} README.txt LICENSE Changelog \
+        ${destroot}${prefix}/share/doc/${name}
+}
+
+livecheck.type      regex
+livecheck.regex     "ocaml-make/archive/release-(\[0-9\.]+).tar.bz2"

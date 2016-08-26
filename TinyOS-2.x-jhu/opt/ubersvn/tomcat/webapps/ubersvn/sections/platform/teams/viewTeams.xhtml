@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:p="http://primefaces.prime.com.tr/ui" xmlns:h="http://java.sun.com/jsf/html">
+<ui:composition>
+  <p:focus for="addTeamButton"/>
+  <h:panelGrid styleClass="left-right-table" columns="2" columnClasses="left-aligned-stuff, right-aligned-stuff">
+    <p:button id="addTeamButton" styleClass="roundedButtonExtraSmall" value="#{msg.addButtonText}" outcome="addTeam.jsf" image="greenCross"
+      rendered="#{teamManagedBean.teamAdmin}" />
+    <p:spacer width="10" rendered="#{!teamManagedBean.teamAdmin}" />
+    <p:inputText id="globalFilter" value="#{teamManagedBean.filterValue}" immediate="true" onkeyup="updateTableData(), teamsTable.filter()"
+      style="background: #D9E5F1; width:150px">
+      <p:watermark for="globalFilter" value="FILTER" style="font-weight: bold;" />
+    </p:inputText>
+  </h:panelGrid>
+  <ol id="innerTab">
+    <li id="teamsInnerTab" class="current"><h:outputLink
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/teams/viewTeams.jsf"
+        title="#{msg.headerTeamsTabAltText}">
+        <span>#{msg.teamsTabText}</span>
+      </h:outputLink></li>
+  </ol>
+  <p:panel styleClass="base-tab-panel">
+    <p:panel styleClass="base-tab-inner-panel">
+      <p:dataTable id="teamTableId" widgetVar="teamsTable" var="team" value="#{teamManagedBean.lazyTeamsModel}" lazy="true"
+        paginator="#{teamManagedBean.showPaginator}" paginatorPosition="bottom" rows="#{teamManagedBean.tablePageSize}"
+        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+        selection="#{teamManagedBean.selectedTeamToDelete}" emptyMessage="#{msg.emptyTeamsTableMessage}">
+        <p:column selectionMode="single" rendered="#{teamManagedBean.teamAdmin}" styleClass="multiselecttablestyle" />
+        <p:column style="width: 400px;" sortBy="#{team.name}">
+          <f:facet name="header">
+            <h:outputText value="Name" />
+          </f:facet>
+          <h:commandLink action="#{teamManagedBean.viewTeamProfile}" title="#{msg.teamProfileLinkTitle}">
+            <f:setPropertyActionListener target="#{teamManagedBean.selectedTeam}" value="#{team}" />
+            <h:outputText value="#{team.name}" />
+          </h:commandLink>
+        </p:column>
+        <p:column style="width: 400px;" sortBy="#{team.description}">
+          <f:facet name="header">
+            <h:outputText value="Description" />
+          </f:facet>
+          <h:commandLink action="#{teamManagedBean.viewTeamProfile}" title="#{msg.teamProfileLinkTitle}">
+            <f:setPropertyActionListener target="#{teamManagedBean.selectedTeam}" value="#{team}" />
+            <h:outputText value="#{team.description}" />
+          </h:commandLink>
+        </p:column>
+        <p:column style="width: 90px;" sortBy="#{team.userCount}">
+          <f:facet name="header">
+            <h:outputText value="Users" />
+          </f:facet>
+          <h:commandLink action="#{teamManagedBean.viewTeamProfile}" title="#{msg.teamProfileLinkTitle}">
+            <f:setPropertyActionListener target="#{teamManagedBean.selectedTeam}" value="#{team}" />
+            <h:outputText value="#{team.userCount}" />
+          </h:commandLink>
+        </p:column>
+        <p:column style="width: 110px;" sortBy="#{team.repoCount}">
+          <f:facet name="header">
+            <h:outputText value="Repositories" />
+          </f:facet>
+          <h:commandLink action="#{teamManagedBean.viewTeamProfile}" title="#{msg.teamProfileLinkTitle}">
+            <f:setPropertyActionListener target="#{teamManagedBean.selectedTeam}" value="#{team}" />
+            <h:outputText value="#{team.repoCount}" />
+          </h:commandLink>
+        </p:column>
+        <p:column style="width: 90px; text-align: right;" rendered="#{teamManagedBean.teamAdmin}">
+          <f:facet name="header">
+            <h:outputText value="" />
+          </f:facet>
+          <h:commandLink action="#{teamManagedBean.viewTeamProfile}" title="#{msg.teamProfileLinkTitle}"
+            rendered="#{teamManagedBean.teamAdmin}">
+            <f:setPropertyActionListener target="#{teamManagedBean.selectedTeam}" value="#{team}" />
+            <h:graphicImage library="img/platform/icons" name="cog.png" />
+          </h:commandLink>
+          <p:spacer width="5" />
+        </p:column>
+      </p:dataTable>
+      <p:remoteCommand name="updateTableData" actionListener="#{teamManagedBean.updateFilter}" />
+      <p:commandButton styleClass="roundedButtonLarge" rendered="#{teamManagedBean.teamAdmin}" value="#{msg.confirmUserDeleteButton}"
+        onclick="teamconfirmation.show()" />
+      <p:panel styleClass="base-tab-inner-panel-key">
+        <h:graphicImage library="img/platform/icons" name="cog.png" />
+        <h:outputText value=" = #{msg.configureKeyText} " />
+      </p:panel>
+    </p:panel>
+    <p:confirmDialog message="#{msg.confirmTeamDeleteMessage}" header="#{msg.confirmTeamDeleteHeader}" severity="alert"
+      widgetVar="teamconfirmation">
+      <p:commandButton value="#{msg.deleteButton}" update="teamTableId" oncomplete="teamconfirmation.hide()"
+        action="#{teamManagedBean.deleteTeams}" />
+      <p:commandButton value="#{msg.cancelButton}" onclick="teamconfirmation.hide()" type="button" />
+    </p:confirmDialog>
+  </p:panel>
+</ui:composition>
+</html>

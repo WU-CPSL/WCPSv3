@@ -1,0 +1,31 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89388 2012-01-27 21:19:08Z snc@macports.org $
+
+PortSystem          1.0
+PortGroup           kde4   1.1
+
+name                step
+version             4.8.0
+categories          kde kde4
+maintainers         snc sharky michaelld
+license             GPL-2+ GFDL-1.2
+description         Interactive Physics Simulator
+long_description    KDE ${description}
+homepage            http://www.kde.org
+
+platforms           darwin
+depends_lib-append  port:eigen port:gsl port:libkdeedu \
+                    port:libqalculate
+
+master_sites        kde:stable/${version}/src/
+use_bzip2           yes
+
+checksums           rmd160  e68ca41dcc5a71ee1b58a450f0620ac4b0d79d20 \
+                    sha256  50671871e099de1591e1a2f75bcae1e53c1ed0877c6b7d98fa0baa72980325aa
+
+if {![variant_isset doc]} {
+    patchfiles-append   patch-CMakeLists.txt.diff
+}
+
+livecheck.url       http://kde.mirrors.hoobly.com/stable/latest/src/
+livecheck.regex     ${name}-(\\d+(\\.\\d+)+)

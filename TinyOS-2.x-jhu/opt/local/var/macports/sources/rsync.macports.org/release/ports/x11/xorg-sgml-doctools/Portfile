@@ -1,0 +1,29 @@
+# $Id: Portfile 84288 2011-09-21 20:49:22Z jeremyhu@macports.org $
+
+PortSystem 1.0
+
+name		xorg-sgml-doctools
+version		1.10
+categories	x11 textproc
+maintainers	jeremyhu openmaintainer
+description	X.org xorg-sgml-doctools
+homepage	http://www.x.org
+platforms	darwin macosx
+long_description SGML Magic for X11 documentation
+supported_archs noarch
+master_sites	 xorg:individual/doc/
+
+checksums           sha1    db6332b07de8d8e224f0766a567abdc4e3804d32 \
+                    rmd160  88c4a5e02664e58b34b76e6244e863e488b0eeaa \
+                    sha256  107e6e1d50443be9cd0c9f8b0bffc49f2297ee10d517af3a564dbbb5ae968e33
+
+use_bzip2	yes
+use_parallel_build      yes
+
+depends_build   port:pkgconfig
+
+build.args V=1
+
+livecheck.type  regex
+livecheck.url   http://xorg.freedesktop.org/archive/individual/doc/?C=M&O=D
+livecheck.regex libX11-(\\d+(?:\\.\\d+)*)

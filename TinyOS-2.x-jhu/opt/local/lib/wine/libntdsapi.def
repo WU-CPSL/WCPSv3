@@ -1,0 +1,7 @@
+; File generated automatically from ./ntdsapi.spec; do not edit!
+
+LIBRARY ntdsapi.dll
+
+EXPORTS
+  DsMakeSpnA@28 @55
+  DsMakeSpnW@28 @56

@@ -1,0 +1,214 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:p="http://primefaces.prime.com.tr/ui" xmlns:h="http://java.sun.com/jsf/html">
+<ui:composition>
+  <ol id="sub-toc">
+    <li><h:outputLink title="#{msg.adminStatusTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationStatus.jsf">
+        <span>#{msg.adminStatusTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminApacheServerSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationApacheServerSettings.jsf">
+        <span>#{msg.adminSubversionServerSettingsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminUberServerSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUberServerSettings.jsf">
+        <span>#{msg.adminUberServerSettingsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminUberPreferenceSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUberPreferenceSettings.jsf">
+        <span>#{msg.adminUberPreferenceSettingsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminEmailServerSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationEmailServerSettings.jsf">
+        <span>#{msg.adminEmailServerSettingsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminLogsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationLogs.jsf">
+        <span>#{msg.adminLogsTabText}</span>
+      </h:outputLink></li>
+    <li class="current"><h:outputLink title="#{msg.adminUpdatesTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUpdates.jsf">
+        <span>#{msg.adminUpdatesTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminLDAPTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUberLDAPSettings.jsf">
+        <span>#{msg.adminLDAPTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink title="#{msg.backup}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationBackup.jsf">
+        <span>#{msg.backup}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminExtensionsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationViewExtensions.jsf">
+        <span>#{msg.adminExtensionsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminSubversionReleaseLinkText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationSubversionRelease.jsf">
+        <span>#{msg.adminSubversionReleaseLinkText}</span>
+      </h:outputLink></li>
+  </ol>
+  <p:panel id="adminStatusPanel" styleClass="tabbed-panel">
+    <p:focus for="checkForUpdateButton"/>
+    <p:commandButton id="checkForUpdateButton" styleClass="roundedButtonLarge" value="#{msg.checkForUpdatesButtonText}"
+      action="#{componentUpdateManagedBean.checkForUpdates}" ajax="false" onclick="updateDialog.show()" oncomplete="updateDialog.hide()" />
+    <ol id="innerTab">
+      <li id="componentsInnerTab"><h:outputLink
+          value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUpdates.jsf"
+          title="#{msg.componentsTabAltText}">
+          <span>#{msg.componentsTabText}</span>
+        </h:outputLink></li>
+      <li id="componentHistoryInnerTab"><h:outputLink
+          value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUpdateHistory.jsf"
+          title="#{msg.componentHistoryTabAltText}">
+          <span>#{msg.componentHistoryTabText}</span>
+        </h:outputLink></li>
+    </ol>
+    <p:panel styleClass="base-tab-panel">
+      <p:panel styleClass="base-tab-inner-panel" id="currentComponentPanel">
+        <p:dataTable id="currentComponentVersionsTable" widgetVar="componentVersionsTable" var="pkg"
+          value="#{componentUpdateManagedBean.packages}" paginator="true" rows="15" paginatorPosition="bottom" paginatorAlwaysVisible="false"
+          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+          <p:column sortBy="#{pkg.name}">
+            <f:facet name="header">
+              <h:outputText value="#{msg.componentTableNameColumnHeader}" />
+            </f:facet>
+            <h:outputText value="#{pkg.name}" />
+          </p:column>
+          <p:column sortBy="#{pkg.description}">
+            <f:facet name="header">
+              <h:outputText value="#{msg.componentTableDescriptionColumnHeader}" />
+            </f:facet>
+            <h:outputText value="#{pkg.description}" />
+          </p:column>
+          <p:column sortBy="#{pkg.category}">
+            <f:facet name="header">
+              <h:outputText value="#{msg.componentTableCategoryColumnHeader}" />
+            </f:facet>
+            <h:outputText value="#{pkg.category}" />
+          </p:column>
+          <p:column sortBy="#{pkg.version}">
+            <f:facet name="header">
+              <h:outputText value="#{msg.componentTableCurrentVersionColumnHeader}" />
+            </f:facet>
+            <h:outputText value="#{pkg.version}-#{pkg.release}" rendered="#{pkg.version != ''}" />
+            <h:outputText value="" rendered="#{pkg.version == ''}" />
+          </p:column>
+          <p:column sortBy="#{pkg.availableVersion}">
+            <f:facet name="header">
+              <h:outputText value="#{msg.componentTableAvailableVersionColumnHeader}" />
+            </f:facet>
+            <h:outputText value="#{pkg.availableVersion}-#{pkg.availableRelease}" rendered="#{pkg.availableVersion != ''}" />
+            <h:outputText value="" rendered="#{pkg.availableVersion == ''}" />
+          </p:column>
+          <p:column sortBy="#{pkg.lastUpdate}">
+            <f:facet name="header">
+              <h:outputText value="#{msg.componentTableLastModifiedColumnHeader}" />
+            </f:facet>
+            <h:outputText value="#{pkg.lastUpdate}" />
+          </p:column>
+          <p:column sortBy="#{pkg.lastUpdateStatus}">
+            <f:facet name="header">
+              <h:outputText value="#{msg.componentTableLastUpdateStatusColumnHeader}" />
+            </f:facet>
+            <h:outputText value="#{pkg.lastUpdateStatus}" />
+          </p:column>
+          <p:column sortBy="#{pkg.componentName}">
+            <f:facet name="header">
+              <h:outputText value="#{msg.componentTableStatusColumnHeader}" />
+            </f:facet>
+            <h:outputText value="#{msg.componentTableStatusDownloadAvailableLabel}"
+              rendered="#{pkg.updateAvailable and !pkg.updateDownloaded}" />
+            <h:outputText value="#{msg.componentTableStatusUpToDateLabel}"
+              rendered="#{!pkg.updateAvailable and !pkg.updateDownloaded and !pkg.installInProgress}" />
+            <h:outputText value="#{msg.componentTableStatusReadyForUpdateLabel}"
+              rendered="#{pkg.updateDownloaded and !pkg.installInProgress}" />
+            <h:outputText value="#{msg.componentTableStatusInstallInProgressLabel}" rendered="#{pkg.installInProgress}" />
+          </p:column>
+          <p:column style="width: 20px; text-align: right;">
+            <f:facet name="header">
+              <h:outputText value="" />
+            </f:facet>
+            <h:commandLink action="#{componentUpdateManagedBean.downloadUpdate}" title="#{msg.componentTableDownloadButtonText}"
+              rendered="#{pkg.updateAvailable and !pkg.updateDownloaded}" onclick="statusDialog.show()" oncomplete="statusDialog.hide()">
+              <f:setPropertyActionListener target="#{componentUpdateManagedBean.selectedPackage}" value="#{pkg}" />
+              <h:graphicImage library="img/platform/icons" name="cog.png" />
+            </h:commandLink>
+            <p:commandLink title="#{msg.componentTableInstallButtonText}" rendered="#{pkg.updateDownloaded and !pkg.installInProgress}"
+              onclick="updateConfirmation.show()">
+              <f:setPropertyActionListener target="#{componentUpdateManagedBean.selectedPackage}" value="#{pkg}" />
+              <h:graphicImage library="img/platform/icons" name="cog.png" />
+            </p:commandLink>
+          </p:column>
+          <f:facet name="footer">
+            <p:outputPanel>
+              <p:commandButton id="submitall" styleClass="roundedButtonLarge" value="#{msg.componentTableDownloadAllButtonText}"
+                actionListener="#{componentUpdateManagedBean.downloadAllUpdates}" onclick="statusDialog.show()"
+                oncomplete="statusDialog.hide()"
+                rendered="#{componentUpdateManagedBean.downloadAll and !componentUpdateManagedBean.installInProgress}" />
+              <p:commandButton id="updateall" styleClass="roundedButtonLarge" onclick="updateConfirmation.show()"
+                value="#{msg.componentTableInstallAllButtonText}" 
+                rendered="#{componentUpdateManagedBean.updateAvailable and !componentUpdateManagedBean.installInProgress}">
+                <f:setPropertyActionListener target="#{componentUpdateManagedBean.selectedPackage}" value=""/>
+              </p:commandButton>
+              <p:commandButton id="installinprogress" styleClass="roundedButtonLarge" value="#{msg.componentTableInstallInProgressButtonText}"
+                disabled="true" rendered="#{componentUpdateManagedBean.installInProgress}" />
+              <p:commandButton id="uptodate" styleClass="roundedButtonMedium" value="#{msg.componentTableUpToDateButtonText}" disabled="true"
+                rendered="#{!componentUpdateManagedBean.downloadAll and !componentUpdateManagedBean.installInProgress and !componentUpdateManagedBean.updateAvailable}"/>
+            </p:outputPanel>
+          </f:facet>
+        </p:dataTable>
+      </p:panel>
+    </p:panel>
+  </p:panel>
+  <p:dialog modal="true" onHide="reloadPage()" widgetVar="statusDialog" header="Downloading Updates" draggable="false" closable="false"
+    resizable="false" width="200" height="150">
+    <h:graphicImage id="progressImage" style="border:0; margin-left: auto; margin-right: auto; display: block;" library="img/platform"
+      name="progress.gif" />
+  </p:dialog>
+  <p:dialog modal="true" onHide="reloadPage()" widgetVar="updateDialog" header="Checking Updates" draggable="false" closable="false"
+    resizable="false" width="200" height="150">
+    <h:graphicImage id="updateImage" style="border:0; margin-left: auto; margin-right: auto; display: block;" library="img/platform"
+      name="progress.gif" />
+  </p:dialog>
+
+  <p:dialog modal="true" widgetVar="updatingDialog" header="#{msg.UpdatingDialogHeader}" draggable="false" closable="false"
+    resizable="false" width="200" height="150">
+    <h:graphicImage id="updatingImage" style="border:0; margin-left: auto; margin-right: auto; display: block;" library="img/platform"
+      name="progress.gif" />
+  </p:dialog>
+  <p:dialog header="#{msg.UpdateConfirmationHeader}" widgetVar="updateConfirmation" height="220" width="450" draggable="false"
+    resizable="false">
+    <h:outputText value="#{msg.UpdateConfirmationTextLine1}" />
+    <br />
+    <br />
+    <h:outputText value="#{msg.UpdateConfirmationTextLine2}" />
+    <br />
+    <br />
+    <h:outputText value="#{msg.UpdateConfirmationTextLine3}" />
+    <br />
+    <br />
+    <p:commandButton styleClass="roundedButtonSmall" value="Continue" action="#{componentUpdateManagedBean.installUpdates}"
+      onclick="showUpdatingDialog()" ajax="true" />
+    <p:spacer width="20" />
+    <p:commandButton styleClass="roundedButtonMedium" value="Not Yet" onclick="updateConfirmation.hide()" type="button" />
+  </p:dialog>
+
+  <script type="text/javascript">
+			function showUpdatingDialog() {
+				updatingDialog.show();
+				setTimeout("location.reload(true);", 30000);
+
+			}
+			function reloadPage() {
+				setTimeout("location.reload(true);", 1);
+			}
+			jQuery(document).ready(function() {
+				var tabElement = '#componentsInnerTab';
+				jQuery(tabElement).addClass('current');
+			});
+		</script>
+</ui:composition>
+</html>

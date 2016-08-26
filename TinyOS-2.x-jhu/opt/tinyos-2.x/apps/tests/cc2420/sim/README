@@ -1,0 +1,4 @@
+ActiveMessageC.nc and MainC.nc are present in order to overwrite the
+ones from tos/lib/tossim. ActiveMessageC.nc is a perfect copy of the
+ActiveMessageC.nc from tos/platforms/micaz. MainC.nc is a modified
+version of MainC.nc from tos/lib/tossim.

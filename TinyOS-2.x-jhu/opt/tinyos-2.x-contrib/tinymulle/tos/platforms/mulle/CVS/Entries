@@ -1,0 +1,29 @@
+/.platform/1.5/Tue May 12 12:51:34 2009/-ko/
+/ActiveMessageC.nc/1.2/Mon Apr 20 12:30:17 2009/-ko/
+/AlarmCounterMilli32C.nc/1.1/Tue Apr  7 11:10:49 2009/-ko/
+/AlarmMicro16C.nc/1.1/Fri Apr 17 14:22:40 2009/-ko/
+/AlarmMicro32C.nc/1.1/Fri Apr 17 14:22:40 2009/-ko/
+/AlarmRF23016C.nc/1.1/Fri Apr 17 14:22:40 2009/-ko/
+/BusyWaitMicroC.nc/1.1/Tue Apr  7 11:10:49 2009/-ko/
+/CounterMicro16C.nc/1.1/Tue Apr  7 11:10:49 2009/-ko/
+/CounterMicro32C.nc/1.1/Fri Apr 17 14:22:40 2009/-ko/
+/CounterRF23016C.nc/1.1/Fri Apr 17 14:22:40 2009/-ko/
+/DemoSensorC.nc/1.1/Tue Apr  7 11:10:49 2009/-ko/
+/HilTimerMilliC.nc/1.1/Tue Apr  7 11:10:49 2009/-ko/
+/LedsP.nc.back/1.1/Tue Apr  7 11:10:49 2009/-ko/
+/LocalTimeMicroC.nc/1.2/Mon Apr 20 12:30:17 2009/-ko/
+/PlatformC.nc/1.3/Sun May  3 15:43:01 2009/-ko/
+/PlatformLedsC.nc/1.1/Tue Apr  7 11:10:49 2009/-ko/
+/PlatformP.nc/1.2/Sun May  3 15:43:01 2009/-ko/
+/PlatformSerialC.nc/1.1/Tue Apr  7 11:10:49 2009/-ko/
+/RV8564AlarmCounterMilli32C.nc/1.1/Tue Apr  7 11:10:49 2009/-ko/
+/RV8564AlarmCounterMilli32P.nc/1.1/Tue Apr  7 11:10:49 2009/-ko/
+/TimerConfig.h/1.2/Fri Apr 17 14:08:14 2009/-ko/
+/hardware.h/1.2/Fri Apr 17 14:08:14 2009/-ko/
+/platform.h/1.2/Fri Apr 17 14:08:14 2009/-ko/
+/platform_message.h/1.4/Tue May 12 12:51:35 2009/-ko/
+D/chips////
+D/debug////
+D/sensors////
+D/softwarei2c////
+D/softwarespi////

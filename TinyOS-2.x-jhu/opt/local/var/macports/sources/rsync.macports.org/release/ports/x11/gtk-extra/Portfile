@@ -1,0 +1,39 @@
+# $Id: Portfile 82116 2011-08-08 13:37:49Z jmr@macports.org $
+
+PortSystem		1.0
+name			gtk-extra
+version			0.99.17
+categories		x11 devel
+platforms		darwin
+maintainers		rogers.com:matthew.c
+description		Extra GTK+1 Widgets
+
+long_description	GtkExtra is a useful set of widgets for creating \
+			GUIs for the Xwindows system using GTK+. You can \
+			use it complementary to GTK+ and it is written in \
+			C. It is also Free Software and released under the \
+			LGPL license.
+			
+homepage		http://gtkextra.sourceforge.net
+master_sites		${homepage}/src/
+distname		gtk+extra-${version}
+
+depends_build		port:automake
+depends_lib		lib:libgtk.1:gtk1
+
+checksums		gtk+extra-0.99.17.tar.gz md5 390e622c12a5c7f7845ee144ae13ab93
+
+pre-configure {
+	# Copy new versions of config.guess and config.sub for host detection
+	set src_dir ${workpath}/${name}-${version}
+	system "cp ${prefix}/share/automake-1.11/config.guess ${src_dir}"
+	system "cp ${prefix}/share/automake-1.11/config.sub ${src_dir}"
+
+}
+
+pre-build {
+	# Create an empty malloc.h file to provide missing header
+	# This header would define stuff that's in stdlib.h
+	set src_dir ${workpath}/${name}-${version}
+	system "touch ${src_dir}/malloc.h"
+}

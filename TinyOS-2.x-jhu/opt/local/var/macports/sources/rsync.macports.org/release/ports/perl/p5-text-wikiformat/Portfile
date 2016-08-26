@@ -1,0 +1,18 @@
+# $Id: Portfile 85494 2011-10-14 02:34:48Z dports@macports.org $
+
+PortSystem 1.0
+PortGroup perl5 1.0
+
+perl5.setup		Text-WikiFormat 0.78
+revision        2
+license			{Artistic-1 GPL}
+maintainers		nomaintainer
+description		Module for translating Wiki formatted text into other formats
+long_description	${description}
+checksums		md5 646c0ea411247a0293eb69a216451beb
+platforms		darwin
+if {${perl5.major} != ""} {
+depends_lib-append      port:p${perl5.major}-test-simple
+
+supported_archs noarch
+}

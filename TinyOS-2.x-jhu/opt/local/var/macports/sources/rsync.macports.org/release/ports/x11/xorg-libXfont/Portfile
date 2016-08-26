@@ -1,0 +1,74 @@
+# $Id: Portfile 84390 2011-09-25 08:03:06Z jmr@macports.org $
+
+PortSystem 1.0
+
+name		xorg-libXfont
+version		1.4.4
+categories	x11 devel
+license		X11 BSD
+maintainers	jeremyhu openmaintainer
+description	X.org libXfont
+homepage	http://www.x.org
+platforms	darwin macosx
+long_description X font handling library for server and utilities
+master_sites	 xorg:individual/lib/
+
+distname	libXfont-${version}
+checksums           md5     f9942bc818d39094d7295b156a729393 \
+                    sha1    189dd7a3756cb80bcf41b779bf05ec3c366e3041 \
+                    rmd160  0241b2505ed65b0bd66d8bd3c80330a4db6eea6d
+use_bzip2	yes
+
+use_parallel_build  yes
+
+depends_build \
+	port:pkgconfig \
+	port:xorg-xtrans
+
+depends_lib \
+	port:freetype \
+	port:xorg-libfontenc \
+	port:bzip2 \
+	port:zlib \
+	port:xorg-xproto \
+	port:xorg-fontsproto
+
+# Newer libtool add -Wl,-single_module if this isn't set... breaking us
+configure.env LT_MULTI_MODULE=1
+
+configure.args \
+	--with-bzip2 \
+	--without-xmlto \
+	--without-fop \
+	--disable-devel-docs
+
+build.args V=1
+
+# Depending on ghostscript for the PDF documentation creates a dependency
+# loop, so you may want to install first without the docs variant
+variant docs description "Install extra documentation" {
+	depends_build-append \
+		port:fop \
+		port:xmlto
+
+	depends_skip_archcheck-append \
+		xmlto
+
+	configure.args-delete \
+		--without-xmlto \
+		--without-fop \
+		--disable-devel-docs
+
+	configure.args-append \
+		--with-xmlto \
+		--with-fop \
+		--enable-devel-docs
+
+	configure.env-append \
+		XMLTO="${prefix}/bin/xmlto" \
+		FOP="${prefix}/bin/fop"
+}
+
+livecheck.type  regex
+livecheck.url   http://xorg.freedesktop.org/archive/individual/lib/?C=M&O=D
+livecheck.regex libXfont-(\\d+(?:\\.\\d+)*)

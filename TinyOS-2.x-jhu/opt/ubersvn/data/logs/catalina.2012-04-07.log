@@ -1,0 +1,32 @@
+Apr 7, 2012 9:45:40 AM org.apache.catalina.core.AprLifecycleListener init
+INFO: Loaded APR based Apache Tomcat Native library 1.1.20.
+Apr 7, 2012 9:45:40 AM org.apache.catalina.core.AprLifecycleListener init
+INFO: APR capabilities: IPv6 [true], sendfile [true], accept filters [false], random [true].
+Apr 7, 2012 9:45:40 AM org.apache.catalina.startup.SetAllPropertiesRule begin
+WARNING: [SetAllPropertiesRule]{Server/Service/Connector} Setting property 'clientAuth' to 'false' did not find a matching property.
+Apr 7, 2012 9:45:40 AM org.apache.coyote.http11.Http11AprProtocol init
+INFO: Initializing Coyote HTTP/1.1 on http-9890
+Apr 7, 2012 9:45:40 AM org.apache.coyote.http11.Http11AprProtocol init
+INFO: Initializing Coyote HTTP/1.1 on http-9900
+Apr 7, 2012 9:45:40 AM org.apache.catalina.startup.Catalina load
+INFO: Initialization processed in 695 ms
+Apr 7, 2012 9:45:40 AM org.apache.catalina.core.StandardService start
+INFO: Starting service Catalina
+Apr 7, 2012 9:45:40 AM org.apache.catalina.core.StandardEngine start
+INFO: Starting Servlet Engine: Apache Tomcat/6.0.33
+Apr 7, 2012 9:45:40 AM org.apache.catalina.startup.HostConfig deployWAR
+INFO: Deploying web application archive RepositoryBrowser.war
+Apr 7, 2012 9:45:46 AM org.apache.catalina.startup.HostConfig deployWAR
+INFO: Deploying web application archive ubersvn.war
+Apr 7, 2012 9:45:47 AM org.apache.catalina.core.StandardContext addApplicationListener
+INFO: The listener "com.sun.faces.config.ConfigureListener" is already configured for this context. The duplicate definition has been ignored.
+Apr 7, 2012 9:45:51 AM com.sun.faces.config.ConfigureListener contextInitialized
+INFO: Initializing Mojarra 2.0.3 (FCS b03) for context '/ubersvn'
+Apr 7, 2012 9:45:54 AM org.apache.catalina.startup.HostConfig deployDirectory
+INFO: Deploying web application directory ROOT
+Apr 7, 2012 9:45:54 AM org.apache.coyote.http11.Http11AprProtocol start
+INFO: Starting Coyote HTTP/1.1 on http-9890
+Apr 7, 2012 9:45:54 AM org.apache.coyote.http11.Http11AprProtocol start
+INFO: Starting Coyote HTTP/1.1 on http-9900
+Apr 7, 2012 9:45:54 AM org.apache.catalina.startup.Catalina start
+INFO: Server startup in 13506 ms

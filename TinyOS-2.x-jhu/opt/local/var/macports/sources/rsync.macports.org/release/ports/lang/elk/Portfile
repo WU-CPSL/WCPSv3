@@ -1,0 +1,29 @@
+# $Id: Portfile 75257 2011-01-19 06:23:12Z ryandesign@macports.org $
+
+PortSystem 1.0
+name		elk
+version		3.99.7
+revision	0
+categories	lang
+maintainers	waqar openmaintainer
+description	Scheme Extension Language Kit
+long_description	\
+	Elk (the Extension Language Kit) is an implementation of the 	\
+	Scheme programming language. It can be used as a standalone 	\
+	Scheme interpreter, or as an embeddable, reusable extension 	\
+	language subsystem for applications written in C or C++ through \
+	the libelk library.
+platforms	darwin
+homepage       	http://sam.zoy.org/elk
+master_sites   	http://sam.zoy.org/elk
+
+use_bzip2      	yes
+
+checksums	md5 6711247691266f36742bd3db9311dc4a			\
+		sha1 e42391fc4aa96ba300b3db736e96cfd68449095b
+
+configure.args  --infodir=${prefix}/share/info --mandir=${prefix}/share/man
+
+variant	x11	{
+		configure.args-append	--with-x
+}

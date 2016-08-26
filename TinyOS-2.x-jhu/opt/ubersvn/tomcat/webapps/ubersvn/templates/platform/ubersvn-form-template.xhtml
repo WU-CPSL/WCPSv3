@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:p="http://primefaces.prime.com.tr/ui" xmlns:h="http://java.sun.com/jsf/html">
+<f:view contentType="text/html">
+  <h:head id="headTag">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Cache-control" content="no-cache" />
+    <meta http-equiv="Cache-control" content="no-store" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="expires" content="-1" />
+    
+    <title>#{msg.pageTitle} - #{pageTitle}</title>
+    <link type="text/css" rel="stylesheet" href="#{request.contextPath}/themes/WANdisco/skin.css" />
+    <link type="text/css" rel="stylesheet" href="#{request.contextPath}/javax.faces.resource/base-default.css.jsf?ln=css" />
+    <link rel="icon" href="#{request.contextPath}/uberMk2.ico" type="image/vnd.microsoft.icon" />
+    <link rel="shortcut icon" href="#{request.contextPath}/uberMk2.ico" type="image/vnd.microsoft.icon" />
+    <h:outputScript library="primefaces" name="jquery/jquery.js" />
+    <script type="text/javascript" src="#{request.contextPath}/javax.faces.resource/ZeroClipboard.js.jsf?ln=js"></script>
+    <script type="text/javascript" src="#{request.contextPath}/javax.faces.resource/utils.js.jsf?ln=js"></script>
+  </h:head>
+
+  <h:body style="background:  #949494 repeat-x url(#{resource['img/platform:uberbg2.jpg']});">
+    <div id="page">
+      <h:panelGroup>
+        <div class="base-shadow">
+          <h:form id="headerForm" acceptcharset="UTF-8">
+            <ui:include src="/sections/platform/shared/header.xhtml" />
+          </h:form>
+          <h:form acceptcharset="UTF-8" enctype="multipart/form-data" id="mainPortalForm" prependId="false">
+            <p:idleMonitor timeout="#{configurationManagedBean.idleTimeout}" update="growl, headerForm, mainPortalForm"
+              idleListener="#{login.idleListener}" rendered="#{login.loggedIn}" />
+            <h:inputHidden id="serverOS" value="#{login.serverOS}" />
+            <h:inputHidden id="popupField" value="repo_PathValue" />
+            <p:growl id="growl" globalOnly="true" rendered="#{login.loggedIn}" />
+            <ui:insert name="pageContentView">Place Page Content here</ui:insert>
+          </h:form>
+        </div>
+        <h:panelGroup>
+          <ui:include src="/sections/platform/shared/footer.xhtml" />
+        </h:panelGroup>
+      </h:panelGroup>
+    </div>
+  </h:body>
+</f:view>
+</html>

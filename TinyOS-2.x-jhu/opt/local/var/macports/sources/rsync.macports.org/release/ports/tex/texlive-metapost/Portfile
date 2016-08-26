@@ -1,0 +1,35 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 88821 2012-01-12 23:02:19Z dports@macports.org $
+
+PortSystem          1.0
+PortGroup           texlive 1.0
+
+name                texlive-metapost
+version             23089
+revision            0
+
+categories          tex
+maintainers         dports
+license             Copyleft Permissive
+description         TeX Live: MetaPost (and Metafont) drawing packages
+long_description    MetaPost (and Metafont) drawing packages
+
+checksums           texlive-metapost-23089-run.tar.xz \
+                    rmd160  275c8e9bf3b13265e142983466c8026b9406ea4c \
+                    sha256  040ce06a9a1523d3f6d31a422409a6fb008980e8cf15dc486f313124b09442c3 \
+                    texlive-metapost-23089-doc.tar.xz \
+                    rmd160  85c53e611179a128d3e01036b9315b67845cc28e \
+                    sha256  8ae2230667bba73b64dbfb20b19d5fce6c1e28c4903e5e636cbcfc76d9019761 \
+                    texlive-metapost-23089-src.tar.xz \
+                    rmd160  9f51f6a8e8c8aee5c0284876f446171425384567 \
+                    sha256  93633760a9bc9e13ff958b93c4157c220970ccf1b00f932b335f53aa236639e5
+
+depends_lib         port:texlive-basic
+
+texlive.maps      \
+    {Map troff-updmap.map}
+
+texlive.binaries    dvitomp mfplain mpost
+
+
+texlive.texmfport

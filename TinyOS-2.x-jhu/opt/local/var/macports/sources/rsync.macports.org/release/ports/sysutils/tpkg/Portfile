@@ -1,0 +1,39 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 87990 2011-12-15 11:09:35Z ryandesign@macports.org $
+
+PortSystem          1.0
+PortGroup           ruby 1.0
+
+name                tpkg
+version             2.3.0
+categories          sysutils
+maintainers         aput.net:jheiss openmaintainer 
+supported_archs     noarch
+license             MIT
+
+description         Tpkg is an application packaging and deployment tool.
+
+long_description    Tpkg is a cross-platform tool for packaging and \
+                    deploying applications. It is designed to work \
+                    alongside your operating system's packaging tool. \
+                    The deployment features in tpkg are designed to \
+                    scale to deployments across hundreds or thousands \
+                    of systems.
+
+homepage            http://tpkg.sourceforge.net/
+platforms           darwin
+
+master_sites        sourceforge:project/tpkg/tpkg/${version}
+
+checksums           rmd160  7bf0f106332794edd66d7577246d8b8085285fc2 \
+                    sha256  2558dfb0c64621dc7f852b1a863c977ef963a509da00b9cb0be3143809359903
+
+depends_build       port:rb-rake
+depends_run         port:facter
+
+worksrcdir          ${worksrcdir}/client
+use_configure       no
+build               {}
+destroot.cmd        ${prefix}/bin/rake
+destroot.target     install\[${destroot}\]
+destroot.destdir

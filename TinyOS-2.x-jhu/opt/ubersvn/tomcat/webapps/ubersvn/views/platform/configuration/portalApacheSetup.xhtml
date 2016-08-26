@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.prime.com.tr/ui"
+  xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:wd="http://www.wansdisco.com/jsf">
+<ui:composition template="/templates/platform/ubersvn-configuration-template.xhtml">
+
+  <ui:define name="pageContentView">
+    <f:event type="preRenderView" listener="setHostname()" />
+    <p:panel styleClass="configurationPanel">
+      <p:focus />
+      <div style="text-align: center; margin-bottom: 40px;">
+        <h:outputText style="font-size: 24px; color: #6D6D6D; text-align: center;" value="#{msg.welcomeMessage1}" />
+        <h:graphicImage library="img/platform/logos" name="mk2_logo_login.png" />
+        <h:outputText style="font-size: 24px; color: #6D6D6D; text-align: center;" value="#{msg.welcomeMessage2}" />
+      </div>
+      <h:panelGrid id="portalSetupPageOuterTable" columns="1" styleClass="configurationPageTable">
+        <h:panelGrid id="portalSetupPageInnerTable" cellspacing="10px;" columns="3"
+          columnClasses="configurationLabelColumn, configurationFieldColumn,configurationValidationColumn">
+
+          <p:spacer />
+          <h:outputText styleClass="configurationTitle" value="#{msg.apachePortalTitle}" />
+          <p:spacer />
+          <h:outputLabel for="hostName" value="#{msg.hostName}" />
+
+          <p:inputText value="#{webConfiguratorManagedBean.hostname}" styleClass="configurationWizardFormField" id="hostName"
+            onkeyup="updateUrls();" required="true" requiredMessage="#{msg.hostNameRequired}" size="55">
+            <f:validator validatorId="com.wandisco.ubersvn.hostnameValidator" />
+          </p:inputText>
+
+          <h:message for="hostName" />
+          <p:spacer />
+          <h:outputText value="#{msg.hostNameHelp}" styleClass="wizardComment" />
+          <p:spacer />
+
+          <p:spacer id="hostnameWarningFrontSpacer" style="display:none;" />
+          <h:panelGroup id="hostnameWarning" style="display:none;">
+            <h:outputLabel value="#{msg.warning}" style="color:red;" styleClass="wizardComment" />
+            <h:outputText value="&#160;" />
+            <h:outputLabel value="#{msg.hostnameWarning}" styleClass="wizardComment" />
+            <h:outputText value="&#160;" />
+            <h:outputLink value="http://www.ubersvn.com/support/base-url" target="blank">
+              <h:outputText value="#{msg.hostnameWarningLinkText}" styleClass="wizardComment" />
+            </h:outputLink>
+            <h:outputLabel value="#{msg.hostnameWarningForMoreInfo}" styleClass="wizardComment" />
+          </h:panelGroup>
+          <p:spacer id="hostnameWarningBackSpacer" style="display:none;" />
+
+          <h:outputLabel for="uberSVNPort" value="#{msg.uberSVNPort}" />
+          <p:inputText value="#{webConfiguratorManagedBean.uberSVNPort}" styleClass="configurationWizardFormField" id="uberSVNPort"
+            onkeyup="updateUrls();" required="true" requiredMessage="#{msg.uberSVNPortRequired}"
+            validator="#{webConfiguratorManagedBean.validateUberSVNPort}" size="55" />
+          <h:message for="uberSVNPort" />
+
+          <h:outputLabel for="apachePort" value="#{msg.apachePort}" />
+          <p:inputText value="#{webConfiguratorManagedBean.apachePort}" styleClass="configurationWizardFormField" onkeyup="updateUrls();"
+            id="apachePort" required="true" requiredMessage="#{msg.apachePortRequired}"
+            validator="#{webConfiguratorManagedBean.validateApachePort}" size="55" />
+          <h:message for="apachePort" />
+        </h:panelGrid>
+        <div style="width: 100%; text-align: center;">
+          <h:panelGrid columns="2" styleClass="urlGrid" cellspacing="5px" columnClasses="urlLabelColumn,urlOutputColumn">
+            <h:outputLabel for="uberSVNPortalUrl" value="#{msg.uberSVNPortalUrl}" />
+            <h:outputText id="uberSVNPortalUrl" disabled="true" />
+            <h:outputLabel for="repositoryAccessUrl" value="#{msg.repositoryAccessUrl}" />
+            <h:outputText id="repositoryAccessUrl" disabled="true" />
+          </h:panelGrid>
+        </div>
+      </h:panelGrid>
+    </p:panel>
+    <h:panelGroup>
+      <div>
+        <p:panel style="border: none; background: transparent; position: relative; bottom: 0; left: 0;">
+          <h:panelGrid columns="3" width="100%" columnClasses="footerLeft,footerMiddle,footerRight">
+            <p:commandButton action="#{webConfiguratorManagedBean.goToCreateAdminPage}" immediate="true" ajax="false"
+              styleClass="roundedButtonMedium" id="backToCreateAdminButton" value="#{msg.previousButton}" />
+            <h:panelGroup>
+              <h:graphicImage library="img/platform" name="step3.png" />
+            </h:panelGroup>
+
+            <p:commandButton action="#{webConfiguratorManagedBean.goToEmailPage}" ajax="false" id="moveToEmailButton"
+              styleClass="roundedButtonMedium" value="#{msg.nextButton}" />
+          </h:panelGrid>
+        </p:panel>
+      </div>
+    </h:panelGroup>
+    <script type="text/javascript">
+          jQuery(document).ready(function() {
+            if (document.getElementById("hostName").value == "") {
+              document.getElementById("hostName").value = document.location.hostname;
+            }
+
+            updateUrls();
+            jQuery("form").bind("keydown", function(event) {
+              // track enter key
+              event.target;
+              var keycode = (event.keyCode ? event.keyCode : (event.which ? event.which : event.charCode));
+              if (keycode == 13) { // keycode for enter key
+                // force the 'Enter Key' to implicitly click the Update button
+                if (event.target.id == "backToCreateAdminButton") {
+                  document.getElementById('backToCreateAdminButton').click();
+                } else {
+                  document.getElementById('moveToEmailButton').click();
+                }
+                return false;
+              } else {
+                return true;
+              }
+            }); // end of function
+          }); // end of document ready
+
+          function updateUrls() {
+            var hostname = document.getElementById("hostName").value;
+            var uberSVNPort = document.getElementById("uberSVNPort").value;
+            var apachePort = document.getElementById("apachePort").value;
+
+            if (hostname == "localhost" || hostname == "127.0.0.1") {
+              document.getElementById("hostnameWarning").style.display = "inline";
+              document.getElementById("hostnameWarningBackSpacer").style.display = "inline";
+              document.getElementById("hostnameWarningFrontSpacer").style.display = "inline";
+            } else {
+              document.getElementById("hostnameWarning").style.display = "none";
+              document.getElementById("hostnameWarningBackSpacer").style.display = "none";
+              document.getElementById("hostnameWarningFrontSpacer").style.display = "none";
+            }
+
+            jQuery('span#uberSVNPortalUrl').text("http://" + hostname + ":" + uberSVNPort + "/ubersvn");
+            jQuery('span#repositoryAccessUrl').text("http://" + hostname + ":" + apachePort + "/your-repository-names");
+
+          }
+        </script>
+  </ui:define>
+</ui:composition>
+</html>

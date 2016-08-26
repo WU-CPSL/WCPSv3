@@ -1,0 +1,89 @@
+# $Id: Portfile 87183 2011-11-13 12:06:36Z raimue@macports.org $
+
+PortSystem 1.0
+
+name            valgrind
+conflicts       valgrind-devel
+version         3.7.0
+categories      devel
+platforms       darwin
+supported_archs i386 x86_64
+license         GPL-2
+maintainers     raimue
+
+description     A powerful open-source memory debugger
+long_description \
+    Valgrind is a powerful open-source memory debugger. When valgrind is \
+    attached to a program, it intercepts calls to malloc/new/free/delete and \
+    all memory operations are checked for invalid read or write.
+homepage        http://valgrind.org
+
+master_sites    http://valgrind.org/downloads/
+checksums       md5     a855fda56edf05614f099dca316d1775 \
+                sha1    b412f49895bb8a78fc314047119760b5d36e5b5e \
+                rmd160  6ffbf04a8ff4eb2555d1a6bd87c0656828830761
+use_bzip2 yes
+
+# Avoid conflict of faq.html and FAQ.html, #30541
+extract.post_args-append --exclude=${distname}/docs/html/FAQ.html
+
+pre-configure {
+    if {"darwin" == ${os.platform} && (${os.major} < 9 || ${os.major} > 11)} {
+        ui_error "${name} ${version} is only compatible with Mac OS X 10.5, 10.6 and 10.7"
+        return -code error "incompatible Mac OS X version"
+    }
+}
+
+depends_build   bin:perl:perl5
+# Ignore trace reports about boost, Qt and OpenMP
+# as they are only used for tests
+
+# Valgrind requires clang >= 2.9,
+# Apple clang identifies itself as 2.1 in Xcode 4.2
+if {${configure.compiler} == "clang"} {
+    configure.compiler llvm-gcc-4.2
+}
+
+configure.args  --mandir=${prefix}/share/man \
+                --without-mpicc
+
+if {$build_arch == "i386"} {
+    configure.args-append --enable-only32bit
+} elseif {$build_arch == "x86_64"} {
+    configure.args-append --enable-only64bit
+}
+
+# valgrind sets up -arch by itself, adding our own interferes with the build
+configure.cc_archflags {}
+configure.ld_archflags {}
+
+variant universal {
+    configure.args-delete --enable-only32bit --enable-only64bit
+    configure.universal_cflags {}
+    configure.universal_cxxflags {}
+    configure.universal_ldflags {}
+
+    pre-configure {
+        if {$build_arch == "i386"} {
+            # See #25684 and https://bugs.kde.org/show_bug.cgi?id=243362
+            ui_error "valgrind does not build +universal on a 32-bit only CPU!"
+            return -code error "unsupported CPU"
+        }
+    }
+}
+
+variant mpich2 description {Use mpich2 for MPI support} conflicts universal {
+    depends_lib-append port:mpich2
+    configure.args-delete --without-mpicc
+    configure.args-append --with-mpicc=${prefix}/bin/mpicc
+}
+
+variant openmpi description {Use openmpi for MPI support} conflicts universal {
+    depends_lib-append port:openmpi
+    configure.args-delete --without-mpicc
+    configure.args-append --with-mpicc=${prefix}/bin/openmpicc
+}
+
+livecheck.type  regex
+livecheck.url ${homepage}
+livecheck.regex ${name}-(\\d(?:\\.\\d)+)

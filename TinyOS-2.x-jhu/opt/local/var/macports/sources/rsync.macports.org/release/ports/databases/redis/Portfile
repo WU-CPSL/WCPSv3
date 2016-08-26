@@ -1,0 +1,77 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 87692 2011-12-01 18:27:07Z royliu@macports.org $
+
+PortSystem          1.0
+
+name                redis
+version             2.4.4
+categories          databases
+platforms           darwin
+
+maintainers         gmail.com:brianjlandau openmaintainer
+
+description         Redis is an open source, advanced key-value store.
+long_description    ${description}
+
+homepage            http://redis.io/
+master_sites        googlecode:redis
+
+checksums           md5     8aec2c38b7d70956688cbfe3a99495fa \
+                    sha1    bc1e383c0216fe5bd5dc47eab39b43bbb9d5f8a5 \
+                    rmd160  5b9e1e48216c11b3eca76ad0eafee3d7a0df0c68
+
+patchfiles          patch-hiredis.c.diff
+
+use_configure       no
+
+variant universal {}
+
+build.env-append    CC="${configure.cc} [get_canonical_archflags]"
+
+post-build {
+    copy ${filespath}/redis.conf.sample.in ${workpath}/redis.conf.sample
+    copy ${filespath}/redis-daemon.conf.sample.in ${workpath}/redis-daemon.conf.sample
+    reinplace "s|@PREFIX@|${prefix}|g" \
+        ${workpath}/redis.conf.sample \
+        ${workpath}/redis-daemon.conf.sample
+}
+
+destroot.keepdirs   ${destroot}${prefix}/var/db/redis
+
+destroot {
+    xinstall -d ${destroot}${prefix}/var/db/redis
+    xinstall -m 0755 -W ${worksrcpath}/src \
+        redis-benchmark \
+        redis-check-aof \
+        redis-check-dump \
+        redis-cli \
+        redis-server \
+        ${destroot}${prefix}/bin
+    xinstall -m 0644 -W ${workpath} \
+        redis.conf.sample \
+        redis-daemon.conf.sample \
+        ${destroot}${prefix}/etc
+}
+
+post-activate {
+    if {![file exists ${prefix}/etc/redis-daemon.conf]} {
+        file copy ${prefix}/etc/redis-daemon.conf.sample \
+            ${prefix}/etc/redis-daemon.conf
+    }
+    if {![file exists ${prefix}/etc/redis.conf]} {
+        file copy ${prefix}/etc/redis.conf.sample \
+            ${prefix}/etc/redis.conf
+    }
+    xinstall -d ${prefix}/var/log
+    touch ${prefix}/var/log/redis.log
+}
+
+startupitem.create  yes
+startupitem.start   "${prefix}/bin/redis-server ${prefix}/etc/redis-daemon.conf"
+startupitem.stop    "echo \"SHUTDOWN\" | nc localhost 6379"
+
+notes "
+To start up a redis server instance use this command:
+
+    redis-server ${prefix}/etc/redis.conf
+"

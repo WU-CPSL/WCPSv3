@@ -1,0 +1,44 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 74175 2010-12-06 19:01:19Z takanori@macports.org $
+
+PortSystem          1.0
+
+name                libdatrie
+version             0.2.4
+categories          devel
+platforms           darwin
+maintainers         nomaintainer
+
+description         An Implementation of Double-Array Trie.
+long_description    ${description}
+
+homepage            http://linux.thai.net/~thep/datrie/datrie.html
+master_sites        ftp://linux.thai.net/pub/ThaiLinux/software/libthai/
+
+checksums           md5     7f7d592114f98db9e4c7171c3f2befc5 \
+                    sha1    723fb01530c7917982cfdd68deb2361d16a6e6ab \
+                    rmd160  49b05944ea7cb943cd896df82c7be1f91a434651
+
+configure.args      --mandir=${prefix}/share/man \
+                    --infodir=${prefix}/share/info \
+                    --disable-doxygen-doc
+
+use_parallel_build  yes
+
+test.run            yes
+test.target         check
+
+post-destroot {
+    xinstall -m 755 -d ${destroot}${prefix}/share/doc/${name}
+    xinstall -m 644 -W ${worksrcpath} AUTHORS COPYING ChangeLog INSTALL NEWS README ${destroot}${prefix}/share/doc/${name}
+}
+
+variant doxygen description {Create and install API docs} {
+    depends_lib-append      port:doxygen
+    configure.args-delete   --disable-doxygen-doc
+    configure.args-append   --with-html-docdir=${prefix}/share/doc/${name}/html
+}
+
+livecheck.type      regex
+livecheck.url       ${homepage}
+livecheck.regex     "${name}-(\\d+(?:\\.\\d+)*)${extract.suffix}"

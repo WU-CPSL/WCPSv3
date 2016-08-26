@@ -1,0 +1,14 @@
+# $Id: Portfile 85533 2011-10-14 07:07:00Z jmr@macports.org $
+
+PortSystem              1.0
+PortGroup               perl5 1.0
+
+perl5.setup             String-CRC32 1.4
+revision                2
+license                 public-domain
+maintainers             nomaintainer
+description             Perl interface for cyclic redundency check generation
+long_description        ${description}
+
+checksums               md5 9b241bc4a482a3aa59fbb1429bc30546
+platforms               darwin

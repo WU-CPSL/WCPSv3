@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
+  <display-name>ubersvn</display-name>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+  <error-page>
+    <error-code>404</error-code>
+    <location>/404.jsf</location>
+  </error-page>
+  <error-page>
+    <error-code>500</error-code>
+    <location>/500.jsf</location>
+  </error-page>
+  <listener>
+    <listener-class>com.wandisco.ubersvn.init.ServerContextListener</listener-class>
+  </listener>
+  <servlet>
+    <servlet-name>Faces Servlet</servlet-name>
+    <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <!-- Theme Servlet -->
+  <servlet>
+    <servlet-name>ThemeServlet</servlet-name>
+    <servlet-class>com.sun.webui.theme.ThemeServlet</servlet-class>
+    <load-on-startup>3</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>default</servlet-name>
+    <url-pattern>/static/*</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>Faces Servlet</servlet-name>
+    <url-pattern>/faces/*</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>Faces Servlet</servlet-name>
+    <url-pattern>*.jsf</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>Faces Servlet</servlet-name>
+    <url-pattern>*.faces</url-pattern>
+  </servlet-mapping>
+  <!-- Theme Servlet Mapping -->
+  <servlet-mapping>
+    <servlet-name>ThemeServlet</servlet-name>
+    <url-pattern>/theme/*</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>Resource Servlet</servlet-name>
+    <servlet-class>org.primefaces.resource.ResourceServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Resource Servlet</servlet-name>
+    <url-pattern>/primefaces_resource/*</url-pattern>
+  </servlet-mapping>
+  <!-- Avatar serving servlet -->
+  <servlet>
+    <servlet-name>avatarImageServlet</servlet-name>
+    <servlet-class>com.wandisco.ubersvn.f.e.c</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>avatarImageServlet</servlet-name>
+    <url-pattern>/avatarimage/*</url-pattern>
+  </servlet-mapping>
+  <!-- Commit hook listener servlet -->
+  <servlet>
+    <servlet-name>commitHookServlet</servlet-name>
+    <servlet-class>com.wandisco.ubersvn.f.b.c</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>commitHookServlet</servlet-name>
+    <url-pattern>/commithook/*</url-pattern>
+  </servlet-mapping>
+  <!-- Filters -->
+  <filter>
+    <filter-name>PrimeFaces FileUpload Filter</filter-name>
+    <filter-class>com.wandisco.ubersvn.h.b.d</filter-class>
+    <init-param>
+      <param-name>uploadDirectory</param-name>
+      <param-value>${java.io.tmpdir}/ubersvn/uploads</param-value>
+    </init-param>
+    <init-param>
+      <param-name>thresholdSize</param-name>
+      <param-value>51200</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>PrimeFaces FileUpload Filter</filter-name>
+    <servlet-name>Faces Servlet</servlet-name>
+  </filter-mapping>
+  <filter>
+    <filter-name>ProtocolSwitcher</filter-name>
+    <filter-class>com.wandisco.ubersvn.c.c</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>ProtocolSwitcher</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <filter>
+    <filter-name>Login filter</filter-name>
+    <filter-class>com.wandisco.ubersvn.c.b</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>Login filter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <filter>
+    <filter-name>Configuration Complete filter</filter-name>
+    <filter-class>com.wandisco.ubersvn.c.d</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>Configuration Complete filter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <filter>
+    <filter-name>Backup Restore in progress filter</filter-name>
+    <filter-class>com.wandisco.ubersvn.c.f</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>Backup Restore in progress filter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <filter>
+    <filter-name>Purchaser filter</filter-name>
+    <filter-class>com.wandisco.ubersvn.c.g</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>Purchaser filter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <filter>
+    <filter-name>Jenkins filter</filter-name>
+    <filter-class>com.wandisco.ubersvn.c.e</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>Jenkins filter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <context-param>
+    <description>State saving method: 'client' or 'server' (=default). See JSF Specification 2.5.2</description>
+    <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+    <param-value>client</param-value>
+  </context-param>
+  <context-param>
+    <param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
+    <param-value>resources.application</param-value>
+  </context-param>
+  <listener>
+    <listener-class>com.sun.faces.config.ConfigureListener</listener-class>
+  </listener>
+  <context-param>
+    <param-name>javax.faces.DEFAULT_SUFFIX</param-name>
+    <param-value>.xhtml</param-value>
+  </context-param>
+  <context-param>
+    <param-name>primefaces.THEME</param-name>
+    <param-value>none</param-value>
+  </context-param>
+  <context-param>
+    <param-name>javax.faces.FACELETS_LIBRARIES</param-name>
+    <param-value>/WEB-INF/wandisco.taglib.xml</param-value>
+  </context-param>
+  <context-param>
+    <param-name>javax.faces.FACELETS_SKIP_COMMENTS</param-name>
+    <param-value>true</param-value>
+  </context-param>
+  <context-param>
+    <param-name>javax.faces.FULL_STATE_SAVING_VIEW_IDS</param-name>
+    <param-value>/sections/platform/uberApps/viewStore.xhtml,/views/platform/uberApps/viewStore.xhtml</param-value>
+</context-param>
+  
+  <session-config>
+    <session-timeout>-1</session-timeout>
+  </session-config>
+
+</web-app>

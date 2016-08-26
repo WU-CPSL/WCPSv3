@@ -1,0 +1,17 @@
+# $Id: Portfile 84463 2011-09-26 14:57:33Z jmr@macports.org $
+
+PortSystem          1.0
+PortGroup           perl5 1.0
+
+perl5.setup         File-Tempdir 0.02
+revision            2
+license             {Artistic-1 GPL}
+maintainers         nomaintainer
+description         Provides an object interface to tempdir() from File::Temp.
+long_description    ${description}
+
+platforms           darwin
+
+checksums           md5     51f609343908803bbc78774ceb81c431
+
+supported_archs noarch

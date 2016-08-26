@@ -1,0 +1,43 @@
+# $Id: Portfile 69520 2010-07-08 20:19:52Z jmr@macports.org $
+
+PortSystem 1.0
+
+name                imapfilter
+version             2.2.2
+revision        1
+categories          mail
+platforms           darwin
+maintainers         mww
+license             BSD
+description         IMAP message processor/filter
+long_description    IMAPFilter connects to remote IMAP mail servers and \
+                    processes messages according to defined filters (rules). \
+                    It is intended to be executed before a user accesses \
+                    his/her mailboxes.
+
+homepage            http://imapfilter.hellug.gr/
+master_sites        ${homepage}/source/
+checksums           md5     09c6ffb085a5a244dc9f3e798259f341 \
+                    sha1    f201d166f5a483a2d8117bf2cbd0678b94e4753d \
+                    rmd160  c80dfa41af55fd7968f0c018825af4c6ba385397
+
+use_bzip2           yes
+
+depends_lib         port:lua port:openssl port:pcre
+
+configure.pre_args  -d ${prefix} -m ${prefix}/share/man
+
+build.args          CC="${configure.cc} ${configure.cflags}" \
+                    INCDIRS="${configure.cppflags}" \
+                    LIBDIRS="${configure.ldflags}"
+
+livecheck.type      regex
+livecheck.url       ${homepage}
+livecheck.regex     imapfilter-(\[0-9\\.\]+\[0-9\])
+
+variant universal {
+    configure.cflags-append    "${configure.universal_cflags}"
+    configure.cppflags-append    "${configure.universal_cppflags}"
+    configure.ldflags-append    "${configure.universal_ldflags}"
+}
+

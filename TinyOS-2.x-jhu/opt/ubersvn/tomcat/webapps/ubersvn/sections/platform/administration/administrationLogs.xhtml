@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:p="http://primefaces.prime.com.tr/ui" xmlns:h="http://java.sun.com/jsf/html">
+<ui:composition>
+  <ol id="sub-toc">
+    <li><h:outputLink title="#{msg.adminStatusTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationStatus.jsf">
+        <span>#{msg.adminStatusTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminApacheServerSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationApacheServerSettings.jsf">
+        <span>#{msg.adminSubversionServerSettingsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminUberServerSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUberServerSettings.jsf">
+        <span>#{msg.adminUberServerSettingsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminUberPreferenceSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUberPreferenceSettings.jsf">
+        <span>#{msg.adminUberPreferenceSettingsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminEmailServerSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationEmailServerSettings.jsf">
+        <span>#{msg.adminEmailServerSettingsTabText}</span>
+      </h:outputLink></li>
+    <li class="current"><h:outputLink title="#{msg.adminLogsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationLogs.jsf">
+        <span>#{msg.adminLogsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminUpdatesTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUpdates.jsf">
+        <span>#{msg.adminUpdatesTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminLDAPTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUberLDAPSettings.jsf">
+        <span>#{msg.adminLDAPTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.backup}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationBackup.jsf">
+        <span>#{msg.backup}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink title="#{msg.adminExtensionsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationViewExtensions.jsf">
+        <span>#{msg.adminExtensionsTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink title="#{msg.adminSubversionReleaseLinkText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationSubversionRelease.jsf">
+        <span>#{msg.adminSubversionReleaseLinkText}</span>
+      </h:outputLink>
+    </li>
+
+  </ol>
+  <p:panel id="adminStatusPanel" styleClass="tabbed-panel">
+    <p:panel>
+      <p:dataTable id="logsTableId" widgetVar="logsTable" var="log" value="#{logsManagedBean.logFiles}" paginatorAlwaysVisible="false"
+        paginatorPosition="bottom" rows="9" paginator="true"
+        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+        <p:column width="255" sortBy="#{log.name}">
+          <f:facet name="header">
+            <h:outputText value="Name" />
+          </f:facet>
+          <h:commandLink action="#{logsManagedBean.selectLogToView}" title="#{msg.logSelectTooltipText}">
+            <f:setPropertyActionListener target="#{logsManagedBean.selectedLog}" value="#{log}" />
+            <h:outputText value="#{log.name}" />
+          </h:commandLink>
+        </p:column>
+        <p:column width="255" sortBy="#{log.lastModified}">
+          <f:facet name="header">
+            <h:outputText value="Date" />
+          </f:facet>
+          <h:outputText value="#{log.date}" />
+        </p:column>
+        <p:column width="255" sortBy="#{log.fileSize}">
+          <f:facet name="header">
+            <h:outputText value="Size" />
+          </f:facet>
+          <h:outputText value="#{log.size}" />
+        </p:column>
+      </p:dataTable>
+    </p:panel>
+    <p:panel id="logViewerPanel" styleClass="logViewerPanel">
+      <h:outputText value="#{logsManagedBean.selectedLog.name}" style="padding-left: 5px; margin-bottom: 5px;" />
+      <p:spacer height="15px" />
+      <h:inputTextarea id="logFileViewerTextArea" value="#{logsManagedBean.selectedLogContents}" rows="14"
+        style="width:99%; resize: none; padding-left: 5px; height:225px;" readonly="true" />
+      <br />
+      <p:spacer height="17" width="1" />
+      <p:commandButton styleClass="roundedButtonSmall" actionListener="#{logsManagedBean.reloadSelectedLogContents}"
+        value="#{msg.reloadButtonText}" ajax="false" update="adminStatusPanel" />
+    </p:panel>
+  </p:panel>
+</ui:composition>
+</html>

@@ -1,0 +1,122 @@
+# $Id: Portfile 89958 2012-02-17 05:47:52Z mmoll@macports.org $
+
+PortSystem 1.0
+PortGroup  muniversal 1.0
+
+name          arpack
+version       3.0.2
+categories    math
+license       BSD
+platforms     darwin
+maintainers		mmoll
+description		Package for solving large scale eigenvalue problems
+long_description  \
+    ARPACK is a collection of Fortran77 subroutines designed to solve large \
+    scale eigenvalue problems.
+homepage            http://forge.scilab.org/index.php/p/arpack-ng
+master_sites	    ${homepage}/downloads/353
+distfiles           get
+dist_subdir         ${name}/${version}
+checksums           md5     fc744f506911401cf4573b1071c0424f \
+                    sha1    1092e4da3a28707ee3a143defaa99f8fa26bba9f \
+                    rmd160  26c74ff0a5ecd300eb61a1a0abea5bdbaa6e358d
+worksrcdir          ${name}-ng-${version}
+
+pre-fetch { 
+	if {"darwin" == ${os.platform} && ${os.major} < 9} { 
+		ui_error "${name} ${version} requires Mac OS X 10.5 or greater" 
+		return -code error "incompatible Mac OS X version" 
+	} 
+}
+
+# Fortran compilers can not cross-compile
+if { ${os.arch}=="i386" } {
+    set universal_archs_supported "i386 x86_64"
+} else {
+    set universal_archs_supported "ppc ppc64"
+}
+
+if { ! [variant_isset universal]} {
+  configure.args-append home=${worksrcpath}
+  if { ${build_arch}=="x86_64" || ${build_arch}=="ppc64" } {
+      configure.args-append FFLAGS='-O2 -m64' LDFLAGS='-L${prefix}/lib'
+  } else {
+      configure.args-append FFLAGS='-O2 -m32' LDFLAGS='-L${prefix}/lib'
+  }
+} else {
+  foreach arch {x86_64 i386 ppc ppc64} {
+      set merger_build_args(${arch}) home=${worksrcpath}-${arch}
+      set merger_dont_diff "${prefix}/lib/libarpack.la ${prefix}/lib/libparpack.la"
+      if { ${arch}=="x86_64" || ${arch}=="ppc64" } {
+          lappend merger_configure_args(${arch}) FFLAGS='-O2 -m64' LDFLAGS='-L${prefix}/lib'
+      } else {
+          lappend merger_configure_args(${arch}) FFLAGS='-O2 -m32' LDFLAGS='-L${prefix}/lib'
+      }
+  }
+}
+
+variant gcc42 description {build with gfortran-mp-4.2} conflicts gcc43 gcc44 gcc45 gcc46 g95 universal {
+	depends_build-append    port:gcc42
+	configure.env-append F77=${prefix}/bin/gfortran-mp-4.2
+}
+
+variant gcc43 description {build with gfortran-mp-4.3} conflicts gcc42 gcc44 gcc45 gcc46 g95 universal {
+	depends_build-append    port:gcc43
+	configure.env-append F77=${prefix}/bin/gfortran-mp-4.3
+}
+
+variant gcc44 description {build with gfortran-mp-4.4} conflicts gcc42 gcc43 gcc45 gcc46 g95 {
+	depends_build-append    port:gcc44
+	configure.env-append F77=${prefix}/bin/gfortran-mp-4.4
+}
+
+variant gcc45 description {build with gfortran-mp-4.5} conflicts gcc42 gcc43 gcc44 gcc46 g95 {
+	depends_build-append    port:gcc45
+	configure.env-append F77=${prefix}/bin/gfortran-mp-4.5
+}
+
+variant gcc46 description {build with gfortran-mp-4.6} conflicts gcc42 gcc43 gcc44 gcc45 g95 {
+	depends_build-append    port:gcc46
+	configure.env-append F77=${prefix}/bin/gfortran-mp-4.6
+}
+
+variant g95 description {build with g95} conflicts gcc42 gcc43 gcc44 gcc45 gcc46 universal {
+        depends_build-append    port:g95
+        configure.env-append F77=${prefix}/bin/g95
+}
+
+if { ![variant_isset gcc42] && ![variant_isset gcc43] && ![variant_isset gcc44] && ![variant_isset gcc45] && ![variant_isset gcc46] && ![variant_isset g95] } {
+	default_variants      +gcc44
+}
+
+variant openmpi description {build PARPACK, the parallel eigenvalue solver library} conflicts universal {
+    pre-fetch { 	 
+        if {![file exists ${prefix}/bin/openmpif77]} {
+            return -code error "Please install one of the following variants of the openmpi port: gcc42, gcc43, gcc44, gcc45."
+        }
+    }
+    depends_build port:openmpi
+    configure.args-append --enable-mpi
+    configure.env-append MPIF77=${prefix}/bin/openmpif77
+}
+
+variant accelerate conflicts atlas description {build with Accelerate framework} {
+    configure.args-append --with-lapack=/usr/lib/liblapack.dylib
+}
+
+variant atlas description {build with atlas} {
+    depends_lib-append port:atlas
+    configure.args-append --with-lapack=${prefix}/lib/liblapack.dylib
+}
+
+if {![variant_isset atlas]} {
+    default_variants +accelerate
+}
+
+post-destroot {
+    reinplace "s|/usr|${prefix}|g" ${destroot}${prefix}/lib/pkgconfig/arpack.pc
+}
+
+livecheck.type  regex
+livecheck.url   ${master_sites}
+livecheck.regex ${name}_(\[0-9.\]+\[0-9\])

@@ -1,0 +1,69 @@
+# $Id: Portfile 89939 2012-02-16 04:42:58Z jeremyhu@macports.org $
+
+PortSystem            1.0
+PortGroup             archcheck 1.0
+
+name                  libxml2
+version               2.7.8
+# skip to revision 3 if a rev bump is needed with version 2.7.8
+#revision              2
+categories            textproc
+description           gnome xml library
+platforms             darwin
+license               MIT
+maintainers           gmail.com:cedric.luthi
+homepage              http://xmlsoft.org/
+
+master_sites          ftp://fr.rpmfind.net/pub/libxml/ \
+                      ftp://gd.tuwien.ac.at/pub/libxml/ \
+                      ${homepage}sources/ \
+                      ftp://xmlsoft.org/${name}/
+
+checksums           md5     8127a65e8c3b08856093099b52599c86 \
+                    sha1    859dd535edbb851cc15b64740ee06551a7a17d40 \
+                    rmd160  30709622cfe3e2175e73d6701b7e19a25ab5ac47
+
+depends_lib           port:libiconv port:zlib
+
+archcheck.files       lib/libiconv.dylib \
+                      lib/libz.dylib
+
+post-extract {
+    # TODO: Use -locale C when a version of base with it has shipped
+    reinplace "s|/etc|${prefix}/etc|g" \
+        ${worksrcpath}/catalog.c \
+        ${worksrcpath}/runtest.c \
+        ${worksrcpath}/xmlcatalog.c \
+        ${worksrcpath}/xmllint.c \
+        ${worksrcpath}/doc/xmlcatalog.1 \
+        ${worksrcpath}/doc/xmllint.1
+
+}
+
+configure.args          --enable-static \
+                        --without-python
+
+use_parallel_build      yes
+
+destroot.keepdirs       ${destroot}${prefix}/etc/xml
+post-destroot {
+    xinstall -m 755 -d ${destroot}${prefix}/etc/xml
+}
+
+test.run              yes
+test.target           check
+
+variant debug description {Enable debug build} {
+        configure.optflags -O0 -g -Wno-uninitialized
+	configure.args-append --with-run-debug
+}
+
+long_description \
+Libxml is the XML C library developed for the Gnome project.  \
+XML itself is a metalanguage to design markup languages. \
+Though the library is written in C, a variety of language bindings make it \
+available in other environments.
+
+livecheck.type  regex
+livecheck.url   ${homepage}news.html
+livecheck.regex {<h3>(\d+(?:\.\d+)*): .*</h3>}

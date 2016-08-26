@@ -1,0 +1,20 @@
+# $Id: Portfile 84867 2011-10-03 18:35:17Z jmr@macports.org $
+
+PortSystem          1.0
+PortGroup           perl5 1.0
+
+perl5.setup         Test-use-ok 0.02
+revision            2
+license             MIT
+maintainers         nomaintainer
+description         Alternative to Test::More::use_ok
+long_description    According to the Test::More documentation, it is \
+                    recommended to run use_ok() inside a BEGIN block, so \
+                    functions are exported at compile-time and prototypes \
+                    are properly honored.
+
+platforms           darwin
+
+checksums           md5 c49b0bbb37a6764b8b96d9fcef954ba2
+
+supported_archs noarch

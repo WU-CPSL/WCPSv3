@@ -1,0 +1,28 @@
+# $Id: Portfile 84444 2011-09-26 11:14:03Z jmr@macports.org $
+
+PortSystem            1.0
+PortGroup             perl5 1.0
+
+perl5.setup           MooseX-Params-Validate 0.16 ../by-authors/id/D/DR/DROLSKY/
+revision              3
+license               {Artistic-1 GPL}
+maintainers           nomaintainer
+supported_archs       noarch
+
+description           an extension of Params::Validate for using Moose's types
+long_description      ${description}
+
+platforms             darwin
+
+checksums             md5 625a7572196ba61c98e6640c11ffa2c5 \
+                      sha1 23325d65b3f2c34bf14c83145c4ab20029e164b9 \
+                      rmd160 9130b8e637cc9d10585aa9732735dee9df5091b0
+
+if {${perl5.major} != ""} {
+depends_lib-append    port:p${perl5.major}-test-fatal \
+                      port:p${perl5.major}-devel-caller \
+                      port:p${perl5.major}-moose \
+                      port:p${perl5.major}-params-validate \
+                      port:p${perl5.major}-sub-exporter \
+                      port:p${perl5.major}-test-simple
+}

@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:p="http://primefaces.prime.com.tr/ui" xmlns:h="http://java.sun.com/jsf/html">
+<ui:composition>
+  <h:panelGroup styleClass="bottomRight" style="width: 27%; padding-right: 20px; padding-bottom: 15px;">
+    <ol id="innerTab">
+      <li id="repoUsersInnerTab"><h:commandLink title="#{msg.repoUsersTabTitle}"
+          action="#{repositoryProfileManagedBean.selectRepoUsersTab}">
+          <span>#{msg.usersTabText}</span>
+        </h:commandLink>
+      </li>
+      <li id="repoTeamsInnerTab"><h:commandLink title="#{msg.repoTeamsTabTitle}"
+          action="#{repositoryProfileManagedBean.selectRepoTeamsTab}">
+          <span>#{msg.teamsTabText}</span>
+        </h:commandLink>
+      </li>
+      <li id="repoJenkinsInnerTab"><h:commandLink title="#{msg.repoJenkinsTabTitle}"
+          action="#{repositoryProfileManagedBean.selectRepoJenkinsTab}" rendered="#{basePage.jenkinsVisible and basePage.jenkinsInstalled}">
+          <span>#{msg.jenkinsTabText}</span>
+          <h:panelGroup style="font-weight: bold; font-size: 125%; color:red;" rendered="#{basePage.jobFailureForRepository}">
+            <p:spacer width="5" />!</h:panelGroup>
+        </h:commandLink>
+      </li>
+    </ol>
+    <p:panel styleClass="base-tab-panel" style="width: 315px;">
+      <p:panel id="repoUsersPanel" styleClass="base-tab-inner-panel" style="width: 305px; min-height: 558px;"
+        rendered="#{repositoryProfileManagedBean.repoUsersPanel}">
+        <p:dataTable id="repoUsersTableId" var="user" value="#{repositoryProfileManagedBean.repo.users}"
+          rows="#{repositoryProfileManagedBean.maxUsersToDisplay}" lazy="false" paginator="#{repositoryProfileManagedBean.paginateUsers}"
+          paginatorPosition="bottom"
+          paginatorTemplate="{FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}">
+          <p:column width="255" style="background: transparent; padding: none; border: none;">
+            <h:commandLink action="#{userManagedBean.viewUserProfile}">
+              <f:setPropertyActionListener target="#{userManagedBean.selectedUser}" value="#{user}" />
+              <h:outputText value="#{user.userName}" />
+            </h:commandLink>
+          </p:column>
+          <p:column width="100" style="background: transparent;padding: none; border: none; text-align: right;">
+            <h:commandLink action="#{repositoryProfileManagedBean.removeUserAccessToRepository}"
+              rendered="#{repositoryManagedBean.systemAdmin or repositoryManagedBean.globalRepoAdmin or repositoryProfileManagedBean.repo.delegatedRepoAdmin}">
+              <f:setPropertyActionListener target="#{repositoryProfileManagedBean.userToRemove}" value="#{user}" />
+              <h:graphicImage library="img/platform/icons" name="cross.png" style="border: none;" />
+            </h:commandLink>
+          </p:column>
+        </p:dataTable>
+      </p:panel>
+      <p:panel id="repoTeamsPanel" styleClass="base-tab-inner-panel" style="width: 305px; min-height: 558px;"
+        rendered="#{repositoryProfileManagedBean.repoTeamsPanel}">
+        <p:dataTable id="repoTeamsTableId" var="team" value="#{repositoryProfileManagedBean.teamsVisibleToUser}"
+          rows="#{repositoryProfileManagedBean.maxTeamsToDisplay}" lazy="false" paginator="#{repositoryProfileManagedBean.paginateTeams}"
+          paginatorPosition="bottom"
+          paginatorTemplate="{FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}">
+          <p:column width="255" style="background: transparent; padding: none; border: none;">
+            <h:commandLink action="#{teamManagedBean.viewTeamProfile}">
+              <f:setPropertyActionListener target="#{teamManagedBean.selectedTeam}" value="#{team}" />
+              <h:outputText value="#{team.name}" />
+            </h:commandLink>
+          </p:column>
+          <p:column width="100" style="background: transparent;padding: none; border: none; text-align: right;">
+            <h:commandLink action="#{repositoryProfileManagedBean.removeTeamAccessToRepository}"
+              rendered="#{repositoryManagedBean.systemAdmin or repositoryManagedBean.globalRepoAdmin or repositoryProfileManagedBean.repo.delegatedRepoAdmin}">
+              <f:setPropertyActionListener target="#{repositoryProfileManagedBean.teamToRemove}" value="#{team}" />
+              <h:graphicImage library="img/platform/icons" name="cross.png" style="border: none;" />
+            </h:commandLink>
+          </p:column>
+        </p:dataTable>
+      </p:panel>
+      <p:panel id="repoJenkinsPanel" styleClass="base-tab-inner-panel"
+        style="background: none repeat scroll 0 0 #FFFFFF; width: 305px; min-height: 558px;"
+        rendered="#{basePage.jenkinsVisible and repositoryProfileManagedBean.repoJenkinsPanel}">
+        <h:panelGroup>
+          <h:outputText value="Refreshed: #{basePage.jenkinsLastPollTime}" />
+          <p:spacer width="10" />
+          <p:commandButton styleClass="roundedButtonMedium" value="#{msg.reloadJobsButtonText}" action="#{basePage.refreshJobs}" ajax="false" />
+        <br/>
+        <br/>
+        </h:panelGroup>
+        <p:dataTable id="jenkinsJobsTableId" widgetVar="jobsTable" var="job" value="#{repositoryProfileManagedBean.jobs}"
+          paginatorPosition="bottom" rows="15" paginatorAlwaysVisible="false" paginator="true"
+          paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+          <p:column style="width: 205px;">
+            <f:facet name="header">
+              <h:outputText value="#{msg.jenkinsTableNameColumnHeader}" />
+            </f:facet>
+            <h:commandLink action="#{repositoryProfileManagedBean.viewJenkinsLastBuild}" title="#{msg.jenkinsLastBuildLinkTitle}"
+              rendered="#{basePage.jenkinsVisible}">
+              <f:setPropertyActionListener target="#{basePage.job}" value="#{job}" />
+              <h:outputText value="#{job.name}" />
+            </h:commandLink>
+            <h:outputText value="#{job.name}" rendered="#{!basePage.jenkinsVisible}" />
+          </p:column>
+          <p:column styleClass="centreAlignColumn">
+            <f:facet name="header">
+              <h:outputText value="#{msg.jenkinsTableStatusColumnHeader}" />
+            </f:facet>
+            <h:graphicImage value="/../jenkins/images/16x16/#{job.status}.gif" title="#{job.tooltip}" />
+          </p:column>
+        </p:dataTable>
+      </p:panel>
+    </p:panel>
+  </h:panelGroup>
+  <script type="text/javascript">
+			jQuery(document)
+					.ready(
+							function() {
+								var tabElement = '#'
+										+ '#{repositoryProfileManagedBean.repoTabToDisplay}';
+								jQuery(tabElement).addClass('current');
+							});
+		</script>
+</ui:composition>
+</html>

@@ -1,0 +1,32 @@
+# $Id: Portfile 82795 2011-08-20 16:57:20Z raimue@macports.org $
+
+PortSystem    1.0
+PortGroup     python27 1.0
+
+name          bzr-explorer
+epoch         1
+version       1.2.1
+set branch    [join [lrange [split ${version} .] 0 1] .]
+categories    devel python
+platforms     darwin
+license       GPL-2+
+maintainers   raimue
+
+description   A graphical frontend for using bzr
+long_description \
+    bzr-explorer is a desktop application for using the bzr Version Control \
+    System. It provides a high level interface to all commonly used features, \
+    launching \"applets\" from the QBzr plug-in to provide most of the \
+    functionality. Alternatively, the applets from the bzr-gtk plug-in can be \
+    used if it is installed.
+homepage      http://doc.bazaar.canonical.com/explorer/en/
+master_sites  https://launchpad.net/${name}/${branch}/${version}/+download/
+
+checksums     sha1    465def3efab1897aec92cbf0bdab4a81d227cfd5 \
+              rmd160  8e835af6c213f9ec4e36767130b68e19fc77e981
+
+depends_lib-append  port:qbzr
+
+livecheck.type      regex
+livecheck.url       https://launchpad.net/${name}/+download
+livecheck.regex     {bzr-explorer-(\d+(?:\.\d+)*).tar.gz}

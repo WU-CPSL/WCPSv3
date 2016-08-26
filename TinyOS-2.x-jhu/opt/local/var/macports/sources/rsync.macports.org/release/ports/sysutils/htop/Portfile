@@ -1,0 +1,39 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 88947 2012-01-15 07:46:08Z ryandesign@macports.org $
+
+PortSystem          1.0
+PortGroup           github 1.0
+
+github.setup        AndyA htop-osx 0.8.2.1
+name                htop
+epoch               1
+git.branch          77edf8ddae9682e356e5
+categories          sysutils
+platforms           darwin
+maintainers         nomaintainer
+license             GPL-2
+
+description         an interactive process viewer
+
+long_description    This is htop, ${description}. It is a text-mode \
+                    application (for console or X terminals).
+
+depends_build       port:autoconf \
+                    port:automake \
+                    port:libtool
+
+depends_lib         port:ncurses
+
+fetch.type          git
+
+patchfiles          patch-htop.c.diff
+
+pre-configure {
+    system "cd ${worksrcpath} && sh autogen.sh"
+}
+
+# "String.h" vs <string.h> on case-insensitive FS (#21036)
+build.args          {DEFAULT_INCLUDES="-iquote ."}
+
+livecheck.url       https://github.com/AndyA/htop-osx/raw/osx/configure.ac
+livecheck.regex     {\[htop\],\[([0-9.]+)\]}

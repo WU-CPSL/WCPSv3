@@ -1,0 +1,28 @@
+# $Id: Portfile 88213 2011-12-22 04:27:51Z jeremyhu@macports.org $
+
+PortSystem          1.0
+
+name                xinput
+version             1.5.4
+categories          x11
+maintainers         jeremyhu openmaintainer
+description         Utility to configure and test XInput devices
+long_description    ${description}
+
+platforms           darwin
+
+homepage            http://www.x.org/
+master_sites        xorg:individual/app/
+use_bzip2           yes
+
+checksums           sha1    4e77f4034aa4bc720726beb0795d77a47a71d2c8 \
+                    rmd160  4df018cee7d431517b85b6624ec5e4312c6ba0bd \
+                    sha256  a8da86f0d7c8ac0c4434e3140ae7f208fc2b35869e5adf10971eef7cb77f4360
+
+depends_build       port:pkgconfig
+
+depends_lib         port:xorg-libXi
+
+livecheck.type      regex
+livecheck.regex     ${name}-(\[\\d.\]+)${extract.suffix}
+livecheck.url       http://xorg.freedesktop.org/archive/individual/app/?C=M&O=D

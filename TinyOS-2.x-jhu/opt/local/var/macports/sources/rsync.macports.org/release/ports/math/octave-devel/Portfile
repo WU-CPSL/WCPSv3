@@ -1,0 +1,185 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89881 2012-02-14 02:13:33Z takanori@macports.org $
+
+PortSystem 1.0
+
+name                octave-devel
+version             3.4.3
+revision            2
+conflicts           octave
+categories          math science
+maintainers         michaelld openmaintainer
+platforms           darwin
+description         a Matlab-like environment for numerical analysis
+long_description    Octave provides a convenient command line interface \
+                    for solving linear and nonlinear problems numerically, \
+                    using a language that is mostly compatible with Matlab. \
+                    It is easily extensible and customizable via \
+                    user-defined functions or using dynamically loaded \
+                    modules written in e.g. C++, C or Fortran.
+
+homepage            http://www.gnu.org/software/octave/
+master_sites        gnu:octave
+dist_subdir         octave
+distname            octave-${version}
+use_bzip2           yes
+
+checksums           md5     185b08f4e4a7b646d76e4d33b77fa87e \
+                    sha1    fe622c28a38f8730c59e46211bc7b18e7f51a679 \
+                    rmd160  d6f43fca9097b40f163c140db853d8ac1383ab39
+
+depends_build       port:bison \
+                    port:flex \
+                    port:gawk \
+                    port:gperf \
+                    port:grep \
+                    port:gsed \
+                    path:bin/perl:perl5 \
+                    port:texinfo
+
+depends_lib         port:curl \
+                    port:fftw-3 \
+                    port:fftw-3-single \
+                    port:ftgl \
+                    port:ghostscript \
+                    port:glpk \
+                    port:GraphicsMagick \
+                    port:gnuplot \
+                    port:hdf5-18 \
+                    port:less \
+                    port:metis \
+                    port:ncurses \
+                    port:pcre \
+                    port:readline \
+                    port:qhull \
+                    port:qrupdate \
+                    port:SuiteSparse
+
+# allow us to disable checking for FLTK
+# via the environment variable "FLTK_CONFIG"
+patchfiles-append   patch-configure.diff
+
+universal_variant   no
+
+# do not use CLANG (yet)
+if {${configure.compiler} == "clang"} { 
+    configure.compiler llvm-gcc-4.2
+}
+
+configure.args      --disable-dependency-tracking \
+                    --without-x \
+                    --disable-docs \
+                    --with-cholmod="-lcholmod -lmetis"
+
+#                    --without-framework-carbon
+
+# octave uses a number of other ports to create sources from template:
+# perl, gawk, gsed, flex, bison, texinfo.  Make sure these are the
+# MacPorts' versions.  Python is not used if perl is available, so
+# clear it out.  grep is checked for in 'configure', but not used
+# except inside that script; include it here for completion.
+configure.perl      ${prefix}/bin/perl
+configure.python    ' '
+configure.awk       ${prefix}/bin/gawk
+configure.env-append GREP="${prefix}/bin/grep" \
+                     FLTK_CONFIG=no \
+                     SED="${prefix}/bin/gsed" \
+                     TEXI2DVI="${prefix}/bin/texi2dvi" \
+                     TEXI2PDF="${prefix}/bin/texi2pdf"
+configure.cppflags
+configure.ldflags
+
+test.run            yes
+test.target         check
+
+platform darwin 11 {
+    # 10.7 requires an extra patch; this patch will break the build on
+    # 10.6 and prior, so apply it only under 10.7.
+    patchfiles-append patch-src-display.cc.diff
+}
+
+variant gcc43 description {build with the macports gcc43 toolchain} conflicts gcc46 gcc45 gcc44 g95 {}
+
+variant gcc44 description {build with the macports gcc44 toolchain} conflicts gcc46 gcc45 gcc43 g95 {}
+
+variant gcc45 description {build with the macports gcc45 toolchain} conflicts gcc46 gcc44 gcc43 g95 {}
+
+variant gcc46 description {build with the macports gcc45 toolchain} conflicts gcc45 gcc44 gcc43 g95 {}
+
+variant g95 description {build with g95} conflicts gcc43 gcc44 gcc45 gcc46 {
+    depends_build-append    port:g95
+    configure.f77           "${prefix}/bin/g95"
+}
+
+variant atlas description {use BLAS from ATLAS} conflicts accelerate {
+    depends_lib-append port:atlas
+}
+
+variant accelerate description {use BLAS from Apple's Accelerate.framework} conflicts atlas {
+    depends_lib-append      port:dotwrp
+    configure.args-append   --with-blas="-ldotwrp -framework Accelerate"
+    configure.args-append   --with-lapack="-framework Accelerate"
+}
+
+if {[variant_isset g95]} {
+    default_variants +accelerate
+} elseif {![variant_isset accelerate]} {
+    default_variants +atlas
+}
+
+# check for GCC / G95 variants.  The default here must match the
+# default found in the 'atlas' port (but, this is not checked for).
+
+# check for setting the default variant (gcc44)
+if { ![variant_isset gcc43] && ![variant_isset gcc44] && \
+         ![variant_isset gcc45] && ![variant_isset gcc46] && \
+         ![variant_isset g95] } {
+    default_variants +gcc44
+}
+
+# check if the user disabled just the default variant: -gcc44
+if { ![variant_isset gcc43] && ![variant_isset gcc44] && \
+         ![variant_isset gcc45] && ![variant_isset gcc46] && \
+         ![variant_isset g95] } {
+    error "You cannot use the variant -gcc44 alone."
+}
+
+set gcc_version ""
+if {[variant_isset gcc43]} {
+    set gcc_version "4.3"
+} elseif {[variant_isset gcc44]} {
+    set gcc_version "4.4"
+} elseif {[variant_isset gcc45]} {
+    set gcc_version "4.5"
+} elseif {[variant_isset gcc46]} {
+    set gcc_version "4.6"
+}
+
+if {${gcc_version} != ""} {
+    set gcc_version_join [join [split ${gcc_version} "."] ""]
+    configure.ldflags    "${prefix}/lib/gcc${gcc_version_join}/libstdc++.6.dylib"
+    depends_build-append port:gcc${gcc_version_join}
+    configure.compiler   macports-gcc-${gcc_version}
+}
+
+variant docs description {Enable creation and installation of documentation} {
+    depends_run-append port:texlive-basic
+    configure.args-replace s|--disable-docs|--enable-docs|
+}
+
+variant x11 description {Enable use of X11} {
+    configure.args-replace s|--without-x|--with-x|
+    configure.args-append --x-includes=${prefix}
+}
+
+variant fltk description {Include FLTK for graphical front-end} {
+    depends_lib-append port:fltk-devel
+    depends_run-append  port:epstool \
+                        port:transfig \
+                        port:pstoedit
+    configure.env-delete FLTK_CONFIG=no
+}
+
+livecheck.type      regex
+livecheck.url       http://www.gnu.org/software/octave/news.html
+livecheck.regex     Version (\\d+(\\.\\d+)*)

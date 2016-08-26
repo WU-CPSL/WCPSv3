@@ -1,0 +1,22 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.prime.com.tr/ui"
+  xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core">
+<f:view>
+  <f:metadata>
+    <f:viewParam name="userId" value="#{userProfileManagedBean.userId}" />
+    <f:event type="preRenderView" listener="#{userProfileManagedBean.loadUser}"/>
+  </f:metadata>
+</f:view>
+<ui:composition template="/templates/platform/ubersvn-template.xhtml">
+  <ui:param name="pageTitle" value="#{msg.userProfilePanelHeading}" />
+  <ui:define name="headerTabName">
+    <h:inputHidden id="tabName" value="usersTab" />
+  </ui:define>
+  <ui:define name="pageContentView">
+    <div class="base-main-panel">
+      <ui:include id="addUserPage" src="/sections/platform/users/userProfile.xhtml" />
+    </div>
+  </ui:define>
+</ui:composition>
+</html>

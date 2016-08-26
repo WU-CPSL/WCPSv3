@@ -1,0 +1,54 @@
+# -*- Mode: Tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:et:sw=4:ts=4:sts=4
+# $Id: Portfile 85194 2011-10-10 22:34:50Z jmr@macports.org $
+
+PortSystem 1.0
+
+name            gnutls
+version         2.12.11
+revision        1
+categories      devel security
+# yes, some of the libs are GPL only
+license         LGPL-2.1+ GPL-3+
+maintainers     nomaintainer
+description     GNU Transport Layer Security Library
+homepage        http://www.gnutls.org/
+platforms       darwin
+
+long_description \
+    GnuTLS is a portable ANSI C based library which implements the TLS 1.0 and \
+    SSL 3.0 protocols. The library does not include any patented algorithms \
+    and is available under the GNU Lesser General Public License (LGPL).
+
+master_sites    gnu
+
+checksums       rmd160  d8892c8ab44a69e45d43125fd653c25e62d1fb9d \
+                sha256  00b58e1aafe99bbd0cb371e7f1df9cc58bf807301cf70a7eebedeee093991360
+
+use_bzip2       yes
+
+depends_build   port:pkgconfig
+
+depends_lib     port:libgcrypt \
+                port:libtasn1 \
+                port:lzo2 \
+                port:readline
+
+configure.args  --with-lzo \
+                --with-libgcrypt \
+                --disable-guile \
+                --without-p11-kit           
+
+test.run        yes
+test.target     check
+
+post-destroot {
+    move ${destroot}${prefix}/bin/certtool ${destroot}${prefix}/bin/gnutls-certtool
+}
+
+platform darwin 8 {
+    depends_build-append   port:texinfo
+}
+
+livecheck.type  regex
+livecheck.url   http://ftp.gnu.org/gnu/gnutls/
+livecheck.regex ${name}-(\\d+\\.\\d*\[02468\]+(?:\\.\\d+)*)

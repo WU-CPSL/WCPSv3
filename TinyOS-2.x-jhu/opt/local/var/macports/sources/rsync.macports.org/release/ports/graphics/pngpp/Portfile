@@ -1,0 +1,28 @@
+# -*- Mode: Tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:et:sw=4:ts=4:sts=4
+# $Id: Portfile 75159 2011-01-17 02:00:53Z rmstonecipher@macports.org $
+
+PortSystem 1.0
+
+name                pngpp
+version             0.2.3
+revision            1
+categories          graphics
+platforms           darwin
+maintainers         sfiera
+description         A simplified input/output library for PNG files
+long_description \
+    pngpp provides a C++ wrapper for the libpng that greatly simplifies the \
+    reading and writing PNG files
+
+homepage            http://savannah.nongnu.org/projects/$name/
+master_sites        savannah
+distname            png++-$version
+checksums           md5 0ec39b2996dd7095de0dc39389dee04d \
+                    sha1 8d0e3817fd346c4d0c1a7ee973b6198ba4ad57a7
+
+depends_lib         port:libpng
+
+use_configure       no
+build               {}
+destroot.env        PREFIX=$destroot$prefix
+destroot.target     install-headers

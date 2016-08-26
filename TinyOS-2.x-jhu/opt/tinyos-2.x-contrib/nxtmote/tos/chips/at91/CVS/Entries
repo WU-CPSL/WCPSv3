@@ -1,0 +1,8 @@
+/HplAT91Interrupt.nc/1.3/Wed Jun 13 09:10:30 2007//
+/HplAT91InterruptM.nc/1.7/Tue Dec 18 21:48:11 2007//
+/HplAT91_GPIOPin.nc/1.5/Tue Jul  3 18:29:39 2007//
+/at91_registers.h/1.4/Wed Jun 13 09:10:30 2007//
+D/gpio////
+D/i2c////
+D/spi////
+D/timer////

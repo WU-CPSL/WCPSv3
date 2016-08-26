@@ -1,0 +1,33 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 88821 2012-01-12 23:02:19Z dports@macports.org $
+
+PortSystem          1.0
+PortGroup           texlive 1.0
+
+name                texlive-bibtex-extra
+version             23155
+revision            0
+
+categories          tex
+maintainers         dports
+license             Copyleft Permissive
+description         TeX Live: Extra BibTeX styles
+long_description    Additional BibTeX styles and bibliography databases, including BibLaTeX.
+
+checksums           texlive-bibtex-extra-23155-run.tar.xz \
+                    rmd160  99b235c23005c075a0b860d2521c4da3c2b5a1b1 \
+                    sha256  a58d796fa2c5ecd8378eb7d7e3d808fc43ff7bdff437c659e9cd4785baebe6c4 \
+                    texlive-bibtex-extra-23155-doc.tar.xz \
+                    rmd160  8bf2ff09073f6d60ad7cec537ab314f1a6c1062a \
+                    sha256  542f14cc7df8e704b51d5a3b115ee4bdc28aee3b766dc9c9197db76e0e270516 \
+                    texlive-bibtex-extra-23155-src.tar.xz \
+                    rmd160  f3674bdd9a9ae9e5996fc32da74e12bc9467c12c \
+                    sha256  2a216c3df04287dd262350e8369b5688ab28f68d73b974e115cec6c047797ebf
+
+depends_lib         port:texlive-latex
+
+texlive.binaries    bibexport
+
+depends_run-append  port:biblatex-biber
+
+texlive.texmfport

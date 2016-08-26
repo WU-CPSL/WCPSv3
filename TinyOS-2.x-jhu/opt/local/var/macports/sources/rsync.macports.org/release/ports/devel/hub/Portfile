@@ -1,0 +1,39 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89758 2012-02-09 21:16:07Z ryandesign@macports.org $
+
+PortSystem          1.0
+PortGroup           github 1.0
+
+github.setup        defunkt hub 1.8.2 v
+description         git-wrapper for GitHub specific functionality
+long_description    hub is a command line utility which adds GitHub knowledge to git.\
+                    It can be used on its own or as a git wrapper.
+maintainers         phw openmaintainer
+categories          devel
+license             MIT
+platforms           darwin
+supported_archs     noarch
+
+homepage            http://defunkt.io/hub/
+
+checksums           rmd160  34c6ef940b3d8dc7772e7ea186a568c957a6cd23 \
+                    sha256  fb788e7919981098a4f602023cb8593ab0cfb61d93a384a2746d0db110387c46
+
+depends_build       bin:rake:rb-rake
+
+depends_lib         port:git-core
+
+use_configure       no
+
+build {}
+
+destroot.cmd        rake
+destroot.args       prefix=${destroot}${prefix}
+
+notes "
+To use 'hub' as a true git wrapper add the following line to your .bashrc
+
+alias git=hub
+
+or use 'hub' as standalone command
+"

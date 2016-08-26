@@ -1,0 +1,179 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:p="http://primefaces.prime.com.tr/ui" xmlns:h="http://java.sun.com/jsf/html">
+<ui:composition>
+  <style type="text/css">
+thead {
+  display: none;
+}
+
+.ui-datatable-even {
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-bottom-color: #E6E6E6;
+}
+
+.ui-datatable-odd {
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-bottom-color: #E6E6E6;
+}
+
+.ui-icon {
+  height: 0px;
+}
+</style>
+
+  <h:panelGrid columns="1">
+    <h:panelGrid columns="2">
+      <p:inputText id="workingonTxt" value="#{adminFeedManagedBean.feedUpdate.body}" styleClass="repoFeedInputBox"
+        disabled="#{!basePage.socialInterfaceEnabled}">
+        <p:watermark for="workingonTxt" value="#{msg.feedInputBoxWatermark}" style="font-weight: bold;" />
+      </p:inputText>
+      <p:commandButton styleClass="roundedButtonExtraSmall" value="#{msg.feedInputButton}" update="uberFeed workingonTxt"
+        action="#{adminFeedManagedBean.postUpdate}" ajax="false" disabled="#{!basePage.socialInterfaceEnabled}">
+      </p:commandButton>
+    </h:panelGrid>
+    <h:panelGrid columns="2">
+      <p:commandLink immediate="true" id="allFeedId" value="See all posts..." styleClass="feedComment" style="text-align: left;"
+        action="#{adminFeedManagedBean.viewFullFeed}">
+      </p:commandLink>
+      <p:menu type="tiered" style="width:125px; font-size:12px; padding:0px;margin-left:520px;" styleClass="">
+        <p:submenu label="Subscription Options" icon="">
+          <p:menuitem value="Subscribe by Email" actionListener="#{adminFeedManagedBean.subscribeToAdminTag}" update="growl noticesPanel"
+            icon="" styleClass="" rendered="#{!adminFeedManagedBean.subscribed}" />
+          <p:menuitem value="Unsubscribe" actionListener="#{adminFeedManagedBean.unsubscribeFromAdminTag}" update="growl noticesPanel"
+            icon="" styleClass="" rendered="#{adminFeedManagedBean.subscribed}" />
+        </p:submenu>
+      </p:menu>
+    </h:panelGrid>
+    <p:dataTable dynamic="true" id="uberFeed" value="#{adminFeedManagedBean.feed}" var="feed" styleClass="feedList"
+      rows="#{adminFeedManagedBean.feedRows}" paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom"
+      paginatorTemplate="{PreviousPageLink} {NextPageLink}" emptyMessage="">
+      <p:column styleClass="avatarCol">
+        <h:panelGroup styleClass="feedAvatarGroup" rendered="#{!feed.comment}">
+          <h:commandLink immediate="true" action="#{userManagedBean.viewUserProfile}" title="#{msg.userProfileLinkTitle}"
+            rendered="#{basePage.systemUserName != feed.userName}">
+            <f:setPropertyActionListener target="#{userManagedBean.selectedUserName}" value="#{feed.userName}" />
+            <h:graphicImage value="/avatarimage?smallid=#{feed.userName}" />
+          </h:commandLink>
+          <h:graphicImage value="/avatarimage?smallid=#{feed.userName}" rendered="#{basePage.systemUserName == feed.userName}" />
+        </h:panelGroup>
+      </p:column>
+      <p:column styleClass="bodyCol">
+        <!-- Standard post section -->
+        <h:panelGrid columns="1" styleClass="feedBodyGroup" rendered="#{!feed.comment}">
+          <h:panelGroup>
+            <h:commandLink immediate="true" action="#{userManagedBean.viewUserProfile}" title="#{msg.userProfileLinkTitle}"
+              rendered="#{basePage.systemUserName != feed.userName}">
+              <f:setPropertyActionListener target="#{userManagedBean.selectedUserName}" value="#{feed.userName}" />
+              <h:outputText value="#{feed.fullName}:  " styleClass="feedName" />
+            </h:commandLink>
+            <h:outputText value="#{feed.fullName}:  " styleClass="feedName" rendered="#{basePage.systemUserName == feed.userName}" />
+            <h:outputText value="#{feed.body}" styleClass="feedBody" rendered="#{!feed.truncated}" />
+            <h:outputText value="#{feed.truncatedBody}" styleClass="feedBody" rendered="#{feed.truncated}" />
+            <h:commandLink id="feedMoreLinkId" immediate="true" action="#{adminFeedManagedBean.viewFullFeed}" rendered="#{feed.truncated}">
+              <h:outputText value=" ..." styleClass="feedName" />
+            </h:commandLink>
+          </h:panelGroup>
+        </h:panelGrid>
+        <!-- Repository commit section -->
+        <h:panelGrid columns="1" styleClass="feedBodyCommitGroup" rendered="#{feed.commit and !feed.comment}">
+          <h:panelGroup>
+            <h:commandLink immediate="true" action="#{userManagedBean.viewUserProfile}" title="#{msg.userProfileLinkTitle}">
+              <f:setPropertyActionListener target="#{userManagedBean.selectedUserName}" value="#{feed.userName}" />
+              <h:outputText value="#{feed.fullName}:  " styleClass="feedName" />
+            </h:commandLink>
+            <h:outputText value="#{feed.commitHeader}" styleClass="feedBody" />
+          </h:panelGroup>
+          <h:panelGroup>
+            <h:outputText value="#{feed.body}" styleClass="feedBody" rendered="#{!feed.truncated}" />
+            <h:outputText value="#{feed.truncatedBody}" styleClass="feedBody" rendered="#{feed.truncated}" />
+            <h:commandLink immediate="true" action="#{adminFeedManagedBean.viewFullFeed}" rendered="#{feed.truncated}">
+              <h:outputText value=" ..." styleClass="feedName" />
+            </h:commandLink>
+          </h:panelGroup>
+        </h:panelGrid>
+        <!-- Comment section -->
+        <h:panelGrid columns="3" styleClass="feedBodyGroup" rendered="#{feed.comment and !feed.commit}">
+          <p:column>
+            <h:panelGroup styleClass="feedAvatarGroup">
+              <h:commandLink immediate="true" action="#{userManagedBean.viewUserProfile}" title="#{msg.userProfileLinkTitle}"
+                rendered="#{basePage.systemUserName != feed.userName}">
+                <f:setPropertyActionListener target="#{userManagedBean.selectedUserName}" value="#{feed.userName}" />
+                <h:graphicImage value="/avatarimage?smallid=#{feed.userName}" />
+              </h:commandLink>
+              <h:graphicImage value="/avatarimage?smallid=#{feed.userName}" rendered="#{basePage.systemUserName == feed.userName}" />
+            </h:panelGroup>
+          </p:column>
+          <p:column>
+            <h:panelGrid style="width: 440px;" columns="1" styleClass="feedBodyGroup">
+              <h:panelGroup>
+                <h:commandLink immediate="true" action="#{userManagedBean.viewUserProfile}" title="#{msg.userProfileLinkTitle}"
+                  rendered="#{basePage.systemUserName != feed.userName}">
+                  <f:setPropertyActionListener target="#{userManagedBean.selectedUserName}" value="#{feed.userName}" />
+                  <h:outputText value="#{feed.fullName}:  " styleClass="feedName" />
+                </h:commandLink>
+                <h:outputText value="#{feed.fullName}:  " styleClass="feedName" rendered="#{basePage.systemUserName == feed.userName}" />
+                <h:outputText value="#{feed.body}" styleClass="feedBody" rendered="#{!feed.truncated}" />
+                <h:outputText value="#{feed.truncatedBody}" styleClass="feedBody" rendered="#{feed.truncated}" />
+                <h:commandLink id="commentMoreLinkId" immediate="true" action="#{adminFeedManagedBean.viewFullFeed}"
+                  rendered="#{feed.truncated}">
+                  <h:outputText value=" ..." styleClass="feedName" />
+                </h:commandLink>
+              </h:panelGroup>
+            </h:panelGrid>
+          </p:column>
+          <p:column>
+            <h:outputText value="#{feed.postedTime}" styleClass="feedTime" style="text-align: right;" />
+          </p:column>
+        </h:panelGrid>
+      </p:column>
+      <!--  Feed options section -->
+      <p:column style="text-align: right;" styleClass="feedOptionsCol">
+        <h:panelGrid style="text-align: right;" columns="1" styleClass="feedOptionsGroup" rendered="#{!feed.comment}">
+          <h:outputText value="#{feed.postedTime}" styleClass="feedTime" style="text-align: right;" rendered="#{!feed.pinned}" />
+          <!--  Feed pinned -->
+          <p:commandLink immediate="true" styleClass="feedComment" style="text-align: right;" action="#{fullPostManagedBean.unPin}"
+            oncomplete="updatePage()" rendered="#{basePage.systemAdmin and feed.pinned}">
+            <h:graphicImage style="text-align: right;" library="img/platform" name="pinned.png" />
+            <f:setPropertyActionListener target="#{fullPostManagedBean.selectedFeedId}" value="#{feed.id}" />
+          </p:commandLink>
+          <h:graphicImage style="text-align: right;" library="img/platform" name="pinned.png"
+            rendered="#{feed.pinned and !basePage.systemAdmin}" />
+          <!--  End Feed pinned -->
+          <!--  Feed comment / delete -->
+          <h:panelGroup>
+            <p:commandLink immediate="true" id="commentLinkId" value="comment" styleClass="feedComment" style="text-align: right;"
+              action="#{fullPostManagedBean.viewFullPost}" oncomplete="updatePage()" disabled="#{!basePage.socialInterfaceEnabled}">
+              <f:setPropertyActionListener target="#{fullPostManagedBean.selectedFeed}" value="#{feed}" />
+            </p:commandLink>
+            <p:spacer width="10" rendered="#{feed.deletable}"></p:spacer>
+            <p:commandLink immediate="true" style="text-align: right;" action="#{fullPostManagedBean.deletePost}" oncomplete="updatePage()"
+              disabled="#{!basePage.socialInterfaceEnabled}" rendered="#{feed.deletable}">
+              <f:setPropertyActionListener target="#{fullPostManagedBean.selectedFeedId}" value="#{feed.id}" />
+              <h:graphicImage style="text-align: right;" library="img/platform" name="cross2.png" />
+            </p:commandLink>
+          </h:panelGroup>
+          <!--  End Feed comment / delete -->
+        </h:panelGrid>
+        <h:panelGrid rendered="#{feed.comment}">
+          <h:commandLink styleClass="feedComment" id="commentMoreId" immediate="true" action="#{fullPostManagedBean.viewFullPost}"
+            rendered="#{feed.moreCommentsAvailable}">
+            <f:setPropertyActionListener target="#{fullPostManagedBean.selectedFeed}" value="#{feed.parentFeed}" />
+            <h:outputText value="See all #{feed.allCommentsSize} comments" styleClass="feedComment" style="text-align: right;" />
+          </h:commandLink>
+        </h:panelGrid>
+      </p:column>
+    </p:dataTable>
+  </h:panelGrid>
+  <script type="text/javascript">
+	jQuery(document).ready(function() {
+		var tabElement = '#activityInnerTab';
+		jQuery(tabElement).addClass('current');
+	});
+</script>
+  <p:remoteCommand name="updatePage" update="activityPanel uberFeed"></p:remoteCommand>
+</ui:composition>
+</html>

@@ -1,0 +1,53 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89443 2012-01-29 14:22:14Z raimue@macports.org $
+
+PortSystem          1.0
+PortGroup           python27 1.0
+
+name                duplicity
+categories          sysutils
+version             0.6.17
+revision            1
+set stable_series   [join [lrange [split ${version} .] 0 1] .]-series
+platforms           darwin
+license             GPL-2
+maintainers         singingwolfboy openmaintainer
+
+description   Encrypted bandwidth-efficient backup.
+
+long_description  Duplicity backs up directories by producing encrypted \
+      tar-format volumes and uploading them to a remote or local file \
+      server. Because duplicity uses librsync, the incremental archives \
+      are space efficient and only record the parts of files that have \
+      changed since the last backup. Because duplicity uses GnuPG to \
+      encrypt and/or sign these archives, they will be safe from spying \
+      and/or modification by the server.
+
+distname            duplicity-${version}
+homepage            http://duplicity.nongnu.org/
+master_sites        https://launchpad.net/duplicity/${stable_series}/${version}/+download
+
+checksums           rmd160  e88bb833f7ed21f0b742caed9c28402c2b0601a5 \
+                    sha256  891e56061ab15127e67c93b9b462760b055eb48636c177b56400925d0a77a458
+
+build.args          --librsync-dir=${prefix}
+universal_variant   no
+python.link_binaries yes
+post-destroot {
+    ln -s ${name}-${python.branch} ${destroot}${prefix}/bin/${name}
+
+    xinstall -m 644 -W ${worksrcpath}/bin \
+        ${name}.1 \
+        rdiffdir.1 \
+        ${destroot}${prefix}/share/man/man1/
+}
+
+depends_run-append  port:py27-boto \
+                    port:ncftp
+
+depends_lib-append  port:librsync \
+                    port:gnupg
+
+livecheck.type    regex
+livecheck.url     https://launchpad.net/duplicity/+download
+livecheck.regex   {duplicity-(\d+(?:\.\d+)*).tar.gz}

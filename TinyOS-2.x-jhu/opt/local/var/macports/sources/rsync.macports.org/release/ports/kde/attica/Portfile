@@ -1,0 +1,27 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 88319 2011-12-28 16:04:51Z snc@macports.org $
+
+PortSystem          1.0
+PortGroup           kde4   1.1
+
+name                attica
+version             0.3.0
+categories          kde kde4
+maintainers         snc sharky
+license             LGPL-2.1
+description         Qt library for Open Collaboration Services API 1.4
+long_description    ${name} is a ${description}
+platforms           darwin
+homepage            http://www.kde.org
+master_sites        kde:stable/${name}
+use_bzip2           yes
+worksrcdir          ${name}-${version}
+checksums           rmd160  ffae042b46755a5401b5cff0adfe614ca24b2738 \
+                    sha256  a0bd218ac598afed5a5605c015035236ddb298e90336f9ef3dc74ebdeb19cdf1
+
+platform darwin 8 {
+    configure.ldflags-append    -lz -lssl -lcrypto
+}
+
+livecheck.url       http://kde.mirrors.hoobly.com/stable/${name}
+livecheck.regex     attica-(\\d+\\.\\d+\\.\\d+)

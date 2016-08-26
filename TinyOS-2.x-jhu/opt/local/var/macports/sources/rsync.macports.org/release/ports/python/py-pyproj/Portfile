@@ -1,0 +1,40 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89182 2012-01-20 14:01:07Z stromnov@macports.org $
+
+PortSystem          1.0
+PortGroup           python 1.0
+
+name                py-pyproj
+version             1.9.0
+revision            0
+categories-append   devel
+license             MIT
+platforms           darwin
+
+maintainers         landonf stromnov openmaintainer
+
+description         Python interfaces to PROJ.4 functions.
+long_description    Pyrex wrapper to provide python interfaces to PROJ.4 \
+                    (http://proj.maptools.org) functions.  Performs \
+                    cartographic transformations and geodetic computations.
+
+homepage            http://code.google.com/p/pyproj/
+master_sites        googlecode:pyproj
+distname            pyproj-${version}
+
+checksums           md5     a5757c0a73729b8d9bb4a632c42615ed \
+                    sha1    9a49ff24dbf88d725adddd1ba255609b558e6b03 \
+                    rmd160  53242c53f649a92d28f268801c0c792b10a56593
+
+depends_lib-append  port:proj
+
+python.versions     24 25 26 27
+
+if {$subport != $name} {
+    depends_lib-append  port:py${python.version}-distribute
+    post-destroot {
+        xinstall -m 644 -W ${worksrcpath} \
+            README PKG-INFO \
+            ${destroot}${prefix}/share/doc/${subport}
+    }
+}

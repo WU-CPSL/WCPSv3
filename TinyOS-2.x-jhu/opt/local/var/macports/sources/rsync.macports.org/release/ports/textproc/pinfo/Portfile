@@ -1,0 +1,30 @@
+# $Id: Portfile 50984 2009-05-14 21:08:43Z and.damore@macports.org $
+
+PortSystem 1.0
+name		pinfo
+version		0.6.9
+categories	textproc
+maintainers	iaas.msu.ru:master
+description	Pinfo - Ncurses based info documentation browser
+long_description \
+		Pinfo is a hypertext info file viewer \
+		with a user interface similar to lynx. \
+		It is based on curses/ncurses, \
+		and can handle info pages as well as man pages. \
+		It also features regexp searching and user-defined colors/keys.
+
+platforms	darwin
+
+homepage	http://pinfo.alioth.debian.org/
+master_sites	http://alioth.debian.org/download.php/1502/
+
+checksums	md5 c3298d36537601753558b3e9240b00b7
+
+pre-patch	{	
+		reinplace "s#/usr/share/info:/usr/info:/usr/local/share/info:/usr/local/info:/opt/info#/usr/share/info:/usr/info:/usr/local/share/info:/usr/local/info:/opt/info:${prefix}/share/info#" "${worksrcpath}/src/datatypes.c"
+		}
+
+configure.cflags-append	-I${prefix}/include
+
+configure.args	--mandir=${prefix}/share/man --infodir=${prefix}/share/info \
+		--with-ncurses --disable-nls

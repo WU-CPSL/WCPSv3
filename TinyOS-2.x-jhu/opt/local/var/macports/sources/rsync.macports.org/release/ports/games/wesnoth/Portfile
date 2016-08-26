@@ -1,0 +1,69 @@
+# $Id: Portfile 82934 2011-08-22 04:31:52Z jmr@macports.org $
+
+PortSystem              1.0
+PortGroup               app 1.0
+
+name                    wesnoth
+version                 1.8.6
+set branch              [join [lrange [split ${version} .] 0 1] .]
+categories              games
+platforms               darwin
+maintainers             nodetwo.com:jordan
+license                 GPL-2+
+homepage                http://www.wesnoth.org/
+master_sites            sourceforge:project/wesnoth/wesnoth-${branch}/wesnoth-${version}
+use_bzip2               yes
+use_parallel_build      yes
+supported_archs         i386 ppc
+
+description             A fantasy turn-based strategy game
+
+long_description        Battle for Wesnoth is a fantasy turn-based strategy \
+                        game. Battle for control of villages, using variety of \
+                        units which have advantages and disadvantages in \
+                        different types of terrains and against different \
+                        types of attacks. Units gain experience and advance \
+                        levels, and are carried over from one scenario to the \
+                        next campaign.
+
+checksums               rmd160  2190efe45d554df59052db1a58fcc3bdf766c47e \
+                        sha256  4fe603fa984ac76a384dc94ba28bd99fe2d1adf02ddf1706f2fa1b82b40f8081
+
+depends_build           port:pkgconfig
+depends_lib             port:xorg-libX11 \
+                        port:boost \
+                        path:lib/pkgconfig/sdl.pc:libsdl \
+                        port:libsdl_image \
+                        port:libsdl_mixer \
+                        port:libsdl_ttf \
+                        port:libsdl_net \
+                        port:libiconv \
+                        port:lua \
+                        path:lib/pkgconfig/pango.pc:pango \
+                        port:fontconfig \
+                        port:freetype \
+                        port:fribidi \
+                        port:gettext \
+                        port:zlib
+
+patchfiles              patch-m4-boost.m4.diff \
+                        patch-configure.ac.diff
+
+use_autoreconf          yes
+
+configure.args          --with-libiconv-prefix=${prefix} \
+                        --with-libintl-prefix=${prefix} \
+                        --with-zlib-prefix=${prefix} \
+                        --disable-dbus \
+                        --disable-desktop-entry \
+                        --disable-sdltest \
+                        --disable-server \
+                        --disable-strict-compilation \
+                        --with-boost=${prefix}
+
+configure.cppflags-append   -DBOOST_IOSTREAMS_USE_DEPRECATED
+
+app.icon                icons/wesnoth-icon-Mac.png
+
+livecheck.type          sourceforge
+livecheck.regex         /${name}-(\[0-9\]+\\.\[0-9\]*\[02468\](\\.\[0-9\]+)*)${extract.suffix}

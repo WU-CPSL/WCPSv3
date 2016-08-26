@@ -1,0 +1,22 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:filetype=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 83793 2011-09-11 05:05:43Z miwi@macports.org $
+
+PortSystem          1.0
+PortGroup           php5extension 1.0
+
+php5extension.setup timezonedb 2011.9 pecl
+categories          php devel
+platforms           darwin
+maintainers         miwi
+
+description         A PECL Timezone Database.
+
+long_description    Timezone Database to be used with PHP's date and time \
+                    functions.
+
+checksums           sha1    cfced36668bfd0a9db48f8a90016ec1af04b08e7 \
+                    rmd160  62ef5ef7cb5736f3564f06cb212deca213eb37e3
+
+configure.args-append --enable-timezonedb
+
+use_parallel_build  yes

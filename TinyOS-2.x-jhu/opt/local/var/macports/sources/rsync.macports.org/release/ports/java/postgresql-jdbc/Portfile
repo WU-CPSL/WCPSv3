@@ -1,0 +1,32 @@
+# $Id: Portfile 61588 2009-12-15 21:03:23Z jmr@macports.org $
+
+PortSystem 1.0
+
+name			postgresql-jdbc
+version			8.4-701
+categories		java databases
+maintainers		decibel.org:decibel
+description		PostgreSQL JDBC driver
+long_description	Pure Java JDBC driver for connecting to PostgreSQL databases.
+homepage		http://jdbc.postgresql.org/
+
+platforms		darwin
+
+distname		${name}-${version}.src
+master_sites    ${homepage}/download/
+checksums 		md5 9e91abdd1139e66d9e8e9ae6f9428e2f \
+				sha1 719004934271a9238d16877b380eb37614077362
+
+depends_build   bin:ant:apache-ant
+
+set workTarget	""
+
+use_configure	no
+
+build.cmd 		ant
+
+destroot {
+	xinstall -m 755 -d ${destroot}${prefix}/share/java
+	file copy ${worksrcpath}${workTarget}/jars/postgresql.jar \
+		${destroot}${prefix}/share/java/
+}

@@ -1,0 +1,38 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 88821 2012-01-12 23:02:19Z dports@macports.org $
+
+PortSystem          1.0
+PortGroup           texlive 1.0
+
+name                texlive-latex-extra
+version             22931
+revision            0
+
+categories          tex
+maintainers         dports
+license             Copyleft Permissive
+description         TeX Live: LaTeX supplementary packages
+long_description    A large collection of add-on packages for LaTeX.
+
+checksums           texlive-latex-extra-22931-run.tar.xz \
+                    rmd160  e4aca5e5ae3a3484cf34a535762ad20c7b68132b \
+                    sha256  6f1659a7e37fc6c15d0c627a3d85e279b4ea43146da8d08e3b2f31e3e4122e29 \
+                    texlive-latex-extra-22931-doc.tar.xz \
+                    rmd160  f3e68f32f44f7e6a3ba5dbeab5ec1a030cdfb489 \
+                    sha256  ca6b439fdad776a5623536d7dd86e8d5a3a51247e1a992bf3cccc2d6f581e884 \
+                    texlive-latex-extra-22931-src.tar.xz \
+                    rmd160  5add749451ba708b85b026eff872934a604a026a \
+                    sha256  9a0c9058f64287c315e46e92ffecb4a6de2a0fa66ce494a41cdc2afc8943d1ce
+
+depends_lib         port:texlive-latex port:texlive-pictures
+
+texlive.maps      \
+    {Map epiolmec.map} \
+    {MixedMap esint.map} \
+    {MixedMap manfnt.map}
+
+texlive.binaries    authorindex makeglossaries pdfannotextractor pdfthumb perltex ppower4 splitindex svn-multi vpe
+
+depends_lib-append  port:texlive-latex-recommended
+
+texlive.texmfport

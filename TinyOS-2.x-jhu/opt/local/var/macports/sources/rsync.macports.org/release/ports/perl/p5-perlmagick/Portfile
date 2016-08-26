@@ -1,0 +1,48 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89783 2012-02-10 15:52:51Z ryandesign@macports.org $
+
+PortSystem                  1.0
+PortGroup                   perl5 1.0
+
+# Keep relevant lines in sync between ImageMagick and p5-perlmagick.
+
+epoch                       1
+perl5.setup                 PerlMagick 6.7.5-3
+set reasonable_version      [lindex [split ${version} -] 0]
+set my_name                 ImageMagick
+maintainers                 futurelab.ch:astricker ryandesign
+description                 Perl extension for calling ImageMagick's libMagick methods
+long_description            ${description}
+license                     ImageMagick
+platforms                   darwin
+use_xz                      yes
+
+# we use the ImageMagick distribution version of PerlMagick to
+# ensure it will always match ImageMagick version installed
+
+master_sites                http://image_magick.veidrodis.com/image_magick/ \
+                            http://imagemagick.linux-mirror.org/download/ \
+                            ftp://ftp.imagemagick.net/pub/${name}/ \
+                            ftp://ftp.fifi.org/pub/ImageMagick/
+
+dist_subdir                 ImageMagick
+distname                    ${my_name}-${version}
+worksrcdir                  ${worksrcdir}/PerlMagick
+
+checksums                   rmd160  8dcd95279e90b87805d5bc35c9c64d98c8ede191 \
+                            sha256  9a0526a0e7de50115c94e63b5a82a4a18d80ffa27f6e6793bba86edd25511a54
+
+if {${perl5.major} != ""} {
+depends_lib-append          port:ImageMagick
+post-patch {
+    reinplace "s|@ARCHFLAGS@|[get_canonical_archflags]|g" ${worksrcpath}/Makefile.PL
+    reinplace "s|@PREFIX@|${prefix}|g" ${worksrcpath}/Makefile.PL
+}
+
+livecheck.type              none
+} else {
+livecheck.version           ${reasonable_version}
+livecheck.type              regex
+livecheck.url               http://ftp.surfnet.nl/pub/ImageMagick/
+livecheck.regex             ${my_name}-(\\d+(?:\\.\\d+)*)(?:-\\d+)?
+}

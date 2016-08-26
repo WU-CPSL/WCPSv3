@@ -1,0 +1,41 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 87280 2011-11-16 07:31:39Z ryandesign@macports.org $
+
+PortSystem                      1.0
+PortGroup                       pure 1.0
+
+pure.setup                      ffi 0.12
+revision                        2
+categories                      devel
+platforms                       darwin
+maintainers                     ryandesign
+license                         LGPL-3
+
+description                     an interface to libffi which enables you to \
+                                call C functions from Pure and vice versa
+
+long_description                ${name} provides ${description}. It goes \
+                                beyond Pure's built-in C interface in that \
+                                it also handles C structs and makes Pure \
+                                functions callable from C. Moreover, \
+                                depending on the libffi implementation, it \
+                                may also be possible to call foreign \
+                                languages other than C.
+
+# 0.12 was stealth-updated 2011-10-20
+dist_subdir                     ${name}/${version}_1
+
+checksums                       rmd160  a8c3e1370ac82f9c70c979e1e8c28faa7b0a0bee \
+                                sha256  7aba78d96cad5ce6277b9857cbe9a09d6d572cb3fa5a48a53e4a8d3e23eee32d
+
+depends_build-append            port:pkgconfig
+
+depends_lib-append              port:libffi
+
+platform darwin {
+    configure.cflags-append     -fno-common
+}
+
+pre-configure {
+    eval configure.cppflags-append [exec ${prefix}/bin/pkg-config libffi --cflags]
+}

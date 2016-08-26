@@ -1,0 +1,19 @@
+# $Id: Portfile 86338 2011-10-24 14:42:10Z jmr@macports.org $
+
+PortSystem	1.0
+PortGroup	perl5 1.0
+
+perl5.setup	Data-Buffer 0.04
+revision    2
+license		{Artistic-1 GPL}
+maintainers	nomaintainer
+description	binary buffers for perl
+long_description	Data::Buffer implements a low-level binary buffer \
+			in which you can get and put integers, strings, \
+			and other data. Internally the implementation is \
+			based on pack and unpack, such that Data::Buffer \
+			is really a layer on top of those built-in functions.
+platforms	darwin
+checksums	md5 d971f7b92684cc4f4cba7a9c774b8480
+
+supported_archs noarch

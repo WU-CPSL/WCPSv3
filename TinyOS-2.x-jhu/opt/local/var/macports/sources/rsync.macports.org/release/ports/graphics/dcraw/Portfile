@@ -1,0 +1,78 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 88401 2011-12-30 23:48:01Z ryandesign@macports.org $
+
+PortSystem              1.0
+PortGroup               archcheck 1.0
+
+name                    dcraw
+version                 9.12-20111226123200
+set version_number      [lindex [split ${version} -] 0]
+categories              graphics
+maintainers             ryandesign
+platforms               darwin
+homepage                http://www.cybercom.net/~dcoffin/dcraw/
+master_sites            ${homepage}archive/
+distname                ${name}-${version_number}
+worksrcdir              $name
+dist_subdir             ${name}/${version}
+use_configure           no
+use_parallel_build      yes
+
+description             Digital camera raw photo decoding software supporting \
+                        hundreds of cameras
+
+long_description        ${name} is a small program for processing raw, \
+                        unprocessed CCD data files from any of hundreds of \
+                        digital cameras with better quality output than the \
+                        tools provided by camera vendors.
+
+checksums               rmd160  2e9a42ce7ddb5a62c551f2b49f61c33e34970e9e \
+                        sha256  9892b013d2190b858dea380a94e7f5c30318a068237e7bef8eb6a8aefc6bd691
+
+depends_lib             port:gettext \
+                        port:libiconv \
+                        port:jpeg \
+                        port:jasper \
+                        port:lcms
+
+archcheck.files         lib/libintl.dylib \
+                        lib/libiconv.dylib \
+                        lib/libjpeg.dylib \
+                        lib/libjasper.dylib \
+                        lib/liblcms.dylib
+
+post-extract {
+    xinstall -W ${filespath} Makefile.in ${worksrcpath}/Makefile
+}
+
+configure.ldflags-append -ljasper
+
+variant universal {}
+
+build.args              CC="${configure.cc} [get_canonical_archflags]" \
+                        CFLAGS="${configure.cflags}" \
+                        CPPFLAGS="${configure.cppflags}" \
+                        LDFLAGS="${configure.ldflags}" \
+                        PREFIX=${prefix}
+
+destroot.args           PREFIX=${prefix}
+
+set my_locales          {ca cs da de eo es fr hu it nl pl pt ru sv zh_CN zh_TW}
+
+post-destroot {
+    xinstall -m 644 -W ${worksrcpath} dcraw.1 ${destroot}${prefix}/share/man/man1
+    foreach locale ${my_locales} {
+        if {[file exist ${worksrcpath}/dcraw_${locale}.1]} {
+            xinstall -m 755 -d ${destroot}${prefix}/share/man/${locale}/man1
+            xinstall -m 644 -W ${worksrcpath} dcraw_${locale}.1 ${destroot}${prefix}/share/man/${locale}/man1/dcraw.1
+        }
+        if {[file exist ${worksrcpath}/build/dcraw_${locale}.mo]} {
+            xinstall -m 755 -d ${destroot}${prefix}/share/locale/${locale}/LC_MESSAGES
+            xinstall -m 644 -W ${worksrcpath}/build dcraw_${locale}.mo ${destroot}${prefix}/share/locale/${locale}/LC_MESSAGES/dcraw.mo
+        }
+    }
+}
+
+livecheck.type          regex
+livecheck.url           http://www.ryandesign.com/macports/version.php/${name}
+livecheck.regex         (.*)

@@ -1,0 +1,52 @@
+# $Id: Portfile 88400 2011-12-30 23:15:52Z ryandesign@macports.org $
+
+PortSystem              1.0
+PortGroup xcodeversion  1.0
+
+name                    ode
+version                 0.11.1
+categories              devel
+platforms               darwin
+license                 LGPL-2.1
+maintainers             nomaintainer
+homepage                http://www.ode.org/
+#master_sites            sourceforge:opende
+# using our mirrors only for this release because of a stealth update (#22141)
+master_sites            macports_distfiles
+use_bzip2               yes
+
+description             library for simulating articulated rigid body dynamics
+
+long_description        ODE is a free, industrial quality library for \
+                        simulating articulated rigid body dynamics - for \
+                        example ground vehicles, legged creatures, and moving \
+                        objects in VR environments. It is fast, flexible, \
+                        robust and platform independent, with advanced joints, \
+                        contact with friction, and built-in collision detection.
+
+checksums               md5     c5d51e4c73bff379e5ae18ac218ebba3 \
+                        sha1    35a4c40877f60d46c75f005a29ccdce254eb8caf \
+                        rmd160  77bb317ff762eccb5d1c5c9f3513c335ac5f8e9c
+
+configure.args          --with-trimesh=opcode \
+                        --enable-double-precision \
+                        --enable-release \
+                        --enable-shared \
+                        --disable-demos
+
+build.type              gnu
+
+post-destroot {
+    system "ranlib ${destroot}${prefix}/lib/libode.a"
+}
+
+minimum_xcodeversions {9 3.1}
+
+variant debug description {Enable debugging checks} {
+    configure.args-delete --enable-release
+    configure.args-append --enable-debug
+}
+
+livecheck.type          sourceforge
+livecheck.name          opende
+livecheck.regex         ${name}-(\[0-9.\]+)${extract.suffix}

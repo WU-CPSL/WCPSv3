@@ -1,0 +1,37 @@
+# $Id: Portfile 57375 2009-09-10 08:16:41Z ryandesign@macports.org $
+
+PortSystem 1.0
+
+name			libconfig
+version			0.2.3
+categories		devel
+platforms		darwin
+maintainers		nomaintainer
+description		configuration file processing library
+long_description	Libconfig is a configuration file processing library that \
+			saves you from having to write your own configuration parsers and \
+			routines. It supports callback functions, automatic variable \
+			assignment, and many different configuration file types such as \
+			Apache-like, Windows INI-like, and whitespace separated. \
+			Configuration is processed in a logical manner: global \
+			configuration files, local configuration files, environment \
+			variables, and finally command line options.
+
+homepage		http://www.rkeene.org/oss/libconfig/
+master_sites	http://www.rkeene.org/files/oss/libconfig/devel/
+
+checksums               md5     1f1a06f12bcfd4fb7f5c021efb8d2821 \
+                        sha1    514b691ab0a269eb40c143d4f655f4218e68819f \
+                        rmd160  cdb50fb68df6b046e2cb4f94f9a8a29c04bb3c0e
+
+patchfiles		patch-Makefile.in.diff
+
+depends_lib             port:libopennet
+
+configure.args	--mandir=\\\${prefix}/share/man
+
+destroot.destdir	prefix=${destroot}${prefix}
+
+livecheck.type  regex
+livecheck.url   ${master_sites}
+livecheck.regex "${name}-(\\d+(?:\\.\\d+)*)${extract.suffix}"

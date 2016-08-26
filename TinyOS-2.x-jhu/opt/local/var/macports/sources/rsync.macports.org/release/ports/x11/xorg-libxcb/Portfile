@@ -1,0 +1,71 @@
+# $Id: Portfile 83061 2011-08-25 01:18:00Z jmr@macports.org $
+
+PortSystem 1.0
+
+name		xorg-libxcb
+version		1.7
+categories	x11 devel
+license		X11
+maintainers	jeremyhu openmaintainer
+description	X.org libxcb
+homepage	http://xcb.freedesktop.org/
+platforms	darwin macosx
+long_description The X C Binding \\(XCB\\) library
+master_sites	 ${homepage}/dist/
+
+distname	libxcb-${version}
+checksums           md5     925699df361b99491165ebc12068056b \
+                    sha1    7540f0587907bce421914f0ddb813810cb2f36f8 \
+                    rmd160  f6748b9751e339c2669a6b9322b421abbbff7afb
+use_bzip2	yes
+use_parallel_build yes
+
+depends_build   port:pkgconfig
+
+depends_lib	port:xorg-libXau \
+                port:xorg-libXdmcp \
+                port:xorg-xcb-proto \
+                port:xorg-libpthread-stubs
+
+if {[variant_isset python31] || [variant_isset python32]} {
+    patchfiles-append libxcb-python3.patch
+    post-patch {
+        system -W ${worksrcpath}/src "$2to3 -w *.py"
+    }
+}
+
+set 2to3 ""
+variant python25 conflicts python26 python27 python31 python32 description {Use python 2.5} {
+    depends_run-append      port:python25
+    configure.python        ${prefix}/bin/python2.5
+}
+
+variant python26 conflicts python25 python27 python31 python32 description {Use python 2.6} {
+    depends_run-append      port:python26
+    configure.python        ${prefix}/bin/python2.6
+}
+
+variant python27 conflicts python25 python26 python31 python32 description {Use python 2.7} {
+    depends_run-append      port:python27
+    configure.python        ${prefix}/bin/python2.7
+}
+
+variant python31 conflicts python25 python26 python27 python32 description {Use python 3.1} {
+    depends_run-append      port:python31
+    configure.python        ${prefix}/bin/python3.1
+    set 2to3 "${prefix}/bin/2to3-3.1"
+}
+
+variant python32 conflicts python25 python26 python27 python31 description {Use python 3.2} {
+    depends_run-append      port:python32
+    configure.python        ${prefix}/bin/python3.2
+    set 2to3 "${prefix}/bin/2to3-3.2"
+}
+
+if {![variant_isset python25] && ![variant_isset python26] && ![variant_isset python31] && ![variant_isset python32]} {
+    default_variants +python27
+}
+
+livecheck.type  regex
+livecheck.url   ${master_sites}?C=M&O=D
+livecheck.regex libxcb-(\\d+(?:\\.\\d+)*)

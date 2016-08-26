@@ -1,0 +1,20 @@
+# $Id: Portfile 50984 2009-05-14 21:08:43Z and.damore@macports.org $
+
+PortSystem 1.0
+name		rpl
+version		1.4.0
+platforms	darwin
+categories	textproc
+maintainers	freebsdcluster.org:mich
+description	Rpl is a Unix replacement utility
+long_description   \
+		rpl is a Unix text replacement utility. It will replace strings with new \
+		strings in multiple text files. It can scan directories recursively and \
+		replace strings in all files found. The search can be limited to files \
+		with certain filename suffixes (e.g. '.html', '.c', etc.).
+homepage	http://www.laffeycomputer.com/rpl.html
+master_sites	http://downloads.laffeycomputer.com/current_builds/
+checksums	md5 35af9ac5425f5a6278e5890c3272684e
+destroot { 	system "cd ${worksrcpath} && \
+		install src/${name} ${destroot}${prefix}/bin && \
+		install man/${name}.1 ${destroot}${prefix}/share/man/man1" }

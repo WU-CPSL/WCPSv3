@@ -1,0 +1,57 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 87810 2011-12-07 06:46:41Z ryandesign@macports.org $
+
+PortSystem              1.0
+
+name                    evas
+epoch                   2
+version                 1.1.0
+categories              devel x11
+platforms               darwin
+maintainers             ryandesign openmaintainer
+
+description             Evas is a hardware-accelerated canvas API for X11.
+
+long_description        Evas is a hardware-accelerated canvas API for \
+                        X-Windows that can draw anti-aliased text, smooth \
+                        super and sub-sampled images, alpha-blend, as well \
+                        as drop down to using normal X11 primitives such as \
+                        pixmaps, lines and rectangles for speed if your CPU \
+                        or graphics hardware are too slow.
+
+checksums               rmd160  ebad0e5b4f3987ee9a29b39f329afb650eafeb20 \
+                        sha256  7702a315dc22f4abc269f6a3ef2695b365a3eab4fd2fcdd07275e41221b03930
+
+homepage                http://trac.enlightenment.org/e/wiki/Evas
+master_sites            http://download.enlightenment.org/releases/
+use_bzip2               yes
+
+depends_build           port:pkgconfig \
+                        port:mesa
+
+depends_lib             port:eet \
+                        port:librsvg \
+                        port:tiff \
+                        path:include/gif_lib.h:giflib
+
+configure.args          --disable-doc \
+                        --enable-buffer
+
+# http://trac.enlightenment.org/e/ticket/503
+#                        --enable-gl-x11
+
+use_parallel_build      yes
+
+platform darwin i386 {
+    # http://trac.enlightenment.org/e/ticket/942
+    if {${os.major} >= 10} {
+        # Clang has immintrin.h which is needed for evas to build with SSE3 optimizations.
+        configure.compiler clang
+    } else {
+        configure.args-append --disable-cpu-sse3
+    }
+}
+
+livecheck.type          regex
+livecheck.url           [lindex ${master_sites} 0]
+livecheck.regex         ${name}-(\[0-9a-z.\]+)${extract.suffix}

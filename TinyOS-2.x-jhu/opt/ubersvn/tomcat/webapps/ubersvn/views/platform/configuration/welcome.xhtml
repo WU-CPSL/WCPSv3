@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.prime.com.tr/ui"
+  xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core">
+<ui:composition template="/templates/platform/ubersvn-configuration-template.xhtml">
+
+  <ui:define name="pageContentView">
+    <p:panel styleClass="configurationPanel">
+      <p:focus />
+      <div style="text-align: center; margin-bottom: 40px;">
+        <h:outputText style="font-size: 24px; color: #6D6D6D;	text-align: center;" value="#{msg.welcomeMessage1}" />
+        <h:graphicImage library="img/platform/logos" name="mk2_logo_login.png" />
+        <h:outputText style="font-size: 24px; color: #6D6D6D; text-align: center;" value="#{msg.welcomeMessage2}" />
+      </div>
+      <h:panelGrid id="welcomePageOuterTable" columns="1" styleClass="configurationPageTable">
+        <h:panelGrid id="welcomePageInnerTable" cellspacing="10px;" columns="3"
+          columnClasses="configurationLabelColumn, configurationFieldColumn,configurationValidationColumn">
+
+          <p:spacer />
+          <h:panelGroup>
+            <div>
+              <h:outputText styleClass="configurationTitle" value="#{msg.installationSettingsTitle}" />
+            </div>
+          </h:panelGroup>
+          <p:spacer />
+
+          <h:outputLabel for="installationDirectory" value="#{msg.installDirectory}" />
+
+          <h:panelGroup>
+            <p:inputText value="#{webConfiguratorManagedBean.config.installPath}" id="installationDirectory" size="50"
+              styleClass="configurationWizardFormField" style="background: #CFCFD3 !important;" disabled="true" />
+            <br />
+            <h:outputText value="#{msg.installDirectoryHelp1}" styleClass="wizardComment" />
+            <br />
+            <h:outputText value="#{msg.installDirectoryHelp2}" styleClass="wizardComment" />
+          </h:panelGroup>
+          <p:spacer />
+
+          <h:outputLabel for="repoStorageLocation" value="#{msg.repoStorageLocation}" style="position: relative; top: 6px;" />
+          <h:panelGroup>
+            <p:inputText id="repoStorageLocation" required="true" requiredMessage="#{msg.repoStorageLocationRequired}" size="50"
+              styleClass="configurationWizardFormField" value="#{webConfiguratorManagedBean.repoLocation}" />
+            <p:spacer width="5" />
+            <h:graphicImage style="cursor: pointer; position: relative; top: 10px;" library="img/platform/icons" name="magniglass.png"
+              onclick="document.forms[1].popupField.value='repoStorageLocation';window.open('#{webConfiguratorManagedBean.facesContext.externalContext.requestContextPath}/faces/folderChooserPopup.jsp','Browse_Server', 'height=630,width=750,top='+((screen.height-(screen.height/1.618))-(500/2))+',left='+((screen.width-650)/2)+',scrollbars,resizable')" />
+            <br />
+            <h:outputText value="#{msg.repoStorageLocationHelp}" styleClass="wizardComment" />
+          </h:panelGroup>
+          <h:message for="repoStorageLocation" />
+          <h:panelGroup>
+            <h:graphicImage library="img/platform/logos" name="mk2_logo_login.png" />
+            <h:outputLabel for="uberSVNKey" value="#{msg.uberSVNKey}" />
+          </h:panelGroup>
+          <h:panelGroup>
+            <p:inputMask size="50" mask="****-****-****-****" value="#{webConfiguratorManagedBean.uberSVNKey}"
+              styleClass="configurationWizardFormField" id="uberSVNKey" required="true" requiredMessage="#{msg.uberSVNKeyRequired}">
+              <f:validator validatorId="com.wandisco.ubersvn.LicenseValidator" />
+            </p:inputMask>
+
+            <p:watermark for="uberSVNKey" value="#{msg.uberSVNKeyExample}" />
+            <br />
+            <h:panelGroup>
+              <h:outputText value="#{msg.uberSVNKeyHelp1}" styleClass="wizardComment" />
+              <br />
+              <h:outputText value="#{msg.uberSVNKeyHelp2}" styleClass="wizardComment" />
+              <h:outputLink value="http://www.ubersvn.com/register" target="blank">
+                <h:outputText style="font-size: 12px; white-space: normal;" value="#{msg.uberSVNKeyLinkText}" />
+              </h:outputLink>
+            </h:panelGroup>
+          </h:panelGroup>
+          <h:message for="uberSVNKey" />
+
+          <p:spacer />
+          <h:panelGroup>
+            <h:outputLabel style="font-size: 12px;" value="#{msg.termsAndConditionsHelp}" />
+            <h:outputLink value="http://www.ubersvn.com/eula" target="blank">
+              <h:outputText style="font-size: 12px; white-space: normal;" value="#{msg.termsAndConditionsLinkText}" />
+            </h:outputLink>
+          </h:panelGroup>
+          <p:spacer />
+
+        </h:panelGrid>
+      </h:panelGrid>
+    </p:panel>
+    <h:panelGroup>
+      <div>
+        <p:panel style="border: none; background: transparent; position: relative; bottom: 0; left: 0;">
+          <h:panelGrid columns="3" width="100%" columnClasses="footerLeft,footerMiddle,footerRight">
+            <p:spacer />
+            <h:panelGroup>
+              <h:graphicImage library="img/platform" name="step1.png" />
+            </h:panelGroup>
+            <p:commandButton action="#{webConfiguratorManagedBean.goToCreateAdminPage}" id="moveToCreateAdminButton" ajax="false"
+              value="#{msg.nextButton}" styleClass="roundedButtonMedium" />
+          </h:panelGrid>
+        </p:panel>
+      </div>
+    </h:panelGroup>
+    <script type="text/javascript">
+          // all jQuery events are executed within the document ready function
+          jQuery(document).ready(function() {
+
+            jQuery("form").bind("keydown", function(event) {
+              // track enter key
+              var keycode = (event.keyCode ? event.keyCode : (event.which ? event.which : event.charCode));
+              if (keycode == 13) { // keycode for enter key
+                // force the 'Enter Key' to implicitly click the Update button
+                document.getElementById('moveToCreateAdminButton').click();
+                return false;
+              } else {
+                return true;
+              }
+            }); // end of function
+          }); // end of document ready
+        </script>
+  </ui:define>
+</ui:composition>
+</html>

@@ -1,0 +1,73 @@
+# $Id: Portfile 85190 2011-10-10 21:51:15Z mww@macports.org $
+
+PortSystem 1.0
+
+name		libgdiplus
+version		2.10
+categories	devel
+platforms	darwin
+maintainers	nomaintainer
+license		{LGPL MPL-1.1}
+description	An Open Source implementation of the GDI+ API
+long_description	An implementation of the GDI+ API for Mono, an \
+			effort to create an open source implementation of \
+			the .NET Development Framework including a C# compiler.
+
+homepage	http://www.mono-project.com/Libgdiplus
+master_sites	http://www.go-mono.com/sources/libgdiplus/
+use_bzip2	yes
+
+checksums           sha1    cc88be4db56561039325cfda10a42408d64332d9 \
+                    rmd160  5b66e9c00759c24b815a82581efa271d333b058e
+
+depends_build   port:pkgconfig
+
+depends_lib	port:jpeg \
+		port:tiff \
+		path:include/gif_lib.h:giflib \
+		port:libpng \
+		port:zlib \
+		port:fontconfig \
+		port:libiconv \
+		port:libexif \
+		path:lib/pkgconfig/glib-2.0.pc:glib2 \
+		path:lib/pkgconfig/cairo.pc:cairo \
+		port:xorg-libsm \
+		port:xrender
+
+post-patch {
+ 	reinplace "s/-pthread/-lpthread/g" ${worksrcpath}/configure
+}
+
+test.run        yes
+test.target     check
+
+post-destroot {
+	set docdir ${prefix}/share/doc/${name}
+	xinstall -d ${destroot}${docdir}
+	xinstall -m 0644 -W ${worksrcpath} AUTHORS COPYING ChangeLog LICENSE NEWS \
+		README TODO ${destroot}${docdir}
+}
+
+variant pango description {Enable Pango font rendering support (experimental)} {
+    depends_lib-append      path:lib/pkgconfig/pango.pc:pango
+
+    configure.args-append   --with-cairo=system \
+                            --with-pango
+
+    pre-configure {
+        if {[file exists ${prefix}/include/cairo/cairo-quartz.h]} {
+            ui_error "cairo and pango must be installed without their +quartz variant"
+            ui_error "to enable mono +pango variant."
+            error "Please reinstall cairo and pango without +quartz."
+        }
+    }
+}
+
+platform darwin 10 {
+	patchfiles-append	patch-disable-atsui-support.diff
+}
+
+livecheck.type  regex
+livecheck.url   http://www.go-mono.com/sources-stable/
+livecheck.regex ${name}-(\\d+(?:\\.\\d+)*)

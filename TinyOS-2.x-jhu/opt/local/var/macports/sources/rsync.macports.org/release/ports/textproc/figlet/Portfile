@@ -1,0 +1,28 @@
+# $Id: Portfile 81918 2011-08-06 14:41:49Z jmr@macports.org $
+
+PortSystem 1.0
+
+name            figlet
+version         2.2.4
+categories      textproc amusements
+maintainers     toby
+description     banner-like program prints strings as ASCII art
+long_description \
+    FIGlet is a program for making large letters out of ordinary text
+homepage        http://www.figlet.org/
+platforms       darwin freebsd
+
+master_sites    ftp://ftp.figlet.org/pub/figlet/program/unix/ \
+                http://ftp.ch.openbsd.org/pub/OpenBSD/distfiles/
+
+checksums       md5 ea048d8d0b56f9c58e55514d4eb04203 \
+                sha1 365f1fce8525c0ff23631661f96534f06822e423 \
+                rmd160 158c833e7176f32b1f702482c4cb51dbfe2a4002
+
+patchfiles      patch-Makefile patch-figlet.6
+
+configure {
+    reinplace "s|__PREFIX__|${prefix}|" "${worksrcpath}/Makefile"
+    reinplace "s|__CC__|${configure.cc}|" "${worksrcpath}/Makefile"
+    reinplace "s|__CFLAGS__|${configure.cflags}|" "${worksrcpath}/Makefile"
+}

@@ -1,0 +1,6 @@
+CFLAGS += -DFOOTER_SIZE=2 -DSCP
+CFLAGS += -DTDMA
+UPMA_MAC = scp-wustl
+UPMA = 1
+
+include ../../Makefile.common

@@ -1,0 +1,50 @@
+# $Id: Portfile 87779 2011-12-05 22:20:36Z mww@macports.org $
+
+PortSystem 1.0
+
+name			postgresql84-doc
+version			8.4.10
+categories		databases
+platforms		darwin
+maintainers		mww jwa
+license			Permissive
+description		Documentation for the postgresql database
+long_description PostgreSQL is Object-Relational Database Management System. \
+				It supports almost all SQL constructs, including transactions, \
+				subselects, and user-defined types and functions. Write-ahead \
+				logging means increased performance while retaining data \
+				integrity. This is the documentation.
+
+homepage		http://www.postgresql.org/
+master_sites		postgresql:source/v${version}
+distname		postgresql-${version}
+
+checksums           md5     6fd9b76e1d4df479e0b5402c88b1860e \
+                    sha1    31202e47fd2274b3a846d98c961cd7281d1798e8 \
+                    rmd160  ce5961033fc05b9e862cfef3c164d8faed19ce89
+
+use_bzip2		yes
+dist_subdir		postgresql84
+
+set libdir		${prefix}/lib/postgresql84
+configure.args	--mandir=${prefix}/share/man \
+				--with-docdir=${prefix}/share/doc/postgresql84 \
+				--without-openssl \
+				--without-rendezvous \
+				--without-readline \
+				--without-zlib
+
+build.dir		${worksrcpath}/doc
+build.type		gnu
+build.target
+
+destroot.dir	${build.dir}
+
+post-destroot {
+    file rename ${destroot}${prefix}/share/doc/postgresql ${destroot}${prefix}/share/doc/postgresql84
+}
+
+livecheck.type	regex
+livecheck.url	${homepage}
+livecheck.regex	(8\\.4\\.\[0-9\]+)
+

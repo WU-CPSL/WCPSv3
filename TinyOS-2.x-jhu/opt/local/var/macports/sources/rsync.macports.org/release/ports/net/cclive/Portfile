@@ -1,0 +1,29 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 87585 2011-11-27 03:46:48Z snc@macports.org $
+
+PortSystem          1.0
+
+name                cclive
+version             0.7.8
+categories          net www
+license             GPL
+maintainers         openmaintainer snc
+description         A command line video extraction utility.
+long_description    cclive is a command line video extraction utility similar \
+                    to clive but with lower requirements
+homepage            http://cclive.sourceforge.net
+installs_libs       no
+
+platforms           darwin
+depends_build-append    port:pkgconfig
+depends_lib-append  port:boost port:libquvi port:pcre port:curl
+
+master_sites        sourceforge
+use_xz              yes
+
+checksums           rmd160  8f0b5c85a5155eff116279fff30ea2abe3f36477 \
+                    sha256  d7d4ece05d311edd0088416a4f2bd912b5524345be9a7321476dddd8469cbbc7
+
+patchfiles          patch-configure.diff
+
+livecheck.regex     ${name}-(\\d+(\\.\\d+)+)

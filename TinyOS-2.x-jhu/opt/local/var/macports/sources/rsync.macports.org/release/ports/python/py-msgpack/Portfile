@@ -1,0 +1,34 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 88602 2012-01-05 20:18:54Z stromnov@macports.org $
+
+PortSystem          1.0
+PortGroup           python 1.0
+
+name                py-msgpack
+version             0.1.12
+revision            0
+categories          python devel
+license             Apache
+platforms           darwin
+
+maintainers         stromnov openmaintainer
+
+description         MessagePack (de)serializer for Python.
+
+long_description    ${description}
+
+homepage            http://pypi.python.org/pypi/msgpack-python/
+master_sites        http://pypi.python.org/packages/source/m/msgpack-python/
+
+distname            msgpack-python-${version}
+
+checksums           md5     121a203e961b566f2039f527f3556a5d \
+                    sha1    2cff528c1466b903b8b13b23f96f8486d3438576 \
+                    rmd160  ededbaf655314cc2df0b2c86640dd894af62a27d
+
+python.default_version  27
+python.versions     26 27
+
+livecheck.type      regex
+livecheck.url       ${master_sites}
+livecheck.regex     "msgpack-python-(\\d+(?:\\.\\d+)*)${extract.suffix}"

@@ -1,0 +1,16 @@
+# $Id: Portfile 87212 2011-11-14 06:21:48Z jmr@macports.org $
+
+PortSystem              1.0
+PortGroup               perl5 1.0
+
+perl5.setup             Digest-BubbleBabble 0.01
+revision                2
+license                 {Artistic-1 GPL}
+maintainers             nomaintainer
+description             Create bubble-babble fingerprints
+long_description        ${description}
+
+checksums               md5 0e8ef3de82ae909cfaeddf8269140c17
+platforms               darwin
+
+supported_archs noarch

@@ -1,0 +1,139 @@
+[12 Mar 2013 17:06:41]  INFO (?:?) - deregistering jdbc driver: org.hsqldb.jdbcDriver@26c94114
+[12 Mar 2013 17:06:41]  INFO (?:?) - Shutdown complete
+[12 Mar 2013 18:23:04]  INFO (?:?) - Creating new team Everyone
+[12 Mar 2013 18:23:04]  WARN (JDBCExceptionReporter.java:100) - SQL Error: -104, SQLState: 23000
+[12 Mar 2013 18:23:04] ERROR (JDBCExceptionReporter.java:101) - Violation of unique constraint SYS_CT_130: duplicate value(s) for column(s) NAME in statement [insert into teams (id, dateCreated, dateLastModified, avatarImage, description, name) values (null, ?, ?, ?, ?, ?)]
+[12 Mar 2013 18:23:04] ERROR (?:?) - ERROR: Team: Everyone could not be created.
+[12 Mar 2013 18:23:04] ERROR (?:?) - org.hibernate.exception.ConstraintViolationException: could not insert: [com.wandisco.ubersvn.entities.TeamEntity]
+[12 Mar 2013 18:23:04]  WARN (JDBCExceptionReporter.java:100) - SQL Error: -104, SQLState: 23000
+[12 Mar 2013 18:23:04] ERROR (JDBCExceptionReporter.java:101) - Violation of unique constraint SYS_CT_98: duplicate value(s) for column(s) NAME in statement [insert into quicklink (id, dateCreated, dateLastModified, link, name, quicklinkOrder) values (null, ?, ?, ?, ?, ?)]
+[12 Mar 2013 18:23:04] ERROR (?:?) - ERROR: Quicklink: Download TortoiseSVN (32bit) could not be created.
+[12 Mar 2013 18:23:04] ERROR (?:?) - org.hibernate.exception.ConstraintViolationException: could not insert: [com.wandisco.ubersvn.entities.QuicklinkEntity]
+[12 Mar 2013 18:23:04]  INFO (?:?) - Loading package versions from file: /opt/ubersvn/versions.db
+[12 Mar 2013 18:23:04]  INFO (?:?) - Loading package files from file: /opt/ubersvn/files.db
+[12 Mar 2013 23:38:06]  INFO (?:?) - Shutting down uberSVN
+[12 Mar 2013 23:38:06]  INFO (?:?) - deregistering jdbc driver: org.hsqldb.jdbcDriver@43900f17
+[12 Mar 2013 23:38:06]  INFO (?:?) - Shutdown complete
+[13 Mar 2013 09:07:57]  INFO (?:?) - Creating new team Everyone
+[13 Mar 2013 09:07:57]  WARN (JDBCExceptionReporter.java:100) - SQL Error: -104, SQLState: 23000
+[13 Mar 2013 09:07:57] ERROR (JDBCExceptionReporter.java:101) - Violation of unique constraint SYS_CT_130: duplicate value(s) for column(s) NAME in statement [insert into teams (id, dateCreated, dateLastModified, avatarImage, description, name) values (null, ?, ?, ?, ?, ?)]
+[13 Mar 2013 09:07:57] ERROR (?:?) - ERROR: Team: Everyone could not be created.
+[13 Mar 2013 09:07:57] ERROR (?:?) - org.hibernate.exception.ConstraintViolationException: could not insert: [com.wandisco.ubersvn.entities.TeamEntity]
+[13 Mar 2013 09:07:57]  WARN (JDBCExceptionReporter.java:100) - SQL Error: -104, SQLState: 23000
+[13 Mar 2013 09:07:57] ERROR (JDBCExceptionReporter.java:101) - Violation of unique constraint SYS_CT_98: duplicate value(s) for column(s) NAME in statement [insert into quicklink (id, dateCreated, dateLastModified, link, name, quicklinkOrder) values (null, ?, ?, ?, ?, ?)]
+[13 Mar 2013 09:07:57] ERROR (?:?) - ERROR: Quicklink: Download TortoiseSVN (32bit) could not be created.
+[13 Mar 2013 09:07:57] ERROR (?:?) - org.hibernate.exception.ConstraintViolationException: could not insert: [com.wandisco.ubersvn.entities.QuicklinkEntity]
+[13 Mar 2013 09:07:57]  INFO (?:?) - Loading package versions from file: /opt/ubersvn/versions.db
+[13 Mar 2013 09:07:57]  INFO (?:?) - Loading package files from file: /opt/ubersvn/files.db
+[13 Mar 2013 17:13:52]  INFO (?:?) - Shutting down uberSVN
+[13 Mar 2013 17:13:52]  INFO (?:?) - deregistering jdbc driver: org.hsqldb.jdbcDriver@7a29450
+[13 Mar 2013 17:13:52]  INFO (?:?) - Shutdown complete
+[13 Mar 2013 20:21:39]  INFO (?:?) - Creating new team Everyone
+[13 Mar 2013 20:21:39]  WARN (JDBCExceptionReporter.java:100) - SQL Error: -104, SQLState: 23000
+[13 Mar 2013 20:21:39] ERROR (JDBCExceptionReporter.java:101) - Violation of unique constraint SYS_CT_130: duplicate value(s) for column(s) NAME in statement [insert into teams (id, dateCreated, dateLastModified, avatarImage, description, name) values (null, ?, ?, ?, ?, ?)]
+[13 Mar 2013 20:21:39] ERROR (?:?) - ERROR: Team: Everyone could not be created.
+[13 Mar 2013 20:21:39] ERROR (?:?) - org.hibernate.exception.ConstraintViolationException: could not insert: [com.wandisco.ubersvn.entities.TeamEntity]
+[13 Mar 2013 20:21:39]  WARN (JDBCExceptionReporter.java:100) - SQL Error: -104, SQLState: 23000
+[13 Mar 2013 20:21:39] ERROR (JDBCExceptionReporter.java:101) - Violation of unique constraint SYS_CT_98: duplicate value(s) for column(s) NAME in statement [insert into quicklink (id, dateCreated, dateLastModified, link, name, quicklinkOrder) values (null, ?, ?, ?, ?, ?)]
+[13 Mar 2013 20:21:39] ERROR (?:?) - ERROR: Quicklink: Download TortoiseSVN (32bit) could not be created.
+[13 Mar 2013 20:21:39] ERROR (?:?) - org.hibernate.exception.ConstraintViolationException: could not insert: [com.wandisco.ubersvn.entities.QuicklinkEntity]
+[13 Mar 2013 20:21:39]  INFO (?:?) - Loading package versions from file: /opt/ubersvn/versions.db
+[13 Mar 2013 20:21:39]  INFO (?:?) - Loading package files from file: /opt/ubersvn/files.db
+[13 Mar 2013 23:43:56]  INFO (?:?) - Shutting down uberSVN
+[13 Mar 2013 23:43:56]  INFO (?:?) - deregistering jdbc driver: org.hsqldb.jdbcDriver@62ba8180
+[13 Mar 2013 23:43:56]  INFO (?:?) - Shutdown complete
+[14 Mar 2013 08:47:01]  INFO (?:?) - Creating new team Everyone
+[14 Mar 2013 08:47:01]  WARN (JDBCExceptionReporter.java:100) - SQL Error: -104, SQLState: 23000
+[14 Mar 2013 08:47:01] ERROR (JDBCExceptionReporter.java:101) - Violation of unique constraint SYS_CT_130: duplicate value(s) for column(s) NAME in statement [insert into teams (id, dateCreated, dateLastModified, avatarImage, description, name) values (null, ?, ?, ?, ?, ?)]
+[14 Mar 2013 08:47:01] ERROR (?:?) - ERROR: Team: Everyone could not be created.
+[14 Mar 2013 08:47:01] ERROR (?:?) - org.hibernate.exception.ConstraintViolationException: could not insert: [com.wandisco.ubersvn.entities.TeamEntity]
+[14 Mar 2013 08:47:01]  WARN (JDBCExceptionReporter.java:100) - SQL Error: -104, SQLState: 23000
+[14 Mar 2013 08:47:01] ERROR (JDBCExceptionReporter.java:101) - Violation of unique constraint SYS_CT_98: duplicate value(s) for column(s) NAME in statement [insert into quicklink (id, dateCreated, dateLastModified, link, name, quicklinkOrder) values (null, ?, ?, ?, ?, ?)]
+[14 Mar 2013 08:47:01] ERROR (?:?) - ERROR: Quicklink: Download TortoiseSVN (32bit) could not be created.
+[14 Mar 2013 08:47:01] ERROR (?:?) - org.hibernate.exception.ConstraintViolationException: could not insert: [com.wandisco.ubersvn.entities.QuicklinkEntity]
+[14 Mar 2013 08:47:01]  INFO (?:?) - Loading package versions from file: /opt/ubersvn/versions.db
+[14 Mar 2013 08:47:01]  INFO (?:?) - Loading package files from file: /opt/ubersvn/files.db
+[14 Mar 2013 17:05:34]  INFO (?:?) - Shutting down uberSVN
+[14 Mar 2013 17:05:34]  INFO (?:?) - deregistering jdbc driver: org.hsqldb.jdbcDriver@6b1ce012
+[14 Mar 2013 17:05:34]  INFO (?:?) - Shutdown complete
+[14 Mar 2013 17:56:46]  INFO (?:?) - Creating new team Everyone
+[14 Mar 2013 17:56:46]  WARN (JDBCExceptionReporter.java:100) - SQL Error: -104, SQLState: 23000
+[14 Mar 2013 17:56:46] ERROR (JDBCExceptionReporter.java:101) - Violation of unique constraint SYS_CT_130: duplicate value(s) for column(s) NAME in statement [insert into teams (id, dateCreated, dateLastModified, avatarImage, description, name) values (null, ?, ?, ?, ?, ?)]
+[14 Mar 2013 17:56:46] ERROR (?:?) - ERROR: Team: Everyone could not be created.
+[14 Mar 2013 17:56:46] ERROR (?:?) - org.hibernate.exception.ConstraintViolationException: could not insert: [com.wandisco.ubersvn.entities.TeamEntity]
+[14 Mar 2013 17:56:46]  WARN (JDBCExceptionReporter.java:100) - SQL Error: -104, SQLState: 23000
+[14 Mar 2013 17:56:46] ERROR (JDBCExceptionReporter.java:101) - Violation of unique constraint SYS_CT_98: duplicate value(s) for column(s) NAME in statement [insert into quicklink (id, dateCreated, dateLastModified, link, name, quicklinkOrder) values (null, ?, ?, ?, ?, ?)]
+[14 Mar 2013 17:56:46] ERROR (?:?) - ERROR: Quicklink: Download TortoiseSVN (32bit) could not be created.
+[14 Mar 2013 17:56:46] ERROR (?:?) - org.hibernate.exception.ConstraintViolationException: could not insert: [com.wandisco.ubersvn.entities.QuicklinkEntity]
+[14 Mar 2013 17:56:46]  INFO (?:?) - Loading package versions from file: /opt/ubersvn/versions.db
+[14 Mar 2013 17:56:46]  INFO (?:?) - Loading package files from file: /opt/ubersvn/files.db
+[15 Mar 2013 00:05:03]  INFO (?:?) - Shutting down uberSVN
+[15 Mar 2013 00:05:03]  INFO (?:?) - deregistering jdbc driver: org.hsqldb.jdbcDriver@440fa97f
+[15 Mar 2013 00:05:03]  INFO (?:?) - Shutdown complete
+[15 Mar 2013 08:57:27]  INFO (?:?) - Creating new team Everyone
+[15 Mar 2013 08:57:27]  WARN (JDBCExceptionReporter.java:100) - SQL Error: -104, SQLState: 23000
+[15 Mar 2013 08:57:27] ERROR (JDBCExceptionReporter.java:101) - Violation of unique constraint SYS_CT_130: duplicate value(s) for column(s) NAME in statement [insert into teams (id, dateCreated, dateLastModified, avatarImage, description, name) values (null, ?, ?, ?, ?, ?)]
+[15 Mar 2013 08:57:27] ERROR (?:?) - ERROR: Team: Everyone could not be created.
+[15 Mar 2013 08:57:27] ERROR (?:?) - org.hibernate.exception.ConstraintViolationException: could not insert: [com.wandisco.ubersvn.entities.TeamEntity]
+[15 Mar 2013 08:57:27]  WARN (JDBCExceptionReporter.java:100) - SQL Error: -104, SQLState: 23000
+[15 Mar 2013 08:57:27] ERROR (JDBCExceptionReporter.java:101) - Violation of unique constraint SYS_CT_98: duplicate value(s) for column(s) NAME in statement [insert into quicklink (id, dateCreated, dateLastModified, link, name, quicklinkOrder) values (null, ?, ?, ?, ?, ?)]
+[15 Mar 2013 08:57:27] ERROR (?:?) - ERROR: Quicklink: Download TortoiseSVN (32bit) could not be created.
+[15 Mar 2013 08:57:27] ERROR (?:?) - org.hibernate.exception.ConstraintViolationException: could not insert: [com.wandisco.ubersvn.entities.QuicklinkEntity]
+[15 Mar 2013 08:57:27]  INFO (?:?) - Loading package versions from file: /opt/ubersvn/versions.db
+[15 Mar 2013 08:57:27]  INFO (?:?) - Loading package files from file: /opt/ubersvn/files.db
+[15 Mar 2013 17:06:07]  INFO (?:?) - Shutting down uberSVN
+[15 Mar 2013 17:06:07]  INFO (?:?) - deregistering jdbc driver: org.hsqldb.jdbcDriver@311f56a3
+[15 Mar 2013 17:06:07]  INFO (?:?) - Shutdown complete
+[15 Mar 2013 19:49:32]  INFO (?:?) - Creating new team Everyone
+[15 Mar 2013 19:49:32]  WARN (JDBCExceptionReporter.java:100) - SQL Error: -104, SQLState: 23000
+[15 Mar 2013 19:49:32] ERROR (JDBCExceptionReporter.java:101) - Violation of unique constraint SYS_CT_130: duplicate value(s) for column(s) NAME in statement [insert into teams (id, dateCreated, dateLastModified, avatarImage, description, name) values (null, ?, ?, ?, ?, ?)]
+[15 Mar 2013 19:49:32] ERROR (?:?) - ERROR: Team: Everyone could not be created.
+[15 Mar 2013 19:49:32] ERROR (?:?) - org.hibernate.exception.ConstraintViolationException: could not insert: [com.wandisco.ubersvn.entities.TeamEntity]
+[15 Mar 2013 19:49:32]  WARN (JDBCExceptionReporter.java:100) - SQL Error: -104, SQLState: 23000
+[15 Mar 2013 19:49:32] ERROR (JDBCExceptionReporter.java:101) - Violation of unique constraint SYS_CT_98: duplicate value(s) for column(s) NAME in statement [insert into quicklink (id, dateCreated, dateLastModified, link, name, quicklinkOrder) values (null, ?, ?, ?, ?, ?)]
+[15 Mar 2013 19:49:32] ERROR (?:?) - ERROR: Quicklink: Download TortoiseSVN (32bit) could not be created.
+[15 Mar 2013 19:49:32] ERROR (?:?) - org.hibernate.exception.ConstraintViolationException: could not insert: [com.wandisco.ubersvn.entities.QuicklinkEntity]
+[15 Mar 2013 19:49:32]  INFO (?:?) - Loading package versions from file: /opt/ubersvn/versions.db
+[15 Mar 2013 19:49:32]  INFO (?:?) - Loading package files from file: /opt/ubersvn/files.db
+[17 Mar 2013 23:52:27]  INFO (?:?) - Shutting down uberSVN
+[17 Mar 2013 23:52:27]  INFO (?:?) - deregistering jdbc driver: org.hsqldb.jdbcDriver@109aca82
+[17 Mar 2013 23:52:27]  INFO (?:?) - Shutdown complete
+[18 Mar 2013 08:42:40]  INFO (?:?) - Creating new team Everyone
+[18 Mar 2013 08:42:40]  WARN (JDBCExceptionReporter.java:100) - SQL Error: -104, SQLState: 23000
+[18 Mar 2013 08:42:40] ERROR (JDBCExceptionReporter.java:101) - Violation of unique constraint SYS_CT_130: duplicate value(s) for column(s) NAME in statement [insert into teams (id, dateCreated, dateLastModified, avatarImage, description, name) values (null, ?, ?, ?, ?, ?)]
+[18 Mar 2013 08:42:40] ERROR (?:?) - ERROR: Team: Everyone could not be created.
+[18 Mar 2013 08:42:40] ERROR (?:?) - org.hibernate.exception.ConstraintViolationException: could not insert: [com.wandisco.ubersvn.entities.TeamEntity]
+[18 Mar 2013 08:42:40]  WARN (JDBCExceptionReporter.java:100) - SQL Error: -104, SQLState: 23000
+[18 Mar 2013 08:42:40] ERROR (JDBCExceptionReporter.java:101) - Violation of unique constraint SYS_CT_98: duplicate value(s) for column(s) NAME in statement [insert into quicklink (id, dateCreated, dateLastModified, link, name, quicklinkOrder) values (null, ?, ?, ?, ?, ?)]
+[18 Mar 2013 08:42:40] ERROR (?:?) - ERROR: Quicklink: Download TortoiseSVN (32bit) could not be created.
+[18 Mar 2013 08:42:40] ERROR (?:?) - org.hibernate.exception.ConstraintViolationException: could not insert: [com.wandisco.ubersvn.entities.QuicklinkEntity]
+[18 Mar 2013 08:42:40]  INFO (?:?) - Loading package versions from file: /opt/ubersvn/versions.db
+[18 Mar 2013 08:42:40]  INFO (?:?) - Loading package files from file: /opt/ubersvn/files.db
+[18 Mar 2013 17:09:20]  INFO (?:?) - Shutting down uberSVN
+[18 Mar 2013 17:09:21]  INFO (?:?) - deregistering jdbc driver: org.hsqldb.jdbcDriver@371daf60
+[18 Mar 2013 17:09:21]  INFO (?:?) - Shutdown complete
+[18 Mar 2013 18:49:33]  INFO (?:?) - Creating new team Everyone
+[18 Mar 2013 18:49:35]  WARN (JDBCExceptionReporter.java:100) - SQL Error: -104, SQLState: 23000
+[18 Mar 2013 18:49:35] ERROR (JDBCExceptionReporter.java:101) - Violation of unique constraint SYS_CT_130: duplicate value(s) for column(s) NAME in statement [insert into teams (id, dateCreated, dateLastModified, avatarImage, description, name) values (null, ?, ?, ?, ?, ?)]
+[18 Mar 2013 18:49:35] ERROR (?:?) - ERROR: Team: Everyone could not be created.
+[18 Mar 2013 18:49:35] ERROR (?:?) - org.hibernate.exception.ConstraintViolationException: could not insert: [com.wandisco.ubersvn.entities.TeamEntity]
+[18 Mar 2013 18:49:35]  WARN (JDBCExceptionReporter.java:100) - SQL Error: -104, SQLState: 23000
+[18 Mar 2013 18:49:35] ERROR (JDBCExceptionReporter.java:101) - Violation of unique constraint SYS_CT_98: duplicate value(s) for column(s) NAME in statement [insert into quicklink (id, dateCreated, dateLastModified, link, name, quicklinkOrder) values (null, ?, ?, ?, ?, ?)]
+[18 Mar 2013 18:49:35] ERROR (?:?) - ERROR: Quicklink: Download TortoiseSVN (32bit) could not be created.
+[18 Mar 2013 18:49:35] ERROR (?:?) - org.hibernate.exception.ConstraintViolationException: could not insert: [com.wandisco.ubersvn.entities.QuicklinkEntity]
+[18 Mar 2013 18:49:35]  INFO (?:?) - Loading package versions from file: /opt/ubersvn/versions.db
+[18 Mar 2013 18:49:35]  INFO (?:?) - Loading package files from file: /opt/ubersvn/files.db
+[18 Mar 2013 23:47:05]  INFO (?:?) - Shutting down uberSVN
+[18 Mar 2013 23:47:05]  INFO (?:?) - deregistering jdbc driver: org.hsqldb.jdbcDriver@440fa97f
+[18 Mar 2013 23:47:05]  INFO (?:?) - Shutdown complete
+[19 Mar 2013 09:21:44]  INFO (?:?) - Creating new team Everyone
+[19 Mar 2013 09:21:44]  WARN (JDBCExceptionReporter.java:100) - SQL Error: -104, SQLState: 23000
+[19 Mar 2013 09:21:44] ERROR (JDBCExceptionReporter.java:101) - Violation of unique constraint SYS_CT_130: duplicate value(s) for column(s) NAME in statement [insert into teams (id, dateCreated, dateLastModified, avatarImage, description, name) values (null, ?, ?, ?, ?, ?)]
+[19 Mar 2013 09:21:44] ERROR (?:?) - ERROR: Team: Everyone could not be created.
+[19 Mar 2013 09:21:44] ERROR (?:?) - org.hibernate.exception.ConstraintViolationException: could not insert: [com.wandisco.ubersvn.entities.TeamEntity]
+[19 Mar 2013 09:21:44]  WARN (JDBCExceptionReporter.java:100) - SQL Error: -104, SQLState: 23000
+[19 Mar 2013 09:21:44] ERROR (JDBCExceptionReporter.java:101) - Violation of unique constraint SYS_CT_98: duplicate value(s) for column(s) NAME in statement [insert into quicklink (id, dateCreated, dateLastModified, link, name, quicklinkOrder) values (null, ?, ?, ?, ?, ?)]
+[19 Mar 2013 09:21:44] ERROR (?:?) - ERROR: Quicklink: Download TortoiseSVN (32bit) could not be created.
+[19 Mar 2013 09:21:44] ERROR (?:?) - org.hibernate.exception.ConstraintViolationException: could not insert: [com.wandisco.ubersvn.entities.QuicklinkEntity]
+[19 Mar 2013 09:21:44]  INFO (?:?) - Loading package versions from file: /opt/ubersvn/versions.db
+[19 Mar 2013 09:21:44]  INFO (?:?) - Loading package files from file: /opt/ubersvn/files.db

@@ -1,0 +1,19 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.prime.com.tr/ui"
+  xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core">
+<ui:composition>
+  <h:panelGrid columns="2" columnClasses="dashboardBaseTableLeft,dashboardBaseTableRight">
+    <h:panelGrid columns="1">
+      <ui:include src="/sections/platform/dashboard/uberfeed.xhtml" />
+      <ui:include src="/sections/platform/dashboard/recentRepositories.xhtml" />
+      <ui:include src="/sections/platform/dashboard/banner.xhtml" />
+    </h:panelGrid>
+    <h:panelGrid columns="1">
+      <ui:include src="/sections/platform/dashboard/quicklinks.xhtml" />
+      <ui:include src="/sections/platform/dashboard/status.xhtml" />
+      <ui:include src="/sections/platform/dashboard/news.xhtml" />
+    </h:panelGrid>
+  </h:panelGrid>
+</ui:composition>
+</html>

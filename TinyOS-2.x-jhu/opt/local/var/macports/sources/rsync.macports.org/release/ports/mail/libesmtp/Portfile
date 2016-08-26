@@ -1,0 +1,36 @@
+# $Id: Portfile 69520 2010-07-08 20:19:52Z jmr@macports.org $
+
+PortSystem 1.0
+name		libesmtp
+version		1.0.4
+revision	2
+categories	mail
+maintainers	noses.com:noses
+description	ESMTP library
+homepage	http://www.stafford.uklinux.net/libesmtp/
+platforms	darwin
+
+long_description libESMTP is a library to manage posting (or submission of) \
+		 electronic mail using SMTP to a preconfigured Mail Transport \
+		 Agent (MTA) such as Exim. It may be used as part of a Mail \
+		 User Agent (MUA) or another program that must be able to \
+		 post electronic mail but where mail functionality is not \
+		 that program's primary purpose. libESMTP is not intended \
+		 to be used as part of a program that implements a Mail \
+		 Transport Agent. It is hoped that the availability of a \
+		 lightweight library implementing an SMTP client will both \
+		 ease the task of coding for software authors and improve the \
+		 quality of the resulting code.
+
+master_sites	http://www.stafford.uklinux.net/libesmtp
+use_bzip2	yes
+
+checksums	md5 8b4e8a794adc46268f0c6a0b3fb79486
+
+depends_lib	port:openssl
+
+patchfiles	patch-auth-client.c patch-errors.c patch-headers.c patch-htable.c \
+		patch-protocol.c patch-rfc2822date.c patch-smtp-auth.c \
+		patch-smtp-tls.c patch-configure.in.diff
+
+use_autoreconf yes

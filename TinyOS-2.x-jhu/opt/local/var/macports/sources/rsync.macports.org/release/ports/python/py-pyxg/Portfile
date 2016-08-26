@@ -1,0 +1,47 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 88967 2012-01-15 15:54:33Z snc@macports.org $
+
+PortSystem          1.0
+PortGroup           github 1.0
+PortGroup           python 1.0
+
+github.setup        pyxg pyxg 0.3 v
+name                py-pyxg
+python.versions     24 25 26 27
+python.default_version  27
+categories          python devel
+platforms           darwin
+maintainers         snc openmaintainer
+license             BSD
+description         PyXG provides a Python interface to Apple's Xgrid
+long_description    Xgrid is Apple's solution for running jobs \
+                    on a cluster of Macintosh computers. PyXG enables users to \
+                    submit and manage Xgrid jobs on a cluster from a Python \
+                    script or within an interactive Python session.
+
+checksums           rmd160  254a41fe143b5b7ce53c11dd7f2c0bd3d961e0ff \
+                    sha256  6147735a7db386fecf4cbb0cac7f1800ddba30fcb025e55c1c70a41cb9837a1f
+
+supported_archs     noarch
+
+if {$subport != $name} {
+    if {${python.version} == 24} {
+        depends_lib-append  port:py24-bdist_mpkg \
+                            port:py-pyobjc
+        if {${os.major} > 8} {
+            notes-append "#29462: py-pyobjc2: unrecognized command line option '-Wno-long-double'"
+            depends_lib-delete  port:py-pyobjc
+            depends_lib-append  port:py-pyobjc2
+        }
+    }
+
+    if {${python.version} == 25} {
+        depends_lib-append  port:py${python.version}-bdist_mpkg
+    }
+
+    if {${python.version} == 25 || ${python.version} == 26 || ${python.version} == 27} {
+        depends_lib-append  port:py${python.version}-pyobjc-cocoa
+    }
+
+    livecheck.type      none
+}

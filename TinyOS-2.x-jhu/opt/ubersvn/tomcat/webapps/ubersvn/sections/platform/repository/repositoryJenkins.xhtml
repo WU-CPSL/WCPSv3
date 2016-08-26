@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:p="http://primefaces.prime.com.tr/ui" xmlns:h="http://java.sun.com/jsf/html">
+<ui:composition>
+  <ol id="sub-toc">
+    <li><h:outputLink
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/repository/repositoryProfile.jsf?repoId=#{repositoryProfileManagedBean.repo.id}"
+        title="#{msg.repoProfileTabAltText}">
+        <span>#{msg.repoProfileTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/repository/repositoryGraph.jsf"
+        title="#{msg.repoGraphTabAltText}">
+        <span>#{msg.repoGraphTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/repository/repositoryBrowser.jsf"
+        title="#{msg.repoBrowserTabAltText}">
+        <span>#{msg.repoBrowserTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/repository/repositoryAdministrationVerify.jsf"
+        title="#{msg.repoAdministrationTabAltText}"
+        rendered="#{basePage.systemAdmin or basePage.globalRepoAdmin or repositoryProfileManagedBean.repo.delegatedRepoAdmin}">
+        <span>#{msg.repoAdministrationTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/repository/repositoryPermissions.jsf"
+        title="#{msg.repoPermissionsTabAltText}"
+        rendered="#{basePage.systemAdmin or basePage.globalRepoAdmin or repositoryProfileManagedBean.repo.delegatedRepoAdmin}">
+        <span>#{msg.repoPermissionsTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/repository/repositoryAuthentication.jsf"
+        title="#{msg.repoAuthenticationTabAltText}"
+        rendered="#{basePage.systemAdmin or basePage.globalRepoAdmin or repositoryProfileManagedBean.repo.delegatedRepoAdmin}">
+        <span>#{msg.repoAuthenticationTabText}</span>
+      </h:outputLink>
+    </li>
+    <li class="current"><h:outputLink rendered="#{basePage.jenkinsInstalled}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/repository/repositoryJenkins.jsf"
+        title="#{msg.repoJenkinsTabTitle}">
+        <span>#{msg.repoJenkinsTabText}</span>
+      </h:outputLink>
+    </li>
+
+  </ol>
+  <p:panel id="repoJenkinsPanel" styleClass="tabbed-panel">
+    <h:panelGrid columns="1" rendered="#{basePage.jenkinsInstalled and basePage.jenkinsVisible}">
+      <h:panelGroup>
+        <h:panelGrid columns="1" columnClasses="repoNameColumnFull">
+          <h:panelGroup>
+            <h:outputText id="repoName" styleClass="formOutputText" style="font-size: 24px;"
+              value="#{jenkinsManagedBean.parentRepository.name}" />
+            <br />
+            <hr />
+          </h:panelGroup>
+          <h:panelGroup>
+            <p:commandButton styleClass="roundedButtonSmall" value="#{msg.addButtonText}" action="#{jenkinsManagedBean.addJob}" ajax="false"
+              image="greenCrossSmall" />
+            <p:spacer width="10" />
+            <p:commandButton styleClass="roundedButtonMedium" value="#{msg.reloadJobsButtonText}" action="#{jenkinsManagedBean.refreshJobs}"
+              ajax="false" />
+            <p:spacer width="10" />
+            <h:outputText value="Refreshed: #{basePage.jenkinsLastPollTime}" />
+          </h:panelGroup>
+          <p:spacer height="5" />
+          <p:dataTable id="jenkinsJobsTableId" widgetVar="jobsTable" var="job" value="#{basePage.jobs}" paginatorPosition="bottom"
+            rows="#{jenkinsManagedBean.tablePageSize}" paginatorAlwaysVisible="false" paginator="true"
+            paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+            <p:column style="width: 600px;">
+              <f:facet name="header">
+                <h:outputText value="#{msg.jenkinsTableNameColumnHeader}" />
+              </f:facet>
+              <h:outputText value="#{job.name}" title="#{job.description}" />
+            </p:column>
+            <p:column style="width: 125px;">
+              <f:facet name="header">
+                <h:outputText value="#{msg.jenkinsTableLastRunColumnHeader}" />
+              </f:facet>
+              <h:outputText value="#{job.lastBuildTimestamp}" />
+            </p:column>
+            <p:column style="width: 125px;">
+              <f:facet name="header">
+                <h:outputText value="#{msg.jenkinsTableLastSucceededColumnHeader}" />
+              </f:facet>
+              <h:outputText value="#{job.lastSuccessfulBuildTimestamp}" />
+            </p:column>
+            <p:column styleClass="centreAlignColumn" style="width: 100px;">
+              <f:facet name="header">
+                <h:outputText value="#{msg.jenkinsTableStatusColumnHeader}" />
+              </f:facet>
+              <h:graphicImage value="/../jenkins/images/24x24/#{job.status}.gif" title="#{job.tooltip}" />
+            </p:column>
+            <p:column style="width: 150px; text-align: left;">
+              <p:menuButton value="Actions" style="width: 150px;">
+                <p:menuitem value="Edit" action="#{jenkinsManagedBean.viewJenkinsProfile}">
+                  <f:setPropertyActionListener target="#{jenkinsManagedBean.job}" value="#{job}" />
+                </p:menuitem>
+                <p:menuitem helpText="#{msg.jenkinsDeleteLinkTitle}" value="Delete" oncomplete="confirmation.show()">
+                  <f:setPropertyActionListener target="#{jenkinsManagedBean.job}" value="#{job}" />
+                </p:menuitem>
+                <p:menuitem value="Enable" action="#{jenkinsManagedBean.enableJob}" rendered="#{job.disabled}">
+                  <f:setPropertyActionListener target="#{jenkinsManagedBean.job}" value="#{job}" />
+                </p:menuitem>
+                <p:menuitem value="Disable" action="#{jenkinsManagedBean.disableJob}" rendered="#{!job.disabled}">
+                  <f:setPropertyActionListener target="#{jenkinsManagedBean.job}" value="#{job}" />
+                </p:menuitem>
+                <p:menuitem value="Build Now" action="#{jenkinsManagedBean.buildJob}" rendered="#{!job.disabled}">
+                  <f:setPropertyActionListener target="#{jenkinsManagedBean.job}" value="#{job}" />
+                </p:menuitem>
+              </p:menuButton>
+            </p:column>
+          </p:dataTable>
+        </h:panelGrid>
+      </h:panelGroup>
+    </h:panelGrid>
+  </p:panel>
+  <p:confirmDialog message="#{msg.confirmJenkinsDeleteMessage}" header="#{msg.confirmJenkinsDeleteHeader}" severity="alert"
+    widgetVar="confirmation">
+    <p:commandButton value="#{msg.deleteButton}" oncomplete="confirmation.hide()" action="#{jenkinsManagedBean.deleteJob}" ajax="false" />
+    <p:commandButton value="#{msg.cancelButton}" onclick="confirmation.hide()" type="button">
+    </p:commandButton>
+  </p:confirmDialog>
+  <script type="text/javascript">
+			function reloadPage() {
+				setTimeout("location.reload(true);", 1);
+			}
+		</script>
+
+</ui:composition>
+</html>

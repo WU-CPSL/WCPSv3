@@ -1,0 +1,18 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.prime.com.tr/ui"
+  xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core">
+<ui:composition>
+  <p:panel id="dashboard-status-panel" styleClass="ui-corner-all dashboard-status-panel">
+    <f:facet name="header">
+      <h:outputText style="font-weight: bold;" value="#{msg.dashboardStatusHeading}" />
+    </f:facet>
+    <h:panelGrid columns="2" columnClasses="dashboardStatusColumn">
+      <h:outputText value="#{msg.apacheStatusLabel}" />
+      <h:commandLink action="#{dashboardManagedBean.gotoStatusPage}">
+        <h:graphicImage style="border: none;" library="img/platform" name="#{dashboardManagedBean.apacheStatusImage}" />
+      </h:commandLink>
+    </h:panelGrid>
+  </p:panel>
+</ui:composition>
+</html>

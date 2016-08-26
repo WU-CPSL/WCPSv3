@@ -1,0 +1,21 @@
+/.platform/1.2/Mon Oct 29 21:52:38 2007//
+/ActiveMessageC.nc/1.1/Sat Oct 20 18:16:32 2007//
+/DemoSensorC.nc/1.1/Sat Oct 20 18:16:32 2007//
+/DemoSensorNowC.nc/1.1/Sat Oct 20 18:16:32 2007//
+/DemoSensorStreamC.nc/1.1/Sat Oct 20 18:16:32 2007//
+/MSP430ADC12ChannelConfigM.nc/1.1/Sat Oct 20 18:16:32 2007//
+/MotePlatformC.nc/1.1/Sat Oct 20 18:16:32 2007//
+/Msp430Timer32khzMapC.nc/1.1/Sat Oct 20 18:16:32 2007//
+/PlatformC.nc/1.1/Sat Oct 20 18:16:32 2007//
+/PlatformLedsC.nc/1.1/Sat Oct 20 18:16:32 2007//
+/PlatformP.nc/1.1/Sat Oct 20 18:16:32 2007//
+/PlatformSerialC.nc/1.1/Sat Oct 20 18:16:32 2007//
+/README.txt/1.1/Sat Oct 20 18:16:32 2007//
+/TelosSerialP.nc/1.1/Sat Oct 20 18:16:32 2007//
+/VoltageC.nc/1.1/Sat Oct 20 18:16:32 2007//
+/VoltageStreamC.nc/1.1/Sat Oct 20 18:16:32 2007//
+/hardware.h/1.1/Sat Oct 20 18:16:32 2007//
+/platform_message.h/1.1/Sat Oct 20 18:16:32 2007//
+/psi.target/1.1/Sat Oct 20 18:16:33 2007//
+D/chips////
+D/lib////

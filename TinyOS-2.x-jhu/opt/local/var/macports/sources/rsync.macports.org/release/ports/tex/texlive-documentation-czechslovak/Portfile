@@ -1,0 +1,30 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 88821 2012-01-12 23:02:19Z dports@macports.org $
+
+PortSystem          1.0
+PortGroup           texlive 1.0
+
+name                texlive-documentation-czechslovak
+version             23147
+revision            0
+
+categories          tex
+maintainers         dports
+license             Copyleft Permissive
+description         TeX Live: Czech/Slovak documentation
+long_description    Czech/Slovak documentation
+
+checksums           texlive-documentation-czechslovak-23147-run.tar.xz \
+                    rmd160  20770cab0356ca046edbfd5e1dc734ac7fd276bc \
+                    sha256  b1abbc9a52d5e956fd589ae9674368b521a293193f15826c83c6b8bf84033c80 \
+                    texlive-documentation-czechslovak-23147-doc.tar.xz \
+                    rmd160  1874e3d9010a0e553b437edcd32bad1ce457103e \
+                    sha256  adf29f4be53932695cce80f3355f6839c668429b2f615b0fd811a4a213c4fb51 \
+                    texlive-documentation-czechslovak-23147-src.tar.xz \
+                    rmd160  06206dc6a41bc7cb94c1b0def304b7abd6deaba8 \
+                    sha256  58b5c8111a9ec2ccf8095773c27d728af50afeb837686e367d4d2c690c505c0d
+
+depends_lib         port:texlive-documentation-base
+
+
+texlive.texmfport

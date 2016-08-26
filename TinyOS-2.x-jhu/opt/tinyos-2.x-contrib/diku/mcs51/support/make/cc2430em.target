@@ -1,0 +1,11 @@
+PLATFORM = cc2430em
+MCS51_KEIL_SCRIPT=CC2430-F128.bat
+
+ifdef PLATFORM
+PFLAGS += -D__$(PLATFORM)__=1
+endif
+
+$(call TOSMake_include_platform,mcs51)
+
+cc2430em: $(BUILD_DEPS)
+	@:

@@ -1,0 +1,42 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89528 2012-02-01 17:46:46Z macsforever2000@macports.org $
+
+PortSystem          1.0
+PortGroup           python 1.0
+
+name                py-virtualenv
+version             1.7
+maintainers         nomaintainer
+
+categories-append   devel
+description         Virtual Python Environment builder
+long_description    virtualenv is a tool to create isolated Python \
+                    environments.
+
+platforms           darwin
+license             MIT
+
+homepage            http://pypi.python.org/pypi/virtualenv
+master_sites        http://pypi.python.org/packages/source/v/virtualenv/
+distname            virtualenv-${version}
+checksums           md5     dcc105e5a3907a9dcaa978f813a4f526 \
+                    sha1    3c99e759a06470a1838c98b750d5b72972ac82d6 \
+                    rmd160  5d5f9a7b82bd4ec659d853a1bbaacaac32961116
+
+python.versions     24 25 26 27 31 32
+python.default_version 27
+
+if {$subport != $name} {
+    depends_lib-append  port:py${python.version}-distribute
+    
+    post-destroot {
+        xinstall -m 755 -d ${destroot}${prefix}/share/doc/${subport}
+        foreach f [glob -directory ${worksrcpath}/docs *] {
+            copy $f ${destroot}${prefix}/share/doc/${subport}/[file tail $f]
+        }
+    }
+} else {
+    livecheck.type      regex
+    livecheck.url       http://pypi.python.org/pypi/virtualenv
+    livecheck.regex     virtualenv (1\.\[0-9\]+\.\[0-9\]+)
+}

@@ -1,0 +1,19 @@
+# $Id: Portfile 82782 2011-08-20 01:07:52Z ryandesign@macports.org $
+
+PortSystem          1.0
+PortGroup           perl5 1.0
+
+perl5.setup         Text-ParseWords 3.27
+revision            2
+maintainers         nomaintainer
+description         parse text into an array of tokens or array of arrays
+long_description    ${description}
+
+platforms           darwin
+use_zip             yes
+
+checksums           md5 620fee5eece9b8d4a7a68e91fe617097 \
+                    sha1 12ef6ce2a82cd595a0f50333b8beb9357a5efae2 \
+                    rmd160 0c3344087a5b8fe0270a9d6c8133358bacd5c99e
+
+supported_archs noarch

@@ -1,0 +1,46 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:filetype=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 86200 2011-10-21 11:08:13Z ryandesign@macports.org $
+
+PortSystem      1.0
+
+name            libvorbis
+version         1.3.2
+revision        1
+categories      audio
+license         BSD
+platforms       darwin
+maintainers     rmstonecipher openmaintainer
+description     The Vorbis General Audio Compression Codec
+
+long_description \
+    Ogg Vorbis is a fully open, non-proprietary, \
+    patent-and-royalty-free, general-purpose compressed audio format for \
+    audio and music at fixed and variable bitrates from 16 to 128 \
+    kbps/channel.
+
+homepage        http://www.vorbis.com/
+master_sites    http://downloads.xiph.org/releases/vorbis/
+
+depends_build   port:pkgconfig
+
+depends_lib     port:libogg
+
+checksums           md5     c870b9bd5858a0ecb5275c14486d9554 \
+                    sha1    4b089ace4c8420c479b2fde9c5b01588cf86c959 \
+                    rmd160  90636428d1e83531b948e4823413504162004790
+
+patchfiles          patch-docdir.diff
+
+configure.args  --disable-oggtest
+
+use_parallel_build  yes
+
+post-destroot {
+    set docdir ${prefix}/share/doc/${name}
+    xinstall -m 0644 -W ${worksrcpath} AUTHORS CHANGES COPYING README \
+        ${destroot}${docdir}
+}
+
+livecheck.type  regex
+livecheck.url   http://www.xiph.org/downloads/
+livecheck.regex ${name}-(\\d+(?:\\.\\d+)*)

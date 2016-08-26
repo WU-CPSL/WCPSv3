@@ -1,0 +1,27 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 84550 2011-09-27 21:05:11Z snc@macports.org $
+
+PortSystem          1.0
+PortGroup           kde4   1.1
+
+name                kdebase4-runtime
+version             4.6.5
+revision            2
+replaced_by         kde4-runtime
+
+categories          kde kde4
+maintainers         snc sharky michaelld
+description         Shared data needed by KDE4 programs
+long_description    Provides data which is required by KDE4 applications. \
+                    e.g. icons and mimetype data.
+platforms           darwin
+homepage            http://www.kde.org
+
+distfiles
+
+pre-extract {
+    ui_error "${name} is provided by kde4-runtime."
+    return -code error "obsolete port"
+}
+
+livecheck.type      none

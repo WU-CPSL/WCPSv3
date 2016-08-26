@@ -1,0 +1,25 @@
+# $Id: Portfile 86324 2011-10-24 14:10:29Z jmr@macports.org $
+
+PortSystem            1.0
+PortGroup             perl5 1.0
+
+perl5.setup           ExtUtils-XSBuilder 0.28
+revision              2
+license               {Artistic-1 GPL}
+maintainers           nomaintainer
+description           ExtUtils::XSBuilder - Automatic Perl XS glue code generation
+long_description      ExtUtils::XSBuilder is a set modules to parse C header \
+                      files and create XS glue code and documentation out of \
+                      it. Idealy this allows to "write" an interface to a \
+                      C library without coding a line.
+
+platforms             darwin
+
+checksums             md5 1d33ddeacc01426a02e23c71c2e4cd04
+
+if {${perl5.major} != ""} {
+depends_lib-append    port:p${perl5.major}-parse-recdescent \
+                      port:p${perl5.major}-tie-ixhash
+
+supported_archs noarch
+}

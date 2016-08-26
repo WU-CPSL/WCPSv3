@@ -1,0 +1,19 @@
+# $Id: Portfile 84678 2011-09-29 11:58:18Z jmr@macports.org $
+
+PortSystem          1.0
+PortGroup           perl5 1.0
+
+perl5.setup         Text-SimpleTable 2.03
+revision            2
+license             Artistic-2
+maintainers         nomaintainer
+description         Simple Eyecandy ASCII Tables
+long_description    Simple eyecandy ASCII tables, as seen in Catalyst.
+
+platforms           darwin
+
+checksums           md5 a79a1f53846c111e8f6056702c39fa17 \
+                    sha1 96aaf252544e54a66dfc3af9580550d26405ab0e \
+                    rmd160 325be6c261ad2cdbee2d8f09c7d0ac3b41db74dc
+
+supported_archs noarch

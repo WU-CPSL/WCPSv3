@@ -1,0 +1,47 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:filetype=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 83112 2011-08-25 22:55:06Z dports@macports.org $
+
+PortSystem      1.0
+PortGroup       muniversal 1.0
+
+name            libbonobo
+version         2.24.3
+set branch      [join [lrange [split ${version} .] 0 1] .]
+maintainers     nomaintainer
+categories      gnome
+platforms       darwin
+# library under LGPL-2+, tools under GPL-2+
+license         GPL-2+ LGPL-2+
+description     A library for creating reusable components
+
+long_description \
+    Bonobo is a set of language and system independant CORBA \
+    interfaces for creating reusable components, controls and creating \
+    compound documents.
+
+homepage        http://www.gnome.org/
+master_sites    gnome:sources/${name}/${branch}/
+use_bzip2       yes
+
+checksums           md5     b217cef6a187505290c66c5bf8225d38 \
+                    sha1    a77e471d967744af08815404834e03636d172151 \
+                    rmd160  c5c6320f4513c9db6ca2fd4e69ab993d4910396f
+
+depends_build   port:pkgconfig \
+                port:gnome-common \
+                port:intltool
+
+depends_lib     path:lib/pkgconfig/glib-2.0.pc:glib2 \
+                port:dbus-glib \
+                port:orbit2 \
+                port:gettext \
+                port:libxml2 \
+                port:libiconv \
+                port:popt
+
+test.run        yes
+test.target     check
+
+livecheck.type  regex
+livecheck.url   http://ftp.gnome.org/pub/gnome/sources/${name}/${branch}/
+livecheck.regex {LATEST-IS-(\d+(?:\.\d+)*)}

@@ -1,0 +1,14 @@
+/suite.properties/1.1/Sun Jul 22 05:32:34 2007//
+D/TestAssertions////
+D/TestEmpty////
+D/TestFailure////
+D/TestLongerTimeout////
+D/TestMaxNodes////
+D/TestMinNodes////
+D/TestMultipleAsserts////
+D/TestMultipleTests1////
+D/TestMultipleTests2////
+D/TestSkip////
+D/TestStatistics////
+D/TestTimeout////
+D/TestTwoNodeRf////

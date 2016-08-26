@@ -1,0 +1,79 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:filetype=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 87926 2011-12-13 00:36:02Z ryandesign@macports.org $
+
+PortSystem      1.0
+
+name            scite
+version         3.0.2
+categories      editors
+platforms       darwin
+maintainers     nomaintainer
+license         MIT
+
+description     SciTE is a SCIntilla based Text Editor.
+
+long_description \
+    Originally built to demonstrate Scintilla, it has grown to be a generally \
+    useful editor with facilities for building and running programs. It is best \
+    used for jobs with simple configurations.
+
+homepage        http://scintilla.sourceforge.net/SciTE.html
+master_sites    sourceforge:project/scintilla/SciTE/${version}
+distname        ${name}[strsed ${version} {g/\.//}]
+extract.suffix  .tgz
+
+depends_build   port:pkgconfig
+depends_lib     port:gtk2
+
+checksums       rmd160  58deba8cc61299ce3e827dc01dde12a39f394789 \
+                sha256  a5687faaa201c39a4ec9608e8a77e418e259f525b21871a5c9f1282c62e58eaa
+
+worksrcdir      ${name}
+
+patch.dir       ${workpath}
+
+patchfiles      patch-scite-makefile.diff
+
+use_configure   no
+
+variant universal {}
+
+set sysrootflags ""
+if {${configure.sdkroot} != ""} {
+    set sysrootflags "-isysroot ${configure.sdkroot}"
+}
+
+build.dir       ${worksrcpath}/gtk
+
+build.args      CCOMP="${configure.cc} ${sysrootflags} [get_canonical_archflags cc]" \
+                CC="${configure.cxx} ${sysrootflags} [get_canonical_archflags cxx]" \
+                prefix=${prefix}
+
+use_parallel_build  yes
+
+pre-build {
+    foreach {badport badfile} "tidy ${prefix}/include/platform.h" {
+        if {[file exists ${badfile}]} {
+            ui_error "${name} cannot be built while ${badport} is active."
+            ui_error "Please deactivate ${badport} and try again."
+            ui_error "You can reactivate ${badport} again later."
+            return -code error "${badport} is installed"
+        }
+    }
+    
+    ui_debug "Building scintilla"
+    set cmd "make [join ${build.args}] [portbuild::build_getjobsarg]"
+    ui_debug "Assembled command: '${cmd}'"
+    system -W ${workpath}/scintilla/gtk ${cmd}
+}
+
+destroot.destdir    prefix=${destroot}${prefix}
+
+post-destroot {
+    xinstall -m 444 ${worksrcpath}/doc/scite.1 ${destroot}${prefix}/share/man/man1
+    set docdir ${prefix}/share/doc/${name}
+    xinstall -d ${destroot}${docdir}
+    xinstall -m 644 -W ${workpath}/scite License.txt README ${destroot}${docdir}
+}
+
+livecheck.distname  SciTE

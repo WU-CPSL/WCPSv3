@@ -1,0 +1,34 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 86976 2011-11-07 20:09:50Z dports@macports.org $
+
+PortSystem 1.0
+
+name        mtr
+version     0.80
+categories  net
+license     GPL-2
+maintainers mr_bond
+description 'traceroute' and 'ping' in a single tool
+long_description    \
+    As mtr starts,  it  investigates  the  network  connection \
+    between  the  host  mtr  runs on and HOSTNAME.  by sending \
+    packets with purposly low TTLs. It continues to send pack- \
+    ets  with  low TTL, noting the response time of the inter- \
+    vening routers.  This allows mtr  to  print  the  response \
+    percentage  and  response  times  of the internet route to \
+    HOSTNAME.  A sudden increase  in  packetloss  or  response \
+    time  is  often  an  indication  of a bad (or simply over- \
+    loaded) link.
+homepage    http://www.bitwizard.nl/mtr/
+platforms   darwin
+master_sites    ftp://ftp.bitwizard.nl/mtr/ \
+                sourceforge:macports
+
+checksums           md5     fa68528eaec1757f52bacf9fea8c68a9 \
+                    sha1    7753c60753ce8454c4f37fc527bc82e46f6bb5b3 \
+
+configure.args-append --without-gtk
+
+if {${os.platform} == "darwin" && ${os.major} >= 10} {
+    configure.env-append LIBS=-lresolv
+}

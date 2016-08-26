@@ -1,0 +1,11 @@
+# $Id: Portfile 88525 2012-01-04 01:57:16Z mww@macports.org $
+
+PortSystem          1.0
+replaced_by ocaml-pxp
+PortGroup obsolete 1.0
+
+name                caml-pxp
+version             1.2.1
+revision            1
+categories          devel ml textproc
+license             BSD

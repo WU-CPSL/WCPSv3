@@ -1,0 +1,64 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:et:sw=4:ts=4:sts=4
+# $Id: Portfile 80853 2011-07-19 04:41:42Z jmr@macports.org $
+
+PortSystem 1.0
+
+name             openjpeg
+version          1.4-r697
+revision         1
+categories       graphics
+license          BSD
+maintainers      mcalhoun openmaintainer
+description      Library for manipulating JPEG-2000 images
+long_description \
+	The OpenJPEG library is an open-source JPEG 2000 codec. \
+	It has been developed in order to promote the use of JPEG 2000, \
+	the new still-image compression standard from the \
+	Joint Photographic Experts Group (JPEG).
+
+platforms        darwin
+
+homepage         http://www.openjpeg.org/
+master_sites     googlecode
+
+checksums \
+    md5     7870bb84e810dec63fcf3b712ebb93db \
+    sha1    9ef6a08ecf5944962b4e2cd7569ac01a8eaa66d0 \
+    rmd160  c0d88c4a312651bac17d50bd6917e1b678fcf8f7
+
+depends_build    port:pkgconfig
+
+depends_lib      port:libpng \
+                 port:tiff \
+                 port:lcms2 \
+                 port:zlib \
+                 port:jbigkit
+
+set major [lindex [split [lindex [split ${version} {-}] 0] {.}] 0]
+set minor [lindex [split [lindex [split ${version} {-}] 0] {.}] 1]
+set rev [lindex [split ${version} {-}] 1]
+
+distname ${name}_v${major}_${minor}_sources_${rev}
+extract.suffix .tgz
+
+use_parallel_build no
+
+if { ![variant_isset universal] } {
+    build.args-append "COMPILERFLAGS='${configure.cflags} ${configure.cc_archflags}'"
+} else {
+    build.args-append "COMPILERFLAGS='${configure.cflags} ${configure.universal_cflags}'"
+}
+
+post-patch {
+    reinplace \
+        "s|pkgconf_dir = /usr/lib/pkgconfig|pkgconf_dir = \$(DESTDIR)${prefix}/lib/pkgconfig|g" \
+        ${worksrcpath}/Makefile.in
+}
+
+if {${os.platform} == "darwin" && ${os.major} < 10} {
+    # See #29193
+    patchfiles-append patch-libopenjpeg-Makefile.in.diff 
+}
+
+livecheck.url    http://www.openjpeg.org/index.php?menu=news
+livecheck.regex  "\[vV\]ersion (\\d+(\\.\\d+)+)"

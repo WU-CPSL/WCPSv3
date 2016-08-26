@@ -1,0 +1,47 @@
+# $Id: Portfile 89574 2012-02-03 14:47:44Z kimuraw@macports.org $
+
+PortSystem		1.0
+PortGroup		ruby 1.0
+
+ruby.setup		rabbit 1.0.5 setup.rb {README sample misc}
+revision		0
+maintainers		kimuraw
+description		An application to do presentation with RD document.
+long_description	This is an application to do presentation with RD document.\
+					There are some features which are different from other\
+					presentation tools:\
+					  * To define slide look, use Ruby.\
+					  * There are many keyboard interfaces.\
+					  * This supports mouse gesture.\
+					  * and more...
+
+categories-append	graphics
+platforms		darwin
+homepage        http://rabbit-shockers.org/index.html.en
+license			Ruby
+supported_archs	noarch
+
+depends_lib-append	port:rb-gtk2 port:rb-rsvg port:rb-poppler \
+					port:rb-nokogiri port:rb-coderay port:rb-div \
+					port:rb-rdtool port:rb-rttool
+
+post-build {
+	reinplace "s|^#!.*ruby|#!${ruby.bin}|" \
+		${worksrcpath}/bin/rabbit \
+		${worksrcpath}/bin/rabbit-command \
+		${worksrcpath}/bin/rabbit-theme-manager \
+		${worksrcpath}/bin/rabrick \
+		${worksrcpath}/bin/rabbirc \
+		${worksrcpath}/bin/rabbiter \
+		${worksrcpath}/bin/rabwii
+}
+
+master_sites    http://rabbit-shockers.org/download/
+checksums		md5 843fe91f792f81de41b89e75e66221f9 \
+				rmd160 e3432be16903a63dc718c83ff7e6d1c72cb928cc \
+				sha1 02bc35203d8eed20f02b137f9ccc47b4b4f35920
+
+livecheck.type	regex
+livecheck.url	http://raa.ruby-lang.org/project/rabbit/
+livecheck.regex	{download/rabbit-(.*)\.tar\.gz\">http://}
+

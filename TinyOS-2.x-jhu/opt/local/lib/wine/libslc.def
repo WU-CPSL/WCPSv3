@@ -1,0 +1,6 @@
+; File generated automatically from ./slc.spec; do not edit!
+
+LIBRARY slc.dll
+
+EXPORTS
+  SLGetWindowsInformationDWORD@8 @29

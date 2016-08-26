@@ -1,0 +1,60 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 83253 2011-08-29 07:59:38Z dports@macports.org $
+
+PortSystem          1.0
+
+name                gstreamer
+version             0.10.35
+description \
+    GStreamer is a development framework for creating multimedia applications.
+long_description \
+    GStreamer is the core library. It contains the headers, core library files, \
+    and core elements.
+maintainers	rmstonecipher openmaintainer
+categories	gnome
+platforms	darwin
+license     LGPL-2+
+homepage	http://gstreamer.freedesktop.org/
+
+master_sites \
+    gnome:sources/gstreamer/[join [lrange [split ${version} .] 0 1] .]/ \
+    http://gstreamer.freedesktop.org/src/${name}/
+
+checksums           md5     4a0a00edad7a2c83de5211ca679dfaf9 \
+                    sha1    ad03b8aca7b2415929b6ecc4c140b178acef39de \
+                    rmd160  5a08c07cb5c99b5a031ca6be5a6ac1d576593d33
+
+depends_build   \
+    port:gzip \
+    port:m4 \
+    path:bin/perl:perl5 \
+    port:pkgconfig
+depends_lib \
+    port:bison \
+    port:flex \
+    port:gettext \
+    path:lib/pkgconfig/glib-2.0.pc:glib2 \
+    port:libxml2
+
+use_bzip2           yes
+
+configure.env-append    PERL_PATH=${prefix}/bin/perl
+configure.cflags-append -funroll-loops -fstrict-aliasing -fno-common
+configure.args-append   --disable-introspection
+
+#if {${os.major} >= 9 && ${os.platform} == "darwin"} {
+#    patchfiles-append fat.patch
+#}
+
+pre-build	{
+    if {[file exists ${prefix}/lib/libcheck.dylib]} {
+        ui_msg "Gstreamer will fail to build because the 'check' port is active. Deactivate"
+        ui_msg "'check' by running 'port deactivate check' and try again. You may reactivate"
+        ui_msg "'check' after installing gstreamer by running 'port activate check'."
+        return -code error "check is installed"
+    }
+}
+
+livecheck.type      regex
+livecheck.url       http://gstreamer.freedesktop.org/src/${name}/
+livecheck.regex     "${name}-(\\d+(?:\\.\\d+)*)${extract.suffix}"

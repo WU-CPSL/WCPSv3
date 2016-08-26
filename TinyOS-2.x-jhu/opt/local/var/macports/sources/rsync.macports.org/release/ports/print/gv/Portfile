@@ -1,0 +1,68 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89338 2012-01-25 23:57:37Z ryandesign@macports.org $
+
+PortSystem              1.0
+
+name                    gv
+version                 3.7.3
+categories              print
+maintainers             ryandesign openmaintainer
+homepage                http://www.gnu.org/software/gv/
+platforms               darwin
+license                 GPL-3+
+
+description             PostScript and PDF previewer
+long_description        gv is a X11 PostScript and PDF previewer based on \
+                        Tim Theisen's ghostview-1.5. It uses the Xaw3d \
+                        widget set, thus providing a much nicer look and \
+                        it's said to be a bit faster.
+
+master_sites            gnu
+
+checksums               rmd160  d3e7f3137f0aff521a667606ea05507c0dfc5784 \
+                        sha256  ee01ba96e3a5c319eb4658357372a118dbb0e231891b360edecbdebd449d1c2b
+
+use_parallel_build      yes
+
+depends_lib             port:xorg-libXinerama \
+                        port:libiconv \
+                        port:Xaw3d \
+                        port:bzip2
+
+depends_run             path:bin/gs:ghostscript
+
+patchfiles              patch-src-Scrollbar.c.diff
+
+configure.args          --enable-setenv-code \
+                        --enable-international \
+                        --x-include=${prefix}/include \
+                        --x-lib=${prefix}/lib
+
+platform darwin {
+    patchfiles-append   patch-src-callbacks.c.diff
+    configure.args-append --enable-SIGCHLD-fallback
+}
+
+platform freebsd {
+    configure.args-append --enable-SIGCHLD-fallback
+}
+
+configure.ldflags-append -liconv
+
+variant letter description {sets default paper size to letter} {
+    configure.args-append --with-default-papersize=letter
+}
+
+destroot.keepdirs       ${destroot}${prefix}/share/gv/safe-gs-workdir
+
+post-destroot {
+    set docdir ${destroot}${prefix}/share/doc/${name}
+    xinstall -d ${docdir}
+    xinstall -m 644 -W ${worksrcpath} \
+        AUTHORS \
+        COPYING \
+        ChangeLog \
+        NEWS \
+        README \
+        ${docdir}
+}

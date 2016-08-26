@@ -1,0 +1,52 @@
+# $Id: Portfile 83980 2011-09-14 04:23:13Z ryandesign@macports.org $
+
+PortSystem 1.0
+PortGroup muniversal 1.0
+
+name		mpg123
+version		1.13.4
+categories	audio
+maintainers	gmx.at:astifter openmaintainer
+license		GPL-2 LGPL-2.1
+
+description	fast mp3 player for linux and unix systems
+long_description	\
+	Mpg123 is a fast, free and portable MPEG audio player for Unix. It \
+	supports MPEG 1.0/2.0 layers 1, 2 and 3. For full CD quality \
+	playback (44 kHz, 16 bit, stereo) a Pentium, SPARCstation10, DEC \
+	Alpha or similar CPU is required. Mono and/or reduced quality \
+	playback (22 kHz or 11 kHz) is even possible on 486 CPUs. \
+	\
+	This version uses EsounD on a pure Darwin install and CoreAudio \
+	on Mac OS X.
+
+homepage	http://www.mpg123.de/
+platforms	darwin
+master_sites	sourceforge:project/mpg123/mpg123/${version} \
+		${homepage}download/
+use_bzip2	yes
+
+checksums	rmd160  b1b386fcc3e7f64eb9d4c4aa0daa06bb644c6b5f \
+		sha256  f7ec51069ad0d6ac589d78ee431fbf7a4874f9c7338f01b67964640305e627c3
+
+depends_lib	port:libtool
+
+patchfiles	patch-configure.diff
+
+platform macosx {
+    configure.args-append --with-audio=coreaudio
+}
+
+if {[variant_isset universal]} {
+    set merger_configure_args(x86_64) --with-cpu=x86-64
+    set merger_configure_args(i386) --with-cpu=sse
+    set merger_configure_args(ppc) --with-cpu=altivec
+    set merger_configure_args(ppc64) --with-cpu=altivec
+} else {
+    switch -- ${configure.build_arch} {
+        x86_64 { configure.args-append --with-cpu=x86-64 }
+        i386 { configure.args-append --with-cpu=sse }
+        ppc -
+        ppc64 { configure.args-append --with-cpu=altivec }
+    }
+}

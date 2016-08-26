@@ -1,0 +1,47 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 88092 2011-12-18 17:53:49Z stromnov@macports.org $
+
+PortSystem          1.0
+
+name                libmemcached
+version             1.0.2
+revision            0
+categories          devel
+platforms           darwin
+license             BSD
+
+description         libmemcached is a C and C++ client library to the memcached server
+
+long_description    libmemcached is a C and C++ client library for memcached. \
+                    It has been designed to be light on memory usage, thread safe, \
+                    and provide full access to server side methods.
+
+maintainers         brett openmaintainer
+
+homepage            http://libmemcached.org/
+master_sites        http://launchpad.net/${name}/1.0/${version}/+download/
+
+checksums           md5     5a1ebd5de22f6e24474cb9f579456fd5 \
+                    sha1    d992845fe71210e2e93147ba8f29df1fca14e716 \
+                    rmd160  80a183ab6853a0cc07cbb3bcd752286c18722048
+
+patchfiles          patch-Makefile.in.diff
+
+depends_build       bin:pod2man:perl5
+depends_lib         port:memcached
+
+variant dtrace description {enable dtrace probes } {
+    configure.args-append  --enable-dtrace
+}
+
+variant hsieh description {include support for hsieh hashing } {
+    configure.args-append  --enable-hsieh_hash
+}
+
+platform darwin 8 {
+    patchfiles-append   no_memslap.diff
+}
+
+platform darwin 9 {
+    configure.compiler  gcc-4.2
+}

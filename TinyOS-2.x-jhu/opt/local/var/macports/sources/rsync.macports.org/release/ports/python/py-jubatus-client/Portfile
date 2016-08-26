@@ -1,0 +1,33 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 87574 2011-11-26 11:05:51Z hum@macports.org $
+
+PortSystem          1.0
+PortGroup           python 1.0
+
+name                py-jubatus-client
+version             0.1.1
+python.versions     26 27 31 32
+python.default_version 27
+categories-append   devel
+platforms           darwin
+maintainers         hum openmaintainer
+license             LGPL-2.1
+
+homepage            https://github.com/jubatus/jubatus-python-client
+description         a Python client for jubatus
+long_description    ${description}
+
+fetch.type          git
+git.url             https://github.com/jubatus/jubatus-python-client.git
+git.branch          a37713f545
+
+if {${subport} != ${name}} {
+    depends_lib-append  port:py-distribute \
+                        port:py-msgpack
+
+    livecheck.type      none
+} else {
+    livecheck.type      regex
+    livecheck.url       https://github.com/jubatus/jubatus-python-client/tags
+    livecheck.regex     tarball\\/(\[0-9.\]+)
+}

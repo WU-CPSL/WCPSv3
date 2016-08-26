@@ -1,0 +1,191 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89636 2012-02-05 01:40:47Z ryandesign@macports.org $
+
+PortSystem          1.0
+
+name                git-core
+version             1.7.9
+description         A fast version control system
+long_description    Git is a fast, scalable, distributed open source version \
+                    control system focusing on speed and efficiency.
+maintainers         nomaintainer
+categories          devel
+license             GPL-2 LGPL-2.1+
+platforms           darwin
+homepage            http://git-scm.com/
+#use_bzip2           yes
+#master_sites        http://www.kernel.org/pub/software/scm/git/
+master_sites        googlecode
+distname            git-${version}
+distfiles           git-${version}${extract.suffix} \
+                    git-manpages-${version}${extract.suffix}
+
+checksums           git-1.7.9.tar.gz \
+                    rmd160  60aa60c076d0e398f7bc07d6cfab3c5ed28fdadc \
+                    sha256  dd9dfcf1da59f09c4b66b53836b56fcb2208d0be9edf1f8b9079c7e980435086 \
+                    git-manpages-1.7.9.tar.gz \
+                    rmd160  d8b3502c1049933bf9d756f7131a42e0bff50e70 \
+                    sha256  b85c4533c0bbe0a5920399b3dc856577feaec2bbcde60c577338d29fac2f2cb1
+
+depends_run         port:rsync \
+                    port:p5.12-error
+depends_lib         port:perl5.12 \
+                    port:curl \
+                    port:zlib \
+                    port:openssl \
+                    port:expat \
+                    port:libiconv
+
+patchfiles          patch-Makefile.diff 0001-setup-Do-not-strip-trailing-from-paths.patch
+patch.pre_args      -p1
+
+extract.only        git-${version}${extract.suffix} \
+                    git-manpages-${version}${extract.suffix}
+
+use_configure       no
+
+variant universal   {}
+
+set CFLAGS          "-Wall -O2 -I${prefix}/include [get_canonical_archflags cc]"
+set LDFLAGS         "-L${prefix}/lib [get_canonical_archflags ld]"
+
+build.args          CFLAGS="${CFLAGS}" \
+                    LDFLAGS="${LDFLAGS}" \
+                    CC=${configure.cc} \
+                    prefix=${prefix} \
+                    CURLDIR=${prefix} \
+                    OPENSSLDIR=${prefix} \
+                    ICONVDIR=${prefix} \
+                    PERL_PATH="${prefix}/bin/perl5.12" \
+                    NO_FINK=1 \
+                    NO_DARWIN_PORTS=1 \
+                    NO_R_TO_GCC_LINKER=1
+
+test.run            yes
+test.cmd            make
+test.target         test
+test.dir            ${worksrcpath}
+test.args           CFLAGS="${CFLAGS}" \
+                    LDFLAGS="${LDFLAGS}" \
+                    CC=${configure.cc} \
+                    prefix=${prefix} \
+                    CURLDIR=${prefix} \
+                    OPENSSLDIR=${prefix} \
+                    ICONVDIR=${prefix} \
+                    PERL_PATH="${prefix}/bin/perl5.12" \
+                    NO_FINK=1 \
+                    NO_DARWIN_PORTS=1 \
+                    NO_R_TO_GCC_LINKER=1
+
+destroot.target     install
+destroot.args       CFLAGS="${CFLAGS}" \
+                    LDFLAGS="${LDFLAGS}" \
+                    CC=${configure.cc} \
+                    prefix=${prefix} \
+                    CURLDIR=${prefix} \
+                    OPENSSLDIR=${prefix} \
+                    ICONVDIR=${prefix} \
+                    PERL_PATH="${prefix}/bin/perl5.12" \
+                    NO_FINK=1 \
+                    NO_DARWIN_PORTS=1 \
+                    NO_R_TO_GCC_LINKER=1
+
+post-destroot {
+    foreach f {1 5 7} {
+        xinstall -d ${destroot}${prefix}/share/man/man${f}
+        foreach m [glob -directory ${workpath} man${f}/*.${f}] {
+            xinstall ${m} ${destroot}${prefix}/share/man/man${f}
+        }
+    }
+    if {![variant_isset svn]} {
+        system "rm ${destroot}${prefix}/libexec/git-core/git-svn*"
+    }
+    set docdestroot ${destroot}${prefix}/share/doc/${name}
+    xinstall -d ${docdestroot}
+    if {[variant_isset doc]} {
+        system "cd ${docdestroot} && ${extract.cmd} ${extract.pre_args} \
+            ${distpath}/git-htmldocs-${version}${extract.suffix} \
+            ${extract.post_args}"
+    }
+
+    file copy ${worksrcpath}/contrib ${docdestroot}
+
+    foreach badfile [exec find ${destroot} -name perllocal.pod] {
+        ui_info "Removing ${badfile}"
+        file delete ${badfile}
+    }
+}
+
+if {![variant_isset python26] && ![variant_isset python27]} {
+    default_variants    +python27
+}
+
+variant python26 conflicts python27 description {Use Python 2.6} {
+    build.args-append       PYTHON_PATH="${prefix}/bin/python2.6"
+    destroot.args-append    PYTHON_PATH="${prefix}/bin/python2.6"
+    test.args-append        PYTHON_PATH="${prefix}/bin/python2.6"
+    depends_lib-append      port:python26
+}
+
+variant python27 conflicts python26 description {Use Python 2.7} {
+    build.args-append       PYTHON_PATH="${prefix}/bin/python2.7"
+    destroot.args-append    PYTHON_PATH="${prefix}/bin/python2.7"
+    test.args-append        PYTHON_PATH="${prefix}/bin/python2.7"
+    depends_lib-append      port:python27
+}
+
+variant pcre {
+    build.args-append       LIBPCREDIR=${prefix} USE_LIBPCRE=1
+    destroot.args-append    LIBPCREDIR=${prefix} USE_LIBPCRE=1
+    test.args-append        LIBPCREDIR=${prefix} USE_LIBPCRE=1
+    depends_lib-append      port:pcre
+}
+
+variant doc description {Install HTML and plaintext documentation} {
+    distfiles-append        git-htmldocs-${version}${extract.suffix}
+    checksums-append        git-htmldocs-${version}${extract.suffix} \
+                            rmd160  dcaaa218bc63208b96fc7100add518bac94e8255 \
+                            sha256  a43234a0288e34ba826c3e77b7a9e9b2b3f30fbd63c847806ee5437e883f1699
+}
+
+variant gitweb description {Install gitweb.cgi} {
+    build.target-append     gitweb/gitweb.cgi
+
+    post-destroot {
+        xinstall -d ${destroot}${prefix}/share/${name}/gitweb
+        xinstall -W ${worksrcpath}/gitweb \
+            gitweb.cgi \
+            ${destroot}${prefix}/share/${name}/gitweb
+        xinstall -m 444 -W ${worksrcpath}/gitweb/static \
+            gitweb.css \
+            gitweb.js \
+            git-favicon.png \
+            git-logo.png \
+            ${destroot}${prefix}/share/${name}/gitweb
+        xinstall -d ${destroot}${prefix}/share/doc/${name}/gitweb
+        xinstall -m 444 -W ${worksrcpath}/gitweb README INSTALL \
+            ${destroot}${prefix}/share/doc/${name}/gitweb
+    }
+}
+
+variant svn description {Bi-directional subversion repository support} {
+    depends_run-append  port:subversion \
+                        port:p5.12-libwww-perl \
+                        port:p5.12-svn-simple \
+                        port:p5.12-term-readkey
+}
+
+variant bash_completion {
+    depends_run-append  port:bash-completion
+
+    post-destroot {
+        xinstall -d ${destroot}${prefix}/etc/bash_completion.d
+        xinstall -m 644 ${worksrcpath}/contrib/completion/git-completion.bash \
+            ${destroot}${prefix}/etc/bash_completion.d/git
+    }
+}
+
+default_variants    +doc +pcre
+
+livecheck.type          regex
+livecheck.regex         {<div id="ver">v([0-9.]+)}

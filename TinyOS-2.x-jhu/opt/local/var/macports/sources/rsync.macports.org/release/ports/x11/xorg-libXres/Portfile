@@ -1,0 +1,31 @@
+# $Id: Portfile 85724 2011-10-16 04:03:30Z dports@macports.org $
+
+PortSystem 1.0
+
+name            xorg-libXres
+version         1.0.5
+categories      x11 devel
+license         X11
+maintainers     jeremyhu openmaintainer
+description     X.org libXres
+homepage        http://www.x.org
+platforms       darwin macosx
+long_description X Resource extension
+master_sites     xorg:individual/lib/
+
+distname    libXres-${version}
+checksums           md5     d08f0b6df3f96c051637d37009f4e55a \
+                    sha1    d3a36f9b6ae430da91f2cbae409916f605074195 \
+                    rmd160  147d5bc89c859a5c85fc16c346b4bc95a24d02a8
+
+use_bzip2   yes
+use_parallel_build      yes
+
+depends_build   port:pkgconfig \
+                port:xorg-resourceproto
+
+depends_lib     port:xorg-libXext
+
+livecheck.type  regex
+livecheck.url   http://xorg.freedesktop.org/archive/individual/lib/?C=M&O=D
+livecheck.regex libXres-(\\d+(?:\\.\\d+)*)

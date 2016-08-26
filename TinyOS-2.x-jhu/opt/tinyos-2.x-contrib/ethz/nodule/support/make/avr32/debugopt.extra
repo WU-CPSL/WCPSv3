@@ -1,0 +1,5 @@
+# $Id: debugopt.extra,v 1.2 2008/01/07 14:11:34 yuecelm Exp $ #
+
+# author: Mustafa Yuecel <mustafa.yuecel@alumni.ethz.ch> #
+
+OPTFLAGS += -g

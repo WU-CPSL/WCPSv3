@@ -1,0 +1,24 @@
+# $Id: Portfile 75508 2011-01-27 18:38:10Z jmr@macports.org $
+
+PortSystem          1.0
+
+name                svg2pdf
+version             0.1.3
+revision            2
+categories          graphics
+maintainers         nomaintainer
+description         Render an SVG image to a PDF file (using cairo)
+long_description    ${description}
+# +universal isn't supported yet by libsvg and libsvg-cairo
+universal_variant   no
+
+homepage            http://cairographics.org/
+platforms           darwin
+master_sites        http://cairographics.org/snapshots/
+checksums           md5     0059ba059ff89931cf37720fcd102d8f \
+                    sha1    07c5e8b95b43bcdd40d791ccb1a2cb5221093f19 \
+                    rmd160  e7ed059a72cda28634e41d736296f6d1c432d0f8
+
+depends_lib         port:libsvg-cairo
+
+destroot.args-append   mandir=${prefix}/share/man

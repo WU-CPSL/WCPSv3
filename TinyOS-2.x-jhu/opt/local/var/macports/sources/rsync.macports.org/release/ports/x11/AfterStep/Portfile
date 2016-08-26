@@ -1,0 +1,48 @@
+# $Id: Portfile 75257 2011-01-19 06:23:12Z ryandesign@macports.org $
+
+PortSystem 1.0
+
+name		AfterStep
+version		2.2.9
+categories	x11
+maintainers	waqar openmaintainer
+description	Window Manager based on NeXTStep interface.
+long_description	\
+	AfterStep is a window manager for the Unix X Window System. 	\
+	Originally based on the look and feel of the NeXTStep interface,\
+	it provides end users with a consistent, clean, and elegant 	\
+	desktop. The goal of AfterStep development is to provide for 	\
+	flexibility of desktop configuration, improving aestetics, 	\
+	and efficient use of system resources.
+homepage	http://www.afterstep.org
+platforms	darwin
+master_sites    afterstep:stable
+use_bzip2	yes
+
+checksums	sha1    dfd7dd912866316e93c3be7a8460d34b95cd54a2	\
+		rmd160  b332078efa50abde522438c825fca91f31c4d554
+
+depends_build	port:pkgconfig
+
+depends_lib \
+        path:include/gif_lib.h:giflib \
+        port:gtk2 \
+        port:librsvg
+
+configure.args	--mandir=${prefix}/share/man 		\
+		--infodir=${prefix}/share/info		\
+		--enable-i18n --with-x 	\
+		--with-svg				
+
+platform darwin	{
+	configure.ldflags-append	"-bind_at_load"
+	patchfiles	patch-parser.c
+	pre-configure	{
+		reinplace "s|-rdynamic|-dynamic|g" 	    \
+		  ${worksrcpath}/configure		    \
+		  ${worksrcpath}/libAfterBase/configure     \
+		  ${worksrcpath}/libAfterBase/configure.in  \
+		  ${worksrcpath}/libAfterImage/configure    \
+		  ${worksrcpath}/libAfterImage/configure.in
+	}
+}

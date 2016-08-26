@@ -1,0 +1,53 @@
+# $Id: Portfile 87777 2011-12-05 22:15:17Z mww@macports.org $
+
+PortSystem 1.0
+
+name			postgresql91-doc
+version			9.1.2
+categories		databases
+platforms		darwin
+maintainers		mww jwa
+license			Permissive
+description		Documentation for the postgresql database ALPHA release.
+long_description PostgreSQL is Object-Relational Database Management System. \
+				It supports almost all SQL constructs, including transactions, \
+				subselects, and user-defined types and functions. Write-ahead \
+				logging means increased performance while retaining data \
+				integrity. This is the documentation.
+
+homepage		http://www.postgresql.org/
+master_sites		postgresql:source/v${version}
+distname		postgresql-${version}
+
+checksums           md5     7dbff52221954c46595313eb7f92c3e0 \
+                    sha1    7d57b96eb1c764ec234c72b70511a5f7e23fb2b0 \
+                    rmd160  2f98f2ff4e6e2b048dce80335fb3c672753114a9
+
+use_bzip2		yes
+dist_subdir		postgresql91
+
+set libdir		${prefix}/lib/postgresql91
+configure.args	--mandir=${prefix}/share/man \
+				--with-docdir=${prefix}/share/doc/postgresql91 \
+				--without-openssl \
+				--without-rendezvous \
+				--without-readline \
+				--without-zlib
+
+build.dir		${worksrcpath}/doc
+build.type		gnu
+build.target
+
+destroot.dir	${build.dir}
+
+post-destroot {
+	file rename ${destroot}${prefix}/share/doc/postgresql \
+		${destroot}${prefix}/share/doc/postgresql91
+}
+
+livecheck.type	regex
+livecheck.url	${homepage}
+livecheck.regex	(9\\.1\\.\[.0-9\]+)
+#livecheck.url	${homepage}/developer/beta
+#livecheck.regex	(9\\.1\[a-z\]+\[.0-9\]+)
+

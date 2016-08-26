@@ -1,0 +1,40 @@
+# $Id: Portfile 87583 2011-11-26 22:50:44Z blb@macports.org $
+
+PortSystem          1.0
+PortGroup           python27 1.0
+name                muttils
+version             1.1
+epoch               1
+license             GPL-2
+categories          mail
+maintainers         nomaintainer
+description         Utilities for console mail clients
+long_description \
+   This package provides utilities for use with console mail clients, eg. \
+   Mutt.  Includes sigpager, urlpager, urlbatcher, pybrowser, viewhtmlmsg, \
+   and wrap.
+
+platforms           darwin
+
+homepage            http://www.blacktrash.org/hg/muttils/
+master_sites        https://bitbucket.org/blacktrash/${name}/get/
+
+distname            ${version}
+dist_subdir         ${name}
+use_bzip2           yes
+
+checksums           sha1    68999e41c09c9640577966f44ae79dff1f7a4e2a \
+                    rmd160  b8e74d1026b270cb719da062cc09e9d84e0ba4fd
+
+set hg_changeset    977f2e350221
+worksrcdir          blacktrash-${name}-${hg_changeset}
+
+python.link_binaries_suffix
+
+post-destroot {
+   set examplesdir ${prefix}/share/examples/${name}
+   xinstall -m 755 -d ${destroot}${examplesdir}
+   eval xinstall -m 644 [glob ${worksrcpath}/contrib/example*] \
+      ${destroot}${examplesdir}
+}
+

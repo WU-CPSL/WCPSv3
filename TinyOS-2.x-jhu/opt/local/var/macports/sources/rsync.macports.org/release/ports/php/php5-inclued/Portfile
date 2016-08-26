@@ -1,0 +1,29 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:filetype=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 74851 2011-01-03 23:53:26Z ryandesign@macports.org $
+
+PortSystem      1.0
+PortGroup       php5extension 1.0
+
+php5extension.setup inclued 0.1.2 pecl
+license         PHP
+categories      php devel
+platforms       darwin
+maintainers     nomaintainer
+description     Clued-in about your inclueds
+
+long_description \
+    Allows you trace through and dump the hierarchy of file inclusions and \
+    class inheritance at runtime.
+
+checksums       sha1    b369585df3186aa8e5ad91121619e109d53b304b \
+                rmd160  ca6e1b5e0afe3df7fc9e5cbf3a4ef64c180bfe96
+
+use_parallel_build yes
+
+post-destroot {
+    set docdir ${prefix}/share/doc/${name}
+    xinstall -d ${destroot}${docdir}
+    xinstall -m 644 ${worksrcpath}/INSTALL ${destroot}${docdir}
+}
+
+livecheck.regex {>(\d+(?:\.\d+)*)</a></th>}

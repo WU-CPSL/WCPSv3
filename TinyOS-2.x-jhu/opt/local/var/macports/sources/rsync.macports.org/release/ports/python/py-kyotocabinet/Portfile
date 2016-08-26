@@ -1,0 +1,38 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 87994 2011-12-15 12:07:23Z stromnov@macports.org $
+
+PortSystem          1.0
+PortGroup           python 1.0
+
+name                py-kyotocabinet
+version             1.16
+revision            1
+categories-append   databases
+license             GPL
+platforms           darwin
+
+maintainers         stromnov openmaintainer
+
+description         Python 2.x Binding of Kyoto Cabinet
+long_description    ${description}
+
+homepage            http://fallabs.com/kyotocabinet/
+master_sites        http://fallabs.com/kyotocabinet/pythonlegacypkg/
+
+distname            kyotocabinet-python-legacy-${version}
+
+checksums           md5     d5bcbf6e1b149ee3a9b374ae8a45d348 \
+                    sha1    6c94f11fbe156fd8965cb31c1158dae5c2e36c37 \
+                    rmd160  188cb69ecfdf98cd72b434c19a81031c1ac63fae
+
+python.default_version  27
+python.versions     26 27
+
+if {$subport != $name} {
+    depends_lib-append  port:kyotocabinet \
+                        port:zlib
+}
+
+livecheck.type      regex
+livecheck.url       ${master_sites}
+livecheck.regex     "kyotocabinet-python-legacy-(\\d+(?:\\.\\d+)*)${extract.suffix}"

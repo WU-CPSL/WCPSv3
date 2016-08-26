@@ -1,0 +1,46 @@
+--- qtiplot/src/core/ApplicationWindow.cpp.orig	2011-07-14 13:24:58.000000000 +0200
++++ qtiplot/src/core/ApplicationWindow.cpp	2011-07-20 20:41:23.000000000 +0200
+@@ -173,7 +173,7 @@
+ #include <QVarLengthArray>
+ #include <QList>
+ #include <QUrl>
+-#include <QAssistantClient>
++//#include <QAssistantClient>
+ #include <QFontComboBox>
+ #include <QSpinBox>
+ #include <QMdiArea>
+@@ -347,7 +347,7 @@
+ 	insertTranslatedStrings();
+ 	disableToolbars();
+ 
+-	assistant = new QAssistantClient( QString(), this );
++	//assistant = new QAssistantClient( QString(), this );
+ 
+ 	connect(tablesDepend, SIGNAL(activated(int)), this, SLOT(showTable(int)));
+ 
+@@ -11325,10 +11325,10 @@
+ 	}
+ 
+ 	QStringList cmdLst = QStringList() << "-profile" << profilePath;
+-	QAssistantClient *assist = new QAssistantClient( QString(), 0);
+-	assist->setArguments( cmdLst );
+-	assist->showPage(helpPath);
+-	connect(assist, SIGNAL(assistantClosed()), qApp, SLOT(quit()) );
++	//QAssistantClient *assist = new QAssistantClient( QString(), 0);
++	//assist->setArguments( cmdLst );
++	//assist->showPage(helpPath);
++	//connect(assist, SIGNAL(assistantClosed()), qApp, SLOT(quit()) );
+ }
+ 
+ void ApplicationWindow::showHelp()
+@@ -11359,8 +11359,8 @@
+ 	}
+ 
+ 	QStringList cmdLst = QStringList() << "-profile" << profilePath;
+-	assistant->setArguments( cmdLst );
+-	assistant->showPage(helpFilePath);
++	//assistant->setArguments( cmdLst );
++	//assistant->showPage(helpFilePath);
+ }
+ 
+ void ApplicationWindow::showPlotWizard()

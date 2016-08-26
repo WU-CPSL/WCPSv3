@@ -1,0 +1,55 @@
+# $Id: Portfile 89477 2012-01-31 15:27:04Z ram@macports.org $
+
+PortSystem    1.0
+
+name          lalapps
+version       6.6.4
+categories    science
+platforms     darwin
+maintainers   ram
+license       GPL
+
+description   LSC Algorithm Library Applications
+long_description \
+  LALApps is a set of codes for gravitational wave data analysis, \
+  against the LSC Algorithm Library.
+
+homepage      https://www.lsc-group.phys.uwm.edu/daswg/projects/lalsuite.html
+master_sites  http://www.lsc-group.phys.uwm.edu/daswg/download/software/source/lalsuite/
+
+checksums     md5 75983a1dd95893b87359d9a377afd2c8 \
+              sha1 4644d7391179b159d0d41fe09e06705f7140f655 \
+              rmd160 85694974d8da7327a42e5ec2005e7a2a2517ae54
+
+depends_build port:pkgconfig
+
+depends_lib   port:python27 \
+              port:gsl \
+              port:fftw-3 \
+              port:fftw-3-single \
+              port:libframe \
+              port:metaio \
+              port:lal \
+              port:lalframe \
+              port:lalmetaio \
+              port:lalxml \
+              port:lalsimulation \
+              port:lalburst \
+              port:lalinspiral \
+              port:lalpulsar \
+              port:lalinference \
+              port:lalstochastic \
+              port:glue
+
+configure.python ${prefix}/bin/python2.7
+configure.args   --mandir=${prefix}/share/man \
+                 --enable-lalxml \
+                 --disable-gcc-flags
+
+build.args    V=1
+
+use_parallel_build yes
+
+livecheck.type   regex
+livecheck.url    ${master_sites}
+livecheck.regex  {lalapps-(\d+(?:\.\d+)*).tar.gz}

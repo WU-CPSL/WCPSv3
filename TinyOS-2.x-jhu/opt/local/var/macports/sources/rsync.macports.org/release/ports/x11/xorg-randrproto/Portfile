@@ -1,0 +1,29 @@
+# $Id: Portfile 80663 2011-07-16 12:03:23Z jmr@macports.org $
+
+PortSystem 1.0
+
+name		xorg-randrproto
+version		1.3.2
+categories	x11 devel
+license		X11
+maintainers	jeremyhu openmaintainer
+description	X.org randrproto
+homepage	http://www.x.org
+platforms	darwin
+supported_archs	noarch
+long_description The pkg-config program is used to retrieve information \
+		 about installed libraries in the system. It is typically \
+		 used to compile and link against one or more libraries.
+master_sites 	xorg:individual/proto/
+
+distname	randrproto-${version}
+
+checksums           md5     597491c0d8055e2a66f11350c4985775 \
+                    sha1    55d4b1a09fc8e645d9674a452ae151988caabad1 \
+                    rmd160  76c70ebfb3e30b833cd9ca92ee0b466e501338ff
+
+use_bzip2	yes
+
+livecheck.type  regex
+livecheck.url   http://xorg.freedesktop.org/archive/individual/proto/?C=M&O=D
+livecheck.regex randrproto-(\\d+(?:\\.\\d+)*)

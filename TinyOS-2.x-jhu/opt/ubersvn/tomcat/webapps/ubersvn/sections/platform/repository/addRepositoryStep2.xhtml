@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:p="http://primefaces.prime.com.tr/ui" xmlns:h="http://java.sun.com/jsf/html">
+<ui:composition>
+  <p:panel style="border-radius: 4px 4px 4px 4px;" styleClass="wizard-panel" rendered="#{basePage.repoAdmin}">
+    <p:panel style="border: none; background: transparent; width: 45%; height: 300px; margin: 120px auto;">
+      <h:panelGrid columns="1" columnClasses="wizardFieldColumn">
+        <h:outputText styleClass="wizardStepTitle" value="#{msg.addRepoStep2Title}" />
+        <h:panelGrid columns="1">
+          <p:accordionPanel tabChangeListener="#{addRepositoryWizardManagedBean.onTabChange}" autoHeight="false"
+            onTabChangeUpdate="addingNewContainer importingUploadedContainer addDumpFileContainer addExistingContainer">
+            <p:tab id="addingNew" title="#{msg.addRepoCreateNewRepositoryLabel}">
+              <h:panelGroup id="addingNewContainer">
+                <h:selectBooleanCheckbox id="addRepositoryWizardCreateStructure" value="#{addRepositoryWizardManagedBean.createStructure}"
+                  rendered="#{addRepositoryWizardManagedBean.createRepositoryOption == 'addingNew'}" />
+                <h:outputLabel class="wizardComment" for="addRepositoryWizardCreateStructure" value="#{msg.addRepoCreateStructureLabel}"
+                  rendered="#{addRepositoryWizardManagedBean.createRepositoryOption == 'addingNew'}" />
+              </h:panelGroup>
+            </p:tab>
+            <p:tab id="importingUploaded" title="#{msg.addRepoImportFromDumpFileUploadedLabel}">
+              <h:panelGroup id="importingUploadedContainer">
+                <h:outputLabel class="wizardComment" for="importDumpFile" value="#{msg.addRepoImportDumpFileUploadLabel}"
+                  rendered="#{addRepositoryWizardManagedBean.createRepositoryOption == 'importingUploaded'}" />
+                <br />
+                <p:fileUpload id="importDumpFile" style="font-size: 20px; color: #7F7F7F;"
+                  fileUploadListener="#{addRepositoryWizardManagedBean.handleDumpFileUpload}"
+                  rendered="#{addRepositoryWizardManagedBean.createRepositoryOption == 'importingUploaded'}" />
+              </h:panelGroup>
+            </p:tab>
+            <p:tab id="importingExisting" title="#{msg.addRepoImportFromDumpFileServerLabel}">
+              <h:panelGroup id="addDumpFileContainer">
+                <h:inputText id="addRepositoryDumpFilePath" style="font-size: 20px;" styleClass="wizardFormField" size="50"
+                  value="#{addRepositoryWizardManagedBean.dumpFilePath}"
+                  rendered="#{addRepositoryWizardManagedBean.createRepositoryOption == 'importingExisting'}">
+                  <f:validator validatorId="com.wandisco.ubersvn.IsValidDumpFileValidator" />
+                </h:inputText>
+                <p:spacer width="5" rendered="#{addRepositoryWizardManagedBean.createRepositoryOption == 'importingExisting'}" />
+                <h:graphicImage style="cursor: pointer; top:10px; position:relative;" library="img/platform/icons" name="magniglass.png"
+                  onclick="document.forms[1].popupField.value='addRepositoryDumpFilePath';window.open('#{addRepositoryWizardManagedBean.facesContext.externalContext.requestContextPath}/faces/fileChooserPopup.jsp','Browse_Server', 'height=630,width=750,top='+((screen.height-(screen.height/1.618))-(500/2))+',left='+((screen.width-650)/2)+',scrollbars,resizable')"
+                  rendered="#{addRepositoryWizardManagedBean.createRepositoryOption == 'importingExisting'}" />
+                <br />
+                <h:message style="color: red; font-size: 14px; height: 11px;" for="addRepositoryDumpFilePath" />
+              </h:panelGroup>
+            </p:tab>
+            <p:tab id="addingExisting" title="#{msg.addRepoAddExistingRepositoryLabel}">
+              <h:panelGroup id="addExistingContainer">
+                <h:inputText id="addExistingRepositoryPath" style="font-size: 20px;" styleClass="wizardFormField" size="50"
+                  value="#{addRepositoryWizardManagedBean.existingRepositoryPath}"
+                  rendered="#{addRepositoryWizardManagedBean.createRepositoryOption == 'addingExisting'}">
+                  <f:validator validatorId="com.wandisco.ubersvn.PathIsRepositoryValidator" />
+                </h:inputText>
+                <p:spacer width="5" rendered="#{addRepositoryWizardManagedBean.createRepositoryOption == 'addingExisting'}" />
+                <h:graphicImage style="cursor: pointer; top:10px; position:relative;" library="img/platform/icons" name="magniglass.png"
+                  onclick="document.forms[1].popupField.value='addExistingRepositoryPath';window.open('#{addRepositoryWizardManagedBean.facesContext.externalContext.requestContextPath}/faces/folderChooserPopup.jsp','Browse_Server', 'height=630,width=750,top='+((screen.height-(screen.height/1.618))-(500/2))+',left='+((screen.width-650)/2)+',scrollbars,resizable')"
+                  rendered="#{addRepositoryWizardManagedBean.createRepositoryOption == 'addingExisting'}" />
+                <br />
+                <h:message style="color: red; font-size: 14px; height: 11px;" for="addExistingRepositoryPath" />
+              </h:panelGroup>
+            </p:tab>
+          </p:accordionPanel>
+
+        </h:panelGrid>
+      </h:panelGrid>
+    </p:panel>
+    <script type="text/javascript">
+					jQuery(document).ready(function() {
+						jQuery('input:radio').click(function() {
+							jQuery('#addExistingRepositoryPath').val("");
+							jQuery('#addRepositoryDumpFilePath').val("");
+							// Submit the new radio button selection
+							var id = jQuery(this).attr('id');
+							jQuery('#' + id + 'Link').click();
+						});
+					});
+				</script>
+    <h:panelGroup styleClass="bottomCenter">
+      <h:panelGroup>
+        <h:graphicImage library="img/platform" name="step2of2.png" />
+      </h:panelGroup>
+    </h:panelGroup>
+
+
+    <h:panelGroup styleClass="bottomLeft">
+      <p:commandButton action="#{addRepositoryWizardManagedBean.addRepositoryStep2Back}" styleClass="roundedButtonSmall"
+        value="#{msg.backButtonText}" ajax="false" onclick="statusDialog.show()" />
+    </h:panelGroup>
+    <h:panelGroup styleClass="bottomRight">
+      <p:commandButton action="#{addRepositoryWizardManagedBean.addRepositoryStep2Next}" styleClass="roundedButtonSmall"
+        value="#{msg.doneButtonText}" ajax="false" onclick="statusDialog.show()" oncomplete="statusDialog.hide()" />
+    </h:panelGroup>
+  </p:panel>
+  <p:dialog modal="true" widgetVar="statusDialog" header="Processing Repository Data" draggable="false" closable="false" resizable="false"
+    width="240" height="150">
+    <h:graphicImage id="progressImage" style="border:0; margin-left: auto; margin-right: auto; display: block;" library="img/platform"
+      name="progress.gif" />
+  </p:dialog>
+</ui:composition>
+</html>

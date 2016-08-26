@@ -1,0 +1,44 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 84941 2011-10-05 04:16:10Z robitaille@macports.org $
+
+PortSystem          1.0
+PortGroup           python 1.0
+
+name                py-yt
+version             2.2
+maintainers         robitaille openmaintainer
+
+categories-append   science
+description         Astrophysical simulation Analysis and Viz
+long_description    The yt project aims to produce an integrated \
+                    science environment for collaboratively asking and \
+                    answering astrophysical questions. To do so, it \
+                    will encompass the creation of initial conditions, \
+                    the execution of simulations, and the detailed \
+                    exploration and visualization of the resultant \
+                    data. It will also provide a standard framework \
+                    based on physical quantities interoperability \
+                    between codes.
+
+platforms           darwin
+
+homepage            http://yt-project.org/
+master_sites        http://hg.yt-project.org/yt/get/
+distname            yt-${version}
+checksums           md5  e4fcc0a5a56e2a87daf0dd73488de69f \
+                    sha1  8eaeaa6cae0c1c33cb5fa5485167f0793d903dff \
+                    rmd160  6f56ce5f350525dec3dc1de6576fcc1cbf28fdd2
+
+python.versions     25 26 27
+python.default_version 27
+
+if {${subport} != ${name}} {
+    depends_run-append  port:py${python.version}-numpy \
+                        port:py${python.version}-matplotlib \
+                        port:py${python.version}-h5py \
+                        port:py${python.version}-cython
+    post-extract {
+        file rename ${workpath}/yt_analysis-yt-yt-${version} ${workpath}/yt-${version}
+    }
+
+}

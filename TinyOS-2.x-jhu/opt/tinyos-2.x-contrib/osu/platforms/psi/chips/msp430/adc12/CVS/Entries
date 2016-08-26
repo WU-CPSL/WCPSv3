@@ -1,0 +1,21 @@
+/AdcP.nc/1.1/Mon Oct 29 21:55:21 2007//
+/AdcReadClientC.nc/1.1/Mon Oct 29 21:55:21 2007//
+/AdcReadNowClientC.nc/1.1/Mon Oct 29 21:55:22 2007//
+/AdcReadStreamClientC.nc/1.1/Mon Oct 29 21:55:22 2007//
+/HplAdc12.nc/1.1/Mon Oct 29 21:55:22 2007//
+/HplAdc12P.nc/1.1/Mon Oct 29 21:55:22 2007//
+/Msp430Adc12.h/1.1/Mon Oct 29 21:55:22 2007//
+/Msp430Adc12ClientAutoDMAC.nc/1.1/Mon Oct 29 21:55:22 2007//
+/Msp430Adc12ClientAutoDMA_RVGC.nc/1.1/Mon Oct 29 21:55:22 2007//
+/Msp430Adc12ClientAutoRVGC.nc/1.1/Mon Oct 29 21:55:22 2007//
+/Msp430Adc12ClientC.nc/1.1/Mon Oct 29 21:55:22 2007//
+/Msp430Adc12DMAP.nc/1.1/Mon Oct 29 21:55:22 2007//
+/Msp430Adc12ImplP.nc/1.1/Mon Oct 29 21:55:22 2007//
+/Msp430Adc12P.nc/1.1/Mon Oct 29 21:55:22 2007//
+/Msp430Adc12SingleChannel.nc/1.1/Mon Oct 29 21:55:22 2007//
+/Msp430RefVoltArbiterImplP.nc/1.1/Mon Oct 29 21:55:22 2007//
+/Msp430RefVoltArbiterP.nc/1.1/Mon Oct 29 21:55:22 2007//
+/Msp430RefVoltGenerator.h/1.1/Mon Oct 29 21:55:22 2007//
+/Msp430RefVoltGeneratorP.nc/1.1/Mon Oct 29 21:55:22 2007//
+/README.txt/1.1/Mon Oct 29 21:55:22 2007//
+D

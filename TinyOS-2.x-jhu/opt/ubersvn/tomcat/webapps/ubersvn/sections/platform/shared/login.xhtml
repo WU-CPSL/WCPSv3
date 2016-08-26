@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.prime.com.tr/ui"
+  xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core">
+<ui:composition>
+
+
+  <p:panel styleClass="configurationPanel">
+    <p:panel id="welcomePanel" style="display:none;">
+      <div style="text-align: center; margin-bottom: 40px;">
+        <h:outputText style="font-size: 24px; color: #6D6D6D; text-align: center;" value="#{msg.welcomeMessage1}" />
+        <h:graphicImage library="img/platform/logos" name="mk2_logo_login.png" />
+        <h:outputText style="font-size: 24px; color: #6D6D6D; text-align: center;" value="#{msg.welcomeMessage2}" />
+      </div>
+      <h:panelGrid  columns="3"
+        columnClasses="column35Percent,column30Percent,column35Percent"
+        style="width:900px; height:300px; margin-top:120px; text-align: center; vertical-align: top; cellspacing:10px;">
+        <p:spacer />
+        <h:panelGroup>
+          <div>
+            <h:outputText value="#{msg.welcome}" styleClass="wizardStepTitle" />
+          </div>
+        </h:panelGroup>
+        <p:spacer />
+        <p:spacer />
+        <h:outputLabel value="#{msg.loginWelcomeText}" styleClass="wizardLabel" />
+        <p:spacer />
+        <p:spacer />
+        <h:panelGroup>
+          <h:outputLabel style="margin-right:220px;" styleClass="formOutputLabel" for="username">#{msg.loginUsernameLabel}:</h:outputLabel>
+          <br />
+          <h:inputText style=" width: 100%;" styleClass="formInputText" id="username" value="#{credentialsManagedBean.username}"
+            required="true" requiredMessage="#{msg.UsernameRequired}" maxlength="100" />
+        </h:panelGroup>
+        <p:spacer />
+        <p:spacer />
+        <h:panelGroup>
+          <h:outputLabel style="margin-right: 220px;" styleClass="formOutputLabel" for="password">#{msg.loginPasswordLabel}:</h:outputLabel>
+          <br />
+          <h:inputSecret style="width: 100%;" styleClass="formInputText" id="password" autocomplete="off"
+            value="#{credentialsManagedBean.password}" required="false" requiredMessage="#{msg.PasswordFieldRequired}">
+          </h:inputSecret>
+        </h:panelGroup>
+        <p:spacer />
+        <p:spacer />
+        <p:commandLink styleClass="formOutputLabel" value="Forgotten Password" action="#{credentialsManagedBean.forgottenPassword}"
+          rendered="#{!login.loggedIn}" update="mainPortalForm" ajax="false" />
+        <p:spacer />
+        <p:spacer />
+        <p:commandButton styleClass="roundedButtonSmall" value="#{msg.loginButtonText}" action="#{login.login}" update="mainPortalForm"
+          ajax="false" />
+        <p:spacer />
+        <div style="width: 200px">
+          <p:messages />
+        </div>
+        <p:spacer />
+      </h:panelGrid>
+    </p:panel>
+    <p:panel id="unwelcomePanel" style="display:none;">
+      <p>#{msg.loginUnwelcomeText}</p>
+      <p>
+        <a href="http://docs.ubersvn.com/v1.0/#compatiblebrowsers">#{msg.loginUnwelcomeBrowserInformation}</a>
+      </p>
+    </p:panel>
+  </p:panel>
+
+  <script type="text/javascript">
+  jQuery(document).ready(function() {
+    if (getInternetExplorerVersion() &lt; 0 || getInternetExplorerVersion() >= 7) {
+      jQuery('#welcomePanel').css("display", "block");
+      jQuery('#username').focus();
+    } else {
+      jQuery('#unwelcomePanel').css("display", "block");
+    }
+  });
+</script>
+
+
+</ui:composition>
+</html>

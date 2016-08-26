@@ -1,0 +1,33 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:filetype=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 78632 2011-05-14 22:50:58Z ryandesign@macports.org $
+
+PortSystem          1.0
+PortGroup           python27 1.0
+
+name                py27-pybtex
+version             0.14.1
+categories          python textproc
+platforms           darwin
+maintainers         lightnin
+description         A BibTeX-compatible bibliography processor in Python.
+long_description    Pybtex reads citation information from a file and \
+                    produces a formatted bibliography.  BibTeX style files \
+                    are supported.  Alternatively it is possible to write \
+                    styles in Python.
+
+homepage            http://pybtex.sourceforge.net/
+master_sites        http://pypi.python.org/packages/source/p/pybtex/
+distname            pybtex-${version}
+checksums           md5 67b399d3c8269fa89c53c67e01b86e6a \
+                    sha1 43d13e61fdb573717db4a30d6c80744a997d051b \
+                    rmd160 03921510a6e2e706a81347e9a1f7d2d3bbfe44d8
+
+use_bzip2           yes
+
+depends_lib         port:py27-parsing \
+                    port:py27-distribute \
+                    port:py27-yaml
+
+test.run            yes
+test.cmd            ${python.bin} setup.py
+test.env            PYTHONPATH=${worksrcpath}/build/lib

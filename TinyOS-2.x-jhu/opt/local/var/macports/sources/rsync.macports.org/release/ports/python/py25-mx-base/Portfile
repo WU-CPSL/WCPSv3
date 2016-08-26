@@ -1,0 +1,27 @@
+# $Id: Portfile 87306 2011-11-16 22:06:02Z mww@macports.org $
+
+PortSystem 1.0
+PortGroup python25 1.0
+
+name			py25-mx-base
+version			3.1.2
+categories		python
+platforms		darwin
+maintainers		nomaintainer
+description		eGenix.com mx Extensions for Python - base package
+long_description	collection of Python software tools which enhance Python's \
+				usability in many important areas such as ODBC database \
+				connectivity, fast text processing, date/time processing and \
+				web site programming.
+
+homepage		http://www.egenix.com/products/python/mxBase/
+master_sites	http://www.egenix.com/files/python/
+distname		egenix-mx-base-${version}
+checksums           md5     b18b621deb07d503668ba0745e7af971 \
+                    sha1    cc029434b9d52c6516eb41f01204bcc137e2cfb6 \
+                    rmd160  cd6a5623b495839e2ee9c014f01c9e66b9f4fcb9
+
+livecheck.type	regex
+livecheck.url	${homepage}
+livecheck.regex	Version: (\[0-9\\.\]+)
+

@@ -1,0 +1,12 @@
+# $Id: Portfile 88523 2012-01-04 01:52:25Z mww@macports.org $
+
+PortSystem 1.0
+replaced_by ocaml-pcre
+PortGroup obsolete 1.0
+
+name                caml-pcre
+version             6.2.2
+revision            1
+categories          devel ml
+license             LGPL-2.1
+

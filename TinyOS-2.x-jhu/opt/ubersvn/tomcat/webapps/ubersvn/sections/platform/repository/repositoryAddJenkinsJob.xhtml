@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:p="http://primefaces.prime.com.tr/ui" xmlns:h="http://java.sun.com/jsf/html" xmlns:wd="http://www.wansdisco.com/jsf">>
+<ui:composition>
+  <ol id="sub-toc">
+    <li><h:outputLink
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/repository/repositoryProfile.jsf?repoId=#{repositoryProfileManagedBean.repo.id}"
+        title="#{msg.repoProfileTabAltText}">
+        <span>#{msg.repoProfileTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/repository/repositoryGraph.jsf"
+        title="#{msg.repoGraphTabAltText}">
+        <span>#{msg.repoGraphTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/repository/repositoryBrowser.jsf"
+        title="#{msg.repoBrowserTabAltText}">
+        <span>#{msg.repoBrowserTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/repository/repositoryAdministrationVerify.jsf"
+        title="#{msg.repoAdministrationTabAltText}"
+        rendered="#{basePage.systemAdmin or basePage.globalRepoAdmin or repositoryProfileManagedBean.repo.delegatedRepoAdmin}">
+        <span>#{msg.repoAdministrationTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/repository/repositoryPermissions.jsf"
+        title="#{msg.repoPermissionsTabAltText}"
+        rendered="#{basePage.systemAdmin or basePage.globalRepoAdmin or repositoryProfileManagedBean.repo.delegatedRepoAdmin}">
+        <span>#{msg.repoPermissionsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/repository/repositoryAuthentication.jsf"
+        title="#{msg.repoAuthenticationTabAltText}"
+        rendered="#{basePage.systemAdmin or basePage.globalRepoAdmin or repositoryProfileManagedBean.repo.delegatedRepoAdmin}">
+        <span>#{msg.repoAuthenticationTabText}</span>
+      </h:outputLink></li>
+    <li class="current"><h:outputLink
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/repository/repositoryJenkins.jsf"
+        title="#{msg.repoJenkinsTabTitle}">
+        <span>#{msg.repoJenkinsTabText}</span>
+      </h:outputLink></li>
+
+  </ol>
+  <p:panel id="repoAddJenkinsJobPanel" styleClass="tabbed-panel">
+    <p:panel style="border: none; background: transparent; width: 80%; height: 250px; margin: 80px auto;" rendered="#{basePage.jenkinsInstalled and basePage.jenkinsVisible}">
+      <h:panelGrid columns="2" columnClasses="wizardLabelColumn, wizardFieldColumn">
+        <p:spacer />
+        <h:outputText style="font-size: 54px; color: #434343;" value="#{msg.addJenkinsHeader}" />
+        <h:outputLabel for="addJenkinsName" value="#{msg.addJenkinsNameLabel}" />
+        <h:panelGroup>
+          <p:focus for="addJenkinsName" />
+          <h:inputText value="#{jenkinsManagedBean.job.name}" styleClass="wizardFormField" size="50" id="addJenkinsName" required="true"
+            requiredMessage="#{msg.jenkinsNameRequired}">
+            <wd:validateJenkinsJobName/>
+          </h:inputText>
+          <br />
+          <h:message style="color: red; font-size: 12px; height: 11px;" for="addJenkinsName" />
+        </h:panelGroup>
+        <h:outputLabel for="addJenkinsDescription" value="#{msg.addJenkinsDescriptionLabel}" />
+        <h:panelGroup>
+          <h:inputText value="#{jenkinsManagedBean.job.description}" styleClass="wizardFormField" size="50" id="addJenkinsDescription" />
+          <br />
+        </h:panelGroup>
+        <h:outputLabel for="addJenkinsCopyJob" value="#{msg.addJenkinsCopyJobLabel}" />
+        <h:selectOneRadio id="addJenkinsCopyJob" layout="lineDirection" value="#{jenkinsManagedBean.copyJob}">
+          <f:selectItem itemLabel="#{msg.yes}" itemValue="true" />
+          <f:selectItem itemLabel="#{msg.no}" itemValue="false" />
+          <p:ajax event="click" update="addJenkinsCopyJob, copyJobPanelGrid"></p:ajax>
+        </h:selectOneRadio>
+      </h:panelGrid>
+      <h:panelGrid id="copyJobPanelGrid" columns="2" columnClasses="wizardLabelColumn, wizardFieldColumn">
+        <h:outputLabel id="copyJobNameLabel" for="copyJobName" value="#{msg.addJenkinsCopyJobNameLabel}"
+          rendered="#{jenkinsManagedBean.copyJob}" />
+        <h:selectOneMenu id="copyJobName" value="#{jenkinsManagedBean.copyJobName}" styleClass="wizardFormField"
+          rendered="#{jenkinsManagedBean.copyJob}">
+          <f:selectItems value="#{basePage.jobsAsSelectItems}" />
+        </h:selectOneMenu>
+      </h:panelGrid>
+      <h:panelGroup styleClass="bottomLeft">
+        <h:outputLink styleClass="cancelLink"
+          value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/repository/repositoryJenkins.jsf"
+          title="#{msg.addJenkinsCancelLinkAltText}">
+          <span><u>#{msg.addJenkinsCancelLinkText}</u> </span>
+        </h:outputLink>
+      </h:panelGroup>
+      <h:panelGroup styleClass="bottomRight">
+        <p:commandButton action="#{jenkinsManagedBean.createJob}" styleClass="roundedButtonSmall" value="#{msg.addJenkinsCreateButtonText}"
+          image="greenCrossSmall" ajax="false" />
+      </h:panelGroup>
+    </p:panel>
+  </p:panel>
+</ui:composition>
+</html>

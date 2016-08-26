@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.prime.com.tr/ui"
+  xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core">
+<ui:composition>
+  <p:panel id="dashboard-repo-panel" styleClass="ui-corner-all dashboard-repo-panel">
+    <f:facet name="header">
+      <h:outputText style="font-weight: bold;" value="#{msg.viewRepositoriesPanelHeading}" />
+    </f:facet>
+    <ol id="innerTab">
+      <li id="favouriteReposInnerTab"><h:outputLink
+          value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/dashboard/viewDashboard.jsf"
+          title="#{msg.favouriteRepositoriesTabAltText}">
+          <span>#{msg.favouriteRepositoriesTabText}</span>
+        </h:outputLink>
+      </li>
+      <li id="recentReposInnerTab"><h:outputLink
+          value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/dashboard/viewDashboardRecentRepos.jsf"
+          title="#{msg.recentRepositoriesTabAltText}">
+          <span>#{msg.recentRepositoriesTabText}</span>
+        </h:outputLink>
+      </li>
+    </ol>
+    <p:panel styleClass="base-tab-panel">
+      <p:panel styleClass="base-tab-inner-panel" style="min-height: 125px;">
+        <p:dataTable id="repoTableId" widgetVar="reposTable" var="repo" value="#{dashboardManagedBean.recentRepos}" rowIndexVar="rowNum"
+          lazy="false" paginator="false" rows="#{dashboardManagedBean.repoMaxRows}" emptyMessage="#{msg.emptyRepositoriesTableMessage}">
+          <p:column width="255" sortBy="#{repo.name}">
+            <f:facet name="header">
+              <h:outputText value="Name" />
+            </f:facet>
+            <h:commandLink action="#{repositoryManagedBean.viewRepository}" title="#{msg.repoProfileView}">
+              <f:setPropertyActionListener target="#{repositoryManagedBean.selectedRepo}" value="#{repo}" />
+              <h:outputText value="#{repo.name}" />
+            </h:commandLink>
+          </p:column>
+          <p:column width="255" sortBy="#{repo.repoURL}">
+            <f:facet name="header">
+              <h:outputText value="Location" />
+            </f:facet>
+            <h:outputText value="#{repo.repoURL}" />
+          </p:column>
+          <p:column width="255" sortBy="#{repo.size}">
+            <f:facet name="header">
+              <h:outputText value="Size" />
+            </f:facet>
+            <h:outputText value="#{repo.size}" />
+          </p:column>
+          <p:column width="100" style="text-align: right;">
+            <f:facet name="header">
+              <h:outputText value="" />
+            </f:facet>
+            <h:graphicImage id="copyUrlButton" style="border:0; width:36px; height:11px;" library="img/platform/icons" name="copy_small.png" />
+            <script>
+			jQuery(document).ready(function() {
+				if (gotFlash()) {
+					// Create the flash clipboard widget
+					var clip = createClipboardObject("repoTableId:#{rowNum}:copyUrlButton", "#{repo.repoURL}", "#{msg.reposCopyURLTitleText}");
+				} else {
+					// Hide the copy button if no flash
+					jQuery('#repoTableId\\:#{rowNum}\\:copyUrlButton').hide();
+				}
+			});
+          </script>
+            <h:commandLink action="#{repositoryManagedBean.browseRepository}" title="#{msg.repoBrowse}">
+              <f:setPropertyActionListener target="#{repositoryManagedBean.selectedRepo}" value="#{repo}" />
+              <h:graphicImage library="img/platform" name="icons/mag_glass.png" />
+            </h:commandLink>
+            <p:spacer width="5" />
+            <h:commandLink action="#{repositoryManagedBean.viewRepository}" title="#{msg.repoProfileView}">
+              <f:setPropertyActionListener target="#{repositoryManagedBean.selectedRepo}" value="#{repo}" />
+              <h:graphicImage style="border: none;" library="img/platform" name="icons/infocon.png" />
+            </h:commandLink>
+            <p:spacer width="5" rendered="#{!repo.favouriteRepo}" />
+            <h:commandLink action="#{repositoryManagedBean.favouriteRepositoryFromDashboard}" title="#{msg.repoFavourite}"
+              rendered="#{!repo.favouriteRepo}">
+              <f:setPropertyActionListener target="#{repositoryManagedBean.selectedRepo}" value="#{repo}" />
+              <h:graphicImage style="border: none;" library="img/platform" name="icons/favourite_not.png" />
+            </h:commandLink>
+            <p:spacer width="5" rendered="#{repo.favouriteRepo}" />
+            <h:commandLink action="#{repositoryManagedBean.unfavouriteRepositoryFromDashboard}" title="#{msg.repoUnfavourite}"
+              rendered="#{repo.favouriteRepo}">
+              <f:setPropertyActionListener target="#{repositoryManagedBean.selectedRepo}" value="#{repo}" />
+              <h:graphicImage style="border: none;" library="img/platform" name="icons/favourite.png" />
+            </h:commandLink>
+          </p:column>
+        </p:dataTable>
+      </p:panel>
+    </p:panel>
+    <script type="text/javascript">
+    jQuery(document).ready(function() {
+      var tabElement = '#recentReposInnerTab';
+      jQuery(tabElement).addClass('current');
+    });
+  </script>
+  </p:panel>
+</ui:composition>
+</html>

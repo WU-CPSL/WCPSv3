@@ -1,0 +1,29 @@
+# $Id: Portfile 81922 2011-08-06 14:56:48Z jmr@macports.org $
+
+PortSystem      1.0
+
+name            flickcurl
+version         1.21
+categories      devel
+platforms       darwin
+maintainers     aecollins1
+description     C library for the Flickr API
+
+long_description \
+    Flickcurl is a C library for the Flickr API, handling creating the \
+    requests, signing, token management, calling the API, marshalling request \
+    parameters and decoding responses. It also includes the flickrdf program \
+    to turn photo metadata, tags, machine tags and places into an RDF triples \
+    description.
+
+homepage        http://librdf.org/flickcurl/
+master_sites    http://download.dajobe.org/flickcurl/
+
+checksums       md5     d4d364231505dc22a6af42be7bc85edf \
+                sha1    42f73733e750a54758bd07db81fdd12b91c430dd \
+                rmd160  5943d029d98d540802a162eab8ca13b9b2e9480a
+
+depends_build   port:pkgconfig
+depends_lib     port:curl \
+                port:libxml2 \
+                port:raptor2 \

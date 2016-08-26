@@ -1,0 +1,41 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 85782 2011-10-16 05:49:51Z dports@macports.org $
+
+PortSystem          1.0
+
+name                libgeoip
+version             1.4.7
+categories          devel net
+license             LGPL-2.1+
+platforms           darwin
+maintainers         pixilla openmaintainer
+description         Gets country code by IP address
+long_description    ${description}
+
+homepage            http://www.maxmind.com/app/c
+master_sites        http://www.maxmind.com/download/geoip/api/c/ \
+                    http://www.maxmind.com/download/geoip/api/c/old/
+distname            GeoIP-${version}
+
+checksums           sha1    2db3a61e19dfaa0e4131217b155a59ba4bd0c5cc \
+                    rmd160  5970eb7d18cc5d1436aa32036805b240dbc46d04
+
+test.run            yes
+test.target         check
+
+post-destroot {
+    delete ${destroot}${prefix}/etc/GeoIP.conf
+    xinstall -d -m 755 ${destroot}${prefix}/share/doc/${name}
+    xinstall -m 644 -W ${worksrcpath} \
+        AUTHORS \
+        COPYING \
+        ChangeLog \
+        NEWS \
+        README \
+        TODO \
+        ${destroot}${prefix}/share/doc/${name}
+}
+
+livecheck.type      regex
+livecheck.url       http://geolite.maxmind.com/download/geoip/api/c/
+livecheck.regex     {GeoIP-(\d+(?:\.\d+)*)}

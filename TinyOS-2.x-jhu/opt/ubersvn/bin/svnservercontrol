@@ -1,0 +1,83 @@
+#!/bin/bash
+# UberSVN Apache Server SysV Init Script
+# Copyright WANdisco Inc 2011
+#
+# chkconfig: 2345 10 90
+# description:  Service control script for the UberSVN Subversion server.
+#
+
+# The OS that uberSVN is running on
+OS_NAME=$(uname -s)
+
+# The path to the httpd binary and server root
+if [ "$OS_NAME" = "Linux" ] ; then
+	export HTTPDROOT=$( (cd "$(dirname $(readlink -f $0))/.." && pwd) )
+else
+	export HTTPDROOT=$( (cd "$(dirname $0)/.." && pwd) )
+fi
+export HTTPD=$HTTPDROOT/bin/httpd
+
+if [ "$OS_NAME" = "Darwin" ]; then
+    export PYTHONHOME=`/usr/bin/python2.5-config --prefix`
+    export DYLD_LIBRARY_PATH=$HTTPDROOT/lib
+else
+    export PYTHONHOME=$HTTPDROOT
+fi
+
+# User that Apache should run as
+SVNSERVER_USER="ubersvn"
+
+function usage() {
+	echo "Usage: $0 {start|stop|restart|status|configtest|graceful}"
+}
+
+# Are we running interactively?
+have_tty=0
+if [ "`tty`" != "not a tty" ] ; then
+	have_tty=1
+fi
+
+# Must have at least one argument
+if [ $# -lt 1 ] ; then
+	usage
+	exit 2
+fi
+
+ERROR=0
+case $1 in
+  start|stop|restart|configtest|graceful)
+    if [ "$OS_NAME" = "Linux" ]; then
+      if [ "`whoami`" = "root" ] ; then
+        su $SVNSERVER_USER -c "$HTTPDROOT/bin/httpdstarter $1"
+        ERROR=$?
+      else
+        $HTTPDROOT/bin/httpdstarter $1
+        ERROR=$?
+      fi
+    elif [ "$OS_NAME" = "Darwin" ]; then
+      $HTTPD -f $HTTPDROOT/conf/httpd.conf -k $1
+      ERROR=$?
+    fi
+    ;;
+  run)
+    # This is required to be ran as a Mac OS X launchd daemon service
+    $HTTPDROOT/bin/httpd -f $HTTPDROOT/conf/httpd.conf -D FOREGROUND
+    ERROR=$?
+    ;;
+  status)
+    PIDS=`ps -u jwhitlock | grep $HTTPD |  awk '{print $2}'`
+    if [ -n "$PIDS" ] ; then
+        echo "Apache is running. PIDs:"
+        echo $PIDS
+        ERROR=0
+    else
+        echo "Apache is not running!"
+        ERROR=3
+    fi
+    ;;
+  *)
+    usage
+    ERROR=2
+    ;;
+esac
+exit $ERROR

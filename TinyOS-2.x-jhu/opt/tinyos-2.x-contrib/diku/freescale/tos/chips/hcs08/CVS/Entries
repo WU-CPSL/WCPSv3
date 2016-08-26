@@ -1,0 +1,12 @@
+/McuSleepC.nc/1.1/Wed May 21 01:33:44 2008//
+/hcs08gt60_interrupts.h/1.3/Sun Oct 26 20:44:40 2008//
+/hcs08hardware.h/1.3/Sun Oct 26 20:44:40 2008//
+/hcs08regs.h/1.3/Sun Oct 26 20:44:40 2008//
+/stdtypes.h/1.3/Sun Oct 26 20:44:40 2008//
+D/adc////
+D/interrupts////
+D/kbi////
+D/pin////
+D/spi////
+D/timer////
+D/uart////

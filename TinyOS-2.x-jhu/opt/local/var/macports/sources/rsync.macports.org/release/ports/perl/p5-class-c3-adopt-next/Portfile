@@ -1,0 +1,23 @@
+# $Id: Portfile 84659 2011-09-29 11:25:39Z jmr@macports.org $
+
+PortSystem            1.0
+PortGroup             perl5 1.0
+
+perl5.setup           Class-C3-Adopt-NEXT 0.13
+revision              2
+license               {Artistic-1 GPL}
+maintainers           nomaintainer
+description           make NEXT suck less
+long_description      ${description}
+
+platforms             darwin
+
+checksums             md5 4b4a59b5004ab7e715315e3131773e04 \
+                      sha1 51994b5ae4903f84f5d9baa374a1ec0216f93b1f \
+                      rmd160 1d06bd6daffbd342f3a78fcf474cff33870be799
+
+if {${perl5.major} != ""} {
+depends_lib-append    port:p${perl5.major}-test-exception \
+                      port:p${perl5.major}-list-moreutils \
+                      port:p${perl5.major}-mro-compat
+}

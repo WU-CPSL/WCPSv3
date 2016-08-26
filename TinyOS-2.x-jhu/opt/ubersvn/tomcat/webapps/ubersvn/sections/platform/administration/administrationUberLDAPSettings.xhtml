@@ -1,0 +1,196 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:p="http://primefaces.prime.com.tr/ui" xmlns:wd="http://www.wansdisco.com/jsf" xmlns:h="http://java.sun.com/jsf/html">
+<ui:composition>
+  <ol id="sub-toc">
+    <li><h:outputLink title="#{msg.adminStatusTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationStatus.jsf">
+        <span>#{msg.adminStatusTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink title="#{msg.adminApacheServerSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationApacheServerSettings.jsf">
+        <span>#{msg.adminSubversionServerSettingsTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink title="#{msg.adminUberServerSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUberServerSettings.jsf">
+        <span>#{msg.adminUberServerSettingsTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink title="#{msg.adminUberPreferenceSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUberPreferenceSettings.jsf">
+        <span>#{msg.adminUberPreferenceSettingsTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink title="#{msg.adminEmailServerSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationEmailServerSettings.jsf">
+        <span>#{msg.adminEmailServerSettingsTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink title="#{msg.adminLogsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationLogs.jsf">
+        <span>#{msg.adminLogsTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink title="#{msg.adminUpdatesTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUpdates.jsf">
+        <span>#{msg.adminUpdatesTabText}</span>
+      </h:outputLink>
+    </li>
+    <li class="current"><h:outputLink title="#{msg.adminLDAPTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUberLDAPSettings.jsf">
+        <span>#{msg.adminLDAPTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink title="#{msg.backup}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationBackup.jsf">
+        <span>#{msg.backup}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminExtensionsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationViewExtensions.jsf">
+        <span>#{msg.adminExtensionsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminSubversionReleaseLinkText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationSubversionRelease.jsf">
+        <span>#{msg.adminSubversionReleaseLinkText}</span>
+      </h:outputLink></li>
+  </ol>
+  <p:panel id="adminUberServerPanel" styleClass="tabbed-panel">
+    <p:panel style="border: none; background: transparent; width: 70%; margin:50px auto;">
+      <div style="text-align: center;">
+        <h:outputText styleClass="configurationTitle" value="#{msg.adminLDAPPageText}" />
+      </div>
+      <p:focus />
+      <h:panelGrid columns="1">
+        <h:panelGrid cellspacing="10px" style="width:100%" columns="2" columnClasses="wizardLabelColumn, wizardFieldColumn">
+          <h:panelGroup>
+            <h:outputLabel for="adminACDefaultLDAPAuthName" value="#{msg.adminACDefaultLDAPAuthNameLabel}" />
+            <p:spacer width="10" />
+          </h:panelGroup>
+          <h:panelGroup>
+            <h:inputText id="adminACDefaultLDAPAuthName" value="#{administrationManagedBean.defaultLDAPAuthName}"
+              styleClass="wizardFormField" size="50" required="true" requiredMessage="#{msg.ldapAuthNameRequired}" />
+            <p:spacer width="10" />
+            <h:message style="color: red; font-size: 10px; height: 11px;" for="adminACDefaultLDAPAuthName" />
+          </h:panelGroup>
+          <h:panelGroup>
+            <h:outputLabel for="adminACDefaultLDAPUrl" value="#{msg.adminACDefaultLDAPUrlLabel}" />
+            <p:spacer width="10" />
+          </h:panelGroup>
+          <h:panelGroup>
+            <h:inputText id="adminACDefaultLDAPUrl" value="#{administrationManagedBean.defaultLDAPUrl}" styleClass="wizardFormField"
+              size="50" required="true" requiredMessage="#{msg.ldapUrlRequired}" validator="#{administrationManagedBean.validateLDAPUrl}" />
+            <p:spacer width="10" />
+            <h:message style="color: red; font-size: 10px; height: 11px;" for="adminACDefaultLDAPUrl" />
+          </h:panelGroup>
+          <h:panelGroup>
+            <h:outputLabel for="LDAPAuthBasicProvider" value="#{msg.adminACDefaultLDAPAuthBasicProviderLabel}" />
+            <p:spacer width="10" />
+          </h:panelGroup>
+          <h:panelGroup>
+            <h:inputText id="LDAPAuthBasicProvider" value="#{administrationManagedBean.defaultLDAPAuthBasicProvider}"
+              styleClass="wizardFormField" size="50" required="true" requiredMessage="#{msg.ldapAuthBasicProviderFieldRequired}" />
+            <p:spacer width="10" />
+            <h:message style="color: red; font-size: 10px; height: 11px;" for="LDAPAuthBasicProvider" />
+          </h:panelGroup>
+
+          <h:panelGroup>
+            <h:outputLabel for="authzLDAPAuthoritative" value="#{msg.adminACDefaultLDAPAuthzLDAPAuthoritativeLabel}" />
+            <p:spacer width="10" />
+          </h:panelGroup>
+          <h:selectOneRadio id="authzLDAPAuthoritative" layout="lineDirection"
+            value="#{administrationManagedBean.defaultLDAPAuthzLDAPAuthoritative}">
+            <f:selectItem itemLabel="#{msg.yes}" itemValue="#{true}" />
+            <f:selectItem itemLabel="#{msg.no}" itemValue="#{false}" />
+          </h:selectOneRadio>
+          <h:panelGroup>
+            <h:outputLabel for="authLDAPBindAuthoritative" value="#{msg.adminACDefaultLDAPAuthLDAPBindAuthoritativeLabel}" />
+            <p:spacer width="10" />
+          </h:panelGroup>
+          <h:selectOneRadio id="authLDAPBindAuthoritative" layout="lineDirection"
+            value="#{administrationManagedBean.defaultLDAPAuthLDAPBindAuthoritative}">
+            <f:selectItem itemLabel="#{msg.yes}" itemValue="#{true}" />
+            <f:selectItem itemLabel="#{msg.no}" itemValue="#{false}" />
+          </h:selectOneRadio>
+          <h:panelGroup>
+            <h:outputLabel for="authLDAPGroupAttribute" value="#{msg.adminACDefaultLDAPAuthLDAPGroupAttributeLabel}" />
+            <p:spacer width="10" />
+          </h:panelGroup>
+          <h:inputText id="authLDAPGroupAttribute" value="#{administrationManagedBean.defaultLDAPAuthLDAPGroupAttribute}"
+            styleClass="wizardFormField" size="50" />
+          <h:panelGroup>
+            <h:outputLabel for="authLDAPGroupAttributeIsDN" value="#{msg.adminACDefaultLDAPAuthLDAPGroupAttributeIsDNLabel}" />
+            <p:spacer width="10" />
+          </h:panelGroup>
+          <h:selectOneRadio id="authLDAPGroupAttributeIsDN" layout="lineDirection"
+            value="#{administrationManagedBean.defaultLDAPAuthLDAPGroupAttributeIsDN}">
+            <f:selectItem itemLabel="#{msg.yes}" itemValue="#{true}" />
+            <f:selectItem itemLabel="#{msg.no}" itemValue="#{false}" />
+          </h:selectOneRadio>
+          <h:panelGroup>
+            <h:outputLabel for="LDAPRequire" value="#{msg.adminACDefaultLDAPRequireLabel}" />
+            <p:spacer width="10" />
+          </h:panelGroup>
+          <h:panelGroup>
+            <h:inputText id="LDAPRequire" value="#{administrationManagedBean.defaultLDAPRequire}" styleClass="wizardFormField" size="50"
+              required="true" requiredMessage="#{msg.ldapRequireFieldRequired}" />
+            <p:spacer width="10" />
+            <h:message style="color: red; font-size: 10px; height: 11px;" for="LDAPRequire" />
+          </h:panelGroup>
+          <h:panelGroup>
+            <h:outputLabel for="enableDefaultAnonBind" value="#{msg.adminACDefaultLDAPAnonymousBindLabel}" />
+            <p:spacer width="10" />
+          </h:panelGroup>
+          <h:selectOneRadio id="enableDefaultAnonBind" layout="lineDirection" value="#{administrationManagedBean.defaultAnonBind}">
+            <f:selectItem itemLabel="#{msg.yes}" itemValue="#{true}" />
+            <f:selectItem itemLabel="#{msg.no}" itemValue="#{false}" />
+            <p:ajax event="click"
+              update="enableDefaultAnonBind adminACDefaultLDAPBindDNGroupLabel adminACDefaultLDAPBindDNGroupValue adminACDefaultLDAPBindPasswordGroupLabel adminACDefaultLDAPBindPasswordGroupValue" />
+          </h:selectOneRadio>
+          <h:panelGroup id="adminACDefaultLDAPBindDNGroupLabel">
+            <h:outputLabel for="adminACDefaultLDAPBindDN" value="#{msg.adminACDefaultLDAPBindDNLabel}"
+              rendered="#{!administrationManagedBean.defaultAnonBind}" />
+            <p:spacer width="10" rendered="#{!administrationManagedBean.defaultAnonBind}" />
+          </h:panelGroup>
+          <h:panelGroup id="adminACDefaultLDAPBindDNGroupValue">
+            <h:inputText id="adminACDefaultLDAPBindDN" styleClass="wizardFormField" size="30"
+              value="#{administrationManagedBean.defaultLDAPBindDN}" rendered="#{!administrationManagedBean.defaultAnonBind}"
+              required="true" requiredMessage="#{msg.ldapBindDNRequired}" />
+            <p:spacer width="10" rendered="#{!administrationManagedBean.defaultAnonBind}" />
+            <h:message style="color: red; font-size: 10px; height: 11px;" for="adminACDefaultLDAPBindDN"
+              rendered="#{!administrationManagedBean.defaultAnonBind}" />
+            <p:spacer width="10" rendered="#{!administrationManagedBean.defaultAnonBind}" />
+          </h:panelGroup>
+          <h:panelGroup id="adminACDefaultLDAPBindPasswordGroupLabel">
+            <h:outputLabel for="adminACDefaultBindPassword" value="#{msg.adminACDefaultLDAPBindPasswordLabel}"
+              rendered="#{!administrationManagedBean.defaultAnonBind}" />
+            <p:spacer width="10" rendered="#{!administrationManagedBean.defaultAnonBind}" />
+          </h:panelGroup>
+          <h:panelGroup id="adminACDefaultLDAPBindPasswordGroupValue">
+            <h:inputSecret id="adminACDefaultBindPassword" styleClass="wizardFormField" size="30"
+              rendered="#{!administrationManagedBean.defaultAnonBind}" value="#{administrationManagedBean.defaultLDAPBindPassword}"
+              redisplay="true" required="true" requiredMessage="#{msg.ldapBindPasswordRequired}" />
+            <p:spacer width="10" rendered="#{!administrationManagedBean.defaultAnonBind}" />
+            <h:message style="color: red; font-size: 10px; height: 11px;" for="adminACDefaultBindPassword"
+              rendered="#{!administrationManagedBean.defaultAnonBind}" />
+          </h:panelGroup>
+        </h:panelGrid>
+      </h:panelGrid>
+      <h:panelGroup id="emailBottomRight" styleClass="bottomRight" style="margin-bottom: 10px; margin-right: 10px;">
+        <p:commandButton id="administrationACTestLdapConnection" value="#{msg.adminACDefaultLDAPTestButtonText}"
+          styleClass="roundedButtonLarge" action="#{administrationManagedBean.testLDAPConnection}" ajax="false" />
+        <p:spacer width="10" />
+        <p:commandButton id="administrationACSaveChanges" value="#{msg.saveButtonText}" styleClass="roundedButtonSmall"
+          action="#{administrationManagedBean.saveLDAPSettings}" ajax="false" />
+      </h:panelGroup>
+      <p:dialog modal="true" onShow="reloadPage();" widgetVar="statusDialog" header="Processing" draggable="false" closable="false"
+        resizable="false" width="200" height="150">
+        <h:graphicImage id="updateImage" style="border:0; margin-left: auto; margin-right: auto; display: block;" library="img/platform"
+          name="progress.gif" />
+      </p:dialog>
+    </p:panel>
+  </p:panel>
+</ui:composition>
+</html>

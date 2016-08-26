@@ -1,0 +1,121 @@
+# $Id: avr32.rules,v 1.7 2008/03/09 15:38:59 yuecelm Exp $ #
+
+# author: Mustafa Yuecel <mustafa.yuecel@alumni.ethz.ch> #
+
+define AVR32_HELP
+
+ AVR32 extras:
+
+   debug    : compile with minimal optimization and debug symbols
+   debugopt : compile with debug symbols
+
+ Programmer options:
+
+   batchisp     : (default) programming over USB (DFU bootloader)
+
+endef
+HELP += $(AVR32_HELP)
+
+GCC = avr32-gcc
+OBJCOPY = avr32-objcopy
+OBJDUMP = avr32-objdump
+NM = avr32-nm
+SIZE = avr32-size
+SET_ID = tos-set-symbols
+NCC = ncc
+
+BUILDDIR = build/$(PLATFORM)
+MAIN_EXE = $(BUILDDIR)/main.exe
+MAIN_MAP = $(BUILDDIR)/main.map
+MAIN_DUMP = $(BUILDDIR)/main.dump
+MAIN_SYM = $(BUILDDIR)/main.sym
+MAIN_S = $(BUILDDIR)/main.s
+MAIN_IHEX = $(BUILDDIR)/main.ihex
+INSTALL_EXE = $(MAIN_EXE).out$(if $(NODEID),-$(NODEID),)
+INSTALL_IHEX = $(MAIN_IHEX).out$(if $(NODEID),-$(NODEID),)
+BOOTLOADER_SIZE = 8*1024
+VOLUMEFILE = volumes-at45db.xml
+
+PFLAGS += -target=$(PLATFORM) -fnesc-cfile=$(BUILDDIR)/app.c
+PFLAGS += -Wall -Wshadow $(NESC_FLAGS)
+PFLAGS += -DDEF_TOS_AM_GROUP=$(DEFAULT_LOCAL_GROUP)
+PFLAGS += -I../../tos/platforms/atevk1101
+PFLAGS += -I../../support/make/avr32/startup/include
+PFLAGS += -fno-common
+PFLAGS += -muse-rodata-section
+# workaround to disable the <avr32/eic_200.h> header (gcc generates warnings/error)
+PFLAGS += -DAVR32_ABI_H_INCLUDED
+#PFLAGS += -DAVR32_EIC_200_H_INCLUDED
+# create assembler file
+CFLAGS += -Wa,-ahlns=$(BUILDDIR)/app.lst
+# dont link against (big) standard libaries and startfile
+LDFLAGS += -nostartfiles -nostdlib -nodefaultlibs
+# bootloader section size is 0x2000, application section start at 0x80002000
+LDFLAGS += -Wl,--entry=_trampoline,-Map=$(BUILDDIR)/main.map,--script=../../support/make/avr32/ldscripts/avr32elf_uc3b0256.lds
+
+ifdef MSG_SIZE
+PFLAGS += -DTOSH_DATA_LENGTH=$(MSG_SIZE)
+endif
+
+# currently O2 optimization results to smaller sections than 0s
+OPTFLAGS = -O2
+
+STARTUP_FILES = ../../support/make/avr32/startup/trampoline.S ../../support/make/avr32/startup/crt0.S ../../support/make/avr32/startup/exception.S ../../support/make/avr32/startup/interrupt.S
+DEFHANDLER_FILES = ../../support/make/avr32/startup/exception_defhandler.S
+STARTUP_FILES += $(DEFHANDLER_FILES)
+#LIBS_FILES = $(shell $(GCC) -print-libgcc-file-name) $(shell $(GCC) -print-file-name=libm.a) $(shell $(GCC) -print-file-name=libc.a)
+
+BUILDLESS_DEPS += bytes
+
+DEFAULT_PROGRAM ?= batchisp
+
+# Use the 'if' function instead of the 'ifdef' construct because ifdef freaks out with call in there.
+$(if $(PROGRAM),,$(call TOSMake_include,avr32/$(DEFAULT_PROGRAM).extra))
+
+ifndef NOWIRING
+include $(TINYOS_MAKE_PATH)/wiring.extra
+endif
+
+ifndef BUILD_DEPS
+  ifeq ($(filter $(BUILDLESS_DEPS),$(GOALS)),)
+    BUILD_DEPS = exe bytes $(POST_BUILD_EXTRA_DEPS)
+  endif
+endif
+
+setid: FORCE
+	@cmd () { $$@; }; if [ x = x$(NODEID) ]; then cmd cp $(MAIN_IHEX) $(INSTALL_IHEX); \
+				else cmd $(SET_ID) $(MAIN_EXE) $(INSTALL_EXE) TOS_NODE_ID=$(NODEID) ActiveMessageAddressC\$$\$$addr=$(NODEID) || \
+					cp $(MAIN_EXE) $(INSTALL_EXE); \
+				$(OBJCOPY) --output-target=ihex $(INSTALL_EXE) $(INSTALL_IHEX); fi
+
+delsetid: FORCE
+	@rm -f $(INSTALL_EXE) $(INSTALL_IHEX)
+
+tosimage: ihex build_tosimage FORCE
+	@:
+
+ihex: exe FORCE
+	@$(OBJCOPY) --output-target=ihex --remove-section=.reset $(MAIN_EXE) $(MAIN_IHEX)
+
+exe: exe0 bytes FORCE
+	@:
+
+exe0: builddir $(BUILD_EXTRA_DEPS) FORCE
+	@echo "    compiling $(COMPONENT) to a $(PLATFORM) binary"
+	$(NCC) -o $(MAIN_EXE) $(OPTFLAGS) $(PFLAGS) $(CFLAGS) $(LDFLAGS) $(STARTUP_FILES) $(LIBS_FILES) $(COMPONENT).nc
+	@$(OBJDUMP) --all-headers $(MAIN_EXE) > $(MAIN_DUMP)
+	@$(NM) $(MAIN_EXE) > $(MAIN_SYM)
+	@echo "    compiled $(COMPONENT) to $(MAIN_EXE)"
+
+builddir: FORCE
+	mkdir -p $(BUILDDIR)
+
+bytes: FORCE
+	@$(OBJDUMP) --section-headers $(MAIN_EXE) | perl -ne \
+          '$$b{$$1}=hex $$2 if /^\s*\d+\s*\.(exception|interrupt|text|data|bss|rodata)\s+(\S+)/; END { printf("%16d bytes in ROM\n%16d bytes in RAM\n",$$b{interrupt}+$$b{exception}+$$b{text}+$$b{data}+$$b{rodata},$$b{data}+$$b{bss}); }'
+	@$(OBJDUMP) --disassemble $(MAIN_EXE) > $(MAIN_S)
+	@echo "    disassembled $(PLATFORM) binary"
+	@echo "    section size requirements of $(COMPONENT) ($(SIZE))"
+	@$(SIZE) --format=sysv -x $(MAIN_EXE)
+	@echo "    show metrics about $(PLATFORM) binary (sloccount)"
+	@sloccount $(MAIN_S) 2>/dev/null | tail -n 14 | head -n 1

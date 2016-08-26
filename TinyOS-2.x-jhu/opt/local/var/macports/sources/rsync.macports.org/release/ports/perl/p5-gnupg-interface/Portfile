@@ -1,0 +1,19 @@
+# $Id: Portfile 88346 2011-12-29 10:26:17Z jmr@macports.org $
+
+PortSystem            1.0
+PortGroup             perl5 1.0
+
+perl5.setup           GnuPG-Interface 0.33
+revision              2
+license               {Artistic-1 GPL}
+maintainers           nomaintainer
+description           Perl interface to GnuPG
+long_description      ${description}
+
+platforms             darwin
+
+checksums             md5 7349795ec874c2af78eec7f274d96bc8
+
+if {${perl5.major} != ""} {
+depends_lib-append    port:p${perl5.major}-class-methodmaker
+}

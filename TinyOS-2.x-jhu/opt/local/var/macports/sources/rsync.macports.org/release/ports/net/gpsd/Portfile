@@ -1,0 +1,65 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89328 2012-01-25 07:54:51Z jmr@macports.org $
+
+PortSystem              1.0
+
+if {[variant_isset qt]} {
+PortGroup               qt4 1.0
+}
+
+name                    gpsd
+version                 3.4
+license                 BSD
+categories              net
+maintainers             nomaintainer
+platforms               darwin
+
+description             GPS service daemon
+
+long_description        GPSD is a service daemon that handles GPSes and other navigation-related sensors \
+                        reporting over USB, serial, TCP/IP, or UDP connections and presents reports in \
+                        a well-documented JSON application.
+
+homepage                http://www.catb.org/${name}/
+master_sites            savannah
+
+checksums               rmd160 f7cddc018b5b6834a097bbefbddb2b0a3844b203 \
+                        sha256 79f7de9ead63c7f5d2c9a92e85b5f82e53323c4d451ef8e27ea265ac3ef9a70f
+
+depends_lib-append      port:ncurses port:python27
+depends_build-append    port:scons
+
+patchfiles              SConstruct.patch
+
+use_configure           no
+
+build.cmd               ${prefix}/bin/scons
+build.target
+build.args              prefix=${prefix} libQgpsmm=no usb=no strip=no
+build.env-append        CC="${configure.cc}" CFLAGS="${configure.cflags}" \
+                        CXX="${configure.cxx}" CXXFLAGS="${configure.cxxflags}" \
+                        LDFLAGS="${configure.ldflags}" \
+                        PYTHON=${prefix}/bin/python2.7
+
+destroot.args           ${build.args}
+eval destroot.env-append ${destroot.destdir} ${build.env}
+
+variant qt description {Build Qt bindings} {
+    build.args-delete libQgpsmm=no
+}
+
+variant libusb \
+description {Include support for better USB device discovery} {
+    depends_build-append port:pkgconfig
+    depends_lib-append   port:libusb
+    build.args-delete    usb=no
+}
+
+variant dbus description {Include support for DBUS} {
+    depends_lib-append    port:dbus-glib
+    build.args-append dbus=yes dbus_export=yes
+}
+
+livecheck.type          regex
+livecheck.url           [lindex ${master_sites} 0]
+livecheck.regex         "${name}-(\\d+(?:\\.\\d+)*)${extract.suffix}"

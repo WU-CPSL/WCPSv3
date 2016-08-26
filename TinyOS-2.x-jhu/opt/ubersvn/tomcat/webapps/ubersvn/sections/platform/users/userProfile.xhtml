@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:p="http://primefaces.prime.com.tr/ui" xmlns:h="http://java.sun.com/jsf/html">
+<ui:composition>
+  <ol id="sub-toc">
+    <li class="current"><h:outputLink styleClass="unselectedTabbedPanelTab" title="#{msg.userProfileTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/users/userProfile.jsf?userId=#{userProfileManagedBean.user.id}">
+        <span>#{msg.userProfileTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink style="left: 75px;" styleClass="selectedTabbedPanelTab" title="#{msg.userPreferencesTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/users/userPreferences.jsf"
+        rendered="#{basePage.systemAdmin or userProfileManagedBean.myPage}">
+        <span>#{msg.userPreferencesTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink style="left: 180px;" styleClass="unselectedTabbedPanelTab" title="#{msg.userPermissionsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/users/userPermissions.jsf"
+        rendered="#{basePage.systemAdmin or userProfileManagedBean.myPage}">
+        <span>#{msg.userPermissionsTabText}</span>
+      </h:outputLink></li>
+  </ol>
+  <p:panel id="userProfilePanel" styleClass="tabbed-panel">
+    <p:focus for="editUserProfileButton"/>
+    <h:panelGroup style="display: block; height: 250px;">
+      <h:panelGrid columns="3" columnClasses="userProfileColumns, userProfileColumns, userProfileColumns">
+        <h:panelGrid>
+          <h:panelGroup rendered="#{userProfileManagedBean.user.displayRealName}">
+            <h:outputLabel styleClass="formOutputLabel" for="userRealName" value="#{msg.userRealNameLabel}" />
+            <br />
+            <h:outputText styleClass="formOutputText" id="userRealName" value="#{userProfileManagedBean.user.realName}" />
+          </h:panelGroup>
+          <h:panelGroup rendered="#{userProfileManagedBean.user.displayUserName}">
+            <h:outputLabel styleClass="formOutputLabel" for="userRealName" value="#{msg.userUsernameLabel}" />
+            <br />
+            <h:outputText styleClass="formOutputText" id="userUsername" value="#{userProfileManagedBean.user.userName}" />
+          </h:panelGroup>
+          <h:panelGroup rendered="#{userProfileManagedBean.user.displayJobTitle}">
+            <h:outputLabel styleClass="formOutputLabel" for="userRealName" value="#{msg.userJobTitleLabel}" />
+            <br />
+            <h:outputText styleClass="formOutputText" id="userJobTitle" value="#{userProfileManagedBean.user.jobTitle}" />
+          </h:panelGroup>
+          <h:panelGroup rendered="#{userProfileManagedBean.user.displayLocation}">
+            <h:outputLabel styleClass="formOutputLabel" for="userRealName" value="#{msg.userLocationLabel}" />
+            <br />
+            <h:outputText styleClass="formOutputText" id="userLocation" value="#{userProfileManagedBean.user.location}" />
+          </h:panelGroup>
+        </h:panelGrid>
+        <h:panelGrid>
+          <h:panelGroup rendered="#{userProfileManagedBean.user.displayEmailAddress}">
+            <h:outputLabel styleClass="formOutputLabel" for="userRealName" value="#{msg.userEmailLabel}" />
+            <br />
+            <h:outputLink styleClass="formOutputText" id="userEmail" value="mailto:#{userProfileManagedBean.user.emailAddress}"
+              title="#{msg.userEmailLinkTitle}">
+							#{userProfileManagedBean.user.emailAddress}
+						</h:outputLink>
+          </h:panelGroup>
+          <h:panelGroup rendered="#{userProfileManagedBean.user.displayPhoneNumber}">
+            <h:outputLabel styleClass="formOutputLabel" for="userRealName" value="#{msg.userPhoneNumberLabel}" />
+            <br />
+            <h:outputText styleClass="formOutputText" id="userPhoneNumber" value="#{userProfileManagedBean.user.phoneNumber}" />
+          </h:panelGroup>
+          <h:panelGroup rendered="#{userProfileManagedBean.user.displaySecondaryPhoneNumber}">
+            <h:outputLabel styleClass="formOutputLabel" for="userRealName" value="#{msg.userSecondaryPhoneNumberLabel}" />
+            <br />
+            <h:outputText styleClass="formOutputText" id="usersecondaryPhoneNumber"
+              value="#{userProfileManagedBean.user.secondaryPhoneNumber}" />
+          </h:panelGroup>
+        </h:panelGrid>
+        <h:panelGrid>
+          <h:panelGroup rendered="#{userProfileManagedBean.user.displayOther1}">
+            <h:outputLabel styleClass="formOutputLabel" for="userRealName" value="#{msg.userOther1Label}" />
+            <br />
+            <h:outputText styleClass="formOutputText" id="userOther1" value="#{userProfileManagedBean.user.other1}" />
+          </h:panelGroup>
+          <h:panelGroup rendered="#{userProfileManagedBean.user.displayOther2}">
+            <h:outputLabel styleClass="formOutputLabel" for="userRealName" value="#{msg.userOther2Label}" />
+            <br />
+            <h:outputText styleClass="formOutputText" id="userOther2" value="#{userProfileManagedBean.user.other2}" />
+          </h:panelGroup>
+          <h:panelGroup rendered="#{userProfileManagedBean.user.displayOther3}">
+            <h:outputLabel styleClass="formOutputLabel" for="userRealName" value="#{msg.userOther3Label}" />
+            <br />
+            <h:outputText styleClass="formOutputText" id="userOther3" value="#{userProfileManagedBean.user.other3}" />
+          </h:panelGroup>
+        </h:panelGrid>
+      </h:panelGrid>
+      <p:button id="editUserProfileButton" rendered="#{basePage.systemAdmin or userProfileManagedBean.myPage}" styleClass="roundedButtonExtraSmall"
+        value="#{msg.editButtonText}" outcome="editUserProfile.jsf" />
+      <h:outputText id="userQuote" styleClass="quotation" value="#{userProfileManagedBean.user.quote}" />
+      <h:panelGroup style="position: absolute; right: 230px; top: 50px; width: 100px;">
+        <h:outputLabel styleClass="formOutputLabel" for="profileVisibility" value="#{msg.userProfileVisibility}" />
+        <br />
+        <h:outputText styleClass="formOutputText" id="profileVisibility" value="#{userProfileManagedBean.user.profileVisibility}" />
+        <br />
+        <p:commandButton styleClass="roundedButtonSmall" value="#{msg.ignoreButtonText}" action="#{userProfileManagedBean.ignoreUser}"
+          rendered="#{!userProfileManagedBean.myPage and !userProfileManagedBean.ignored}" />
+        <p:commandButton styleClass="roundedButtonSmall" value="#{msg.unignoreButtonText}" action="#{userProfileManagedBean.unignoreUser}"
+          rendered="#{!userProfileManagedBean.myPage and userProfileManagedBean.ignored}" />
+      </h:panelGroup>
+      <p:commandLink disabled="#{!userProfileManagedBean.myPage}" onclick="avatarDlg.show()">
+        <h:graphicImage styleClass="userProfileAvatar" value="/avatarimage?id=#{userProfileManagedBean.user.userName}" />
+        <h:graphicImage styleClass="userProfileAvatarSpanner" library="img/platform/icons" name="cog1.png"
+          rendered="#{userProfileManagedBean.myPage}" />
+      </p:commandLink>
+    </h:panelGroup>
+    <p:spacer />
+    <br />
+    <ui:include src="/sections/platform/users/activityTab.xhtml" />
+    <ui:include src="/sections/platform/users/teamsTab.xhtml" />
+  </p:panel>
+</ui:composition>
+</html>

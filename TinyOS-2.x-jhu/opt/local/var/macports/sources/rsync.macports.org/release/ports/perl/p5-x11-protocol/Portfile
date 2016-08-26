@@ -1,0 +1,17 @@
+# $Id: Portfile 82547 2011-08-15 16:46:16Z jmr@macports.org $
+
+PortSystem           1.0
+PortGroup            perl5 1.0
+
+perl5.setup          X11-Protocol 0.53
+revision             2
+maintainers          email.arc.nasa.gov:sal
+description          Perl module for the X Window System Protocol, version 11
+long_description     X11::Protocol is a client-side interface to the X11 \
+                     Protocol (see X(1) for information about X11), allowing \
+                     perl programs to display windows and graphics on X11 \
+                     servers.
+platforms            darwin
+checksums            md5 4021756e9d7f2051ff63a1062a9512eb
+
+supported_archs noarch

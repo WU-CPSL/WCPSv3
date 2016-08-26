@@ -1,0 +1,21 @@
+# $Id: Portfile 88158 2011-12-21 00:33:31Z vinc17@macports.org $
+
+PortSystem          1.0
+PortGroup           perl5 1.0
+
+perl5.setup         MooseX-MultiInitArg 0.01
+revision            3
+maintainers         nomaintainer
+supported_archs     noarch
+description         Attributes with aliases for constructor arguments
+long_description    ${description}.
+
+platforms           darwin
+
+checksums           md5     064975c86717373bc9d512f18349b1bc \
+                    sha1    261aaebf3bf65db9c6f3da65d41e878e18730939 \
+                    rmd160  3fcb6f7a03fa5e71ca78f12436c9a12f7ad345a3
+
+if {${perl5.major} != ""} {
+depends_lib-append  port:p${perl5.major}-moose
+}

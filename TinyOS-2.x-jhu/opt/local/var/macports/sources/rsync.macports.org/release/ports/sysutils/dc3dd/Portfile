@@ -1,0 +1,33 @@
+# $Id: Portfile 77271 2011-03-25 05:14:46Z ricci@macports.org $
+
+PortSystem 1.0
+
+name                dc3dd
+version             7.0.0
+revision            0
+categories          sysutils
+maintainers         ricci
+description         Enhanced GNU dd
+long_description    Enhanced GNU dd
+homepage            http://dc3dd.sourceforge.net/
+platforms           darwin
+master_sites        sourceforge
+
+use_bzip2           yes
+
+checksums           md5     c6aa2e6a7a221c0003f5b63b5ef139d3 \
+                    sha1    c605967f09be777e627017e52732674189424bef \
+                    rmd160  d63022844a9fefbaacb42e98c89e4d033ce58a10
+
+use_autoreconf      yes
+autoreconf.args     -fvi
+
+configure.args      --mandir=${prefix}/share/man
+
+
+depends_lib         port:gettext \
+                    port:libiconv
+
+
+#
+##EOF

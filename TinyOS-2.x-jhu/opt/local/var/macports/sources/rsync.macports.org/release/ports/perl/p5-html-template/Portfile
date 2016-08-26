@@ -1,0 +1,19 @@
+# $Id: Portfile 85269 2011-10-12 06:33:25Z jmr@macports.org $
+
+PortSystem          1.0
+PortGroup           perl5 1.0
+
+perl5.setup         HTML-Template 2.9
+revision            2
+categories          perl textproc
+license             {Artistic-1 GPL}
+maintainers         nomaintainer
+description         Perl module to use HTML Templates from CGI scripts
+long_description    HTML::Template - Perl module to use HTML Templates \
+                    from CGI scripts
+
+platforms           darwin
+
+checksums           md5 cbf88a486b36284be55765ac7357c187
+
+supported_archs noarch

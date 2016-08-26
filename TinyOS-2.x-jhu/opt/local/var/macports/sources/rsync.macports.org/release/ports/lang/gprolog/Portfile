@@ -1,0 +1,61 @@
+# $Id: Portfile 81035 2011-07-24 02:22:39Z ryandesign@macports.org $
+
+PortSystem 1.0
+name		gprolog
+version		1.4.0
+revision	1
+
+categories	lang
+maintainers	logtalk.org:pmoura
+platforms	darwin
+description	GNU Prolog compiler
+
+long_description	\
+		GNU Prolog is a free Prolog compiler with constraint	\
+		solving over finite domains developed by Daniel Diaz.	\
+		GNU Prolog accepts Prolog+constraint programs and	\
+		produces native binaries (like gcc does from a C	\
+		source). The obtained executable is then stand-alone.	\
+		The size of this executable can be quite small since	\
+		GNU Prolog can avoid linking the code of most unused	\
+		built-in predicates. The performance of GNU Prolog is	\
+		very encouraging (comparable to commercial systems).	\
+		Beside native-code compilation, GNU Prolog offers a	\
+		classical interactive interpreter (top-level) with a	\
+		debugger.
+
+homepage	http://gprolog.inria.fr/
+master_sites	http://www.gprolog.org/
+
+# 1.4.0 was stealth-updated; remove this with the next version update
+dist_subdir	${name}/${version}_1
+
+checksums	\
+	sha1    40d99cd3fcb8fa86103ad5692e2cd35b17a90706 \
+	rmd160  82d4008b67b9c99065cfb7df48b1bdb077102a07
+
+worksrcdir 	${name}-${version}/src
+
+configure.args \
+	--prefix=${destroot}${prefix} \
+	--with-install-dir=${prefix}/lib/${name}-${version} \
+	--with-examples-dir=${prefix}/share/${name}-${version} \
+	--with-doc-dir=${prefix}/share/${name}-${version}
+
+post-destroot	{
+	foreach cmd {fd2c gplc gprolog hexgplc ma2asm pl2wam wam2ma} {
+		system "ln -fs ../lib/${name}-${version}/bin/${cmd} ${destroot}${prefix}/bin/${cmd}"
+	}
+
+	file delete -force ${destroot}${prefix}/var
+}
+
+
+post-pkg {
+	set resources ${workpath}/${name}-${version}.pkg/Contents/Resources/
+	file copy -force -- ${workpath}/${name}-${version}/COPYING ${resources}/License.txt
+	file copy -force -- ${workpath}/${name}-${version}/README ${resources}/ReadMe.txt
+}
+
+# ticket #21172
+supported_archs i386 ppc

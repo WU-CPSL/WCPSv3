@@ -1,0 +1,60 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89747 2012-02-09 03:09:04Z ryandesign@macports.org $
+
+PortSystem          1.0
+
+name                synfig
+version             0.63.04
+categories          graphics
+platforms           darwin
+maintainers         ryandesign
+license             GPL-2+
+
+description         vector-based 2-D animation package
+
+long_description    ${name} is a ${description}. It is designed to be capable \
+                    of producing feature-film-quality animation. It eliminates \
+                    the need for tweening, preventing the need to hand-draw \
+                    each frame. ${name} features spatial and temporal \
+                    resolution independence (sharp and smooth at any \
+                    resolution or framerate), high dynamic range images, \
+                    and a flexible plugin system.
+
+homepage            http://www.synfig.org/
+master_sites        sourceforge:project/synfig/synfig/${version}
+
+checksums           rmd160  4054b75c692d45100a6d0335e65c76d0799eb52b \
+                    sha256  dedbeea8c30aa12f71bea26a5233c9a06eadd89ca34e1f39c78a73d309ea0574
+
+depends_build       port:pkgconfig
+
+depends_lib         port:ETL \
+                    port:freetype \
+                    port:fontconfig \
+                    port:gettext \
+                    port:ImageMagick \
+                    port:libmng \
+                    port:libpng \
+                    port:libsigcxx2 \
+                    port:libtool \
+                    port:libxmlxx2 \
+                    port:openexr
+
+post-destroot {
+    set docdir ${destroot}${prefix}/share/doc/${name}
+    xinstall -d ${docdir}
+    xinstall -m 644 -W ${worksrcpath} \
+        ABOUT-NLS \
+        AUTHORS \
+        COPYING \
+        ChangeLog \
+        ChangeLog.old \
+        NEWS \
+        README \
+        TODO \
+        ${docdir}
+}
+
+livecheck.name      synfig
+livecheck.type      sourceforge
+livecheck.regex     /${name}-(\[0-9.\]+)${extract.suffix}

@@ -1,0 +1,19 @@
+# $Id: Portfile 82547 2011-08-15 16:46:16Z jmr@macports.org $
+
+PortSystem 1.0
+PortGroup perl5 1.0
+
+perl5.setup		LJ-Simple 0.15
+revision        2
+platforms		darwin
+maintainers		genetikayos.com:kayos
+description		Simple perl module for managing your LiveJournal account
+long_description	"LJ::Simple" is an object based "perl" module \
+					which is used to access LiveJournal-based web \
+					logs. This module implements most of the flat \
+					protocol LiveJournal uses;
+homepage		http://www.bpfh.net/computing/software/LJ::Simple/
+master_sites	http://www.bpfh.net/computing/software/LJ::Simple/
+checksums		md5 16efa946c29235d0d2ab53c660d5ec3c
+
+supported_archs noarch

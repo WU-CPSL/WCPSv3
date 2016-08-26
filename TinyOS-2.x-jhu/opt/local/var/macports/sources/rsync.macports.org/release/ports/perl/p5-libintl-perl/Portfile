@@ -1,0 +1,18 @@
+# $Id: Portfile 82547 2011-08-15 16:46:16Z jmr@macports.org $
+
+PortSystem          1.0
+PortGroup           perl5 1.0
+
+perl5.setup         libintl-perl 1.16
+revision            2
+maintainers         markd 
+description         Perl internationalization library
+long_description    An internationalization library for Perl compatible with \
+                    the Uniforum message translations system such as the \
+                    one in GNU gettext.
+
+platforms           darwin
+
+checksums           md5 7dfcd9ac3a4ff41038a2c67a733d42b9
+
+master_sites            http://search.cpan.org/CPAN/authors/id/G/GU/GUIDO

@@ -1,0 +1,211 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:p="http://primefaces.prime.com.tr/ui" xmlns:h="http://java.sun.com/jsf/html">
+<ui:composition>
+  <ol id="sub-toc">
+    <li><h:outputLink title="#{msg.adminStatusTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationStatus.jsf">
+        <span>#{msg.adminStatusTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink title="#{msg.adminApacheServerSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationApacheServerSettings.jsf">
+        <span>#{msg.adminSubversionServerSettingsTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink title="#{msg.adminUberServerSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUberServerSettings.jsf">
+        <span>#{msg.adminUberServerSettingsTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink title="#{msg.adminUberPreferenceSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUberPreferenceSettings.jsf">
+        <span>#{msg.adminUberPreferenceSettingsTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink title="#{msg.adminEmailServerSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationEmailServerSettings.jsf">
+        <span>#{msg.adminEmailServerSettingsTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink title="#{msg.adminLogsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationLogs.jsf">
+        <span>#{msg.adminLogsTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink title="#{msg.adminUpdatesTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUpdates.jsf">
+        <span>#{msg.adminUpdatesTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink title="#{msg.adminLDAPTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUberLDAPSettings.jsf">
+        <span>#{msg.adminLDAPTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.backup}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationBackup.jsf">
+        <span>#{msg.backup}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink title="#{msg.adminExtensionsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationViewExtensions.jsf">
+        <span>#{msg.adminExtensionsTabText}</span>
+      </h:outputLink></li>
+    <li class="current"><h:outputLink title="#{msg.adminSubversionReleaseLinkText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationSubversionRelease.jsf">
+        <span>#{msg.adminSubversionReleaseLinkText}</span>
+      </h:outputLink></li>
+  </ol>
+  <p:panel id="administrationSubversionRelease" styleClass="tabbed-panel">
+    <p:spacer style="height:100px;" />
+    <div style="text-align: center;">
+      <h:graphicImage style="border: none;" library="img/platform" name="svnswitch.png" />
+    </div>
+    <p:panel style="text-align:left; width:490px; margin: 10px auto;">
+      <h:outputLabel value="#{msg.uberSwitchText}" rendered="#{administrationManagedBean.showToggleSubversion}"></h:outputLabel>
+      <h:outputText value="#{msg.uberSwitchNotEnabled}" rendered="#{!administrationManagedBean.showToggleSubversion}"></h:outputText>
+      <h:outputLink value="/ubersvn/views/platform/administration/administrationUpdates.jsf"
+        rendered="#{!administrationManagedBean.showToggleSubversion}">
+        <h:outputText value="#{msg.uberSwitchNotEnabledLinkText}" title="#{msg.uberSwitchUpdateLinkTitle}" />
+      </h:outputLink>
+      <br />
+      <p:spacer style="height:20px;" />
+      <h:panelGrid columns="2"
+        style="width: 100%;height:80px; border-radius: 20px; border-style: solid; border-width:2px; border-color: #89A8C3;" id="svn16Grid"
+        onclick="select16()" columnClasses="column10Percent,column90Percent">
+        <h:panelGroup>
+          <p:spacer style="width:5px;" />
+          <input id="svn16Enabled" name="svnSetting" value="svn16Enabled" type="radio"
+            checked="#{administrationManagedBean.enabledSVNBinaries == 'svn16Enabled' ? 'checked' : ''}" />
+          <p:spacer style="width:5px;" />
+        </h:panelGroup>
+        <h:panelGroup>
+          <label style="font-size: 20px;" for="previousVersion">#{msg.subversion16BinariesHeader1}</label>
+          <p:spacer style="width:3px;" />
+          <h:outputText value="#{administrationManagedBean.subversion16Version}" style="font-size: 20px;" />
+          <p:spacer style="width:3px;" />
+          <h:outputText value="#{msg.subversion16BinariesHeader2}" style="font-size: 20px;" />
+          <br />
+          <h:outputLabel style="color: #787878;font-size: 12px;" value="#{msg.subversion16BinariesDetail}" />
+          <br/>
+          <p:spacer/>
+        </h:panelGroup>
+      </h:panelGrid>
+      <p:spacer style="height:20px;" />
+      <!-- Used a panel grid for the onclick -->
+      <h:panelGrid style="width: 100%;height:80px; border-radius: 20px; border-style: solid; border-width:2px; border-color: #89A8C3;"
+        columns="2" id="svn17Grid" onclick="select17()" columnClasses="column10Percent,column90Percent">
+        <h:panelGroup rendered="#{administrationManagedBean.showToggleSubversion}">
+          <p:spacer style="width:5px;" />
+          <input id="svn17Enabled" name="svnSetting" value="svn17Enabled" type="radio"
+            checked="#{administrationManagedBean.enabledSVNBinaries == 'svn17Enabled' ? 'checked' : ''}" />
+          <p:spacer style="width:5px;" />
+        </h:panelGroup>
+        <h:panelGroup rendered="#{!administrationManagedBean.showToggleSubversion}">
+          <p:spacer style="width:5px;" />
+          <input id="svn17Enabled" name="svnSetting" value="svn17Enabled" type="radio" disabled="disabled"
+            checked="#{administrationManagedBean.enabledSVNBinaries == 'svn17Enabled' ? 'checked' : ''}" />
+          <p:spacer style="width:5px;" />
+        </h:panelGroup>
+        <h:panelGroup rendered="#{administrationManagedBean.showToggleSubversion}">
+          <!--1.7-->
+          <h:panelGroup>
+            <label style="font-size: 20px;" for="previousVersion">#{msg.subversion17BinariesHeader1}</label>
+            <p:spacer style="width:3px;" />
+            <h:outputText value="#{administrationManagedBean.subversion17Version}" style="font-size: 20px;" />
+            <p:spacer style="width:3px;" />
+            <h:outputText value="#{msg.subversion17BinariesHeader2}" style="font-size: 20px;" />
+            <br />
+            <h:outputLabel style="color: #787878;font-size: 12px;" value="#{msg.subversion17BinariesDetail}" />
+            <br />
+            <h:outputLink value="http://subversion.apache.org/docs/release-notes/1.7.html" target="blank">
+              <h:outputText value="#{msg.subversion17BinariesDetailLinkText}" title="#{msg.subversion17BinariesDetailLinkTitle}" />
+            </h:outputLink>
+          </h:panelGroup>
+        </h:panelGroup>
+        <h:panelGroup rendered="#{!administrationManagedBean.showToggleSubversion}">
+          <!--1.7-->
+          <h:panelGroup>
+            <label style="font-size: 20px;" for="previousVersion">#{msg.subversion17BinariesHeader1}</label>
+            <p:spacer style="width:3px;" />
+            <h:outputText value="#{administrationManagedBean.subversion17Version}" style="font-size: 20px;" />
+            <p:spacer style="width:3px;" />
+            <h:outputText value="#{msg.subversion17BinariesHeader2}" style="font-size: 20px;" />
+            <br />
+            <h:outputText style="color: #89A8C3;font-size: 12px;" value="#{msg.subversion17BinariesDetail}" />
+            <br />
+            <h:outputLink style="font-size:12px;" value="http://subversion.apache.org/docs/release-notes/1.7.html" target="blank">
+              <h:outputText value="#{msg.subversion17BinariesDetailLinkText}" title="#{msg.subversion17BinariesDetailLinkTitle}" />
+            </h:outputLink>
+          </h:panelGroup>
+        </h:panelGroup>
+      </h:panelGrid>
+      <h:panelGroup id="backupBottomRight" style="margin-bottom: 10px; margin-right: 10px;" styleClass="bottomRight">
+        <p:commandButton id="administrationSubversionSaveVersionSettings" value="#{msg.applyButtonText}" onclick="showToggleDialog()"
+          update="growl" rendered="#{administrationManagedBean.showToggleSubversion}"
+          action="#{administrationManagedBean.saveSubversionReleaseSetting}" styleClass="roundedButtonSmall" ajax="true" />
+        <p:commandButton value="#{msg.applyButtonText}" disabled="true" rendered="#{!administrationManagedBean.showToggleSubversion}"
+          styleClass="roundedButton" />
+      </h:panelGroup>
+    </p:panel>
+
+
+    <p:dialog modal="true" widgetVar="toggleDialog" header="#{msg.uberSwitchDialogHeader}" draggable="false" closable="false"
+      resizable="false" width="250" height="150">
+      <h:graphicImage id="updatingImage" style="border:0; margin-left: auto; margin-right: auto; display: block;" library="img/platform"
+        name="progress.gif" />
+    </p:dialog>
+
+  </p:panel>
+  <script type="text/javascript">
+			jQuery(document).ready(function() {
+				if (jQuery("#svn16Enabled").attr("checked")) {
+					jQuery("#svn16Grid").addClass('svnSelectedSVN');
+					jQuery("#svn17Grid").addClass('svnNotSelectedSVN');
+				} else {
+					jQuery("#svn17Grid").addClass('svnSelectedSVN');
+					jQuery("#svn16Grid").addClass('svnNotSelectedSVN');
+				}
+			});
+
+			function showToggleDialog() {
+				var currentVersion = '#{administrationManagedBean.enabledSVNBinaries}';
+				var svn16Radio = document.getElementById("svn16Enabled");
+				var svn17Radio = document.getElementById("svn17Enabled");
+				var currentSelection;
+
+				if (svn16Radio.checked == true) {
+					currentSelection = svn16Radio;
+				} else {
+					currentSelection = svn17Radio;
+				}
+				if (currentSelection.value != currentVersion) {
+					toggleDialog.show();
+					setTimeout("location.reload(true);", 30000);
+				}
+			}
+
+			function select16() {
+				if (!document.getElementById("svn17Enabled").disabled) {
+					document.getElementById("svn16Enabled").checked = true;
+					document.getElementById("svn17Enabled").checked = false;
+					jQuery("#svn16Grid").addClass('svnSelectedSVN');
+					jQuery("#svn16Grid").removeClass('svnNotSelectedSVN');
+					jQuery("#svn17Grid").removeClass('svnSelectedSVN');
+					jQuery("#svn17Grid").addClass('svnNotSelectedSVN');
+				}
+			}
+			function select17() {
+				if (!document.getElementById("svn17Enabled").disabled) {
+					document.getElementById("svn16Enabled").checked = false;
+					document.getElementById("svn17Enabled").checked = true;
+					jQuery("#svn17Grid").addClass('svnSelectedSVN');
+					jQuery("#svn17Grid").removeClass('svnNotSelectedSVN');
+					jQuery("#svn16Grid").removeClass('svnSelectedSVN');
+					jQuery("#svn16Grid").addClass('svnNotSelectedSVN');
+				}
+			}
+		</script>
+</ui:composition>
+</html>

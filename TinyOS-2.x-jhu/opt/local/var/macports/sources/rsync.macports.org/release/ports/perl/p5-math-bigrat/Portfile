@@ -1,0 +1,20 @@
+# $Id: Portfile 82547 2011-08-15 16:46:16Z jmr@macports.org $
+
+PortSystem      1.0
+PortGroup       perl5 1.0
+
+perl5.setup     Math-BigRat 0.24
+revision        2
+maintainers     nomaintainer
+categories-append   math
+platforms       darwin
+description     Arbitrary size rational numbers math package
+
+long_description \
+                ${description}
+
+checksums       md5     509495c1d8ff51bf9f4f120a1bf426d7 \
+                sha1    2ef38aaa9d2d5b3bd52cdec3f01b8e1fba01557d \
+                rmd160  c68cc8bd6ba7b7e8ff54ee3716697ce8e87d966c
+
+supported_archs noarch

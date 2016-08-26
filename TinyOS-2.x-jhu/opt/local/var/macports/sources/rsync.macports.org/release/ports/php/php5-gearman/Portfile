@@ -1,0 +1,19 @@
+# $Id: Portfile 81160 2011-07-26 06:21:22Z ryandesign@macports.org $
+
+PortSystem              1.0
+PortGroup               php5extension 1.0
+
+php5extension.setup     gearman 0.8.0 pecl
+categories-append       net devel
+platforms               darwin freebsd openbsd
+maintainers             medialize.de:rodney.rehm openmaintainer
+
+description             Library to provide API for communicating with gearmand, using libgearman.
+long_description        Library to provide API for communicating with gearmand, and writing clients and workers.
+
+checksums               sha1    dc9f50df28a385ba64e294f236bafa73c772d455 \
+                        rmd160  ff51aaf09ff06eaa772f5a0748b9ca77ddcb3718
+
+depends_lib-append      port:gearmand
+
+livecheck.regex {(\d+(?:\.\d+)*)</a></th>}

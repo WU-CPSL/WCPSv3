@@ -1,0 +1,59 @@
+# $Id: Portfile 88711 2012-01-09 07:01:01Z ryandesign@macports.org $
+
+PortSystem 1.0
+
+name		xine-lib
+version		1.1.19
+description	xine-lib is a free multimedia engine, released under the GPL.
+long_description        ${description}
+maintainers	nomaintainer
+categories	multimedia
+platforms	darwin
+homepage	http://www.xine-project.org
+master_sites    sourceforge:project/xine/xine-lib/${version}
+use_xz      yes
+checksums   md5     d0969c067dc32f33c5ea431e5e2106ce \
+            sha1    f65f762d2e16adf04b9d715c91ee0bc02c322a7d \
+            rmd160  7b8c2a4e5bcd0984414360d8d589aa533a9040f3
+depends_build port:libtool \
+            port:pkgconfig
+depends_lib port:aalib	\
+            port:esound \
+            port:faad2 \
+            path:lib/libavcodec.dylib:ffmpeg \
+            port:flac \
+            port:libogg \
+            port:libvorbis \
+            port:zlib \
+            port:xorg-libXinerama \
+            port:xorg-libXt \
+            port:xorg-libXvMC \
+            port:fontconfig \
+            port:libpng \
+            port:xorg-xcb-util
+
+# bad register name `%rax'
+universal_variant       no
+
+configure.env-append    LIBTOOL=glibtool
+configure.args  --with-external-libfaad \
+                --with-external-ffmpeg
+if {${os.platform} == "darwin" && [string match *64 $build_arch]} {
+    configure.args-append --build=${build_arch}-apple-${os.platform}${os.version}
+}
+
+platform macosx {
+    patchfiles-append       audio_coreaudio_out.c.diff
+    configure.args-append   --enable-macosx-video \
+                            --enable-coreaudio
+    if {${os.major} >= 9} {
+        patchfiles-append   _cdio_osx.c.diff
+    }
+    if {${os.major} == 10} {
+        # ld: codegen problem, can't use rel32 to external symbol UVMask in _tomsmocomp_filter_sse from .libs/xineplug_post_tvtime.lax/libdeinterlaceplugins.a/libdeinterlaceplugins_la-kdetv_tomsmocomp.o
+        # possibly rdar://problem/7511396
+        patchfiles-append disable_deinterlace_kdetv_tomsmocomp.diff
+    }
+}
+
+livecheck.regex     /${name}-(\[0-9.\]+)${extract.suffix}

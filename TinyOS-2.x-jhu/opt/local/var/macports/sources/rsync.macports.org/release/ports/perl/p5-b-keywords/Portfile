@@ -1,0 +1,19 @@
+# $Id: Portfile 87204 2011-11-14 06:05:09Z jmr@macports.org $
+
+PortSystem          1.0
+PortGroup           perl5 1.0
+
+perl5.setup         B-Keywords 1.10
+revision            2
+license             {Artistic-1 GPL-2}
+maintainers         nomaintainer
+description         Lists of reserved barewords and symbol names
+long_description    ${description}
+
+platforms           darwin
+
+checksums           md5 3f4e7319083a348972c38a10b944a7a1 \
+                    sha1 e839451c3d986f5844c932b3a995134c076ce898 \
+                    rmd160 a607bffdbc09e7c165fd376badff797ea1cb694a
+
+supported_archs     noarch

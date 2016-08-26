@@ -1,0 +1,145 @@
+# $Id: Portfile 86524 2011-10-27 09:13:54Z mww@macports.org $
+
+PortSystem 1.0
+PortGroup               muniversal 1.0
+
+name			samba3
+conflicts		talloc
+version			3.2.15
+revision        2
+categories		net
+platforms		darwin
+maintainers		mww openmaintainer
+license			GPL-3
+description		SMB/CIFS implementation
+long_description	Samba is an software suite that provides seamless file and \
+					print services to SMB/CIFS clients
+
+homepage		http://www.samba.org/
+master_sites	http://us1.samba.org/samba/ftp/stable/ \
+				ftp://ftp.bit.nl/mirror/samba/stable/ \
+				ftp://de.samba.org/samba.org/stable/ \
+				ftp://us4.samba.org/pub/samba/stable/ \
+				ftp://ru.samba.org/pub/samba/stable/
+distname		samba-${version}
+checksums           md5     5a3bcc4927c9643b9f42970d0815b18f \
+                    sha1    52240aa9f2f5584f1978d788024fa2d6cb208e56 \
+                    rmd160  0046aeaf5b91c34bbc9a387c714caf41ca84d1ae
+depends_lib		port:libiconv port:openssl port:popt port:cyrus-sasl2
+
+# Parallel bug filed upstream: https://bugzilla.samba.org/show_bug.cgi?id=6278
+use_parallel_build no
+
+worksrcdir		${worksrcdir}/source
+
+configure.cflags-append	"-fno-common"
+configure.cppflags-append "-DHAVE_STRUCT_TIMESPEC"
+configure.args	--with-mandir=${prefix}/share/man \
+				--with-libdir=${prefix}/lib/${name} \
+				--with-privatedir=${prefix}/var/db/smb \
+				--with-configdir=${prefix}/etc/samba3/ \
+				--with-swatdir=${prefix}/share/${name}/swat \
+				--with-readline=${prefix} \
+				--with-krb5=/usr \
+				--without-included-popt \
+				--without-readline \
+				--enable-cups
+
+post-patch {
+	reinplace "s|-bundle|-dynamiclib|g" ${worksrcpath}/configure
+
+### BAND-AID: libs in subdirectories of ${prefix}/lib/samba3 will
+###   still have unresolved symbols since the makefile doesn't contain
+###   any information about install location at link time...
+	reinplace "s|@\$\(SHLD\) \$\(LDSHFLAGS\)|@\$\(SHLD\) \$\(LDSHFLAGS\) -install_name @libdir@/`basename \$@`|g" \
+		${worksrcpath}/Makefile.in
+}
+
+platform darwin 9 {
+	patchfiles-append	patch-source_smbd_utmp_c.diff
+}
+
+post-destroot {
+	xinstall -m 755 -d ${destroot}${prefix}/etc/samba3/ \
+		${destroot}${prefix}/var/db/smb/
+	xinstall -m 644 ${worksrcpath}/../examples/smb.conf.default \
+		${destroot}${prefix}/etc/samba3/smb.conf.sample
+	system "touch ${destroot}${prefix}/etc/samba3/lmhosts.sample"
+	system "touch ${destroot}${prefix}/var/db/smb/secrets.tdb.sample"
+
+	set changeline "\
+		-change bin/libnetapi.dylib.0 ${prefix}/lib/samba3/libnetapi.dylib \
+		-change bin/libsmbclient.dylib.0 ${prefix}/lib/samba3/libsmbclient.dylib \
+		-change bin/libsmbsharemodes.dylib.0 ${prefix}/lib/samba3/libsmbsharemodes.dylib \
+		-change bin/libtalloc.dylib.1 ${prefix}/lib/samba3/libtalloc.dylib \
+		-change bin/libtdb.dylib.1 ${prefix}/lib/samba3/libtdb.dylib \
+		-change bin/audit.dylib ${prefix}/lib/samba3/vfs/audit.dylib \
+		-change bin/cap.dylib ${prefix}/lib/samba3/vfs/cap.dylib \
+		-change bin/default_quota.dylib ${prefix}/lib/samba3/vfs/default_quota.dylib \
+		-change bin/expand_msdfs.dylib ${prefix}/lib/samba3/vfs/expand_msdfs.dylib \
+		-change bin/extd_audit.dylib ${prefix}/lib/samba3/vfs/extd_audit.dylib \
+		-change bin/fake_perms.dylib ${prefix}/lib/samba3/vfs/fake_perms.dylib \
+		-change bin/full_audit.dylib ${prefix}/lib/samba3/vfs/full_audit.dylib \
+		-change bin/netatalk.dylib ${prefix}/lib/samba3/vfs/netatalk.dylib \
+		-change bin/readahead.dylib ${prefix}/lib/samba3/vfs/readahead.dylib \
+		-change bin/readonly.dylib ${prefix}/lib/samba3/vfs/readonly.dylib \
+		-change bin/recycle.dylib ${prefix}/lib/samba3/vfs/recycle.dylib \
+		-change bin/shadow_copy.dylib ${prefix}/lib/samba3/vfs/shadow_copy.dylib \
+		-change bin/shadow_copy2.dylib ${prefix}/lib/samba3/vfs/shadow_copy2.dylib \
+		-change bin/streams_xattr.dylib ${prefix}/lib/samba3/vfs/streams_xattr.dylib \
+		-change bin/xattr_tdb.dylib ${prefix}/lib/samba3/vfs/xattr_tdb.dylib"
+
+	system "install_name_tool ${changeline} -id ${prefix}/lib/samba3/libnetapi.dylib ${destroot}${prefix}/lib/samba3/libnetapi.dylib"
+	system "install_name_tool ${changeline} -id ${prefix}/lib/samba3/libsmbclient.dylib ${destroot}${prefix}/lib/samba3/libsmbclient.dylib"
+	system "install_name_tool ${changeline} -id ${prefix}/lib/samba3/libsmbsharemodes.dylib ${destroot}${prefix}/lib/samba3/libsmbsharemodes.dylib"
+	system "install_name_tool ${changeline} -id ${prefix}/lib/samba3/libtalloc.dylib ${destroot}${prefix}/lib/samba3/libtalloc.dylib"
+	system "install_name_tool ${changeline} -id ${prefix}/lib/samba3/libtdb.dylib ${destroot}${prefix}/lib/samba3/libtdb.dylib"
+	system "install_name_tool ${changeline} -id ${prefix}/lib/samba3/vfs/audit.dylib ${destroot}${prefix}/lib/samba3/vfs/audit.dylib"
+	system "install_name_tool ${changeline} -id ${prefix}/lib/samba3/vfs/cap.dylib ${destroot}${prefix}/lib/samba3/vfs/cap.dylib"
+	system "install_name_tool ${changeline} -id ${prefix}/lib/samba3/vfs/default_quota.dylib ${destroot}${prefix}/lib/samba3/vfs/default_quota.dylib"
+	system "install_name_tool ${changeline} -id ${prefix}/lib/samba3/vfs/expand_msdfs.dylib ${destroot}${prefix}/lib/samba3/vfs/expand_msdfs.dylib"
+	system "install_name_tool ${changeline} -id ${prefix}/lib/samba3/vfs/extd_audit.dylib ${destroot}${prefix}/lib/samba3/vfs/extd_audit.dylib"
+	system "install_name_tool ${changeline} -id ${prefix}/lib/samba3/vfs/fake_perms.dylib ${destroot}${prefix}/lib/samba3/vfs/fake_perms.dylib"
+	system "install_name_tool ${changeline} -id ${prefix}/lib/samba3/vfs/full_audit.dylib ${destroot}${prefix}/lib/samba3/vfs/full_audit.dylib"
+	system "install_name_tool ${changeline} -id ${prefix}/lib/samba3/vfs/netatalk.dylib ${destroot}${prefix}/lib/samba3/vfs/netatalk.dylib"
+	system "install_name_tool ${changeline} -id ${prefix}/lib/samba3/vfs/readahead.dylib ${destroot}${prefix}/lib/samba3/vfs/readahead.dylib"
+	system "install_name_tool ${changeline} -id ${prefix}/lib/samba3/vfs/readonly.dylib ${destroot}${prefix}/lib/samba3/vfs/readonly.dylib"
+	system "install_name_tool ${changeline} -id ${prefix}/lib/samba3/vfs/recycle.dylib ${destroot}${prefix}/lib/samba3/vfs/recycle.dylib"
+	system "install_name_tool ${changeline} -id ${prefix}/lib/samba3/vfs/shadow_copy.dylib ${destroot}${prefix}/lib/samba3/vfs/shadow_copy.dylib"
+	system "install_name_tool ${changeline} -id ${prefix}/lib/samba3/vfs/shadow_copy2.dylib ${destroot}${prefix}/lib/samba3/vfs/shadow_copy2.dylib"
+	system "install_name_tool ${changeline} -id ${prefix}/lib/samba3/vfs/streams_xattr.dylib ${destroot}${prefix}/lib/samba3/vfs/streams_xattr.dylib"
+	system "install_name_tool ${changeline} -id ${prefix}/lib/samba3/vfs/xattr_tdb.dylib ${destroot}${prefix}/lib/samba3/vfs/xattr_tdb.dylib"
+	system "install_name_tool ${changeline} ${destroot}${prefix}/bin/eventlogadm"
+	system "install_name_tool ${changeline} ${destroot}${prefix}/bin/ldbadd"
+	system "install_name_tool ${changeline} ${destroot}${prefix}/bin/ldbdel"
+	system "install_name_tool ${changeline} ${destroot}${prefix}/bin/ldbedit"
+	system "install_name_tool ${changeline} ${destroot}${prefix}/bin/ldbmodify"
+	system "install_name_tool ${changeline} ${destroot}${prefix}/bin/ldbsearch"
+	system "install_name_tool ${changeline} ${destroot}${prefix}/bin/net"
+	system "install_name_tool ${changeline} ${destroot}${prefix}/bin/nmblookup"
+	system "install_name_tool ${changeline} ${destroot}${prefix}/bin/ntlm_auth"
+	system "install_name_tool ${changeline} ${destroot}${prefix}/bin/pdbedit"
+	system "install_name_tool ${changeline} ${destroot}${prefix}/bin/profiles"
+	system "install_name_tool ${changeline} ${destroot}${prefix}/bin/rpcclient"
+	system "install_name_tool ${changeline} ${destroot}${prefix}/bin/smbcacls"
+	system "install_name_tool ${changeline} ${destroot}${prefix}/bin/smbclient"
+	system "install_name_tool ${changeline} ${destroot}${prefix}/bin/smbcontrol"
+	system "install_name_tool ${changeline} ${destroot}${prefix}/bin/smbcquotas"
+	system "install_name_tool ${changeline} ${destroot}${prefix}/bin/smbget"
+	system "install_name_tool ${changeline} ${destroot}${prefix}/bin/smbpasswd"
+	system "install_name_tool ${changeline} ${destroot}${prefix}/bin/smbspool"
+	system "install_name_tool ${changeline} ${destroot}${prefix}/bin/smbstatus"
+	system "install_name_tool ${changeline} ${destroot}${prefix}/bin/smbtree"
+	system "install_name_tool ${changeline} ${destroot}${prefix}/bin/tdbbackup"
+	system "install_name_tool ${changeline} ${destroot}${prefix}/bin/tdbdump"
+	system "install_name_tool ${changeline} ${destroot}${prefix}/bin/tdbtool"
+	system "install_name_tool ${changeline} ${destroot}${prefix}/bin/testparm"
+	system "install_name_tool ${changeline} ${destroot}${prefix}/sbin/nmbd"
+	system "install_name_tool ${changeline} ${destroot}${prefix}/sbin/smbd"
+	system "install_name_tool ${changeline} ${destroot}${prefix}/sbin/swat"
+}
+
+livecheck.type	regex
+livecheck.url	http://us5.samba.org/samba/ftp/?M=D
+livecheck.regex	samba-(3\\.2\[0-9a-z.\]+)\\.tar\\.gz
+

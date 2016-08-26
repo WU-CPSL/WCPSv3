@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.prime.com.tr/ui"
+  xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core">
+<ui:composition template="/templates/platform/ubersvn-configuration-template.xhtml">
+
+  <ui:define name="pageContentView">
+
+    <p:panel styleClass="configurationPanel" style="width: 100%; text-align: center;">
+    <p:focus/>
+      <div>
+        <h:outputText styleClass="configurationTitle" value="#{msg.termsAndConditions}" />
+      </div>
+      <h:panelGrid style="width: 100%; height: 430px; text-align: center;" columns="1">
+
+        <h:panelGroup>
+          <div style="width: 100%;">
+            <h:inputTextarea style="width:60%" id="termsConditions" rows="15" disabled="true"
+              value="#{webConfiguratorManagedBean.licenseText}" />
+          </div>
+          <div style="text-align: right; width: 80%;">
+            <h:selectBooleanCheckbox styleClass="wizardFormCheckbox" id="acceptTerms">
+              <f:validator validatorId="com.wandisco.ubersvn.isChecked" />
+            </h:selectBooleanCheckbox>
+            <h:outputLabel style="font-size: 14px; color: #7F7F7F;" for="acceptTerms" value="#{msg.agree}" />
+          </div>
+          <div style="width: 100%; text-align: center;">
+            <h:message for="acceptTerms" style="color: #ff0000; font-size:14px;" />
+          </div>
+        </h:panelGroup>
+      </h:panelGrid>
+    </p:panel>
+
+    <h:panelGroup>
+      <div>
+        <p:panel style="border: none; background: transparent">
+          <h:panelGrid columns="3" width="100%" columnClasses="footerLeft,footerMiddle,footerRight">
+            <p:commandButton action="#{webConfiguratorManagedBean.goToWelcomePage}" immediate="true" ajax="false" styleClass="roundedButton"
+              value="#{msg.previousButton}" />
+            <h:panelGroup>
+              <h:outputText styleClass="wizardStep" value="#{msg.step1}" />
+              <h:outputText styleClass="wizardStepDivider" value=" | " />
+              <h:outputText styleClass="wizardStepSelected" value="#{msg.step2}" />
+              <h:outputText styleClass="wizardStepDivider" value=" | " />
+              <h:outputText styleClass="wizardStep" value="#{msg.step3}" />
+              <h:outputText styleClass="wizardStepDivider" value=" | " />
+              <h:outputText styleClass="wizardStep" value="#{msg.step4}" />
+              <h:outputText styleClass="wizardStepDivider" value=" | " />
+              <h:outputText styleClass="wizardStep" value="#{msg.step5}" />
+            </h:panelGroup>
+            <p:commandButton id="tcNextButton" action="#{webConfiguratorManagedBean.goToCreateAdminPage}" ajax="false"
+              styleClass="roundedButton" value="#{msg.nextButton}" />
+          </h:panelGrid>
+        </p:panel>
+      </div>
+    </h:panelGroup>
+  </ui:define>
+</ui:composition>
+</html>

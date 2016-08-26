@@ -1,0 +1,36 @@
+# $Id: Portfile 33297 2008-01-23 09:32:47Z ryandesign@macports.org $
+
+PortSystem 1.0
+
+name			mod_cband
+version			0.9.5.3
+categories		www
+platforms		darwin
+maintainers		nomaintainer
+description		bandwidth limiting module for apache2
+long_description	mod_cband is an Apache 2 module that solves the problem of \
+		limiting the bandwidth usage of users, virtual hosts and destinations. \
+		When the configured transfer limit is exceeded, mod_cband will \
+		redirect all further requests to a location specified in the \
+		configuration file.
+
+homepage		http://cband.linux.pl/
+master_sites	http://dembol.nasa.pl/download/
+distname		mod-cband-${version}
+extract.suffix	.tgz
+checksums		md5 85f1bbcacae4e0360612cdec8f5005ed
+
+depends_lib		port:apache2
+
+configure.args	--with-apxs=${prefix}/apache2/bin/apxs
+
+build.target	src/.libs/mod_cband.so
+
+destroot {
+	set moddir ${destroot}${prefix}/apache2/modules
+	set docdir ${destroot}${prefix}/share/doc/${name}
+	xinstall -m 755 -d ${moddir} ${docdir}/examples
+	xinstall -m 644 ${worksrcpath}/src/.libs/mod_cband.so ${moddir}
+	xinstall -m 644 -W ${worksrcpath} AUTHORS Changes LICENSE TODO ${docdir}
+	xinstall -m 644 ${worksrcpath}/conf/vhosts.conf.example ${docdir}/examples
+}

@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:p="http://primefaces.prime.com.tr/ui" xmlns:h="http://java.sun.com/jsf/html">
+<ui:composition>
+  <ol id="sub-toc">
+    <li><h:outputLink title="#{msg.adminStatusTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationStatus.jsf">
+        <span>#{msg.adminStatusTabText}</span>
+      </h:outputLink></li>
+    <li class="current"><h:outputLink title="#{msg.adminApacheServerSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationApacheServerSettings.jsf">
+        <span>#{msg.adminSubversionServerSettingsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminUberServerSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUberServerSettings.jsf">
+        <span>#{msg.adminUberServerSettingsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminUberPreferenceSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUberPreferenceSettings.jsf">
+        <span>#{msg.adminUberPreferenceSettingsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminEmailServerSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationEmailServerSettings.jsf">
+        <span>#{msg.adminEmailServerSettingsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminLogsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationLogs.jsf">
+        <span>#{msg.adminLogsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminUpdatesTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUpdates.jsf">
+        <span>#{msg.adminUpdatesTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminLDAPTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUberLDAPSettings.jsf">
+        <span>#{msg.adminLDAPTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink title="#{msg.backup}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationBackup.jsf">
+        <span>#{msg.backup}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink title="#{msg.adminExtensionsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationViewExtensions.jsf">
+        <span>#{msg.adminExtensionsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminSubversionReleaseLinkText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationSubversionRelease.jsf">
+        <span>#{msg.adminSubversionReleaseLinkText}</span>
+      </h:outputLink></li>
+  </ol>
+  <p:panel id="adminApacheServerPanel" styleClass="tabbed-panel">
+    <ui:include src="/sections/platform/administration/administrationApachePanel.xhtml" />
+    <h:panelGroup>
+      <p:spacer height="20" width="72" />
+      <h:graphicImage style="border: none;" library="img/platform" name="svn_admin_tab.png" />
+    </h:panelGroup>
+    <p:panel styleClass="adminApacheSettingsPanel">
+      <h:panelGroup id="adminApacheAdvancedPanel">
+        <h:panelGrid columns="2" columnClasses="repoAdminOptionsLabelColumn, repoAdminOptionsFieldColumn">
+          <p:spacer />
+          <p:spacer />
+          <h:panelGroup>
+            <h:outputText value="#{msg.adminApacheTimeoutLabel}" />
+            <p:spacer width="10" />
+          </h:panelGroup>
+          <h:panelGroup>
+            <h:inputText id="timeoutId" styleClass="wizardFormField" size="25"
+              value="#{administrationManagedBean.configurations.apacheTimeout}" validatorMessage="#{msg.apacheTimeoutInvalid}">
+              <f:validateRegex pattern="^[0-9]*$" for="timeoutId" />
+            </h:inputText>
+            <h:message style="color: red; font-size: 9px; height: 11px;" for="timeoutId" />
+          </h:panelGroup>
+          <h:panelGroup>
+            <h:outputText value="#{msg.adminApacheMaxKeepAliveRequestsLabel}" />
+            <p:spacer width="10" />
+          </h:panelGroup>
+          <h:panelGroup>
+            <h:inputText id="keepAliveId" styleClass="wizardFormField" size="25"
+              value="#{administrationManagedBean.configurations.apacheMaxKeepAliveRequests}" validatorMessage="#{msg.maxKeepAliveInvalid}">
+              <f:validateRegex pattern="^[0-9]*$" for="keepAliveId" />
+            </h:inputText>
+            <h:message style="color: red; font-size: 9px; height: 11px;" for="keepAliveId" />
+          </h:panelGroup>
+          <h:panelGroup>
+            <h:outputText value="#{msg.adminApacheKeepAliveLabel}" />
+            <p:spacer width="10" />
+          </h:panelGroup>
+          <h:panelGroup>
+            <h:inputText id="keepAliveActiveId" styleClass="wizardFormField" size="25"
+              value="#{administrationManagedBean.configurations.apacheKeepAlive}" validatorMessage="#{msg.keepAliveActiveInvalid}">
+              <f:validateRegex pattern="^On|Off$" for="keepAliveActiveId" />
+            </h:inputText>
+            <h:message style="color: red; font-size: 9px; height: 11px;" for="keepAliveActiveId" />
+          </h:panelGroup>
+          <h:panelGroup>
+            <h:outputText value="#{msg.adminApacheKeepAliveTimeoutLabel}" />
+            <p:spacer width="10" />
+          </h:panelGroup>
+          <h:panelGroup>
+            <h:inputText id="keepAliveTimeoutId" styleClass="wizardFormField" size="25"
+              value="#{administrationManagedBean.configurations.apacheKeepAliveTimeout}" validatorMessage="#{msg.keepAliveTimeoutInvalid}">
+              <f:validateRegex pattern="^[0-9]*$" for="keepAliveTimeoutId" />
+            </h:inputText>
+            <h:message style="color: red; font-size: 9px; height: 11px;" for="keepAliveTimeoutId" />
+          </h:panelGroup>
+          <h:panelGroup rendered="#{basePage.isWindows}">
+            <h:outputText value="#{msg.adminApacheThreadsPerChildLabel}" />
+            <p:spacer width="10" />
+          </h:panelGroup>
+          <h:panelGroup rendered="#{basePage.isWindows}">
+            <h:inputText id="threadsPerChildId" styleClass="wizardFormField" size="25"
+              value="#{administrationManagedBean.configurations.apacheThreadsPerChild}" validatorMessage="#{msg.threadsPerChildInvalid}">
+              <f:validateRegex pattern="^[0-9]*$" for="threadsPerChildId" />
+            </h:inputText>
+            <h:message style="color: red; font-size: 9px; height: 11px;" for="threadsPerChildId" />
+          </h:panelGroup>
+          <h:panelGroup>
+            <h:outputText value="#{msg.adminApacheMaxRequestsPerChildLabel}" />
+            <p:spacer width="10" />
+          </h:panelGroup>
+          <h:panelGroup>
+            <h:inputText id="maxRequestsPerChildId" styleClass="wizardFormField" size="25"
+              value="#{administrationManagedBean.configurations.apacheMaxRequestsPerChild}" validatorMessage="#{msg.maxRequestsPerChild}">
+              <f:validateRegex pattern="^[0-9]*$" for="maxRequestsPerChildId" />
+            </h:inputText>
+            <h:message style="color: red; font-size: 9px; height: 11px;" for="maxRequestsPerChildId" />
+          </h:panelGroup>
+        </h:panelGrid>
+        <p:spacer height="25" />
+      </h:panelGroup>
+    </p:panel>
+    <p:commandButton id="administrationApacheSaveAdvancedSettings" value="#{msg.saveButtonText}"
+      action="#{administrationManagedBean.saveApacheServerSettings}" styleClass="roundedButtonExtraSmall" ajax="false"
+      style="position:absolute; bottom:15px; left: 15px;" />
+  </p:panel>
+</ui:composition>
+</html>

@@ -1,0 +1,25 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 87512 2011-11-24 10:06:46Z dports@macports.org $
+
+PortSystem 1.0
+PortGroup perl5 1.0
+
+perl5.setup		Pod-Simple 3.19
+maintainers		nomaintainer
+license         {Artistic GPL}
+description		framework for parsing Pod
+long_description	This is a late-beta release of Pod::Simple, the \
+					module-suite for parsing Pod.  There are still some \
+					gaps in the documentation, and Pod::Simple::HTML \
+					isn't yet all that it should be.
+
+checksums       rmd160  dbebccb6ecb62e2de411f9727d2ca32b322d0355 \
+                sha256  a31afdef687ae6f16ba9baa75cdb10db6fff7268e7286822abf9518474a0b203
+
+platforms		darwin
+
+if {${perl5.major} != ""} {
+depends_lib-append		port:p${perl5.major}-pod-escapes
+
+supported_archs noarch
+}

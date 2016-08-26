@@ -1,0 +1,26 @@
+# $Id: Portfile 82547 2011-08-15 16:46:16Z jmr@macports.org $
+
+PortSystem           1.0
+PortGroup            perl5 1.0
+
+perl5.setup          perl-ldap 0.36
+revision             2
+maintainers          markd openmaintainer
+description          A client interface to LDAP servers
+long_description     ${description}
+platforms            darwin
+checksums            md5 7bf59f7de52fc07cc8c1a7fd354e583f
+
+master_sites        http://www.cpan.org/modules/by-authors/Graham_Barr
+
+if {${perl5.major} != ""} {
+depends_lib-append  port:p${perl5.major}-convert-asn1 \
+                    port:p${perl5.major}-authen-sasl \
+                    port:p${perl5.major}-uri \
+                    port:p${perl5.major}-digest-md5 \
+                    port:p${perl5.major}-io-socket-ssl \
+                    port:p${perl5.major}-xml-parser \
+                    port:p${perl5.major}-xml-sax-writer
+
+supported_archs noarch
+}

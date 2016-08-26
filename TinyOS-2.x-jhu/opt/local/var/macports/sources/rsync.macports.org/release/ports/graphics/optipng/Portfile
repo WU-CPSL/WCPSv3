@@ -1,0 +1,59 @@
+# $Id: Portfile 88158 2011-12-21 00:33:31Z vinc17@macports.org $
+
+PortSystem 1.0
+
+name            optipng
+version         0.6.5
+categories      graphics
+license         zlib
+maintainers     nomaintainer
+description     PNG file optimizer
+long_description \
+        OptiPNG is a PNG optimizer that recompresses the image files to a \
+        smaller size, without losing any information.  The idea has been \
+        inspired from pngcrush (http://pmt.sourceforge.net/pngcrush), and \
+        is explained in detail in the PNG-Tech article 'A guide to PNG \
+        optimization'.  The implementation is carried forward in OptiPNG, \
+        which offers a faster execution per trial, and a wider search space.
+
+platforms       darwin
+
+homepage        http://optipng.sourceforge.net/
+master_sites    sourceforge:project/${name}/OptiPNG/${name}-${version}
+
+checksums       md5     9df5fa7bb45ae096ed6c6e0d8dc43dc7 \
+                sha1    91525748a0bbd9bbfa8355529da7c17a408173e5 \
+                rmd160  2b67ce48cba37e5c77ef13bdc285b37e919e2b01
+
+# Doesn't depend on libpng or zlib since it uses its own, modified versions
+
+# Make sure gmake 3.81+ is used, as scripts/gcc.mak needs POSIX
+# backslash-newline sequence compatibility.
+depends_build   port:gmake
+
+# Avoid --prefix option (not supported by OptiPNG's configure script).
+configure.pre_args
+
+# Workaround for problem with MacPorts 1.8.0, which adds the
+# --disable-dependency-tracking configure option with the
+# universal variant, even though this option is not standard:
+#   http://www.gnu.org/prep/standards/standards.html#Configuration
+configure.universal_args
+
+build.cmd       ${prefix}/bin/gmake
+
+destroot {
+        xinstall -m 755 -d ${destroot}${prefix}/bin \
+          ${destroot}${prefix}/share/doc/${name} \
+          ${destroot}${prefix}/share/man/man1
+        xinstall -m 755 -W ${worksrcpath}/src optipng ${destroot}${prefix}/bin
+        eval xinstall -m 644 [glob ${worksrcpath}/doc/*] \
+          ${worksrcpath}/README.txt ${destroot}${prefix}/share/doc/${name}
+        xinstall -m 644 ${worksrcpath}/man/optipng.1 \
+          ${destroot}${prefix}/share/man/man1
+}
+
+# The default SourceForge livecheck rule doesn't with OptiPNG.
+livecheck.type  regex
+livecheck.url   ${homepage}
+livecheck.regex "Latest version:.*<b>OptiPNG&nbsp;(\\d+\\.\\d+\\.\\d+)</b>"

@@ -1,0 +1,60 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 88510 2012-01-03 21:44:47Z elelay@macports.org $
+
+PortSystem          1.0
+PortGroup           python27 1.0
+
+name                quodlibet
+version             2.3.2
+categories-append   audio gnome
+maintainers         elelay rmstonecipher openmaintainer
+platforms           darwin
+description         audio library manager and player for GTK+
+
+long_description \
+Quod Libet is a GTK+-based audio player written in Python, \
+using the Mutagen tagging library and GStreamer for playback.\
+It provides several different ways to view your audio library, \
+as well as support for Internet radio and audio feeds.\
+It has extremely flexible metadata tag editing and searching capabilities.
+
+homepage            http://code.google.com/p/quodlibet/
+master_sites        googlecode
+
+distfiles-append    ${name}-plugins-${version}${extract.suffix}
+
+checksums           ${name}-${version}.tar.gz \
+                    md5     bf93b2945589d9b53cfb9fa854e56e97 \
+                    sha1    21bc5fb988ca6c09959fc7212c05272a126a5be5 \
+                    rmd160  edada365ef3df38dfd8968f1ba2ba5d5bcfef6d1 \
+                    ${name}-plugins-${version}.tar.gz \
+                    md5     4b50ce830df8c34e05d1df9510219af9 \
+                    sha1    238c9505ddb7db27621c98b96d5aa3e542465d42 \
+                    rmd160  aca11a2deb22d974b65e7fd07444d4de7f020c45
+
+depends_build       port:intltool
+depends_lib         port:dbus-python27 \
+                    port:gst-plugins-good \
+                    port:py27-gst-python \
+                    port:py27-mutagen \
+                    port:py27-feedparser \
+                    port:python-musicbrainz2
+
+patchfiles          patch-setup.py.diff
+
+post-patch {
+    foreach file { quodlibet.py exfalso.py } {
+        reinplace "s|/usr/bin/env python|${frameworks_dir}/Python.framework/Versions/2.7/bin/python2.7|g" \
+            ${worksrcpath}/${file}
+    }
+}
+
+post-destroot {
+    system "cd ${workpath}/${name}-plugins-${version}/ && cp -vR * ${destroot}/${python.pkgd}/${name}/plugins/"
+}
+
+notes "If you want to play mp3 files, don't forget to install gst-plugins-ugly"
+
+livecheck.type		regex
+livecheck.url		${homepage}downloads/list
+livecheck.regex		"${name}-(\\d+(?:\\.\\d+)*)${extract.suffix}"

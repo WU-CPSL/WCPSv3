@@ -1,0 +1,74 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 86390 2011-10-25 06:13:53Z ryandesign@macports.org $
+
+PortSystem 1.0
+
+name		weechat
+version		0.3.6
+categories	irc
+maintainers	nomaintainer
+license		GPL-3
+description	Fast, light & extensible IRC client
+long_description	\
+    WeeChat (Wee Enhanced Environment for Chat) is a fast and light IRC client\
+     for many operating systems. Everything can be done with a keyboard.\
+     It is customizable and extensible with plugins/scripts, and includes:\
+      - nicklist\
+      - smart hotlist\
+      - infobar with highlight notification\
+      - horizontal and vertical split\
+      - double charset support (decode/encode)\
+      - FIFO pipe for remote control\
+      - and much more!
+homepage	http://weechat.org/
+platforms	darwin
+master_sites	${homepage}files/src
+
+checksums           rmd160  d8040d65c0eb2ddccf5cd37a1bcaf32033f77356 \
+                    sha256  6c367e36fb76de318410f0bc5f2043056155ffe1372c121c1f90520b4645a27e
+
+depends_build   port:pkgconfig
+depends_lib	port:gettext port:libiconv port:ncurses port:libgcrypt
+
+patchfiles	patch-src-core-wee-hook.h.diff
+
+configure.args	--without-debug --disable-gnutls --disable-lua \
+		--disable-perl --disable-python --disable-ruby --disable-aspell
+
+use_bzip2	yes
+
+variant aspell description {Support for aspell} {
+    configure.args-delete   --disable-aspell
+    configure.args-append   --enable-aspell
+    depends_lib-append      port:aspell
+}
+
+variant lua description {Bindings for lua plugins} {
+	configure.args-delete --disable-lua
+	configure.args-append --enable-lua
+	depends_lib-append    port:lua
+}
+
+variant perl description {Bindings for perl plugins} {
+	configure.args-delete --disable-perl
+	configure.args-append --enable-perl
+	depends_lib-append    path:bin/perl:perl5
+}
+
+variant python description {Bindings for python plugins} {
+    configure.args-delete   --disable-python
+    configure.args-append   --enable-python
+    depends_lib-append      path:bin/python:python26
+}
+
+variant ruby description {Bindings for ruby plugins} {
+	configure.args-delete --disable-ruby
+	configure.args-append --enable-ruby
+	depends_lib-append    port:ruby
+}
+
+variant tls description {Support for secure connecting} {
+	configure.args-delete --disable-gnutls
+	configure.args-append --enable-gnutls
+	depends_lib-append    port:gnutls
+}

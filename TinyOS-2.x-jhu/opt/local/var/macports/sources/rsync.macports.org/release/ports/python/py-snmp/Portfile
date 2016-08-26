@@ -1,0 +1,26 @@
+# $Id: Portfile 30249 2007-10-23 02:12:47Z jmpp@macports.org $
+
+PortSystem 1.0
+PortGroup python24 1.0
+
+name			py-snmp
+version			3.4.3
+categories		python net
+maintainers		nomaintainer
+platforms		darwin freebsd
+description		SNMP v.1 engine for python
+long_description	PySNMP is fully functional SNMP v.1 engine (BER \
+				encoders/decoders for a subset of ASN.1 data types, sockets \
+				based networking etc.) written entirely in python.
+
+homepage		http://pysnmp.sourceforge.net/
+master_sites	ftp://ftp.glas.net/users/ilya/tools/pysnmp/ \
+				sourceforge:pysnmp
+distname		pysnmp-${version}
+checksums		md5 2814bd645ae78e7dfef26e7426acad0d
+
+post-destroot	{
+	file delete -force ${destroot}${prefix}/share/doc/${name}
+	file copy ${worksrcpath}/docs ${destroot}${prefix}/share/doc/${name}
+	file copy ${worksrcpath}/examples ${destroot}${prefix}/share/doc/${name}
+}

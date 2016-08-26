@@ -1,0 +1,46 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 88850 2012-01-13 13:10:20Z hum@macports.org $
+
+PortSystem          1.0
+
+name                knp
+version             4.0
+categories          textproc japanese
+platforms           darwin
+maintainers         hum openmaintainer
+license             BSD
+
+homepage            http://nlp.ist.i.kyoto-u.ac.jp/index.php?KNP
+description         KN parser (Kurohashi-Nagao parser) which detects dependency of Japanese sentences.
+long_description    ${description}
+
+master_sites        http://nlp.ist.i.kyoto-u.ac.jp/nl-resource/knp/
+use_bzip2           yes
+checksums           rmd160  91e1249276209e0daae82172c33968f63cb6af3c \
+                    sha256  2543ef0663bd54ab9cddada0d0e221c7087d09dccb6720a5147f233a90befca2
+
+depends_lib         port:juman \
+                    port:tinycdb \
+                    port:crfpp
+
+configure.args      --with-cdb \
+                    --with-crf \
+                    --with-juman-prefix=${prefix}
+
+# Note: compiling with Boehm GC library (--with-boehm-gc) makes the executable cause a segmentation fault.
+
+set bgh_file        /tmp/bunruidb.txt
+variant bunruidb description {Use Bunrui Goi Hyou} {
+    if {[file readable ${bgh_file}]} {
+        configure.args-append --with-bgh-file=${bgh_file}
+    } else {
+        pre-configure {
+            ui_error "To enable the use of Bunrui DB, purchase a license of Bunrui Goi Hyou"
+            ui_error "and put the DB file in ${bgh_file}."
+            return -code error "Bunrui Goi Hyou is not available at ${bgh_file}"
+        }
+    }
+}
+
+livecheck.type      regex
+livecheck.regex     ${name}-(\[0-9.\]+)\\.tar

@@ -1,0 +1,43 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4; truncate-lines: t -*- vim:fenc=utf-8:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89598 2012-02-03 20:44:40Z mk@macports.org $
+
+PortSystem          1.0
+PortGroup           kde4    1.1
+
+name                skrooge
+version             1.2.2
+
+categories          kde finance
+maintainers         mk pixilla openmaintainer
+description         Skrooge
+long_description    Personal finance management tool for KDE4, with the aim of being highly intuitive, while \
+                    providing powerful functions such as reporting (including graphics), persistent \
+                    Undo/Redo, encryption, and much more...
+
+conflicts           skrooge-devel
+
+platforms           darwin
+license             GPL-3
+
+homepage            http://skrooge.org
+master_sites        http://skrooge.org/files
+
+use_bzip2           yes
+
+checksums           rmd160  9ba1a248ba2a2722ac2cd1a4138f25021e7b5c36 \
+                    sha256  cba05a657ed21466027637c8aff0a97bb9ba15a47f1cc822f0321fdc5397a6d1
+
+livecheck.type      regex
+livecheck.url       http://skrooge.org/files/
+livecheck.regex     "skrooge-(\[\\d+.\]+).tar"
+
+depends_lib-append  port:kdelibs4 \
+                    port:libofx \
+                    port:qca-ossl \
+                    port:kde4-runtime \
+                    port:oxygen-icons
+
+patch.dir           ${workpath}/${distname}
+patch.pre_args      -p1
+
+notes "ATTENTION: All users wanting to use skrooge.app should run the command: \n ${prefix}/bin/kbuildsycoca4" 

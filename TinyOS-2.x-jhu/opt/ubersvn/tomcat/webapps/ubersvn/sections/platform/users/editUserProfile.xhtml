@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:p="http://primefaces.prime.com.tr/ui" xmlns:h="http://java.sun.com/jsf/html" xmlns:wd="http://www.wansdisco.com/jsf">
+<ui:composition>
+  <ol id="sub-toc">
+    <li class="current"><h:outputLink styleClass="unselectedTabbedPanelTab" title="#{msg.userProfileTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/users/userProfile.jsf?userId=#{userProfileManagedBean.user.id}">
+        <span>#{msg.userProfileTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink style="left: 75px;" styleClass="selectedTabbedPanelTab" title="#{msg.userPreferencesTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/users/userPreferences.jsf"
+        rendered="#{basePage.systemAdmin or userProfileManagedBean.myPage}">
+        <span>#{msg.userPreferencesTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink style="left: 180px;" styleClass="unselectedTabbedPanelTab" title="#{msg.userPermissionsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/users/userPermissions.jsf"
+        rendered="#{basePage.systemAdmin or userProfileManagedBean.myPage}">
+        <span>#{msg.userPermissionsTabText}</span>
+      </h:outputLink></li>
+  </ol>
+  <p:panel styleClass="tabbed-panel">
+    <h:panelGroup style="display: block; height: 250px;">
+    <p:focus for="userRealName"/>
+      <h:panelGrid columns="3" columnClasses="userProfileColumns, userProfileColumns, userProfileColumns">
+        <h:panelGrid>
+          <h:outputLabel styleClass="formOutputLabel" for="userRealName" value="#{msg.userRealNameLabel}" />
+          <h:panelGroup>
+            <h:inputText styleClass="formInputText" id="userRealName" value="#{userProfileManagedBean.user.realName}" required="true"
+              requiredMessage="#{msg.userRealNameRequired}" />
+            <p:spacer width="5" />
+            <h:message style="color: red; font-size: 9px; height: 11px;" for="userRealName" />
+          </h:panelGroup>
+          <h:outputLabel styleClass="formOutputLabel" for="userUsername" value="#{msg.userUsernameLabel}" />
+          <h:outputText styleClass="formOutputText" id="userUsername" value="#{userProfileManagedBean.user.userName}" />
+          <h:outputLabel styleClass="formOutputLabel" for="userJobTitle" value="#{msg.userJobTitleLabel}" />
+          <h:inputText styleClass="formInputText" id="userJobTitle" value="#{userProfileManagedBean.user.jobTitle}" />
+          <h:outputLabel styleClass="formOutputLabel" for="userLocation" value="#{msg.userLocationLabel}" />
+          <h:inputText styleClass="formInputText" id="userLocation" value="#{userProfileManagedBean.user.location}" />
+        </h:panelGrid>
+        <h:panelGrid>
+          <h:outputLabel styleClass="formOutputLabel" for="userEmailAddress" value="#{msg.userEmailLabel}" />
+          <h:panelGroup>
+            <h:inputText styleClass="formInputText" id="userEmailAddress" value="#{userProfileManagedBean.user.emailAddress}"
+              required="true" requiredMessage="#{msg.userEmailAddressRequired}" />
+            <p:spacer width="5" />
+            <h:message style="color: red; font-size: 9px;" for="userEmailAddress" />
+          </h:panelGroup>
+          <h:outputLabel styleClass="formOutputLabel" for="userPhoneNumber" value="#{msg.userPhoneNumberLabel}" />
+          <h:inputText styleClass="formInputText" id="userPhoneNumber" value="#{userProfileManagedBean.user.phoneNumber}" />
+          <h:outputLabel styleClass="formOutputLabel" for="userSecondaryPhoneNumber" value="#{msg.userSecondaryPhoneNumberLabel}" />
+          <h:inputText styleClass="formInputText" id="userSecondaryPhoneNumber" value="#{userProfileManagedBean.user.secondaryPhoneNumber}" />
+        </h:panelGrid>
+        <h:panelGrid>
+          <h:outputLabel styleClass="formOutputLabel" for="userOther1" value="#{msg.userOther1Label}" />
+          <h:inputText styleClass="formInputText" id="userOther1" value="#{userProfileManagedBean.user.other1}" />
+          <h:outputLabel styleClass="formOutputLabel" for="userOther2" value="#{msg.userOther2Label}" />
+          <h:inputText styleClass="formInputText" id="userOther2" value="#{userProfileManagedBean.user.other2}" />
+          <h:outputLabel styleClass="formOutputLabel" for="userOther3" value="#{msg.userOther3Label}" />
+          <h:inputText styleClass="formInputText" id="userOther3" value="#{userProfileManagedBean.user.other3}" />
+          <h:outputLabel styleClass="formOutputLabel" for="userQuotation" value="#{msg.userQuotationLabel}" />
+          <h:inputText styleClass="formInputText" id="userQuotation" value="#{userProfileManagedBean.user.quote}" />
+        </h:panelGrid>
+      </h:panelGrid>
+      <p:commandButton ajax="false" styleClass="roundedButtonExtraSmall" value="#{msg.saveButtonText}"
+        action="#{userProfileManagedBean.updateUser}" />
+      <h:panelGroup style="position: absolute; right: 230px; top: 50px; width: 100px;">
+        <h:outputLabel styleClass="formOutputLabel" for="profileVisibility" value="#{msg.userProfileVisibility}" />
+        <br />
+        <h:selectOneMenu id="profileVisibility" value="#{userProfileManagedBean.user.profileVisibility}">
+          <f:selectItem itemLabel="Everyone" itemValue="Everyone" />
+          <f:selectItem itemLabel="Team Only" itemValue="Team" />
+          <f:selectItem itemLabel="Nobody" itemValue="Nobody" />
+        </h:selectOneMenu>
+      </h:panelGroup>
+      <h:graphicImage styleClass="userProfileAvatar" value="/avatarimage?id=#{userProfileManagedBean.user.userName}" />
+    </h:panelGroup>
+    <p:spacer />
+    <br />
+    <ui:include src="/sections/platform/users/activityTab.xhtml" />
+    <ui:include src="/sections/platform/users/teamsTab.xhtml" />
+  </p:panel>
+</ui:composition>
+</html>

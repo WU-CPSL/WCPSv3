@@ -1,0 +1,55 @@
+# $Id: Portfile 83402 2011-08-31 14:19:21Z jmr@macports.org $
+
+PortSystem 1.0
+
+name		rdesktop
+version		1.6.0
+revision		5
+categories	net
+maintainers	gmail.com:cshbell
+description	Windows Terminal Server Client
+long_description	\
+	rdesktop is an RDP client to access Microsoft Terminal Server \
+	based services. \
+	\
+	The variant called w2k-license-hack is a backported patch from \
+	an rdesktop 1.1 patchset which was not integrated into the latest \
+	version -- it will announce the client as Windows 2000 machine \
+	causing the Terminal Server to provide a license for free. \
+	Please argue over this with your own conscience.
+	
+platforms	darwin freebsd
+
+homepage	http://rdesktop.sourceforge.net/
+master_sites	sourceforge
+
+universal_variant no
+use_parallel_build yes
+
+depends_build	port:pkgconfig
+depends_lib	port:xorg-libX11 \
+		port:openssl \
+		port:libiconv \
+		port:libao
+
+use_autoreconf	yes
+autoreconf.args	-fv
+
+configure.args		--mandir=${prefix}/share/man \
+			--with-sound=libao \
+			--with-openssl=${prefix} \
+			--with-libiconv-prefix=${prefix}
+
+build.target	rdesktop
+
+checksums   	md5 c6fcbed7f0ad7e60ac5fcb2d324d8b16 \
+		sha1 b8bfd03d4640d285a0aee5b3fb199a47cb4225f2 \
+		rmd160 cf604cd1bc0707b485deb653efa3e47e21fabc4c
+
+variant		w2k_license_hack description {will announce the client as Windows 2000 machine} {
+			patchfiles patch-licence.c
+		}
+
+variant smartcard description {enables smartcard forwarding} {
+    configure.args-append --enable-smartcard
+}

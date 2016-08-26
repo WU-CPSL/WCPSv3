@@ -1,0 +1,11 @@
+#-*-Makefile-*- vim:syntax=make
+#$Id$
+
+NODEID = $(REINSTALL)
+BUILD_DEPS = setid program delsetid
+
+ifdef BOOTLOADER
+  ifeq ($(BOOTLOADER),tosboot)
+    BUILD_DEPS += program_bl
+  endif
+endif

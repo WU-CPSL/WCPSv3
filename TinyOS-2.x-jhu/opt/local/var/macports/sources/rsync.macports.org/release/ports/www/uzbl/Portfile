@@ -1,0 +1,35 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 88938 2012-01-15 06:44:46Z ryandesign@macports.org $
+
+PortSystem          1.0
+PortGroup           github 1.0
+
+github.setup        Dieterbe uzbl 2011.11.28
+categories          www
+license             GPL-3
+platforms           darwin
+maintainers         ryandesign openmaintainer
+
+description         Uzbl Web Browser
+
+long_description    ${name} is a web browser that adheres to the UNIX philosophy.
+
+homepage            http://www.uzbl.org/
+
+checksums           rmd160  b10247c0557cc99f09a6d449453b2e11d70a5307 \
+                    sha256  c0f728d1a0f9d7472dbf57a155f2bfaa153aa621b0e784c9789c446e942e9c9c
+
+depends_build       port:pkgconfig
+
+depends_lib         port:gtk2 \
+                    port:webkit-gtk \
+                    port:libsoup
+
+use_configure       no
+
+variant universal {}
+
+build.args          PREFIX=${prefix} \
+                    CC="${configure.cc} [get_canonical_archflags]"
+
+eval destroot.args  ${build.args}

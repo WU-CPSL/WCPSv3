@@ -1,0 +1,41 @@
+# $Id: Portfile 88809 2012-01-12 12:05:50Z phw@macports.org $
+
+PortSystem          1.0
+PortGroup           python 1.0
+set pymodname       tweepy
+name                py-${pymodname}
+version             1.8
+revision            0
+categories-append   devel net
+license             MIT
+maintainers         phw openmaintainer
+description         A python library for the Twitter API.
+long_description \
+    ${description} OAuth, complete coverage, streaming API
+
+platforms           darwin
+supported_archs     noarch
+
+homepage            http://${pymodname}.github.com/
+master_sites        http://pypi.python.org/packages/source/t/${pymodname}/
+distname            ${pymodname}-${version}
+
+checksums           md5     d356cfceac7c9911f3901f4ccd9f75d8 \
+                    sha1    f501bea1764b1fb6c6d1c7bdb1540da47eb54909 \
+                    rmd160  43b12c46a049698ae33fffe6d324a2633fcbae65
+python.versions     26 27
+python.default_version   27
+
+if {${name} != ${subport}} {
+   depends_build    port:py${python.version}-distribute
+   post-destroot {
+      xinstall -m 755 -d ${destroot}${prefix}/share/doc/${subport}
+      xinstall -m 644 -W ${worksrcpath} README \
+         ${destroot}${prefix}/share/doc/${subport}
+   }
+}
+
+livecheck.type      regex
+livecheck.url       [lindex ${master_sites} 0]
+livecheck.regex     ${pymodname}-(\[.\\d\]+)\\.tar\\.gz
+

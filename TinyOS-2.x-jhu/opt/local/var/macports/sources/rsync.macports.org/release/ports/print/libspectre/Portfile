@@ -1,0 +1,36 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:filetype=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89881 2012-02-14 02:13:33Z takanori@macports.org $
+
+PortSystem 1.0
+
+name            libspectre
+version         0.2.6
+revision        5
+description     Libspectre is a small library for rendering PostScript documents.
+long_description \
+                ${description} \
+                It provides a convenient easy to use API for handling and rendering \
+                PostScript documents.
+maintainers     devans openmaintainer
+categories      print
+license         GPL-2+
+platforms       darwin
+homepage        http://libspectre.freedesktop.org/wiki/
+master_sites    http://libspectre.freedesktop.org/releases/
+
+checksums       md5     5c6db35f2097c3a04c48c7f435d4b507 \
+                sha1    819475c7e34a1e9bc2e876110fee530b42aecabd \
+                rmd160  cb473eeeea513eddf1aee3e144f9c1d47d1f1342
+
+depends_build   port:pkgconfig
+
+depends_lib     port:ghostscript \
+                path:lib/pkgconfig/cairo.pc:cairo
+
+variant docs description "Build documentation" {
+    depends_build   port:doxygen
+}
+
+livecheck.type  regex
+livecheck.url   ${master_sites}
+livecheck.regex "${name}-(\\d+(?:\\.\\d+)*)${extract.suffix}"

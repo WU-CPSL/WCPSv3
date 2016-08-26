@@ -1,0 +1,7 @@
+; File generated automatically from ./sfc_os.spec; do not edit!
+
+LIBRARY sfc_os.dll
+
+EXPORTS
+  SfcIsFileProtected@8 @2
+  SfcIsKeyProtected@12 @3

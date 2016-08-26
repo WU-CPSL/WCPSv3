@@ -1,0 +1,47 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89831 2012-02-12 03:25:35Z hum@macports.org $
+
+PortSystem          1.0
+PortGroup           perl5 1.0
+
+perl5.setup         MeCab 0.993
+categories-append   textproc japanese
+platforms           darwin
+maintainers         gmail.com:rsky0711 hum openmaintainer
+license             GPL-2 LGPL-2.1 BSD
+
+description         a Perl module for MeCab
+long_description    ${description}
+
+homepage            http://mecab.sourceforge.net/
+master_sites        googlecode:mecab
+checksums           rmd160  0b9bbb4edff0caeb15cbeafcf2b66297c425ec4c \
+                    sha256  ca893a6b3132e5a8b170803be39a9a03f1a4a9f041047b0f7ee3ef74a5175a66
+
+distname            mecab-perl-${perl5.moduleversion}
+dist_subdir         mecab
+
+if {${perl5.major} != ""} {
+    depends_lib-append  path:bin/mecab-config:mecab-utf8
+
+    platform darwin 8 {
+        build.env       MACOSX_DEPLOYMENT_TARGET=10.4
+    }
+
+    post-patch {
+        reinplace "s|\#!/usr/bin/perl|\#!${perl5.bin}|" \
+            ${worksrcpath}/test.pl
+    }
+
+    post-destroot {
+        set exdir ${destroot}${prefix}/share/doc/${subport}/examples
+        xinstall -m 755 -d ${exdir}
+        xinstall -m 755 ${worksrcpath}/test.pl ${exdir}
+    }
+
+    livecheck.type      none
+} else {
+    livecheck.type      regex
+    livecheck.url       http://code.google.com/p/mecab/downloads/list
+    livecheck.regex     {mecab-perl-([\d\.]+)\.tar}
+}

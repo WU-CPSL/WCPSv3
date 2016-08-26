@@ -1,0 +1,138 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 88264 2011-12-23 23:08:16Z ryandesign@macports.org $
+
+PortSystem          1.0
+PortGroup           python 1.0
+PortGroup           select 1.0
+
+set realname        ipython
+
+name                py-${realname}
+version             0.12
+revision            2
+categories          python
+license             BSD
+platforms           darwin
+supported_archs     noarch
+
+maintainers         akitada openmaintainer
+
+description         An enhanced Interactive Python shell
+long_description    Provide an interactive shell superior to Python's default. \
+                    Serve as an embeddable, ready to use interpreter for your own programs. \
+                    Offer a flexible framework which can be used as the base environment for \
+                    other systems with Python as the underlying language.  \
+                    Allow interactive testing of threaded graphical toolkits.
+
+homepage            http://ipython.org
+master_sites        http://archive.ipython.org/release/${version}
+distname            ${realname}-${version}
+
+checksums           md5     4cf9f23b1171b3517f9a7a2bfc875b5f \
+                    sha1    49f6397d2957bb0a4492d0b35f3898dc161871de \
+                    rmd160  7086a8a5ebb5717091d1868907f6ae80abc9c7ab
+
+python.versions     24 25 26 27 31 32
+
+subport py24-${realname} {
+    version             0.9.1
+    revision            3
+    master_sites        http://archive.ipython.org/release/${version}
+    distname            ${realname}-${version}
+    checksums           md5     8a1bd1a9be272f4ddf4de99e5c1ad0dc \
+                        sha1    2d069416b31ed03eb1cad36f84ef2337362ac6a9 \
+                        rmd160  3d522f80290caa72e1c4fc60b2d56369c8c66eba
+}
+
+subport py25-${realname} {
+    version             0.10.2
+    revision            1
+    master_sites        http://archive.ipython.org/release/${version}
+    distname            ${realname}-${version}
+    checksums           md5     dda59bfc6e256ce786c4bc4aadb220a4 \
+                        sha1    d45b97b0f458fd517cb2bfa9ebb3c671c46a21c0 \
+                        rmd160  365a4eb9b534df1a9aa8717f173e9a032224ea01
+}
+
+if {$subport != "py31-${realname}" && $subport != "py32-${realname}" && $subport != $name} {
+    variant scientific description "Use ScientificPython to provide physical quantities support" {
+        if {$subport == "py24-${realname}"} {
+            depends_lib-append      port:py-scientific
+        } elseif {$subport != $name} {
+            depends_lib-append      port:py${python.version}-scientific
+        }
+    }
+    default_variants        +scientific
+}
+
+if {$subport == "py26-${realname}" || $subport == "py27-${realname}"} {
+    variant parallel description "Support for parallel computing" {
+        depends_lib-append      port:py${python.version}-zmq
+    }
+    variant pyqt4 conflicts pyside requires parallel description "Support for the Qt console using pyqt4" {
+        depends_lib-append      port:py${python.version}-pyqt4 \
+                                port:py${python.version}-pygments
+    }
+    variant pyside conflicts pyqt4 requires parallel description "Support for the Qt console using pyside" {
+        depends_lib-append      port:py${python.version}-pyside \
+                                port:py${python.version}-pygments
+    }
+    variant notebook requires parallel description "Support for IPython HTML notebook" {
+        depends_lib-append      port:py${python.version}-tornado
+    }
+}
+
+if {$subport != $name} {
+
+    post-destroot {
+        if {$subport == "py24-${realname}"} {
+            foreach f {ipcluster ipcontroller ipengine iptest ipython ipython-wx ipythonx irunner pycolor} {
+                move ${destroot}${prefix}/bin/${f} ${destroot}${prefix}/bin/${f}-${python.branch}
+            }
+            foreach f {ipython pycolor} {
+                move ${destroot}${prefix}/share/man/man1/${f}.1.gz \
+                     ${destroot}${prefix}/share/man/man1/${f}-${python.branch}.1.gz
+            }
+            move ${destroot}${prefix}/share/doc/${realname} ${destroot}${prefix}/share/doc/${name}
+        } elseif {$subport == "py25-${realname}"} {
+            foreach f {ipcluster ipcontroller ipengine iptest ipython ipython-wx ipythonx irunner pycolor} {
+                move ${destroot}${prefix}/bin/${f} ${destroot}${prefix}/bin/${f}-${python.branch}
+            }
+            foreach f {ipcluster ipcontroller ipengine ipython ipython-wx ipythonx irunner pycolor} {
+                move ${destroot}${prefix}/share/man/man1/${f}.1.gz \
+                     ${destroot}${prefix}/share/man/man1/${f}-${python.branch}.1.gz
+            }
+            move ${destroot}${prefix}/share/doc/${realname} ${destroot}${prefix}/share/doc/${name}
+        } elseif {$subport == "py26-${realname}" || $subport == "py27-${realname}"} {
+            foreach f {ipcluster ipcontroller ipengine iplogger ipython irunner pycolor} {
+                ln -s ${python.prefix}/share/man/man1/${f}.1.gz ${destroot}${prefix}/share/man/man1/${f}-${python.branch}.1.gz
+            }
+        } elseif {$subport == "py31-${realname}" || $subport == "py32-${realname}"} {
+            foreach f {ipcluster ipcontroller ipengine iplogger ipython irunner pycolor} {
+                ln -s ${python.prefix}/share/man/man1/${f}.1.gz ${destroot}${prefix}/share/man/man1/${f}3-${python.branch}.1.gz
+            }
+        }
+    }
+
+    depends_lib-append      port:py${python.version}-readline \
+                            port:py${python.version}-distribute
+    depends_run             port:ipython_select
+    test.run                no
+
+    select.group            ${realname}
+    select.file             ${filespath}/${realname}${python.version}
+
+    notes \
+    "To make the Python ${python.branch} version of IPython the one that is run
+    when you execute the commands without a version suffix, e.g. 'ipython',
+    run:
+        port select --set ${select.group} [file tail ${select.file}]"
+}
+
+if {$subport == "py24-${realname}" || $subport == "py25-${realname}"} {
+    livecheck.type          none
+} else {
+    livecheck.type          regex
+    livecheck.url           ${homepage}/download.html
+    livecheck.regex         ${realname}-(\\d+(?:\\.\\d+)*)
+}

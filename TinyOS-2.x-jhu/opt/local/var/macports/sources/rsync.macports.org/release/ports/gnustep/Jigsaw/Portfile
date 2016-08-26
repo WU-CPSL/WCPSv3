@@ -1,0 +1,20 @@
+# $Id: Portfile 30229 2007-10-22 23:01:24Z jmpp@macports.org $
+
+PortSystem  1.0
+PortGroup   gnustep 1.0
+
+name        Jigsaw
+version     0.5
+platforms   darwin
+maintainers nomaintainer
+
+description  Simulates a jigsaw puzzle.
+long_description \
+    Simulates a jigsaw puzzle \
+    and illustrates the use of clipping paths.
+
+homepage        http://www.gnustep.it/marko/GPuzzle2/
+master_sites    ${homepage}
+checksums       md5 3dab130a0c37f6b051858e2bccff338d
+extract.suffix  .tgz
+distname        ${name}

@@ -1,0 +1,60 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89986 2012-02-18 15:16:49Z takeshi@macports.org $
+
+PortSystem      1.0
+
+name            dotwrp
+version         1.1
+categories      math science
+platforms       darwin
+maintainers     takeshi
+description     A wrapper for *dot* functions in Accelerate framework
+long_description \
+    This is a wrapper for four Level 1 BLAS functions \
+    CDOTC CDOTU ZDOTC ZDOTU and SDOT in Accelerate.framework \
+    of Mac OS X.
+homepage        https://github.com/tenomoto/dotwrp
+fetch.type      git
+git.url         git://github.com/tenomoto/dotwrp.git
+git.branch      ea3da3aac13c9e5920a11c2c5ab56876f7e23222
+
+use_configure   no
+
+if { ![variant_isset g95] && ![variant_isset gcc45] && ![variant_isset gcc46]} {
+    default_variants +gcc44
+}
+
+if {[variant_isset g95]} {
+  set fc ${prefix}/bin/g95
+} elseif {[variant_isset gcc45]} {
+  set fc ${prefix}/bin/gfortran-mp-4.5
+} else {
+  set fc ${prefix}/bin/gfortran-mp-4.4
+}
+set fflags "${configure.fflags} -fno-underscoring"
+build {
+    system "cd ${worksrcpath};
+        ${fc} ${fflags} -c ${name}.f90;
+        /usr/bin/ar -cru lib${name}.a ${name}.o;
+        /usr/bin/ranlib lib${name}.a"
+}
+
+destroot {
+    xinstall -m 644 ${worksrcpath}/lib${name}.a ${destroot}${prefix}/lib
+}
+
+variant g95 conflicts gcc44 gcc45 gcc46 description {compile with g95} {
+    depends_build       port:g95
+}
+
+variant gcc44 conflicts g95 gcc45 gcc46 description {compile with gfortran-mp-4.4} {
+    depends_build       port:gcc44
+}
+
+variant gcc45 conflicts g95 gcc44 gcc46 description {compile with gfortran-mp-4.5} {
+    depends_build       port:gcc45
+}
+
+variant gcc46 conflicts g95 gcc44 gcc45 description {compile with gfortran-mp-4.6} {
+    depends_build       port:gcc46
+}

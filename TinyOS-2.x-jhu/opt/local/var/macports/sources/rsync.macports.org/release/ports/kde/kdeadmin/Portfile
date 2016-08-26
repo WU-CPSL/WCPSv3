@@ -1,0 +1,33 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89388 2012-01-27 21:19:08Z snc@macports.org $
+
+PortSystem          1.0
+PortGroup           kde4   1.1
+
+name                kdeadmin
+version             4.8.0
+categories          kde kde4
+maintainers         snc sharky michaelld
+license             GPL-2+ LGPL-2+ GFDL-1.2
+description         kdeadmin contains packages that usually only a system \
+                    administrator might need.
+long_description    KDE ${description}
+homepage            http://www.kde.org
+
+platforms           darwin
+depends_lib-append  port:kdelibs4 port:kdepimlibs4
+
+master_sites        kde:stable/${version}/src/
+use_bzip2           yes
+
+checksums           rmd160  4bda8d89e4f939c9e3feaa48da6eb0dba7b65536 \
+                    sha256  5e228abb9e606b7986193069a23c1b9f8a7537d09e45ba6c1228a9f8485943b0
+
+configure.args-append   -DWITH_SystemConfigPrinter=OFF \
+                        -DWITH_PyQt4=OFF \
+                        -DWITH_PyKDE4=OFF \
+                        -DWITH_SIP=OFF \
+                        -DWITH_PyCups=OFF
+
+livecheck.url       http://kde.mirrors.hoobly.com/stable/latest/src/
+livecheck.regex     ${name}-(\\d+(\\.\\d+)+)

@@ -1,0 +1,30 @@
+# $Id: Portfile 82782 2011-08-20 01:07:52Z ryandesign@macports.org $
+
+PortSystem            1.0
+PortGroup             perl5 1.0
+
+perl5.setup           ExtUtils-CBuilder 0.280202 ../by-authors/id/D/DA/DAGOLDEN/
+epoch                 1
+revision              2
+license               {Artistic GPL}
+maintainers           nomaintainer
+description           Compile and link C code for Perl modules
+long_description      This module can build the C portions of Perl modules by \
+                      invoking the appropriate compilers and linkers in a \
+                      cross-platform manner.  It was motivated by the \
+                      Module::Build project, but may be useful for other \
+                      purposes as well.  However, it is not intended as a \
+                      general cross-platform interface to all your C building \
+                      needs.  That would have been a much more ambitious goal!
+
+platforms             darwin
+
+checksums             md5 c2b6aa8d22416574c0a3f658136a7958 \
+                      sha1 94281774d27fc937c05d2f3bb111db988b5f2a2a \
+                      rmd160 5c64f59474c3e799ddf502f50edff015a37f58ef
+
+if {${perl5.major} != ""} {
+depends_lib-append    port:p${perl5.major}-ipc-cmd
+
+supported_archs       noarch
+}

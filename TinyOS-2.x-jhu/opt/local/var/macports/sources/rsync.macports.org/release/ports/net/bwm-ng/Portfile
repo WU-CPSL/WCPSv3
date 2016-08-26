@@ -1,0 +1,20 @@
+# $Id: Portfile 30239 2007-10-23 01:55:09Z jmpp@macports.org $
+
+PortSystem 1.0
+name            bwm-ng
+version         0.6
+categories      net
+maintainers     nomaintainer
+description     A small and simple bandwidth monitor
+long_description \
+    Bandwidth Monitor NG is a small and simple console-based live network   \
+    and disk io bandwidth monitor for Linux, BSD, Solaris, Mac OS X and     \
+    others.
+
+homepage        http://www.gropp.org
+platforms       darwin
+
+master_sites    ${homepage}/bwm-ng
+checksums       md5 d3a02484fb7946371bfb4e10927cebfb
+configure.args  --with-ncurses=${prefix}/include
+depends_lib     port:ncurses

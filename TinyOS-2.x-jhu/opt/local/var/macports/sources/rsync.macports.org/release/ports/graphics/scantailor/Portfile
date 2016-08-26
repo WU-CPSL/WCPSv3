@@ -1,0 +1,59 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 82589 2011-08-16 10:43:10Z ryandesign@macports.org $
+
+PortSystem                      1.0
+PortGroup                       cmake 1.0
+PortGroup                       qt4 1.0
+
+name                            scantailor
+version                         0.9.10
+platforms                       darwin
+maintainers                     raphael openmaintainer
+license                         GPL-3+
+categories                      graphics aqua
+description                     An interactive post-processing tool for scanned pages
+homepage                        http://${name}.sourceforge.net/
+long_description                Scan Tailor is an interactive post-processing tool for scanned \
+                                pages. It performs operations such as page splitting, deskewing, \
+                                adding/removing borders, and others. You give it raw scans, and \
+                                you get pages ready to be printed or assembled into a PDF or \
+                                DJVU file. Scanning, optical character recognition, and \
+                                assembling multi-page documents are out of scope of this project.
+
+depends_lib-append              port:jpeg \
+                                port:zlib \
+                                port:libpng \
+                                port:tiff \
+                                port:boost
+
+master_sites                    sourceforge:project/scantailor/scantailor/${version}
+
+checksums                       rmd160  548681bbca511e90c52ab3ade6ff6d32729774b6 \
+                                sha256  0b574eabfb65e4dcf3915d00ad3da31d464060458ffaeb49e4257e97301f93a0
+
+post-patch {
+    reinplace "s|@VERSION@|${version}|" ${worksrcpath}/packaging/osx/Info.plist.in
+}
+
+configure.args-append           ${qt_cmake_defines}
+
+post-destroot {                 # create application bundle
+                                set appdir ${destroot}${applications_dir}/ScanTailor.app
+                                xinstall -d ${appdir}/Contents/MacOS
+                                xinstall -m 644 ${worksrcpath}/packaging/osx/Info.plist.in ${appdir}/Contents/Info.plist
+                                move ${destroot}${prefix}/bin/scantailor ${appdir}/Contents/MacOS/ScanTailor
+                                xinstall -d ${appdir}/Contents/Resources
+                                xinstall -m 644 ${worksrcpath}/packaging/osx/ScanTailor.icns ${appdir}/Contents/Resources/
+                                eval move [glob ${destroot}${prefix}/share/scantailor/translations/scantailor_*.qm] \
+                                    ${appdir}/Contents/Resources/
+
+                                # install additional documentation files
+                                set docdir ${destroot}${prefix}/share/doc/${name}
+                                xinstall -d ${docdir}
+                                xinstall -m 644 -W ${worksrcpath} \
+                                    COPYING \
+                                    GPL3.txt \
+                                    ${docdir}
+}
+
+livecheck.type                  sourceforge

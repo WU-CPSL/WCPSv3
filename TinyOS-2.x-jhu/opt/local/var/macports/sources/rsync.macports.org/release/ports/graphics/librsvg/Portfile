@@ -1,0 +1,90 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:filetype=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 87560 2011-11-25 17:49:53Z devans@macports.org $
+
+PortSystem      1.0
+PortGroup       archcheck 1.0
+
+name            librsvg
+version         2.34.2
+license         {GPL-2+ LGPL-2+}
+set branch      [join [lrange [split ${version} .] 0 1] .]
+categories      graphics gnome
+platforms       darwin
+maintainers     pixilla openmaintainer
+description     Gnome implementation of rsvg.
+
+long_description \
+    ${description}
+
+homepage        http://librsvg.sourceforge.net/
+master_sites    gnome:sources/${name}/${branch}/
+use_bzip2       yes
+
+checksums       md5     4a7eda78019cb89d4e7ae7c841480399 \
+                sha1    75d0da1136c2c515161799b5dd9d903ed34e552c \
+                rmd160  008ac1d2f31717f03ad16a51ba5ffdabdae66d40
+
+depends_build   port:pkgconfig
+
+depends_lib \
+    port:libart_lgpl \
+    path:lib/pkgconfig/cairo.pc:cairo \
+    port:libcroco \
+    port:fontconfig \
+    port:freetype \
+    path:lib/pkgconfig/glib-2.0.pc:glib2 \
+    port:gtk2 \
+    port:libgsf \
+    port:libxml2 \
+    path:lib/pkgconfig/pango.pc:pango
+
+
+set pyversion 2.7
+depends_run     port:python[join [split ${pyversion} "."] ""]
+
+archcheck.files \
+    lib/libart_lgpl_2.dylib \
+    lib/libcairo.dylib \
+    lib/libcroco-0.6.dylib \
+    lib/libfontconfig.dylib \
+    lib/libfreetype.dylib \
+    lib/libglib-2.0.dylib \
+    lib/libgsf-1.dylib \
+    lib/libpango-1.0.dylib \
+    lib/libxml2.dylib
+
+set buildpath   ${worksrcpath}/macports
+post-build {
+    xinstall -d ${buildpath}
+    set fp [open ${buildpath}/svg2pdf w]
+    puts $fp "#!/bin/sh"
+    puts $fp "if \[ \$# -lt 2 -o \"\$1\" = \"-h\" -o \"\$1\" = \"--help\" \] ; then"
+    puts $fp "	echo \"FAIL: usage: \$0 input_file.svg output_file.pdf\""
+    puts $fp "	exit 255;"
+    puts $fp "fi"
+    puts $fp "rsvg-convert -f pdf -o \"\$2\" \"\$1\""
+    close $fp
+}
+
+post-destroot {
+    set python.branch ${pyversion}
+    set python.bin ${frameworks_dir}/Python.framework/Versions/${python.branch}/bin/python${python.branch}
+    reinplace "s|^#!/usr/bin/env python|#!${python.bin}|g" \
+        ${destroot}${prefix}/bin/rsvg
+
+    set docdir ${prefix}/share/doc/${name}
+    xinstall -d ${destroot}${docdir}
+    xinstall -m 644 -W ${worksrcpath} AUTHORS COPYING COPYING.LIB NEWS README \
+        ${destroot}${docdir}
+    xinstall -m 755 -W ${buildpath} svg2pdf \
+        ${destroot}${prefix}/sbin
+}
+
+post-activate {
+    ui_debug "Updating gdk-pixbuf.loaders..."
+    system "${prefix}/bin/gdk-pixbuf-query-loaders --update-cache"
+}
+
+livecheck.type  regex
+livecheck.url   http://ftp.gnome.org/pub/gnome/sources/${name}/${branch}/
+livecheck.regex {LATEST-IS-(\d+(?:\.\d+)*)}

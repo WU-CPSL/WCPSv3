@@ -1,0 +1,24 @@
+# $Id: Portfile 85636 2011-10-15 09:56:28Z jmr@macports.org $
+
+PortSystem            1.0
+PortGroup             perl5 1.0
+
+perl5.setup           YAML-Tiny 1.41
+revision              2
+license               {Artistic-1 GPL}
+maintainers           nomaintainer
+description           Read/Write YAML files with as little code as possible
+long_description      ${description}
+
+platforms             darwin
+
+checksums             md5 afeffc7f351caba7ca51992b892a622d \
+                      sha1 03efc3885bc39a2934b09ddacdc44a39929e5638 \
+                      rmd160 8f552a68042586fa2ba7f8b6767f32dc0d07a7e9
+
+if {${perl5.major} != ""} {
+depends_lib-append    port:p${perl5.major}-yaml \
+                      port:p${perl5.major}-yaml-syck
+
+supported_archs noarch
+}

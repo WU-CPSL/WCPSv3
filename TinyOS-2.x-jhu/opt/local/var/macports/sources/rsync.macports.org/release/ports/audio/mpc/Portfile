@@ -1,0 +1,34 @@
+# $Id: Portfile 88435 2012-01-02 10:15:05Z ryandesign@macports.org $
+
+PortSystem 1.0
+
+name             mpc
+version          0.21
+categories       audio
+maintainers      nomaintainer
+description      a command line tool for MPD
+long_description \
+	mpc is a simple command line client for MPD.\
+	Music Player Daemon (MPD) allows remote access for playing music (MP3, Ogg\
+	Vorbis, FLAC, AAC, Mod, and wave files) and managing playlists. MPD is\
+	designed for integrating a computer into a stereo system that provides\
+	control for music playback over a local network. It also makes a great\
+	desktop music player, especially if you are a console junkie, like\
+	frontend options, or restart X often.
+homepage         http://mpd.wikia.com/wiki/Music_Player_Daemon_Wiki
+master_sites     sourceforge:project/musicpd/mpc/${version}
+platforms        darwin
+depends_build    port:pkgconfig port:libiconv
+depends_lib      port:libmpdclient
+
+use_bzip2        yes
+
+checksums           md5     d8f88aad5fa7ed4c6e7005c5ec1ba7c5 \
+                    sha1    2eca19b802a5ee1005b639ad99020b91e24447be \
+                    rmd160  0619825e3a85784ea5b1d3250bedf0da9667101b
+
+configure.args	 --mandir=${prefix}/share/man
+
+livecheck.type   regex
+livecheck.url   http://sourceforge.net/projects/musicpd/files/${name}/
+livecheck.regex "${name}\/(\\d+(?:\\.\\d+)*)"

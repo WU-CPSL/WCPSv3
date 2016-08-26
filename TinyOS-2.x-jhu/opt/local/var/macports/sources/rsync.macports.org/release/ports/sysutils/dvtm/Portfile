@@ -1,0 +1,41 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 78762 2011-05-21 15:29:21Z jmr@macports.org $
+
+PortSystem              1.0
+
+name                    dvtm
+version                 0.6
+categories              sysutils
+platforms               darwin
+maintainers             leboulanger.org:harold
+
+description             Dynamic Virtual Terminal Manager
+
+long_description        dvtm brings the concept of tiling window management, \
+                        popularized by X11-window managers like dwm to the \
+                        console. As a console window manager it tries to make \
+                        it easy to work with multiple console based programs \
+                        like vim, mutt, cmus or irssi.
+
+homepage                http://brain-dump.org/projects/dvtm/
+master_sites            ${homepage}
+
+checksums               md5 db77a3744868dd91a5ae5ad98b7df709 \
+                        sha1 5d5b5c7518ead9f08bae28c081bf2abbb4472933 \
+                        rmd160 19201c82df18a4cccf45228aa056529c9f4a16c3
+
+
+depends_lib             port:ncurses
+
+patchfiles              patch-src-config.mk.diff
+
+platform darwin {
+    patchfiles-append   patch-src-Makefile.diff
+}
+
+use_configure           no
+
+build.args              PREFIX=${prefix} \
+                        CC=${configure.cc}
+
+destroot.args           PREFIX=${prefix}

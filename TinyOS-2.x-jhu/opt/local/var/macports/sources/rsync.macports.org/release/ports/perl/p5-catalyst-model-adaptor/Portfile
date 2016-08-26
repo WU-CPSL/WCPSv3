@@ -1,0 +1,22 @@
+# $Id: Portfile 82547 2011-08-15 16:46:16Z jmr@macports.org $
+
+PortSystem              1.0
+PortGroup               perl5 1.0
+
+perl5.setup             Catalyst-Model-Adaptor 0.08
+revision                2
+platforms               darwin
+maintainers             fpassera.com:dev openmaintainer
+description             helper for the incredibly lazy
+long_description        ${description}
+
+checksums               md5     60d17e5bb2890f9d0fb827797427d6da \
+                        sha1    a632f8d4a3005e215a3465dd15e8d7ee83c95461 \
+                        rmd160  175e9b4e6990ddb3f408cf7df1b93152ba9c6771
+
+if {${perl5.major} != ""} {
+    depends_lib-append      port:p${perl5.major}-test-use-ok \
+                            port:p${perl5.major}-catalyst-runtime
+
+    supported_archs         noarch
+}

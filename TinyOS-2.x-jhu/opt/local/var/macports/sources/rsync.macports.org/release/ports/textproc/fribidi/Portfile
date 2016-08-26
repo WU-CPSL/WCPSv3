@@ -1,0 +1,34 @@
+# $Id: Portfile 85914 2011-10-17 13:27:48Z jmr@macports.org $
+
+PortSystem      1.0
+
+name            fribidi
+version         0.10.9
+categories      textproc
+license         LGPL-2.1+
+maintainers     nomaintainer
+platforms       darwin
+description     Free Implementation of the Unicode BiDi algorithm
+
+long_description \
+    The FriBidi library implements the algorithm described in the \"Unicode \
+    Standard Annex #9, The Bidirectional Algorithm\", available at \
+    http://www.unicode.org/unicode/reports/tr9/.
+
+homepage        http://fribidi.org/
+master_sites    ${homepage}download/
+
+checksums       md5 647aee89079b056269ff0918dc1c6d28 \
+                sha1 f9aae2d2084eaccbc87760401c4521e96a92a436 \
+                rmd160 31495fecd4318f9bd6217b015f65a936389c3204
+
+post-destroot {
+    set docdir ${prefix}/share/doc/${name}-${version}
+    xinstall -d ${destroot}${docdir}
+    xinstall -m 0644 -W ${worksrcpath} AUTHORS COPYING ChangeLog \
+        NEWS README THANKS TODO ${destroot}${docdir}
+}
+
+livecheck.type  regex
+livecheck.url   ${master_sites}?C=M&O=D
+livecheck.regex ${name}-(0\\.10(?:\\.\\d+)*)

@@ -1,0 +1,227 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+
+  
+  <title>Pytos Installation Instructions</title>
+</head>
+
+
+<body>
+
+<h1> Installation </h1>
+
+
+
+<p>To use pytos, you must install the python environment using one of
+the three sets of instructions below: Windows, Cygwin, or Linux. Then,
+for all platforms, follow the post-install directions. Be aware that
+currently available graphical tools may not work on this version, so
+instructions for them are left out.
+</p>
+
+<p>Notes: 
+</p>
+
+
+<ol>
+
+  <li>If you want a basic setup, you only need python2.5.
+  </li>
+
+  
+  <li>If you are installing on a windows machine, we recommend the
+full win32 installation and/or the basic cygwin setup, since the cygwin
+libraries may have GUI problems.
+  </li>
+
+</ol>
+
+
+<div class="editsection" style="float: right; margin-left: 5px;"><br>
+</div>
+
+<a name="Win32"></a>
+<h2> Win32 </h2>
+
+
+<ul>
+
+  <li> Python: Use python-2.5.2 win32 installer [<a href="http://www.python.org/ftp/python/2.5.2/python-2.5.2.msi" class="external text" title="http://www.python.org/ftp/python/2.4.1/python-2.4.1.msi" rel="nofollow">here</a>] or later (older versions may work)
+  </li>
+</ul>
+
+
+<div class="editsection" style="float: right; margin-left: 5px;"><br>
+</div>
+
+<a name="Cygwin"></a>
+<h2> Cygwin</h2>
+<ul>
+
+  <li> Use cygwin package manager to get python-2.5 or later (older versions may work)
+  </li>
+
+</ul>
+<br>
+<div class="editsection" style="float: right; margin-left: 5px;"><br>
+</div>
+
+<a name="Debian_Linux_3.1"></a>
+<h2> Linux </h2>
+
+
+<ul>
+  <li><span class="external free">Retrieve the latest version of Marionette from the TinyOS CVS server (tinyos-2.x-contrib/marionette)</span></li>
+  <li>Install the following packages (and their dependencies) using synaptic or apt-get:
+  </li>
+</ul>
+
+
+<pre>python<br>python-dev<br>libxml-simple-perl</pre>
+<div class="editsection" style="float: right; margin-left: 5px;"><br>
+</div>
+
+<a name="Post-install"></a>
+<h1> Post-install </h1>
+
+
+<div class="editsection" style="float: right; margin-left: 5px;"><br>
+</div>
+
+<a name="all_platforms"></a>
+<h2>all platforms</h2>
+
+
+<ul>
+
+  <li> Verify that your tree is up to date
+  </li>
+
+  <li> Verify that you have perl installed, along with the XML::Simple module.  If you don't from the command line run: 
+  </li>
+
+</ul>
+
+
+<pre>cpan -i XML::Simple<br></pre>
+
+
+<ul>
+
+  <li> Verify that you are using a recent version of nesc.  It is best to download and compile the cvs version.
+  </li>
+</ul>
+<ul>
+
+  <li> Your ~/.profile must do the following: </li>
+
+</ul>
+
+
+<pre>Set TOSROOT (eg, export TOSROOT=$HOME/tinyos-2.x)<br>export MAKERULES=$TOSROOT/support/make/Makerules<br>The last line of your .profile should source the pytos profile <br>	(eg, source $TOSROOT/support/sdk/python/tinyos/marionette/util/pytosProfile)<br></pre>
+
+
+
+
+<div class="editsection" style="float: right; margin-left: 5px;"><br>
+</div>
+
+<a name="win32_and_cygwin_only"></a>
+<h2> win32 and cygwin only</h2>
+
+
+<ul>
+
+  <li>Set PYTHONROOTWIN to your win32 python directory using win32
+path form (eg, export PYTHONROOTWIN="C:\\python25" ) </li>
+
+  
+  
+  <li>Verify that PYTHONPATH is empty or entirely in unix form </li>
+
+  <li>Verify that PATH is entirely in unix form
+  </li>
+
+  <li>Verify that cygpath.exe is in your PATH
+  </li>
+
+  <li>To start a win32 python session that will work with pytos, first call <b>windowsPythonEnvironment.sh</b> from a cygwin shell.  This will spawn a new DOS prompt with it's environment setup to support pytos.  To start python, type <b>python</b> from this DOS prompt.  To start a python app, type the name of the app
+  </li>
+
+</ul>
+
+
+<div class="editsection" style="float: right; margin-left: 5px;"><br>
+</div>
+
+<a name="Testing_the_installation"></a>
+<h1>Testing the installation</h1>
+
+
+<div class="editsection" style="float: right; margin-left: 5px;"><br>
+</div>
+
+<a name="Python"></a>
+<h2> Python </h2>
+
+
+<p>Try running 
+</p>
+
+
+<pre>$ python<br></pre>
+
+
+<p>from a command prompt (either a bash, cygwin, or dos prompt (using
+pytosCmdPrompt.sh)), depending on which installation you did). You
+should get a python command shell. If that works, try importing pytos:
+</p>
+
+
+<pre>&gt;&gt;&gt; import pytos<br>&gt;&gt;&gt;<br></pre>
+
+
+<p>If you can do that, python and all of your environment variables are setup correctly. Now, try importing a pytos class:
+</p>
+
+
+<pre>&gt;&gt;&gt; import pytos.Comm<br></pre>
+
+
+<p>If you get a "no class found" type of error, then tools/python is
+not in your PYTHONPATH. To check what is in your PYTHONPATH, from
+the python prompt run
+</p>
+
+
+<pre>&gt;&gt;&gt; import sys<br>&gt;&gt;&gt; print sys.path<br></pre>
+
+
+<p>If support/sdk/python is not in your sys.path, you can either add it from
+within python or add it to your PYTHONPATH environment variable before
+starting python.
+</p>
+
+<p>If these don't work, check these troubleshooting tips:
+</p>
+
+
+<ul>
+
+  
+  <li> If you have weird path issues, you might want to remove all
+paths with spaces from your PATH variable. For example, if you have
+'Program Files' in your paths, you could use something like (the
+example doesn't match the last path in $PATH, but whatever): </li>
+
+</ul>
+
+
+<pre>   export PATH=`echo $PATH | sed 's/\/cygdrive\/c\/Program\ Files[^:]*\://g' -`</pre>
+<br>
+</body>
+</html>

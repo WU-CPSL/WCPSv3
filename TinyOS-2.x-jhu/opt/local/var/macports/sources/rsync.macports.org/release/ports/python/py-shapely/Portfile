@@ -1,0 +1,46 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89417 2012-01-28 17:11:53Z snc@macports.org $
+
+PortSystem      1.0
+PortGroup           python 1.0
+
+name                py-shapely
+version             1.2.14
+python.versions     25 26 27
+python.default_version 27
+categories      python devel
+platforms       darwin
+maintainers     snc openmaintainer
+license             BSD
+description     Shapely is a Python package for manipulation \
+                and analysis of 2D geospatial geometries
+
+long_description \
+                Shapely is a Python package for manipulation and \
+                analysis of 2D geospatial geometries. It is based on \
+                GEOS (http://geos.refractions.net). Shapely 1.0 is not \
+                concerned with data formats or coordinate reference \
+                systems.
+
+homepage        http://trac.gispython.org/projects/PCL/wiki/Shapely
+master_sites    http://pypi.python.org/packages/source/S/Shapely/
+distname        Shapely-${version}
+
+checksums           rmd160  97c4c393bdf74ca8cf84370a7ad96884264be44a \
+                    sha256  dc417f9ffafb79de989a8fb1c7a0a10dc5029f085abd831964d7e40c7ea78846
+
+if {$name != $subport} {
+    depends_lib-append      port:geos
+    depends_build-append    port:py${python.version}-distribute
+
+    patchfiles      patch-shapely_geos.py.diff
+
+    post-patch {
+            reinplace "s|@PREFIX@|${prefix}|g" ${worksrcpath}/shapely/geos.py
+    }
+
+    livecheck.type      none
+} else {
+    livecheck.url           http://pypi.python.org/packages/source/S/Shapely/
+    livecheck.regex         Shapely-(\\d+(\\.\\d+)+)${extract.suffix}
+}

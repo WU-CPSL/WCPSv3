@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:p="http://primefaces.prime.com.tr/ui" xmlns:h="http://java.sun.com/jsf/html" xmlns:wd="http://www.wansdisco.com/jsf">
+<ui:composition>
+  <ol id="sub-toc">
+    <li><h:outputLink title="#{msg.adminStatusTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationStatus.jsf">
+        <span>#{msg.adminStatusTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminApacheServerSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationApacheServerSettings.jsf">
+        <span>#{msg.adminSubversionServerSettingsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminUberServerSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUberServerSettings.jsf">
+        <span>#{msg.adminUberServerSettingsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminUberPreferenceSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUberPreferenceSettings.jsf">
+        <span>#{msg.adminUberPreferenceSettingsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminEmailServerSettingsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationEmailServerSettings.jsf">
+        <span>#{msg.adminEmailServerSettingsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminLogsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationLogs.jsf">
+        <span>#{msg.adminLogsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminUpdatesTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUpdates.jsf">
+        <span>#{msg.adminUpdatesTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminLDAPTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationUberLDAPSettings.jsf">
+        <span>#{msg.adminLDAPTabText}</span>
+      </h:outputLink>
+    </li>
+    <li><h:outputLink title="#{msg.backup}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationBackup.jsf">
+        <span>#{msg.backup}</span>
+      </h:outputLink>
+    </li>
+    <li class="current"><h:outputLink title="#{msg.adminExtensionsTabAltText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationViewExtensions.jsf">
+        <span>#{msg.adminExtensionsTabText}</span>
+      </h:outputLink></li>
+    <li><h:outputLink title="#{msg.adminSubversionReleaseLinkText}"
+        value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationSubversionRelease.jsf">
+        <span>#{msg.adminSubversionReleaseLinkText}</span>
+      </h:outputLink>
+    </li>
+  </ol>
+  <p:panel id="adminViewExtensionsPanel" styleClass="tabbed-panel">
+
+    <p:panel style="border: none; background: transparent; width: 80%; height: 250px; margin: 140px auto;">
+      <div style="text-align: center;">
+        <h:outputText styleClass="configurationTitle" value="#{msg.addExtensionHeader}" />
+      </div>
+      <h:panelGrid cellspacing="10px" style="width:100%" columns="2" columnClasses="wizardLabelColumn, wizardFieldColumn">
+        <h:outputLabel for="addExtensionName" value="#{msg.addExtensionNameLabel}" />
+        <h:panelGroup>
+          <p:focus for="addExtensionName" />
+          <h:inputText value="#{extensionsManagedBean.extension.name}" styleClass="wizardFormField" size="50" id="addExtensionName"
+            required="true" requiredMessage="#{msg.extensionNameRequired}">
+            <wd:maxLengthValidator field="#{msg.addExtensionNameLabel}" maxLength="20" />
+            <wd:extensionNameValidator />
+          </h:inputText>
+          <br />
+          <h:message style="color: red; font-size: 12px; height: 11px;" for="addExtensionName" />
+        </h:panelGroup>
+        <h:outputLabel for="addExtensionLink" value="#{msg.addExtensionLinkLabel}" />
+        <h:panelGroup>
+          <h:inputText value="#{extensionsManagedBean.extension.link}" styleClass="wizardFormField" size="50" id="addExtensionLink"
+            required="true" requiredMessage="#{msg.extensionLinkRequired}" />
+          <br />
+          <h:message style="color: red; font-size: 12px; height: 11px;" for="addExtensionLink" />
+        </h:panelGroup>
+        <p:spacer />
+        <h:panelGroup>
+          <h:selectBooleanCheckbox id="addExtensionUseNewTab" value="#{extensionsManagedBean.extension.useNewTab}" />
+          <h:outputLabel for="addExtensionUseNewTab" value="#{msg.openLinkInANewBrowserTab}" style="color: #7F7F7F;font-size: 14px;" />
+        </h:panelGroup>
+      </h:panelGrid>
+      <h:panelGroup styleClass="bottomLeft">
+        <h:outputLink styleClass="cancelLink"
+          value="#{basePage.facesContext.externalContext.requestContextPath}/views/platform/administration/administrationViewExtensions.jsf"
+          title="#{msg.addExtensionCancelLinkAltText}">
+          <span><u>#{msg.addExtensionCancelLinkText}</u> </span>
+        </h:outputLink>
+      </h:panelGroup>
+      <h:panelGroup styleClass="bottomRight" style="margin-right:10px; margin-bottom:10px;">
+        <p:commandButton action="#{extensionsManagedBean.createExtension}" styleClass="roundedButtonSmall"
+          value="#{msg.addExtensionCreateButtonText}" image="greenCrossSmall" ajax="false" />
+      </h:panelGroup>
+    </p:panel>
+  </p:panel>
+
+  <script type="text/javascript">
+			function reloadPage() {
+				setTimeout("location.reload(true);", 1);
+			}
+			jQuery(document).ready(function() {
+				var tabElement = '#extensionsInnerTab';
+				jQuery(tabElement).addClass('current');
+			});
+		</script>
+</ui:composition>
+</html>

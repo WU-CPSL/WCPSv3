@@ -1,0 +1,55 @@
+# $Id: Portfile 80484 2011-07-13 17:06:24Z jmr@macports.org $
+
+PortSystem 1.0
+
+name		xorg-bigreqsproto
+version		1.1.1
+categories	x11 devel
+license		X11
+maintainers	jeremyhu openmaintainer
+description	X.org bigreqsproto
+homepage	http://www.x.org
+platforms	darwin
+supported_archs	noarch
+long_description Prototype headers for BigReqs extension to X11
+master_sites 	xorg:individual/proto/
+
+distname	bigreqsproto-${version}
+checksums           md5     6f6c24436c2b3ab235eb14a85b9aaacf \
+                    sha1    2db1d1e98958eee4d6cae0f68dbd03b2ec1018ce \
+                    rmd160  1cce15a22eb1c2e0eb14f1dfd1c8c21fd19d4112
+use_bzip2	yes
+
+configure.args \
+	--without-xmlto \
+	--without-fop \
+	--disable-specs
+
+build.args V=1
+
+# Depending on ghostscript for the PDF documentation creates a dependency
+# loop, so you may want to install first without the docs variant
+variant docs description "Install extra documentation" {
+	depends_build-append \
+		port:fop \
+		port:xmlto \
+		port:xorg-sgml-doctools
+
+	configure.args-delete \
+		--without-xmlto \
+		--without-fop \
+		--disable-specs
+
+	configure.args-append \
+		--with-xmlto \
+		--with-fop \
+		--enable-specs
+
+	configure.env-append \
+		XMLTO="${prefix}/bin/xmlto" \
+		FOP="${prefix}/bin/fop"
+}
+
+livecheck.type  regex
+livecheck.url   http://xorg.freedesktop.org/archive/individual/proto/?C=M&O=D
+livecheck.regex bigreqsproto-(\\d+(?:\\.\\d+)*)

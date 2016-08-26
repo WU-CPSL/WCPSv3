@@ -1,0 +1,7 @@
+; File generated automatically from ./nddeapi.spec; do not edit!
+
+LIBRARY nddeapi.dll
+
+EXPORTS
+  NDdeGetErrorStringA@12 @1
+  NDdeGetErrorStringW@12 @2

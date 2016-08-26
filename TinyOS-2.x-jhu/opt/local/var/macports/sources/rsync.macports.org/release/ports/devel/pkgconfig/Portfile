@@ -1,0 +1,54 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 87801 2011-12-07 01:53:36Z ryandesign@macports.org $
+
+PortSystem          1.0
+
+name                pkgconfig
+version             0.26
+revision            1
+categories          devel
+maintainers         ryandesign
+license             GPL-2+
+installs_libs       no
+homepage            http://pkg-config.freedesktop.org/
+master_sites        ${homepage}releases/
+distname            pkg-config-${version}
+platforms           darwin freebsd
+use_parallel_build  yes
+
+description         pkg-config, a system for managing library compile and \
+                    link flags
+
+long_description    The pkg-config program is used to retrieve information \
+                    about installed libraries in the system. It is typically \
+                    used to compile and link against one or more libraries.
+
+checksums           sha1    fd71a70b023b9087c8a7bb76a0dc135a61059652 \
+                    rmd160  face3d16ec338b9b1ab41d56d6e4d1a5624b52d0
+
+depends_lib         path:lib/pkgconfig/glib-2.0.pc:glib2
+
+set docdir          ${prefix}/share/doc/${name}
+
+configure.args      --with-pc-path=${prefix}/lib/pkgconfig:${prefix}/share/pkgconfig \
+                    --docdir=${docdir}
+
+configure.env       PKG_CONFIG=false \
+                    GLIB_CFLAGS="-I${prefix}/include/glib-2.0 -I${prefix}/lib/glib-2.0/include -I${prefix}/include" \
+                    GLIB_LIBS="-L${prefix}/lib -lglib-2.0 -lintl"
+
+test.run            yes
+test.target         check
+
+post-destroot {
+    xinstall -m 644 -W ${worksrcpath} \
+        AUTHORS \
+        COPYING \
+        NEWS \
+        README \
+        ${destroot}${docdir}
+}
+
+livecheck.type      regex
+livecheck.url       "${homepage}releases/?C=M&O=D"
+livecheck.regex     pkg-config-(\[0-9.\]+)\\.tar

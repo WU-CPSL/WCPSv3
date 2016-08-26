@@ -1,0 +1,19 @@
+# $Id: Portfile 84447 2011-09-26 12:28:46Z jmr@macports.org $
+
+PortSystem          1.0
+PortGroup           perl5 1.0
+
+perl5.setup         File-Remove 1.46 ../by-authors/id/A/AD/ADAMK/
+revision            2
+license             {Artistic-1 GPL}
+maintainers         nomaintainer
+description         Remove files and directories
+long_description    ${description}
+
+platforms           darwin
+
+checksums           md5 030117a86d31db5f3c77c351d3664d59 \
+                    sha1 689446876002c111d683c63f9c4e7f3ebd2a2f93 \
+                    rmd160 82d39fe2016be9d72c3a5dd7b121b26b0ac86de0
+
+supported_archs     noarch

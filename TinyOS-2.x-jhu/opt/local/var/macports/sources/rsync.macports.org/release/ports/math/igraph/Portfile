@@ -1,0 +1,34 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 86917 2011-11-07 03:19:49Z snc@macports.org $
+
+PortSystem          1.0
+
+name                igraph
+version             0.5.4
+
+categories          math devel
+license             GPL-2+
+maintainers         snc openmaintainer
+description         high performance graph library for C
+long_description    high performance graph library, primarily aimed \
+                    at complex network research and analysis.
+homepage            http://igraph.sourceforge.net
+
+platforms           darwin
+depends_build       port:gmp
+
+master_sites        sourceforge
+
+checksums           rmd160  1a230403ab3607dc14a083f0298d84dcb803ef8e \
+                    sha256  0c7256849d4f63b12b240aedd4fc5be34a2888cce7dd7b4d91c02315585a063f
+
+patchfiles          patch-non-gcc-compilers.diff
+
+configure.args      --includedir=${prefix}/include/igraph
+
+test.run            yes
+test.target         check
+
+livecheck.url       ${homepage}
+livecheck.type      regex
+livecheck.regex     <b>(\\d(\\.\\d+)+)

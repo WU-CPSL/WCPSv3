@@ -1,0 +1,27 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 89401 2012-01-28 09:32:27Z nicos@macports.org $
+
+PortSystem          1.0
+PortGroup           kde4   1.1
+
+name                mobipocket
+version             4.8.0
+categories          kde kde4
+license             GPL-2+
+maintainers         nicos openmaintainer
+description         Mobipocket plugins for Strigi indexing, Okular and thumbnails.
+long_description    ${description}
+platforms           darwin
+homepage            http://www.kde.org/
+master_sites        kde:stable/${version}/src/
+use_bzip2           yes
+distname            kdegraphics-mobipocket-${version}
+checksums           rmd160  17a0f5041138dc91a5a11cacbe6a816f741c02a6 \
+                    sha256  99c42a645dfeea3b9e3b8915d2c6e5bcab1fe57855cf56b18e77bd6429517857
+
+depends_lib-append  port:kdelibs4 \
+                    port:strigi \
+                    port:okular
+
+livecheck.url       http://kde.mirrors.hoobly.com/stable/latest/src/
+livecheck.regex     mobipocket-(\\d+\\.\\d+\\.\\d+)${extract.suffix}

@@ -1,0 +1,11 @@
+# $Id: Portfile 88528 2012-01-04 02:01:55Z mww@macports.org $
+
+PortSystem          1.0
+replaced_by ocaml-json-static
+PortGroup obsolete 1.0
+
+name                caml-json-static
+version             0.9.8
+revision            1
+categories          devel ml
+

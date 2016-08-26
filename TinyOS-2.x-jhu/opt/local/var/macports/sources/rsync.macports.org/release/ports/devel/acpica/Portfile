@@ -1,0 +1,46 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id: Portfile 81692 2011-08-04 13:55:40Z jmr@macports.org $
+
+PortSystem          1.0
+
+name                acpica
+version             20101209
+categories          devel
+platforms           darwin
+maintainers         coresystems.de:stepan
+
+description         ACPI compiler
+long_description    A compiler for ACPI DSDT .asl files.
+
+homepage            http://www.acpica.org/downloads/
+master_sites        http://www.acpica.org/download/
+
+distname            acpica-unix-${version}
+
+checksums           sha1    d15e7f4b6c35c6d5d0b178690456f03bc8fb0fe5 \
+                    rmd160  e99631fe25ae5f7dee7bc314803782394b58d16c 
+
+depends_build       port:bison
+
+patchfiles          compiler_Makefile.patch
+
+post-patch {
+    reinplace "s,-lrt,,g" ${worksrcpath}/tools/acpiexec/Makefile \
+                          ${worksrcpath}/compiler/Makefile
+}
+
+use_configure       no
+
+build {
+    system "cd ${worksrcpath}/compiler && export CC=${configure.cc} CFLAGS='-DACPI_USE_ALTERNATE_TIMEOUT -include pthread.h' && make LDLIBS="
+    system "cd ${worksrcpath}/tools/acpiexec && export CC=${configure.cc} CFLAGS='-DACPI_USE_ALTERNATE_TIMEOUT -include pthread.h' && make clean && make"
+    system "cd ${worksrcpath}/tools/acpixtract && CC=${configure.cc} make"
+}
+
+destroot {
+    xinstall -W ${worksrcpath} \
+        compiler/iasl \
+        tools/acpixtract/acpixtract \
+        tools/acpiexec/acpiexec \
+        ${destroot}${prefix}/bin
+}

@@ -1,0 +1,14 @@
+# $Id: Portfile 82547 2011-08-15 16:46:16Z jmr@macports.org $
+
+PortSystem 1.0
+PortGroup perl5 1.0
+
+perl5.setup		Net-Netmask 1.9015
+revision        2
+maintainers		darkart.com:opendarwin.org
+description		Perl module to parse, manipulate and lookup IP network blocks
+long_description	Net::Netmask is a module to parse, manipulate and lookup IP network blocks
+checksums		md5 90298105cd17a5c2a4059297e09f1546
+platforms		darwin
+
+supported_archs noarch

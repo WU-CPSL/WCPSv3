@@ -1,0 +1,148 @@
+# $Id: Portfile 89719 2012-02-08 00:06:40Z jmr@macports.org $
+
+PortSystem 1.0
+PortGroup select 1.0
+
+name			gcc46
+epoch			1
+version			4.6.2
+revision                4
+platforms		darwin
+categories		lang
+maintainers		mww openmaintainer
+# an exception in the license allows dependents to not be GPL
+license			{GPL-3+ Permissive}
+description		The GNU compiler collection
+long_description	The GNU compiler collection, including front ends for \
+			C, C++, Objective-C, Objective-C++ and Fortran.
+
+homepage		http://gcc.gnu.org/
+master_sites		ftp://ftp.funet.fi/pub/mirrors/sources.redhat.com/pub/gcc/releases/gcc-${version}/:gcc \
+			ftp://ftp.gwdg.de/pub/linux/gcc/releases/gcc-${version}/:gcc \
+			ftp://gcc.ftp.nluug.nl/mirror/languages/gcc/releases/gcc-${version}/:gcc \
+			ftp://gcc.gnu.org/pub/gcc/releases/gcc-${version}/:gcc \
+			gnu:gcc/gcc-${version}:gcc \
+			ftp://sourceware.org/pub/java/:ecj \
+			http://mirrors.kernel.org/sources.redhat.com/java/:ecj \
+			http://www.mirrorservice.org/sites/sources.redhat.com/pub/java/:ecj \
+			http://ftp-stud.fht-esslingen.de/pub/Mirrors/sourceware.org/java/:ecj
+
+set ecj			ecj-4.5.jar
+set gcc			gcc-${version}.tar.bz2
+distfiles		${gcc}:gcc ${ecj}:ecj
+extract.only		${gcc}
+
+checksums           gcc-4.6.2.tar.bz2 \
+                    rmd160  e7041933b39629f9524848dcf81a1a4c02a225c6 \
+                    sha256  60b05463dfe18d40d68fb8a71b25b408a01f86cc6ceaf5e6b22238b6b0f450c2 \
+                    ecj-4.5.jar \
+                    md5     d7cd6a27c8801e66cbaa964a039ecfdb \
+                    sha1    58c1d79c64c8cd718550f32a932ccfde8d1e6449 \
+                    rmd160  d3f4da657f086b6423f74e93f001132f4855368a
+
+use_bzip2		yes
+
+depends_lib		port:gmp port:mpfr port:libiconv port:libmpc port:ppl
+depends_run		port:gcc_select
+
+set major		4.6
+
+worksrcdir		build
+
+post-extract {
+	file mkdir ${worksrcpath}
+	copy ${distpath}/${ecj} ${workpath}/gcc-${version}/ecj.jar
+}
+
+platform darwin {
+    configure.pre_args-append --build=${build_arch}-apple-darwin${os.major}
+}
+
+configure.cmd	../gcc-${version}/configure
+# 'java' and 'go' lead to compilation errors on 10.5/XCode 3.x
+configure.args	--enable-languages=c,c++,objc,obj-c++,lto,fortran \
+		--libdir=${prefix}/lib/${name} \
+		--includedir=${prefix}/include/${name} \
+		--infodir=${prefix}/share/info \
+		--mandir=${prefix}/share/man \
+                --datarootdir=${prefix}/share/gcc-${major} \
+		--with-local-prefix=${prefix} \
+		--with-libiconv-prefix=${prefix} \
+		--with-system-zlib \
+		--disable-nls \
+		--program-suffix=-mp-${major} \
+		--with-gxx-include-dir=${prefix}/include/${name}/c++/ \
+		--with-gmp=${prefix} \
+		--with-mpfr=${prefix} \
+		--with-mpc=${prefix} \
+		--with-ppl=${prefix} \
+		--enable-stage1-checking \
+		--disable-multilib \
+		--enable-lto
+# do NOT use MacPorts binutils -- they do not work
+configure.env-append    AR_FOR_TARGET=/usr/bin/ar \
+			AS_FOR_TARGET=/usr/bin/as \
+			LD_FOR_TARGET=/usr/bin/ld \
+			NM_FOR_TARGET=/usr/bin/nm \
+			OBJDUMP_FOR_TARGET=/usr/bin/objdump \
+			RANLIB_FOR_TARGET=/usr/bin/ranlib \
+			STRIP_FOR_TARGET=/usr/bin/strip \
+			OTOOL=/usr/bin/otool \
+			OTOOL64=/usr/bin/otool
+
+# http://trac.macports.org/ticket/29104
+if {${configure.compiler} == "llvm-gcc-4.2"} {
+    configure.compiler clang
+}
+
+build.target	bootstrap
+use_parallel_build	yes
+
+destroot.target	install install-info-host
+
+post-destroot {
+	file delete -force ${destroot}${prefix}/share/man/man7 \
+		${destroot}${prefix}/share/info
+	# install/copy ffitarget.h only if we have it
+	if {![catch {set ffitarget.h [glob ${destroot}${prefix}/lib/${name}/gcc/*/${version}/include/ffitarget.h]} result]} {
+		file copy ${ffitarget.h} ${destroot}${prefix}/include/${name}/
+	}
+}
+
+select.group    gcc
+select.file     ${filespath}/mp-${name}
+
+platform darwin 8 {
+	# http://gcc.gnu.org/bugzilla/show_bug.cgi?id=45248
+	configure.args-append --with-dwarf2
+}
+
+platform powerpc {
+    configure.universal_archs ppc ppc64
+}
+platform i386 {
+    configure.universal_archs i386 x86_64
+}
+variant universal {
+    configure.args-delete --disable-multilib
+}
+# the generated compiler doesn't accept -arch
+build.env-append CPP="${configure.cc} -E"
+configure.cc-append [get_canonical_archflags]
+configure.cc_archflags
+configure.cxx_archflags
+configure.objc_archflags
+configure.ld_archflags
+configure.universal_cflags
+configure.universal_cxxflags
+configure.universal_ldflags
+configure.universal_args
+
+variant cloog description {enable the CLOOG Graphite loop optimizations} {
+    configure.args-append   --with-cloog=${prefix} --enable-cloog-backend=isl
+    depends_lib-append      port:cloog
+}
+
+livecheck.type  regex
+livecheck.url   http://gcc.gnu.org/gcc-4.6/
+livecheck.regex GCC (4\\.6\\.\[0-9\])
