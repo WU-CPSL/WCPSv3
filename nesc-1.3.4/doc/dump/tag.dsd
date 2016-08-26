@@ -1,0 +1,127 @@
+<dsd xmlns="http://www.brics.dk/DSD/2.0"
+     xmlns:m="http://www.brics.dk/DSD/2.0/meta"
+     xmlns:nesc="http://www.tinyos.net/nesC">
+
+  <m:doc>A reference to a tag (enum, struct, union, external struct and union)
+  </m:doc>
+  <boolexp id="nesc:tag-ref">
+    <or>
+      <element name="nesc:enum-ref"/>
+      <element name="nesc:struct-ref"/>
+      <element name="nesc:union-ref"/>
+      <element name="nesc:nx_struct-ref"/>
+      <element name="nesc:nx_union-ref"/>
+      <element name="nesc:attribute-ref"/>
+    </or>
+  </boolexp>
+
+  <if>
+    <boolexp ref="nesc:tag-ref"/>
+    <declare>
+      <required>
+        <attribute name="ref"/>
+      </required>
+      <m:doc>There is no location if there is no actual definition of the tag
+      </m:doc>
+      <attribute name="loc"/>
+      <attribute name="name"/>
+      <attribute name="scoped"/>
+    </declare>
+  </if>
+
+  <if>
+    <element name="nesc:tags"/>
+    <declare>
+      <contents>
+        <repeat><boolexp ref="nesc:tag"/></repeat>
+      </contents>
+    </declare>
+  </if>
+
+  <boolexp id="nesc:tag">
+    <or>
+      <element name="nesc:struct"/>
+      <element name="nesc:union"/>
+      <element name="nesc:nx_struct"/>
+      <element name="nesc:nx_union"/>
+      <element name="nesc:attribute"/>
+      <element name="nesc:enum"/>
+    </or>
+  </boolexp>
+
+  <if>
+    <boolexp ref="nesc:tag"/>
+    <declare>
+      <required>
+        <attribute name="ref"/>
+        <attribute name="size"/>
+        <attribute name="alignment"/>
+      </required>
+      <attribute name="name"/>
+      <attribute name="defined"><stringtype ref="nesc:empty"/></attribute>
+      <attribute name="packed"><stringtype ref="nesc:empty"/></attribute>
+      <attribute name="scoped"><stringtype ref="nesc:empty"/></attribute>
+
+      <m:doc>Present when there is an actual definition.</m:doc>
+      <attribute name="loc"/>
+
+      <m:doc>May be in a container, may have attributes</m:doc>
+      <contents><contenttype ref="nesc:container"/></contents>
+      <contents><contenttype ref="nesc:attributes"/></contents>
+    </declare>
+  </if>
+	  	  
+  <m:doc>Non-enums contain a field list</m:doc>
+  <if>
+    <or>
+      <element name="nesc:struct"/>
+      <element name="nesc:union"/>
+      <element name="nesc:nx_struct"/>
+      <element name="nesc:nx_union"/>
+      <element name="nesc:attribute"/>
+    </or>
+    <declare>
+      <contents>
+	<repeat><element name="nesc:field"/></repeat>
+      </contents>
+    </declare>
+  </if>
+
+  <if>
+    <element name="nesc:field"/>
+    <declare>
+      <required>
+        <attribute name="name"/>
+	<m:doc>The ref uniquely identifies the field amongst all fields.</m:doc>
+	<attribute name="ref"/>
+	<attribute name="bit-offset"><stringtype ref="nesc:constant"/></attribute>
+      </required>
+      <attribute name="packed"><stringtype ref="nesc:empty"/></attribute>
+      <m:doc>There's either a size or bit-size attribute</m:doc>
+      <attribute name="size"/>
+      <attribute name="bit-size"><stringtype ref="nesc:constant"/></attribute>
+      <contents><boolexp ref="nesc:type"/></contents>
+      <contents><contenttype ref="nesc:attributes"/></contents>
+    </declare>
+  </if>
+
+  <m:doc>Enforce size or bit-size attribute in field rule</m:doc>
+  <if>
+    <element name="field"/>
+    <require>
+      <or>
+        <attribute name="size"/>
+        <attribute name="bit-size"/>
+      </or>
+    </require>
+  </if>
+	
+	  	  
+  <m:doc>Enums contain a representation type</m:doc>
+  <if>
+    <element name="nesc:enum"/>
+    <declare>
+      <contents><boolexp ref="nesc:type"/></contents>
+    </declare>
+  </if>
+</dsd>

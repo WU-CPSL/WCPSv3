@@ -1,0 +1,189 @@
+<dsd xmlns="http://www.brics.dk/DSD/2.0"
+     xmlns:m="http://www.brics.dk/DSD/2.0/meta"
+     xmlns:nesc="http://www.tinyos.net/nesC">
+
+  <m:doc>A reference to a C object, i.e., a variable, constant, function,
+    typedef, interface, or component-within-a-configuration. The "ref"
+    attribute uniquely identifiers the particular object.</m:doc>
+  <if>
+    <or>
+      <element name="nesc:variable-ref"/>
+      <element name="nesc:constant-ref"/>
+      <element name="nesc:function-ref"/>
+      <element name="nesc:typedef-ref"/>
+      <element name="nesc:interface-ref"/>
+      <element name="nesc:internal-component-ref"/>
+    </or>
+    <declare>
+      <required>
+        <attribute name="name"/>
+        <attribute name="ref"/>
+      </required>
+      <attribute name="scoped"/>
+    </declare>
+  </if>
+
+  <m:doc>Definition of a C object, i.e., a variable, constant, function,
+    typedef, interface, or component-within-a-configuration. The "ref"
+    attribute uniquely identifiers the particular object.</m:doc>
+  <if>
+    <or>
+      <element name="nesc:variable"/>
+      <element name="nesc:constant"/>
+      <element name="nesc:function"/>
+      <element name="nesc:typedef"/>
+      <element name="nesc:interface"/>
+      <element name="nesc:internal-component"/>
+    </or>
+    <declare>
+      <required>
+        <attribute name="loc"/>
+        <attribute name="ref"/>
+      </required>
+      <m:doc>Parameter names may be omitted in declarations</m:doc>
+      <attribute name="name"/>
+
+      <m:doc>Order of these elements is unimportant</m:doc>
+      <contents><boolexp ref="nesc:type"/></contents>
+      <contents><contenttype ref="nesc:attributes"/></contents>
+      <contents><contenttype ref="nesc:container"/></contents>
+      <contents>
+	<optional><element name="nesc:documentation"/></optional>
+      </contents>
+    </declare>
+  </if>
+
+  <m:doc>Lists of C objects</m:doc>  
+  <if>
+    <element name="nesc:constants"/>
+    <declare>
+      <contents>
+        <repeat><element name="nesc:constant"/></repeat>
+      </contents>
+    </declare>
+  </if>
+  <if>
+    <element name="nesc:functions"/>
+    <declare>
+      <contents>
+        <repeat><element name="nesc:function"/></repeat>
+      </contents>
+    </declare>
+  </if>
+  <if>
+    <element name="nesc:variables"/>
+    <declare>
+      <contents>
+        <repeat><element name="nesc:variable"/></repeat>
+      </contents>
+    </declare>
+  </if>
+  <if>
+    <element name="nesc:typedefs"/>
+    <declare>
+      <contents>
+        <repeat><element name="nesc:typedef"/></repeat>
+      </contents>
+    </declare>
+  </if>
+  <if>
+    <element name="nesc:interfaces"/>
+    <declare>
+      <contents>
+        <repeat><element name="nesc:interface"/></repeat>
+      </contents>
+    </declare>
+  </if>
+
+
+  <if>
+    <element name="nesc:interface"/>
+    <declare>
+      <required>
+	<attribute name="provided"><stringtype ref="nesc:bool"/></attribute>
+      </required>
+
+      <m:doc>Order of these elements is unimportant</m:doc>
+
+      <m:doc>Which interface definition this is an instance of.</m:doc>
+      <contents><element name="nesc:instance"/></contents>
+
+      <m:doc>The actual functions for this instance of the interface.</m:doc>
+      <contents><element name="nesc:interface-functions"/></contents>
+
+      <contents>
+        <m:doc>Parameters for parameterised interfaces</m:doc>
+        <optional><element name="nesc:interface-parameters"/></optional>
+      </contents>
+    </declare>
+  </if>
+
+  <if>
+    <element name="nesc:interface-parameters"/>
+    <declare>
+      <contents>
+        <sequence><boolexp ref="nesc:type"/></sequence>
+      </contents>
+    </declare>
+  </if>
+
+  <if>
+    <element name="nesc:interface-functions"/>
+    <declare>
+      <contents>
+        <repeat min="1"><element name="nesc:function-ref"/></repeat>
+      </contents>
+    </declare>
+  </if>
+
+  <if>
+    <element name="nesc:constant"/>
+    <declare>
+      <m:doc>Generic component arguments are constants with no value
+	--> the cst attribute is optional</m:doc>
+      <attribute name="nesc:cst"/>
+    </declare>
+  </if>
+
+  <if>
+    <element name="nesc:function"/>
+    <declare>
+      <m:doc>Commands and events have one of the following attributes.</m:doc>
+      <attribute name="command"><stringtype ref="nesc:empty"/></attribute>
+      <attribute name="event"><stringtype ref="nesc:empty"/></attribute>
+
+      <m:doc>Safe functions (Deputy enabled) have the following attribute.</m:doc>
+      <attribute name="safe"><stringtype ref="nesc:empty"/></attribute>
+
+      <contents>
+	<m:doc>Function parameters. Absent for old-style functions and
+	  built-in functions.</m:doc>
+	<optional><element name="nesc:parameters"/></optional>
+
+	<m:doc>Parameters of parameterised functions (as in void foo[...](...))</m:doc>
+	<optional><element name="nesc:instance-parameters"/></optional>
+
+        <m:doc>Present for commands and events from actual interfaces
+	  (but not for those in interface definitions)</m:doc>
+        <optional><element name="nesc:interface-ref"/></optional>
+      </contents>
+    </declare>
+  </if>
+
+  <m:doc>commands and events in specifications have a provided attribute</m:doc>
+  <if>
+    <and>
+      <element name="nesc:function"/>
+      <or>
+        <attribute name="command"/>
+        <attribute name="event"/>
+      </or>
+    </and>
+    <declare>
+      <required>
+	<attribute name="provided"><stringtype ref="nesc:bool"/></attribute>
+      </required>
+    </declare>
+  </if>
+
+</dsd>

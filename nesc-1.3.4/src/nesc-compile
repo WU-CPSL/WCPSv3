@@ -1,0 +1,212 @@
+#!/usr/bin/perl
+# This file is part of the nesC compiler.
+#    Copyright (C) 2002 Intel Corporation
+# 
+# The attached "nesC" software is provided to you under the terms and
+# conditions of the GNU General Public License Version 2 as published by the
+# Free Software Foundation.
+# 
+# nesC is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with nesC; see the file COPYING.  If not, write to
+# the Free Software Foundation, 59 Temple Place - Suite 330,
+# Boston, MA 02111-1307, USA.
+
+use File::Basename;
+
+# Extract information from enviroment variables set by nescc
+$ctarget = $ENV{NESCC_CFILE};
+$conly = $ENV{NESCC_CONLY} eq "yes";
+$deputy = $ENV{NESCC_DEPUTY} eq "yes";
+@deputy_args = split(" ", $ENV{NESCC_DEPUTY_ARGS});
+$gcc = $ENV{NESCC_GCC};
+
+push @nesc_args, "-fnesc-gcc=$gcc";
+
+for ($i = 0; $i <= $#ARGV; $i++) {
+    $_ = $ARGV[$i];
+
+    if (/^-_ASM$/) {
+	# magic marker for assembler options
+	$for_assembler = 1;
+    }
+    elsif ($for_assembler) {
+	push @gcc_args, "-Wa,$_";
+    }
+    elsif (/^-/) {
+	if (/^-fsyntax-only$/) {
+	    $nocompile = 1;
+	}
+
+	if (/^-[_WwvpfmH]/ || /^-pedantic$/ || /^-ansi$/) {
+	    push @nesc_args, $_;
+	    $verbose = 1 if /^-v/;
+	}
+
+	if (/^-([IDUA])/) {
+	    $opt = $1;
+	    ($i, $val) = &extractarg($i);
+	    push @nesc_args, "-$opt$val";
+	}
+	elsif (/^-o/) {
+	    ($i, $objtarget) = &extractarg($i);
+	}
+	elsif (/^--param$/) {
+	    ($i, $param) = &nextarg($i);
+	    push @gcc_args, "--param";
+	    push @gcc_args, $param;
+	}
+	elsif (/^-include$/) {
+	    ($i, $file) = &nextarg($i);
+	    push @nesc_args, "-include", $file;
+	}
+	elsif (/^-S$/) {
+	    $asmonly = 1;
+	}
+	elsif (/^-fnesc-tmpcfile=(.*)$/) {
+	  if ($ctarget eq "") {
+	    $ctarget = $1;
+	    $delcfile = 1;
+	  }
+	}
+	else {
+	    push @gcc_args, $_;
+	}
+    }
+    else {
+	if ($source ne "") {
+	    printf STDERR "two source files specified ($source and $_)\n";
+	    exit 2;
+	}
+	$source = $_;
+    }
+}
+
+# Split on spaces not preceded by \, then unquote.
+push @nesc_args, split(/(?<!\\) /, $ENV{NESCC_ARGS});
+foreach (@nesc_args) {
+  s/\\(.)/\1/g;
+}
+
+if ($source eq "") {
+    printf STDERR "no source file specified\n";
+    exit 2;
+}
+
+
+if ($ctarget eq "") {
+    if ($conly) {
+	$ctarget = $source;
+	$ctarget =~ s/\.nc$/.c/;
+    }
+    elsif ($ENV{TMP}) {
+	$ctarget = "$ENV{TMP}/nesc.$$.c";
+    }
+    else {
+	$ctarget = "/tmp/nesc.$$.c";
+    }
+    $delcfile = 1;
+}
+
+if ($objtarget eq "") {
+    $objtarget = $source;
+    $objtarget =~ s/\.nc$/.o/ unless $asmonly;
+    $objtarget =~ s/\.nc$/.s/ if $asmonly;
+}
+
+# Deputy annotations
+if ($deputy) {
+    unshift @nesc_args, "-fnesc-include=deputy_stage1";
+    unshift @nesc_args, "-fnesc-genprefix=#include \"$ENV{NCDIR}/deputy_stage2.h\"";
+}
+else {
+    unshift @nesc_args, "-fnesc-include=deputy_nodeputy";
+}
+
+push @nesc_args, $source;
+push @nesc_args, "-o";
+if ($nocompile && !$conly) {
+    push @nesc_args, "/dev/null";
+} else {
+    push @nesc_args, $ctarget;
+}
+
+# Check for gcc 4.0.x, which don't tell us about the __STDC__ #define
+unshift @nesc_args, "-D__STDC__" if isgcc40($gcc);
+
+# Get rid of __BLOCKS__ define, if any (prevent use of Apple C extension that
+# nesC doesn't understand)
+unshift @nesc_args, "-U__BLOCKS__";
+
+unshift @nesc_args, "nesc1";
+
+&vsystem(@nesc_args);
+if ($? != 0) {
+    unlink $ctarget;
+    exit 2;
+}
+exit 0 if $nocompile || $conly;
+
+if ($deputy) {
+    push @deputy_args, "--gcc=$gcc";
+    push @gcc_args, @deputy_args;
+    $gcc = "deputy";
+}
+
+push @gcc_args, "-o";
+push @gcc_args, $objtarget;
+push @gcc_args, "-S" if $asmonly;
+push @gcc_args, "-c" unless $asmonly;
+push @gcc_args, "-fdollars-in-identifiers";
+push @gcc_args, $ctarget;
+unshift @gcc_args, "-B$ENV{NCDIR}";
+unshift @gcc_args, $gcc;
+&vsystem(@gcc_args);
+unlink $ctarget if $delcfile;
+
+exit 2 if $?;
+exit 0;
+
+sub vsystem() {
+    print STDERR join(" ", @_), "\n" if $verbose;
+    system @_;
+}
+
+sub extractarg {
+    my ($i) = @_;
+
+    if (length($ARGV[$i]) == 2) {
+	return &nextarg($i);
+    }
+    else {
+	$arg = substr($ARGV[$i], 2);
+	return ($i, $arg);
+    }
+}
+
+sub nextarg {
+    my ($i) = @_;
+
+    if ($i < $#ARGV) {
+	$arg = $ARGV[++$i];
+    }
+    else {
+	printf STDERR "missing argument to $ARGV[$i]\n";
+	exit 2;
+    }
+    return ($i, $arg);
+}
+
+sub isgcc40 {
+    my ($gcc) = @_;
+
+    die "gcc $gcc fails" unless open(GCCV, "$gcc -v 2>&1|");
+    while (<GCCV>) {
+	return 1 if /^gcc version 4\.0/;
+    }
+    return 0;
+}
